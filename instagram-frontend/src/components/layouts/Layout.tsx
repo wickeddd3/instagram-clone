@@ -2,7 +2,7 @@ import { MobileNav } from "./MobileNav";
 import { Sidebar } from "./Sidebar";
 import { Outlet } from "react-router-dom";
 
-const Layout = () => {
+export const Layout = () => {
   return (
     <div className="w-full h-full flex flex-col md:flex-row min-h-screen bg-black text-white">
       {/* Left Sidebar - Hidden on Mobile */}
@@ -22,5 +22,3 @@ const Layout = () => {
     </div>
   );
 };
-
-export default Layout;
