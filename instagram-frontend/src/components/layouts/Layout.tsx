@@ -1,3 +1,4 @@
+import { MobileNav } from "./MobileNav";
 import { Sidebar } from "./Sidebar";
 import { Outlet } from "react-router-dom";
 
@@ -13,6 +14,11 @@ const Layout = () => {
       <main className="flex-1 flex justify-center w-full">
         <Outlet />
       </main>
+
+      {/* Bottom Nav - Hidden on Desktop */}
+      <div className="md:hidden fixed bottom-0 w-full z-50 bg-black border-t border-gray-800">
+        <MobileNav />
+      </div>
     </div>
   );
 };
