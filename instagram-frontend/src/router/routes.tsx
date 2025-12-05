@@ -13,6 +13,13 @@ export const router = createBrowserRouter([
             element: <module.default />,
           })),
       },
+      {
+        path: "profile",
+        lazy: () =>
+          import("../pages/Profile").then((module) => ({
+            element: <module.default />,
+          })),
+      },
     ],
   },
 ]);
