@@ -8,17 +8,41 @@ import {
   Menu,
   Instagram,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
-export const Sidebar = () => {
+interface SidebarProps {
+  onCreateClick?: () => void;
+}
+
+export const Sidebar = ({ onCreateClick }: SidebarProps) => {
+  const navigate = useNavigate();
+
   const navItems = [
-    { icon: <Home size={24} />, label: "Home" },
-    { icon: <Search size={24} />, label: "Search" },
-    { icon: <Compass size={24} />, label: "Explore" },
-    { icon: <MessageCircle size={24} />, label: "Messages" },
-    { icon: <Heart size={24} />, label: "Notifications" },
+    { icon: <Home size={24} />, label: "Home", action: () => navigate("/") },
+    {
+      icon: <Search size={24} />,
+      label: "Search",
+      action: () => navigate("/search"),
+    },
+    {
+      icon: <Compass size={24} />,
+      label: "Explore",
+      action: () => navigate("/explore"),
+    },
+    {
+      icon: <MessageCircle size={24} />,
+      label: "Messages",
+      action: () => navigate("/messages"),
+    },
+    {
+      icon: <Heart size={24} />,
+      label: "Notifications",
+      action: () => navigate("/notifications"),
+    },
     {
       icon: <Plus size={24} />,
       label: "Create",
+      action: onCreateClick,
     },
     {
       icon: (
@@ -27,6 +51,7 @@ export const Sidebar = () => {
         </div>
       ),
       label: "Profile",
+      action: () => navigate("/profile"),
     },
   ];
 
@@ -52,6 +77,7 @@ export const Sidebar = () => {
             <button
               key={index}
               className="flex items-center gap-4 p-3 hover:bg-white/10 rounded-lg w-full transition-colors duration-200 group cursor-pointer"
+              onClick={item.action}
             >
               <div className="group-hover:scale-105 transition-transform">
                 {item.icon}
