@@ -3,7 +3,7 @@ import {
   Search,
   Compass,
   Heart,
-  PlusSquare,
+  Plus,
   MessageCircle,
   Menu,
   Instagram,
@@ -17,7 +17,7 @@ export const Sidebar = () => {
     { icon: <MessageCircle size={24} />, label: "Messages" },
     { icon: <Heart size={24} />, label: "Notifications" },
     {
-      icon: <PlusSquare size={24} />,
+      icon: <Plus size={24} />,
       label: "Create",
     },
     {
@@ -37,7 +37,7 @@ export const Sidebar = () => {
         <div className="mb-8 px-3 pt-2">
           {/* Large Screen Logo */}
           <h1
-            className="hidden lg:block text-2xl font-bold tracking-tighter"
+            className="hidden lg:block text-2xl font-medium"
             style={{ fontFamily: "Grand Hotel, cursive" }}
           >
             Instagram
