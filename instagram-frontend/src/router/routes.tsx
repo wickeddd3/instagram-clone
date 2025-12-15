@@ -1,10 +1,11 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Layout } from "../components/layouts/Layout";
+import { AuthGuard } from "../components/AuthGuard";
 
 export const router = createBrowserRouter([
+  // --- PROTECTED ROUTES ---
   {
     path: "/",
-    element: <Layout />,
+    element: <AuthGuard />,
     children: [
       {
         index: true,
@@ -21,5 +22,25 @@ export const router = createBrowserRouter([
           })),
       },
     ],
+  },
+
+  // --- PUBLIC/AUTH ROUTES ---
+  {
+    path: "/auth",
+    // These routes do not require the user to be logged in
+    lazy: () =>
+      import("../pages/Auth").then((module) => ({
+        element: <module.default />,
+      })),
+  },
+
+  // --- 404/Catch-all ---
+  {
+    path: "*",
+    element: (
+      <div className="flex justify-center items-center min-h-screen bg-black text-white">
+        <h1>404 | Page Not Found</h1>
+      </div>
+    ),
   },
 ]);
