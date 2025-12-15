@@ -2,7 +2,7 @@ import { useState } from "react";
 import { MobileNav } from "./MobileNav";
 import { Sidebar } from "./Sidebar";
 import { Outlet } from "react-router-dom";
-import CreatePostModal from "../CreatePostModal";
+import { CreatePostModal } from "../CreatePostModal";
 
 export const Layout = () => {
   const [isModalOpen, setModalOpen] = useState(false);
