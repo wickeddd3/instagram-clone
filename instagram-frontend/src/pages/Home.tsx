@@ -1,29 +1,40 @@
 import { Stories } from "../components/Stories";
 import { Post } from "../components/Post";
+import { GET_FEED } from "../graphql/queries/post";
+import { useQuery } from "@apollo/client/react";
+import { formatDistanceToNow } from "date-fns";
+
+export interface FeedData {
+  getFeed: {
+    id: string;
+    image_url: string;
+    caption: string;
+    created_at: string;
+    user: {
+      username: string;
+      avatar_url: string;
+    };
+  }[];
+}
 
 const Home = () => {
-  const posts = [
-    {
-      id: 1,
-      username: "joshua_dev",
-      avatar: "https://i.pravatar.cc/150?img=12",
-      imageUrl:
-        "https://images.unsplash.com/photo-1504194921103-f8b80cadd5e4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
-      likes: 1240,
-      caption: "Coding late into the night 🌙 #developer #react",
-      timeAgo: "2h",
-    },
-    {
-      id: 2,
-      username: "design_daily",
-      avatar: "https://i.pravatar.cc/150?img=32",
-      imageUrl:
-        "https://images.unsplash.com/photo-1558655146-d09347e92766?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
-      likes: 856,
-      caption: "Minimalist workspace setup. Thoughts? 🖥️",
-      timeAgo: "5h",
-    },
-  ];
+  const { loading, error, data } = useQuery<FeedData>(GET_FEED);
+
+  if (loading) {
+    return (
+      <div className="flex w-full justify-center pt-20 text-white">
+        Loading feed...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex w-full justify-center pt-20 text-red-500">
+        Error: {error.message}
+      </div>
+    );
+  }
 
   return (
     <div className="flex w-full max-w-5xl">
@@ -32,15 +43,17 @@ const Home = () => {
         <Stories />
 
         <div className="mt-4">
-          {posts.map((post) => (
+          {data?.getFeed.map((post) => (
             <Post
               key={post.id}
-              username={post.username}
-              avatar={post.avatar}
-              imageUrl={post.imageUrl}
-              likes={post.likes}
+              username={post.user.username}
+              avatar={post.user.avatar_url}
+              imageUrl={post.image_url}
+              likes={0}
               caption={post.caption}
-              timeAgo={post.timeAgo}
+              timeAgo={formatDistanceToNow(new Date(post.created_at), {
+                addSuffix: true,
+              })}
             />
           ))}
         </div>
