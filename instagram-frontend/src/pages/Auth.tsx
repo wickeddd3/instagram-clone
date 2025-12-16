@@ -2,8 +2,12 @@ import { useState } from "react";
 import { useMutation } from "@apollo/client/react";
 import { AuthForm } from "../components/AuthForm";
 import { CREATE_PROFILE_MUTATION } from "../graphql/mutations/profile";
+import { useAuth } from "../contexts/AuthContext";
+import { Navigate } from "react-router-dom";
 
 const Auth = () => {
+  const { session, loading } = useAuth();
+
   const [isSignUp, setIsSignUp] = useState(false);
   const [createProfile] = useMutation(CREATE_PROFILE_MUTATION);
 
@@ -27,6 +31,18 @@ const Auth = () => {
 
     // The user session is now active, App.tsx will redirect to Home
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-black text-white">
+        <h1 className="text-xl">Checking authentication status...</h1>
+      </div>
+    );
+  }
+
+  if (session) {
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-black text-white">
