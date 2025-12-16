@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Mail, Lock, User as UserIcon } from "lucide-react";
-import { supabase } from "../lib/supabase";
+import { useAuth } from "../contexts/AuthContext";
 
 interface AuthFormProps {
   isSignUp: boolean;
@@ -9,6 +9,8 @@ interface AuthFormProps {
 }
 
 export const AuthForm = ({ isSignUp, onSuccess, onToggle }: AuthFormProps) => {
+  const { signIn, signUp } = useAuth();
+
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,13 +26,7 @@ export const AuthForm = ({ isSignUp, onSuccess, onToggle }: AuthFormProps) => {
         // --- SIGN UP LOGIC ---
         if (!username) throw new Error("Username is required for signup.");
 
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            data: { username }, // Pass username to user metadata
-          },
-        });
+        const { error } = await signUp(email, password, username);
 
         if (error) throw error;
 
@@ -40,10 +36,7 @@ export const AuthForm = ({ isSignUp, onSuccess, onToggle }: AuthFormProps) => {
         );
       } else {
         // --- SIGN IN LOGIC ---
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
+        const { data, error } = await signIn(email, password);
 
         if (error) throw error;
 
