@@ -11,36 +11,48 @@ import {
 import { useNavigate } from "react-router-dom";
 
 interface SidebarProps {
+  isSidebarOpen?: boolean;
+  onSidebarHover?: (isOpen: boolean) => void;
   onCreateClick?: () => void;
 }
 
-export const Sidebar = ({ onCreateClick }: SidebarProps) => {
+export const Sidebar = ({
+  isSidebarOpen,
+  onSidebarHover,
+  onCreateClick,
+}: SidebarProps) => {
   const navigate = useNavigate();
 
+  const iconSize = 24;
+
   const navItems = [
-    { icon: <Home size={24} />, label: "Home", action: () => navigate("/") },
     {
-      icon: <Search size={24} />,
+      icon: <Home size={iconSize} />,
+      label: "Home",
+      action: () => navigate("/"),
+    },
+    {
+      icon: <Search size={iconSize} />,
       label: "Search",
       action: () => navigate("/search"),
     },
     {
-      icon: <Compass size={24} />,
+      icon: <Compass size={iconSize} />,
       label: "Explore",
       action: () => navigate("/explore"),
     },
     {
-      icon: <MessageCircle size={24} />,
+      icon: <MessageCircle size={iconSize} />,
       label: "Messages",
       action: () => navigate("/messages"),
     },
     {
-      icon: <Heart size={24} />,
+      icon: <Heart size={iconSize} />,
       label: "Notifications",
       action: () => navigate("/notifications"),
     },
     {
-      icon: <Plus size={24} />,
+      icon: <Plus size={iconSize} />,
       label: "Create",
       action: onCreateClick,
     },
@@ -56,42 +68,40 @@ export const Sidebar = ({ onCreateClick }: SidebarProps) => {
   ];
 
   return (
-    <div className="h-full flex flex-col justify-between px-3 py-5">
-      <div>
-        {/* Logo */}
-        <div className="mb-8 px-3 pt-2">
-          {/* Large Screen Logo */}
-          <h1
-            className="hidden lg:block text-2xl font-medium"
-            style={{ fontFamily: "Grand Hotel, cursive" }}
-          >
-            Instagram
-          </h1>
-          {/* Tablet Logo (Icon) */}
-          <Instagram className="block lg:hidden w-6 h-6" />
-        </div>
+    <div
+      className="h-full flex flex-col justify-between px-2 py-5"
+      onMouseEnter={() => onSidebarHover && onSidebarHover(true)}
+      onMouseLeave={() => onSidebarHover && onSidebarHover(false)}
+    >
+      {/* Logo */}
+      <button className="flex items-center py-2 px-2.5 w-full cursor-pointer">
+        <Instagram className="block w-6 h-6" />
+      </button>
 
-        {/* Nav Items */}
-        <nav className="space-y-2">
-          {navItems.map((item, index) => (
-            <button
-              key={index}
-              className="flex items-center gap-4 p-3 hover:bg-white/10 rounded-lg w-full transition-colors duration-200 group cursor-pointer"
-              onClick={item.action}
-            >
-              <div className="group-hover:scale-105 transition-transform">
-                {item.icon}
-              </div>
-              <span className="hidden lg:block text-[16px]">{item.label}</span>
-            </button>
-          ))}
-        </nav>
-      </div>
+      {/* Nav Items */}
+      <nav>
+        {navItems.map((item, index) => (
+          <button
+            key={index}
+            className="flex items-center gap-4 py-3 px-2.5 hover:bg-white/10 rounded-lg w-full transition-colors duration-200 group cursor-pointer"
+            onClick={item.action}
+          >
+            <div className="transition-transform">{item.icon}</div>
+            <span className={`text-md ${isSidebarOpen ? "block" : "hidden"}`}>
+              {item.label}
+            </span>
+          </button>
+        ))}
+      </nav>
 
       {/* More Options */}
-      <button className="flex items-center gap-4 p-3 hover:bg-white/10 rounded-lg w-full text-left">
-        <Menu size={24} />
-        <span className="hidden lg:block text-[16px]">More</span>
+      <button className="flex items-center gap-4 py-2 px-2.5 hover:bg-white/10 rounded-lg w-full transition-colors duration-200 group cursor-pointer">
+        <div className="group-hover:scale-105 transition-transform">
+          <Menu size={iconSize} />
+        </div>
+        <span className={`text-md ${isSidebarOpen ? "block" : "hidden"}`}>
+          More
+        </span>
       </button>
     </div>
   );
