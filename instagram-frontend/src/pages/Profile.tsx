@@ -1,11 +1,13 @@
 import {
-  Settings,
   Grid,
   Bookmark,
-  User,
   Heart,
   MessageCircle,
+  SquareUser,
+  Cog,
 } from "lucide-react";
+import { useState } from "react";
+import { SettingsModal } from "../components/modals/SettingsModal";
 
 const Profile = () => {
   // Mock data for the grid
@@ -16,61 +18,56 @@ const Profile = () => {
     comments: 20 + i,
   }));
 
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+
   return (
-    <div className="w-full max-w-[935px] px-5 py-8">
-      {/* --- PROFILE HEADER --- */}
-      <header className="flex flex-col md:flex-row items-center md:items-start md:gap-24 mb-10">
-        {/* Avatar */}
-        <div className="shrink-0 mb-6 md:mb-0">
-          <div className="w-20 h-20 md:w-36 md:h-36 rounded-full p-0.5 bg-linear-to-tr from-gray-700 to-gray-400">
-            <img
-              src="https://i.pravatar.cc/300?img=3"
-              alt="profile"
-              className="w-full h-full rounded-full object-cover border-2 border-black"
-            />
-          </div>
+    <div className="max-w-4xl w-full mx-auto px-4 pt-8">
+      {/* Header Section */}
+      <header className="flex flex-row items-center gap-8 md:gap-20 mb-12">
+        <div className="w-20 h-20 md:w-40 md:h-40 rounded-full bg-gray-800 overflow-hidden">
+          <img
+            src="https://i.pravatar.cc/150?img=3"
+            alt="Avatar"
+            className="w-full h-full object-cover"
+          />
         </div>
 
-        {/* Profile Details */}
-        <div className="flex flex-col gap-5 w-full">
-          {/* Row 1: Username & Actions */}
-          <div className="flex flex-col md:flex-row items-center gap-4">
-            <h2 className="text-xl font-normal">my_creative_life</h2>
-
-            <div className="flex gap-2">
-              <button className="bg-white text-black px-4 py-1.5 rounded text-sm font-semibold hover:bg-gray-200 transition">
-                Edit profile
-              </button>
-              <button className="bg-white text-black px-4 py-1.5 rounded text-sm font-semibold hover:bg-gray-200 transition">
-                View Archive
-              </button>
-            </div>
-            <Settings className="w-6 h-6 cursor-pointer" />
+        <section className="flex flex-col gap-4">
+          <div className="flex flex-wrap items-center gap-4">
+            <h2 className="text-xl font-light">my_creative_life</h2>
+            <button className="bg-[#efefef] hover:bg-[#dbdbdb] text-black px-4 py-1.5 rounded-lg text-sm font-semibold transition">
+              Edit profile
+            </button>
+            <button className="bg-[#efefef] hover:bg-[#dbdbdb] text-black px-4 py-1.5 rounded-lg text-sm font-semibold transition">
+              View archive
+            </button>
+            <button
+              onClick={() => setIsSettingsOpen(true)}
+              className="p-1 hover:text-gray-400 transition cursor-pointer"
+            >
+              <Cog size={24} />
+            </button>
           </div>
 
-          {/* Row 2: Stats (Hidden on mobile usually, but we'll keep simple) */}
-          <ul className="flex justify-around md:justify-start gap-10 text-base">
-            <li>
-              <span className="font-bold">12</span> posts
-            </li>
-            <li>
-              <span className="font-bold">1,240</span> followers
-            </li>
-            <li>
-              <span className="font-bold">450</span> following
-            </li>
-          </ul>
-
-          {/* Row 3: Bio */}
-          <div className="text-sm">
-            <div className="font-bold">John Doe</div>
-            <div>📸 Photographer & Traveler</div>
-            <div>📍 Currently in Tokyo</div>
-            <a href="#" className="text-blue-200 font-semibold hover:underline">
-              www.johndoe.com
-            </a>
+          <div className="hidden md:flex gap-10">
+            <span>
+              <strong>12</strong> posts
+            </span>
+            <span>
+              <strong>250</strong> followers
+            </span>
+            <span>
+              <strong>300</strong> following
+            </span>
           </div>
-        </div>
+
+          <div>
+            <span className="font-semibold">John Doe</span>
+            <p className="text-sm">
+              Building cool things with React & GraphQL 🚀
+            </p>
+          </div>
+        </section>
       </header>
 
       {/* --- STORY HIGHLIGHTS (Optional placeholder) --- */}
@@ -79,16 +76,15 @@ const Profile = () => {
       </div>
 
       {/* --- TABS --- */}
-      <div className="border-t border-gray-800 flex justify-center gap-12 text-xs font-semibold tracking-widest text-gray-500 mb-2">
-        <button className="flex items-center gap-2 border-t border-white text-white py-4 -mt-px">
-          <Grid size={12} /> POSTS
+      <div className="flex justify-center gap-12 text-xs font-semibold tracking-widest text-gray-500 mb-2">
+        <button className="flex items-center gap-2 border-b-2 cursor-pointer border-white text-white px-4 py-2 -mt-px">
+          <Grid size={24} />
         </button>
-        <button className="flex items-center gap-2 py-4 hover:text-white transition">
-          <Bookmark size={12} /> SAVED
+        <button className="flex items-center gap-2 px-4 py-2 cursor-pointer hover:text-white transition">
+          <Bookmark size={24} />
         </button>
-        <button className="flex items-center gap-2 py-4 hover:text-white transition">
-          {/* UserBox is a custom icon or Lucide's generic User */}
-          <User size={12} /> TAGGED
+        <button className="flex items-center gap-2 px-4 py-2 cursor-pointer hover:text-white transition">
+          <SquareUser size={24} />
         </button>
       </div>
 
@@ -119,6 +115,12 @@ const Profile = () => {
           </div>
         ))}
       </div>
+
+      {/* SETTINGS MODAL */}
+      <SettingsModal
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+      />
     </div>
   );
 };
