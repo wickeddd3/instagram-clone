@@ -1,13 +1,16 @@
 import { useState } from "react";
 import { MobileNav } from "./MobileNav";
 import { Sidebar } from "./Sidebar";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { CreatePostModal } from "../CreatePostModal";
 import { MobileHeader } from "./MobileHeader";
+import { motion } from "framer-motion";
 
 export const Layout = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+
+  const location = useLocation();
 
   return (
     <div className="w-full h-full flex flex-col md:flex-row min-h-screen bg-black text-white">
@@ -17,21 +20,30 @@ export const Layout = () => {
       </div>
 
       {/* Left Sidebar - Hidden on Mobile */}
-      <aside
-        className={`hidden md:flex w-[60px] flex-col h-screen fixed bg-black top-0 z-50 ${
-          isSidebarOpen ? "w-[245px]" : "w-[60px]"
-        }`}
+      <motion.aside
+        initial={false}
+        animate={{ width: isSidebarOpen ? 245 : 60 }}
+        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+        className="hidden md:flex flex-col h-screen fixed top-0 z-50 bg-black"
       >
         <Sidebar
           isSidebarOpen={isSidebarOpen}
           onSidebarHover={setSidebarOpen}
           onCreateClick={() => setModalOpen(true)}
         />
-      </aside>
+      </motion.aside>
 
       {/* Main Content Area */}
       <main className="flex-1 flex justify-center w-full md:mt-0 mt-14 ">
-        <Outlet />
+        <motion.div
+          key={location.pathname}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          className="w-full flex justify-center"
+        >
+          <Outlet />
+        </motion.div>
       </main>
 
       {/* Bottom Nav - Hidden on Desktop */}

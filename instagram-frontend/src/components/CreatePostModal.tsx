@@ -4,6 +4,7 @@ import { useMutation } from "@apollo/client/react";
 import { CREATE_POST } from "../graphql/mutations/post";
 import { GET_FEED } from "../graphql/queries/post";
 import { supabase } from "../lib/supabase";
+import { motion } from "framer-motion";
 
 interface CreatePostModalProps {
   isOpen: boolean;
@@ -88,15 +89,23 @@ export const CreatePostModal = ({ isOpen, onClose }: CreatePostModalProps) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="fixed inset-0 bg-black/60 flex items-center justify-center z-60"
+    >
       <button
         onClick={onClose}
         className="absolute top-4 right-4 text-white hover:text-gray-300"
       >
         <X size={32} />
       </button>
-
-      <div className="bg-[#262626] w-full max-w-[800px] h-[600px] rounded-xl overflow-hidden flex flex-col md:flex-row animate-in fade-in zoom-in duration-200">
+      <motion.div
+        initial={{ scale: 1.1, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ type: "spring", duration: 0.4 }}
+        className="bg-[#262626] rounded-xl w-full max-w-1/2 h-full max-h-1/2 flex flex-col md:flex-row overflow-hidden"
+      >
         {step === "upload" && (
           <div className="w-full h-full flex flex-col items-center justify-center text-white">
             <div className="border-b border-gray-700 w-full text-center py-3 font-semibold">
@@ -182,7 +191,7 @@ export const CreatePostModal = ({ isOpen, onClose }: CreatePostModalProps) => {
             </div>
           </>
         )}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };

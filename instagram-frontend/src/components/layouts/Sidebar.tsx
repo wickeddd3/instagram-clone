@@ -9,6 +9,7 @@ import {
   Instagram,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface SidebarProps {
   isSidebarOpen?: boolean;
@@ -86,22 +87,44 @@ export const Sidebar = ({
             className="flex items-center gap-4 py-3 px-2.5 hover:bg-white/10 rounded-lg w-full transition-colors duration-200 group cursor-pointer"
             onClick={item.action}
           >
-            <div className="transition-transform">{item.icon}</div>
-            <span className={`text-md ${isSidebarOpen ? "block" : "hidden"}`}>
-              {item.label}
-            </span>
+            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+              {item.icon}
+            </motion.div>
+            <AnimatePresence>
+              {isSidebarOpen && (
+                <motion.span
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -10 }}
+                  transition={{ duration: 0.2 }}
+                  className="text-md whitespace-nowrap"
+                >
+                  {item.label}
+                </motion.span>
+              )}
+            </AnimatePresence>
           </button>
         ))}
       </nav>
 
       {/* More Options */}
       <button className="flex items-center gap-4 py-2 px-2.5 hover:bg-white/10 rounded-lg w-full transition-colors duration-200 group cursor-pointer">
-        <div className="group-hover:scale-105 transition-transform">
+        <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
           <Menu size={iconSize} />
-        </div>
-        <span className={`text-md ${isSidebarOpen ? "block" : "hidden"}`}>
-          More
-        </span>
+        </motion.div>
+        <AnimatePresence>
+          {isSidebarOpen && (
+            <motion.span
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -10 }}
+              transition={{ duration: 0.2 }}
+              className="text-md whitespace-nowrap"
+            >
+              More
+            </motion.span>
+          )}
+        </AnimatePresence>
       </button>
     </div>
   );
