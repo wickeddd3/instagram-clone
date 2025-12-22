@@ -26,7 +26,7 @@ export const AuthForm = ({ isSignUp, onSuccess, onToggle }: AuthFormProps) => {
         // --- SIGN UP LOGIC ---
         if (!username) throw new Error("Username is required for signup.");
 
-        const { error } = await signUp(email, password, username);
+        const { data, error } = await signUp(email, password, username);
 
         if (error) throw error;
 
@@ -34,16 +34,16 @@ export const AuthForm = ({ isSignUp, onSuccess, onToggle }: AuthFormProps) => {
         setMessage(
           "Success! Check your email to confirm your account, then log in."
         );
-      } else {
-        // --- SIGN IN LOGIC ---
-        const { data, error } = await signIn(email, password);
-
-        if (error) throw error;
 
         // On successful sign-in, trigger the success callback with the user's ID
         if (data.user) {
           onSuccess(data.user.id);
         }
+      } else {
+        // --- SIGN IN LOGIC ---
+        const { error } = await signIn(email, password);
+
+        if (error) throw error;
       }
     } catch (error: any) {
       setMessage(error.message || "An unexpected error occurred.");
