@@ -13,3 +13,5 @@ coverage
 build
 *.log   
 *.tsbuildinfo
+/prisma/generated/
+/prisma/migrations/
