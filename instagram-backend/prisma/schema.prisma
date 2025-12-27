@@ -1,0 +1,139 @@
+generator client {
+  provider = "prisma-client"
+  output   = "./generated"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Profile {
+  id          String   @id // This will match the Supabase Auth User ID
+  username    String   @unique
+  email       String   @unique
+  bio         String?
+  avatarUrl   String?  @map("avatar_url")
+  website     String?
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  // Relationships
+  posts       Post[]
+  comments    Comment[]
+  likes       Like[]
+  
+  // Follows: Self-referencing many-to-many
+  followers   Follow[] @relation("following")
+  following   Follow[] @relation("follower")
+
+  // Notifications
+  notificationsSent     Notification[] @relation("NotificationActor")
+  notificationsReceived Notification[] @relation("NotificationRecipient")
+
+  @@map("profiles")
+}
+
+model Post {
+  id          String    @id @default(uuid())
+  imageUrl    String    @map("image_url")
+  caption     String?
+  location    String?
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  // Relationships
+  authorId    String    @map("author_id")
+  author      Profile   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  
+  comments    Comment[]
+  likes       Like[]
+  notifications Notification[]
+
+  @@map("posts")
+}
+
+model Comment {
+  id          String    @id @default(uuid())
+  text        String
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  // Relationships
+  authorId    String    @map("author_id")
+  author      Profile   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  
+  postId      String    @map("post_id")
+  post        Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  // Recursive Replies
+  parentId    String?   @map("parent_id")
+  parent      Comment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies     Comment[] @relation("CommentReplies")
+
+  likes       Like[]
+  notifications Notification[]
+
+  @@map("comments")
+}
+
+model Like {
+  id          String    @id @default(uuid())
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  // User who liked
+  userId      String    @map("user_id")
+  user        Profile   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // A like can belong to a post OR a comment
+  postId      String?   @map("post_id")
+  post        Post?     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  
+  commentId   String?   @map("comment_id")
+  comment     Comment?  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  // Unique constraint: User can only like a specific post/comment once
+  @@unique([userId, postId])
+  @@unique([userId, commentId])
+  @@map("likes")
+}
+
+model Follow {
+  followerId  String   @map("follower_id")
+  follower    Profile  @relation("follower", fields: [followerId], references: [id], onDelete: Cascade)
+  
+  followingId String   @map("following_id")
+  following   Profile  @relation("following", fields: [followingId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@id([followerId, followingId])
+  @@map("follows")
+}
+
+model Notification {
+  id          String           @id @default(uuid())
+  type        NotificationType
+  createdAt   DateTime         @default(now()) @map("created_at")
+
+  // The person who triggered the notification (e.g., the liker)
+  actorId     String           @map("actor_id")
+  actor       Profile          @relation("NotificationActor", fields: [actorId], references: [id], onDelete: Cascade)
+
+  // The person receiving the notification
+  recipientId String           @map("recipient_id")
+  recipient   Profile          @relation("NotificationRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+
+  postId      String?          @map("post_id")
+  post        Post?            @relation(fields: [postId], references: [id])
+
+  commentId   String?          @map("comment_id")
+  comment     Comment?         @relation(fields: [commentId], references: [id])
+
+  @@map("notifications")
+}
+
+enum NotificationType {
+  LIKE_POST
+  LIKE_COMMENT
+  COMMENT
+  REPLY
+  FOLLOW
+}
