@@ -4,6 +4,7 @@ import { AuthForm } from "../components/AuthForm";
 import { CREATE_PROFILE_MUTATION } from "../graphql/mutations/profile";
 import { useAuth } from "../contexts/AuthContext";
 import { Navigate } from "react-router-dom";
+import type { User } from "@supabase/supabase-js";
 
 const Auth = () => {
   const { session, loading } = useAuth();
@@ -11,18 +12,17 @@ const Auth = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [createProfile] = useMutation(CREATE_PROFILE_MUTATION);
 
-  const handleAuthSuccess = async (userId: string) => {
+  const handleAuthSuccess = async (user: User, username: string) => {
     if (isSignUp) {
-      const tempUsername = `user_${userId.substring(0, 8)}`;
-
       try {
         await createProfile({
           variables: {
-            id: userId,
-            username: tempUsername,
+            id: user.id,
+            email: user.email,
+            username: username,
           },
         });
-        console.log(`Profile created for new user: ${tempUsername}`);
+        console.log(`Profile created for new user: ${username}`);
       } catch (e) {
         console.error("Error creating profile via GraphQL:", e);
         // If this fails, the user is logged in but cannot post due to FK violation
