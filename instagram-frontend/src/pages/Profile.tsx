@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { SettingsModal } from "../components/modals/SettingsModal";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   // Mock data for the grid
@@ -18,7 +19,13 @@ const Profile = () => {
     comments: 20 + i,
   }));
 
+  const navigate = useNavigate();
+
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+
+  const handleEditProfile = () => {
+    navigate("/profile/edit");
+  };
 
   return (
     <div className="max-w-4xl w-full mx-auto px-4 pt-8">
@@ -35,7 +42,10 @@ const Profile = () => {
         <section className="flex flex-col gap-4">
           <div className="flex flex-wrap items-center gap-4">
             <h2 className="text-xl font-light">my_creative_life</h2>
-            <button className="bg-[#efefef] hover:bg-[#dbdbdb] text-black px-4 py-1.5 rounded-lg text-sm font-semibold transition">
+            <button
+              className="bg-[#efefef] hover:bg-[#dbdbdb] text-black px-4 py-1.5 rounded-lg text-sm font-semibold transition"
+              onClick={handleEditProfile}
+            >
               Edit profile
             </button>
             <button className="bg-[#efefef] hover:bg-[#dbdbdb] text-black px-4 py-1.5 rounded-lg text-sm font-semibold transition">
