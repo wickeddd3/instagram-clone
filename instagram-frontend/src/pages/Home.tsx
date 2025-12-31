@@ -7,12 +7,12 @@ import { formatDistanceToNow } from "date-fns";
 export interface FeedData {
   getFeed: {
     id: string;
-    image_url: string;
+    imageUrl: string;
     caption: string;
-    created_at: string;
-    user: {
+    createdAt: string;
+    author: {
       username: string;
-      avatar_url: string;
+      avatarUrl: string;
     };
   }[];
 }
@@ -46,12 +46,12 @@ const Home = () => {
           {data?.getFeed.map((post) => (
             <Post
               key={post.id}
-              username={post.user.username}
-              avatar={post.user.avatar_url}
-              imageUrl={post.image_url}
+              username={post.author.username}
+              avatar={post.author.avatarUrl || "/ig-default.jpg"}
+              imageUrl={post.imageUrl}
               likes={0}
               caption={post.caption}
-              timeAgo={formatDistanceToNow(new Date(post.created_at), {
+              timeAgo={formatDistanceToNow(new Date(post.createdAt), {
                 addSuffix: true,
               })}
             />
