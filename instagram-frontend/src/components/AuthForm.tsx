@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Mail, Lock, User as UserIcon } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
+import type { User } from "@supabase/supabase-js";
 
 interface AuthFormProps {
   isSignUp: boolean;
-  onSuccess: (userId: string) => void;
+  onSuccess: (user: User, username: string) => void;
   onToggle: () => void;
 }
 
@@ -37,7 +38,7 @@ export const AuthForm = ({ isSignUp, onSuccess, onToggle }: AuthFormProps) => {
 
         // On successful sign-in, trigger the success callback with the user's ID
         if (data.user) {
-          onSuccess(data.user.id);
+          onSuccess(data.user, username);
         }
       } else {
         // --- SIGN IN LOGIC ---
