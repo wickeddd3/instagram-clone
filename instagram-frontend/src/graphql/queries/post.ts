@@ -4,12 +4,12 @@ export const GET_FEED = gql`
   query GetFeed {
     getFeed {
       id
-      image_url
+      imageUrl
       caption
-      created_at
-      user {
+      createdAt
+      author {
         username
-        avatar_url
+        avatarUrl
       }
     }
   }
