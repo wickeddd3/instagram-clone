@@ -5,15 +5,16 @@ import { CREATE_POST } from "../graphql/mutations/post";
 import { GET_FEED } from "../graphql/queries/post";
 import { supabase } from "../lib/supabase";
 import { motion } from "framer-motion";
+import { useAuth } from "../contexts/AuthContext";
 
 interface CreatePostModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const CURRENT_USER_ID = "f962833b-5c26-4ffe-bc8e-861e9235f8a8";
-
 export const CreatePostModal = ({ isOpen, onClose }: CreatePostModalProps) => {
+  const { user } = useAuth();
+
   const [step, setStep] = useState<"upload" | "details">("upload");
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [fileToUpload, setFileToUpload] = useState<File | null>(null);
@@ -37,6 +38,10 @@ export const CreatePostModal = ({ isOpen, onClose }: CreatePostModalProps) => {
   };
 
   if (!isOpen) return null;
+
+  if (!user) return null;
+
+  const CURRENT_USER_ID = user.id;
 
   // 1. Handle File Selection
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,7 +81,6 @@ export const CreatePostModal = ({ isOpen, onClose }: CreatePostModalProps) => {
       // C. Save Metadata to Backend via GraphQL
       await createPost({
         variables: {
-          userId: CURRENT_USER_ID,
           imageUrl: publicUrl,
           caption: caption,
         },
