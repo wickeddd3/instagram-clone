@@ -7,6 +7,7 @@ import { expressMiddleware } from "@as-integrations/express5";
 import { json } from "body-parser";
 import { typeDefs } from "./graphql/schema";
 import { resolvers } from "./graphql/resolvers";
+import { verifySupabaseToken } from "./lib/supabase";
 
 dotenv.config();
 
@@ -27,7 +28,14 @@ const startServer = async () => {
     cors<cors.CorsRequest>(),
     json(),
     expressMiddleware(server, {
-      context: async ({ req }) => ({ token: req.headers.token }),
+      context: async ({ req }) => {
+        // 1. Get the Authorization header (Bearer <token>)
+        const authHeader = req.headers.authorization;
+        // 2. Verify it and get the User UUID
+        const userId = await verifySupabaseToken(authHeader || "");
+        // 3. Return the userId to be used in resolvers
+        return { userId };
+      },
     })
   );
 
