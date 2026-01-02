@@ -82,7 +82,7 @@ export const typeDefs = `#graphql
     getPost(id: ID!): Post
     
     # Profile
-    getProfile(username: String!): Profile
+    getProfile(id: String!): Profile
     searchProfiles(query: String!): [Profile!]!
     
     # Comments
@@ -93,7 +93,7 @@ export const typeDefs = `#graphql
 
   type Mutation {
     # Account
-    updateProfile(username: String, bio: String, avatarUrl: String, website: String): Profile!
+    updateProfile(displayName: String, bio: String, website: String): Profile!
     followProfile(profileId: ID!): Boolean!
     unfollowProfile(profileId: ID!): Boolean!
 
