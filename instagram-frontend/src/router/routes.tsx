@@ -21,6 +21,13 @@ export const router = createBrowserRouter([
             element: <module.default />,
           })),
       },
+      {
+        path: "profile/edit",
+        lazy: () =>
+          import("../pages/EditProfile").then((module) => ({
+            element: <module.default />,
+          })),
+      },
     ],
   },
 
