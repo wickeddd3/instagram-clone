@@ -13,9 +13,9 @@ export const Layout = () => {
   const location = useLocation();
 
   return (
-    <div className="w-full h-full flex flex-col md:flex-row min-h-screen bg-black text-white">
+    <div className="w-full h-full flex flex-col md:flex-row min-h-screen bg-[#0d1015] text-white">
       {/* Top Header - Hidden on Desktop */}
-      <div className="md:hidden fixed top-0 w-full z-50 bg-black border-t border-gray-800">
+      <div className="md:hidden fixed top-0 w-full z-50 bg-[#0d1015] border-t border-gray-800">
         <MobileHeader />
       </div>
 
@@ -24,7 +24,7 @@ export const Layout = () => {
         initial={false}
         animate={{ width: isSidebarOpen ? 245 : 60 }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className="hidden md:flex flex-col h-screen fixed top-0 z-50 bg-black"
+        className="hidden md:flex flex-col h-screen fixed top-0 z-50 bg-[#0d1015]"
       >
         <Sidebar
           isSidebarOpen={isSidebarOpen}
@@ -47,7 +47,7 @@ export const Layout = () => {
       </main>
 
       {/* Bottom Nav - Hidden on Desktop */}
-      <div className="md:hidden fixed bottom-0 w-full z-50 bg-black border-t border-gray-800">
+      <div className="md:hidden fixed bottom-0 w-full z-50 bg-[#0d1015] border-t border-gray-800">
         <MobileNav />
       </div>
 

@@ -2,7 +2,7 @@ import { Heart } from "lucide-react";
 
 export const MobileHeader = () => {
   return (
-    <header className="w-full p-3 bg-black border-b border-gray-800 flex items-center justify-between">
+    <header className="w-full p-3 bg-[#0d1015] border-b border-gray-800 flex items-center justify-between">
       <h1
         className="text-2xl font-medium"
         style={{ fontFamily: "Grand Hotel, cursive" }}
