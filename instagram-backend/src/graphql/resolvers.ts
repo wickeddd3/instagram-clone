@@ -20,9 +20,9 @@ export const resolvers = {
         },
       });
     },
-    getProfile: async (_parent: any, { username }: { username: string }) => {
+    getProfile: async (_parent: any, { id }: { id: string }) => {
       return await prisma.profile.findUnique({
-        where: { username },
+        where: { id },
         include: {
           posts: { orderBy: { createdAt: "desc" } },
           _count: {
