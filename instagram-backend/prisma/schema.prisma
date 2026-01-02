@@ -11,6 +11,7 @@ model Profile {
   id          String   @id // This will match the Supabase Auth User ID
   username    String   @unique
   email       String   @unique
+  displayName String?  @map("display_name")
   bio         String?
   avatarUrl   String?  @map("avatar_url")
   website     String?

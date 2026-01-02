@@ -5,6 +5,7 @@ export const typeDefs = `#graphql
     id: ID!
     username: String!
     email: String!
+    displayName: String
     bio: String
     avatarUrl: String
     website: String
