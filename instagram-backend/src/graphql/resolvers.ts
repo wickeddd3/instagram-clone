@@ -50,6 +50,23 @@ export const resolvers = {
         },
       });
     },
+    updateProfile: async (
+      _parent: any,
+      { displayName, bio, website }: any,
+      context: any
+    ) => {
+      if (!context.userId) {
+        throw new Error("Unauthorized: You must be logged in.");
+      }
+      return await prisma.profile.update({
+        where: { id: context.userId },
+        data: {
+          displayName,
+          bio,
+          website,
+        },
+      });
+    },
     createPost: async (
       _parent: any,
       { imageUrl, caption, location }: any,
