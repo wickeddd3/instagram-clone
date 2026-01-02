@@ -9,3 +9,14 @@ export const CREATE_PROFILE_MUTATION = gql`
     }
   }
 `;
+
+export const UPDATE_PROFILE = gql`
+  mutation UpdateProfile($displayName: String, $bio: String, $website: String) {
+    updateProfile(displayName: $displayName, bio: $bio, website: $website) {
+      id
+      displayName
+      bio
+      website
+    }
+  }
+`;
