@@ -3,19 +3,7 @@ import { Post } from "../components/Post";
 import { GET_FEED } from "../graphql/queries/post";
 import { useQuery } from "@apollo/client/react";
 import { formatDistanceToNow } from "date-fns";
-
-export interface FeedData {
-  getFeed: {
-    id: string;
-    imageUrl: string;
-    caption: string;
-    createdAt: string;
-    author: {
-      username: string;
-      avatarUrl: string;
-    };
-  }[];
-}
+import type { FeedData } from "../types/post";
 
 const Home = () => {
   const { loading, error, data } = useQuery<FeedData>(GET_FEED);
