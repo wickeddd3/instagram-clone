@@ -1,7 +1,10 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useSupabaseUpload } from "../../hooks/useSupabaseUpload";
 import { usePreviewUpload } from "../../hooks/usePreviewUpload";
-import { UPLOAD_PROFILE_AVATAR } from "../../graphql/mutations/profile";
+import {
+  REMOVE_PROFILE_AVATAR,
+  UPLOAD_PROFILE_AVATAR,
+} from "../../graphql/mutations/profile";
 import { useMutation } from "@apollo/client/react";
 import { createUploadPath, getFileData } from "../../utils/upload";
 import { useAuth } from "../../contexts/AuthContext";
@@ -20,14 +23,21 @@ export const UploadAvatarModal = ({
 }: UploadAvatarModalProps) => {
   const { user } = useAuth();
 
-  const [uploadAvatar] = useMutation(UPLOAD_PROFILE_AVATAR, {
+  const { uploadImage, removeImage } = useSupabaseUpload();
+  const { previewUrl, isUploading, setIsUploading } = usePreviewUpload();
+
+  const [removeAvatar] = useMutation(REMOVE_PROFILE_AVATAR, {
     onCompleted: () => {
       onClose();
     },
   });
 
-  const { uploadImage } = useSupabaseUpload();
-  const { previewUrl, isUploading, setIsUploading } = usePreviewUpload();
+  const [uploadAvatar] = useMutation(UPLOAD_PROFILE_AVATAR, {
+    onCompleted: () => {
+      onClose();
+      setIsUploading(false);
+    },
+  });
 
   if (!user) return null;
 
@@ -63,7 +73,11 @@ export const UploadAvatarModal = ({
     }
   };
 
-  const handleRemoveCurrentPhoto = async () => {
+  const handleRemoveCurrentPhoto = async (url?: string) => {
+    if (!url) return;
+    const profileAvatarPath = url?.split("avatars/")[1];
+    await removeAvatar();
+    await removeImage(profileAvatarPath, "avatars");
     onClose();
   };
 
@@ -115,11 +129,15 @@ export const UploadAvatarModal = ({
                   accept="image/*"
                 />
               </label>
-              <button className="py-3.5 text-sm text-white font-normal border-b border-neutral-800 active:bg-white/5 transition-colors cursor-pointer">
+              <button
+                disabled={true}
+                className="py-3.5 text-sm text-white font-normal border-b border-neutral-800 active:bg-white/5 transition-colors cursor-pointer"
+              >
                 Manage sync settings
               </button>
               <button
-                onClick={handleRemoveCurrentPhoto}
+                disabled={!avatarUrl}
+                onClick={() => handleRemoveCurrentPhoto(avatarUrl)}
                 className="py-3.5 text-sm text-red-500 font-bold border-b border-neutral-800 active:bg-white/5 transition-colors cursor-pointer"
               >
                 Remove Current Photo
