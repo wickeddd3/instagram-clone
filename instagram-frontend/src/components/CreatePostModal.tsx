@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { X, Image as ImageIcon, ArrowLeft, Loader2 } from "lucide-react";
 import { useMutation } from "@apollo/client/react";
 import { CREATE_POST } from "../graphql/mutations/post";
 import { GET_FEED } from "../graphql/queries/post";
-import { supabase } from "../lib/supabase";
 import { motion } from "framer-motion";
 import { useAuth } from "../contexts/AuthContext";
+import { createUploadPath } from "../utils/upload";
+import { useSupabaseUpload } from "../hooks/useSupabaseUpload";
+import { usePreviewUpload } from "../hooks/usePreviewUpload";
 
 interface CreatePostModalProps {
   isOpen: boolean;
@@ -15,11 +17,17 @@ interface CreatePostModalProps {
 export const CreatePostModal = ({ isOpen, onClose }: CreatePostModalProps) => {
   const { user } = useAuth();
 
+  const { uploadImage } = useSupabaseUpload();
+  const {
+    previewUrl,
+    fileToUpload,
+    isUploading,
+    setIsUploading,
+    handleFileChange,
+  } = usePreviewUpload();
+
   const [step, setStep] = useState<"upload" | "details">("upload");
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [fileToUpload, setFileToUpload] = useState<File | null>(null);
   const [caption, setCaption] = useState("");
-  const [isUploading, setIsUploading] = useState(false);
 
   const [createPost] = useMutation(CREATE_POST, {
     refetchQueries: [{ query: GET_FEED }],
@@ -31,8 +39,6 @@ export const CreatePostModal = ({ isOpen, onClose }: CreatePostModalProps) => {
 
   const resetState = () => {
     setStep("upload");
-    setPreviewUrl(null);
-    setFileToUpload(null);
     setCaption("");
     setIsUploading(false);
   };
@@ -43,42 +49,20 @@ export const CreatePostModal = ({ isOpen, onClose }: CreatePostModalProps) => {
 
   const CURRENT_USER_ID = user.id;
 
-  // 1. Handle File Selection
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setFileToUpload(file);
-
-      // Create local preview URL
-      const url = URL.createObjectURL(file);
-      setPreviewUrl(url);
-      setStep("details");
-    }
-  };
-
-  // 2. Handle Sharing (Upload + Mutation)
+  // Handle Sharing Post + Uploading Image
   const handleShare = async () => {
     if (!fileToUpload) return;
+
     setIsUploading(true);
 
     try {
-      // A. Upload Image to Supabase Storage
-      const fileExt = fileToUpload.name.split(".").pop();
-      const fileName = `${Math.random()}.${fileExt}`; // Random unique name
-      const filePath = `${CURRENT_USER_ID}/${fileName}`;
+      // Create unique file path
+      const filePath = createUploadPath(CURRENT_USER_ID, fileToUpload);
 
-      const { error: uploadError } = await supabase.storage
-        .from("posts") // Your bucket name
-        .upload(filePath, fileToUpload);
+      // Get Public URL after upload
+      const publicUrl = await uploadImage(fileToUpload, filePath, "posts");
 
-      if (uploadError) throw uploadError;
-
-      // B. Get Public URL
-      const {
-        data: { publicUrl },
-      } = supabase.storage.from("posts").getPublicUrl(filePath);
-
-      // C. Save Metadata to Backend via GraphQL
+      // Create Post
       await createPost({
         variables: {
           imageUrl: publicUrl,
@@ -108,22 +92,24 @@ export const CreatePostModal = ({ isOpen, onClose }: CreatePostModalProps) => {
         initial={{ scale: 1.1, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ type: "spring", duration: 0.4 }}
-        className="bg-[#262626] rounded-xl w-full max-w-1/2 h-full max-h-1/2 flex flex-col md:flex-row overflow-hidden"
+        className="bg-neutral-900 rounded-xl w-full max-w-1/2 h-full max-h-1/2 flex flex-col md:flex-row overflow-hidden"
       >
         {step === "upload" && (
           <div className="w-full h-full flex flex-col items-center justify-center text-white">
-            <div className="border-b border-gray-700 w-full text-center py-3 font-semibold">
+            <div className="border-b border-neutral-800 w-full text-center py-3 font-semibold">
               Create new post
             </div>
             <div className="flex flex-col items-center justify-center flex-1 gap-4">
               <ImageIcon size={64} strokeWidth={1} />
               <p className="text-xl font-light">Drag photos and videos here</p>
-              <label className="bg-[#0095f6] hover:bg-[#1877f2] text-white px-4 py-1.5 rounded-md text-sm font-semibold cursor-pointer transition">
+              <label className="bg-indigo-800 hover:bg-indigo-700 text-white px-4 py-1.5 rounded-md text-sm font-semibold cursor-pointer transition">
                 Select from computer
                 <input
                   type="file"
                   className="hidden"
-                  onChange={handleFileChange}
+                  onChange={(e) =>
+                    handleFileChange(e, () => setStep("details"))
+                  }
                   accept="image/*"
                 />
               </label>
@@ -147,8 +133,8 @@ export const CreatePostModal = ({ isOpen, onClose }: CreatePostModalProps) => {
               />
             </div>
 
-            <div className="w-full md:w-[40%] flex flex-col bg-[#262626]">
-              <div className="border-b border-gray-700 p-3 flex justify-between items-center">
+            <div className="w-full md:w-[40%] flex flex-col bg-neutral-900">
+              <div className="border-b border-neutral-800 p-3 flex justify-between items-center">
                 <span className="text-transparent">Back</span>
                 <span className="text-white font-semibold">Compose</span>
 
@@ -188,7 +174,7 @@ export const CreatePostModal = ({ isOpen, onClose }: CreatePostModalProps) => {
               />
 
               {/* Metadata Options */}
-              <div className="mt-auto p-4 border-t border-gray-700 text-gray-400 text-sm flex justify-between items-center cursor-pointer hover:bg-white/5">
+              <div className="mt-auto p-4 border-t border-neutral-800 text-gray-400 text-sm flex justify-between items-center cursor-pointer hover:bg-white/5">
                 <span>Add Location</span>
                 <span>📍</span>
               </div>
