@@ -8,6 +8,7 @@ import { ProfileFormSchema, type ProfileFormType } from "../validation/profile";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { ProfileData } from "../types/profile";
+import { UploadAvatarModal } from "../components/modals/UploadAvatarModal";
 
 const EditProfile = () => {
   const { user } = useAuth();
@@ -25,6 +26,7 @@ const EditProfile = () => {
   const { register, reset, handleSubmit } = form;
 
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
 
   // Fetch current profile data
   const { data, loading: queryLoading } = useQuery<ProfileData>(GET_PROFILE, {
@@ -97,6 +99,7 @@ const EditProfile = () => {
           <button
             type="button"
             className="bg-indigo-800 px-4 py-2 text-sm font-bold rounded-lg cursor-pointer hover:text-white"
+            onClick={() => setIsAvatarModalOpen(true)}
           >
             Change photo
           </button>
@@ -161,6 +164,12 @@ const EditProfile = () => {
           )}
         </div>
       </form>
+
+      <UploadAvatarModal
+        avatarUrl={data?.getProfile.avatarUrl || "/ig-default.jpg"}
+        isOpen={isAvatarModalOpen}
+        onClose={() => setIsAvatarModalOpen(false)}
+      />
     </div>
   );
 };
