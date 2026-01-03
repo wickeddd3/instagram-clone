@@ -14,7 +14,6 @@ export const SettingsModal = ({ isOpen, onClose }: SettingsModalProps) => {
   const handleLogout = async () => {
     await signOut();
     onClose();
-    // AuthGuard will automatically redirect to /auth
   };
 
   const handleEditProfile = () => {
@@ -41,33 +40,33 @@ export const SettingsModal = ({ isOpen, onClose }: SettingsModalProps) => {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 1.1, opacity: 0 }}
             transition={{ type: "spring", duration: 0.4, bounce: 0.3 }}
-            className="relative bg-[#262626] w-full max-w-[400px] rounded-xl overflow-hidden shadow-2xl"
+            className="relative bg-neutral-900 w-full max-w-[400px] rounded-xl overflow-hidden shadow-2xl"
           >
-            <div className="flex flex-col text-sm text-white">
+            <div className="flex flex-col text-sm text-white font-normal">
               <button
                 onClick={handleEditProfile}
-                className="py-3.5 border-b border-gray-700 active:bg-white/10 transition-colors cursor-pointer"
+                className="py-3.5 border-b border-neutral-800 active:bg-white/5 transition-colors cursor-pointer"
               >
                 Edit Profile
               </button>
-              <button className="py-3.5 border-b border-gray-700 active:bg-white/10 transition-colors cursor-pointer">
+              <button className="py-3.5 border-b border-neutral-800 active:bg-white/5 transition-colors cursor-pointer">
                 QR Code
               </button>
-              <button className="py-3.5 border-b border-gray-700 active:bg-white/10 transition-colors cursor-pointer">
+              <button className="py-3.5 border-b border-neutral-800 active:bg-white/5 transition-colors cursor-pointer">
                 Notifications
               </button>
-              <button className="py-3.5 border-b border-gray-700 active:bg-white/10 transition-colors cursor-pointer">
+              <button className="py-3.5 border-b border-neutral-800 active:bg-white/5 transition-colors cursor-pointer">
                 Privacy and Security
               </button>
               <button
                 onClick={handleLogout}
-                className="py-3.5 text-red-500 font-bold active:bg-white/10 transition-colors cursor-pointer"
+                className="text-red-500 py-3.5 border-b border-neutral-800 font-bold active:bg-white/5 transition-colors cursor-pointer"
               >
                 Log Out
               </button>
               <button
                 onClick={onClose}
-                className="py-3.5 border-t border-gray-700 active:bg-white/10 transition-colors cursor-pointer"
+                className="py-3.5 active:bg-white/5 transition-colors cursor-pointer"
               >
                 Cancel
               </button>
