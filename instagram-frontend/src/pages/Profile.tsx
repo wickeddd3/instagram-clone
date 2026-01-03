@@ -11,21 +11,22 @@ import { useState } from "react";
 import { SettingsModal } from "../components/modals/SettingsModal";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import { useQuery } from "@apollo/client/react";
+import type { ProfilePostsData } from "../types/post";
+import { GET_PROFILE_POSTS } from "../graphql/queries/post";
 
 const Profile = () => {
   const { authUser, authUserLoading } = useAuth();
-
-  // Mock data for the grid
-  const posts = Array.from({ length: 12 }).map((_, i) => ({
-    id: i,
-    image: `https://i.pravatar.cc/150?img=${i + 10}`,
-    likes: 120 + i * 10,
-    comments: 20 + i,
-  }));
-
   const navigate = useNavigate();
-
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+
+  const { loading, error, data } = useQuery<ProfilePostsData>(
+    GET_PROFILE_POSTS,
+    {
+      variables: { profileId: authUser?.getProfile.id, limit: 20, offset: 0 },
+      skip: !authUser?.getProfile.id,
+    }
+  );
 
   const handleEditProfile = () => {
     navigate("/profile/edit");
@@ -103,26 +104,38 @@ const Profile = () => {
 
       {/* --- TABS --- */}
       <div className="grid grid-cols-3 place-items-center">
-        <button className="px-4 py-2 cursor-pointer text-white border-white border-b-2 transition">
+        <button className="px-6 py-2 cursor-pointer text-white border-white border-b-2 transition">
           <Grid size={24} />
         </button>
-        <button className="px-4 py-2 cursor-pointer text-gray-400 hover:text-white transition">
+        <button className="px-6 py-2 cursor-pointer text-gray-400 hover:text-white transition">
           <Bookmark size={24} />
         </button>
-        <button className="px-4 py-2 cursor-pointer text-gray-400 hover:text-white transition">
+        <button className="px-6 py-2 cursor-pointer text-gray-400 hover:text-white transition">
           <SquareUser size={24} />
         </button>
       </div>
 
       {/* --- IMAGE GRID --- */}
-      <div className="grid grid-cols-3 gap-0.5 mt-4">
-        {posts.map((post) => (
+      {loading && (
+        <div className="flex w-full justify-center pt-20 text-white">
+          Loading posts...
+        </div>
+      )}
+
+      {error && (
+        <div className="flex w-full justify-center pt-20 text-red-500">
+          Error: {error.message}
+        </div>
+      )}
+
+      <div className="grid grid-cols-3 gap-0.5">
+        {data?.getProfilePosts.map((post) => (
           <div
             key={post.id}
             className="relative aspect-square group cursor-pointer bg-gray-900"
           >
             <img
-              src={post.image}
+              src={post.imageUrl}
               alt={`Post ${post.id}`}
               className="w-full h-full object-cover"
             />
@@ -131,11 +144,11 @@ const Profile = () => {
             <div className="absolute inset-0 bg-black/40 hidden group-hover:flex items-center justify-center gap-6 text-white font-bold">
               <div className="flex items-center gap-1">
                 <Heart className="fill-white" size={20} />
-                {post.likes}
+                {12}
               </div>
               <div className="flex items-center gap-1">
                 <MessageCircle className="fill-white" size={20} />
-                {post.comments}
+                {3}
               </div>
             </div>
           </div>
