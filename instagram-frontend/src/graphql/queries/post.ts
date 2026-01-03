@@ -14,3 +14,18 @@ export const GET_FEED = gql`
     }
   }
 `;
+
+export const GET_PROFILE_POSTS = gql`
+  query GetProfilePosts($profileId: ID!, $limit: Int, $offset: Int) {
+    getProfilePosts(profileId: $profileId, limit: $limit, offset: $offset) {
+      id
+      imageUrl
+      caption
+      createdAt
+      author {
+        username
+        avatarUrl
+      }
+    }
+  }
+`;
