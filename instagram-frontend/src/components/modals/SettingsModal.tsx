@@ -18,7 +18,7 @@ export const SettingsModal = ({ isOpen, onClose }: SettingsModalProps) => {
   };
 
   const handleEditProfile = () => {
-    navigate("/accounts/edit");
+    navigate("/profile/edit");
     onClose();
   };
 
