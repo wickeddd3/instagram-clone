@@ -20,3 +20,12 @@ export const UPDATE_PROFILE = gql`
     }
   }
 `;
+
+export const UPLOAD_PROFILE_AVATAR = gql`
+  mutation UploadProfileAvatar($avatarUrl: String!) {
+    uploadProfileAvatar(avatarUrl: $avatarUrl) {
+      id
+      avatarUrl
+    }
+  }
+`;
