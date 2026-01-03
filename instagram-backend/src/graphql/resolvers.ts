@@ -82,6 +82,17 @@ export const resolvers = {
         },
       });
     },
+    removeProfileAvatar: async (_parent: any, _args: any, context: any) => {
+      if (!context.userId) {
+        throw new Error("Unauthorized: You must be logged in.");
+      }
+      return await prisma.profile.update({
+        where: { id: context.userId },
+        data: {
+          avatarUrl: null,
+        },
+      });
+    },
 
     createPost: async (
       _parent: any,
