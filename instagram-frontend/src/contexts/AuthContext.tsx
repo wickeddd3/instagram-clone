@@ -1,11 +1,16 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "../lib/supabase";
+import { useQuery } from "@apollo/client/react";
+import type { ProfileData } from "../types/profile";
+import { GET_PROFILE } from "../graphql/queries/profile";
 
 interface AuthContextType {
   session: Session | null;
   user: User | null;
   loading: boolean;
+  authUser: ProfileData | undefined;
+  authUserLoading: boolean;
   signOut: () => Promise<void>;
   signIn: (
     email: string,
@@ -26,6 +31,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+
+  // Fetch current profile data
+  const { data: authUser, loading: authUserLoading } = useQuery<ProfileData>(
+    GET_PROFILE,
+    {
+      variables: { id: user?.id },
+    }
+  );
 
   useEffect(() => {
     // Get the initial session status
@@ -70,7 +83,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <AuthContext.Provider
-      value={{ session, user, loading, signOut, signIn, signUp }}
+      value={{
+        session,
+        user,
+        loading,
+        authUser,
+        authUserLoading,
+        signOut,
+        signIn,
+        signUp,
+      }}
     >
       {children}
     </AuthContext.Provider>
