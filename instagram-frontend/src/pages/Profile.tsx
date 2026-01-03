@@ -5,12 +5,24 @@ import {
   MessageCircle,
   SquareUser,
   Cog,
+  Loader2,
 } from "lucide-react";
 import { useState } from "react";
 import { SettingsModal } from "../components/modals/SettingsModal";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import { GET_PROFILE } from "../graphql/queries/profile";
+import type { ProfileData } from "../types/profile";
+import { useQuery } from "@apollo/client/react";
 
 const Profile = () => {
+  const { user } = useAuth();
+
+  // Fetch current profile data
+  const { data, loading: queryLoading } = useQuery<ProfileData>(GET_PROFILE, {
+    variables: { id: user?.id },
+  });
+
   // Mock data for the grid
   const posts = Array.from({ length: 12 }).map((_, i) => ({
     id: i,
@@ -27,79 +39,91 @@ const Profile = () => {
     navigate("/profile/edit");
   };
 
+  if (queryLoading)
+    return (
+      <div className="flex justify-center pt-20">
+        <Loader2 className="animate-spin" />
+      </div>
+    );
+
   return (
-    <div className="max-w-4xl w-full mx-auto px-4 pt-8">
-      {/* Header Section */}
-      <header className="flex flex-row items-center gap-8 md:gap-20 mb-12">
-        <div className="w-20 h-20 md:w-40 md:h-40 rounded-full bg-gray-800 overflow-hidden">
-          <img
-            src="https://i.pravatar.cc/150?img=3"
-            alt="Avatar"
-            className="w-full h-full object-cover"
-          />
+    <div className="max-w-3xl w-full mx-auto px-4 pt-8">
+      <div className="flex flex-col gap-6">
+        {/* Header Section */}
+        <header className="flex flex-row items-center gap-8 md:gap-12">
+          <div className="w-20 h-20 md:w-30 md:h-30 rounded-full bg-gray-800 overflow-hidden">
+            <img
+              src={data?.getProfile.avatarUrl || "/ig-default.jpg"}
+              alt="Avatar"
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <section className="flex flex-col gap-2">
+            <div className="flex flex-wrap items-center gap-4">
+              <h2 className="text-2xl font-bold">
+                {data?.getProfile.username}
+              </h2>
+              <button
+                onClick={() => setIsSettingsOpen(true)}
+                className="p-1 hover:text-gray-400 transition cursor-pointer"
+              >
+                <Cog size={24} />
+              </button>
+            </div>
+            <h1 className="text-sm font-normal">
+              {data?.getProfile.displayName}
+            </h1>
+            <div className="hidden md:flex gap-10">
+              <span className="text-sm">
+                <strong>12</strong> posts
+              </span>
+              <span className="text-sm">
+                <strong>250</strong> followers
+              </span>
+              <span className="text-sm">
+                <strong>300</strong> following
+              </span>
+            </div>
+          </section>
+        </header>
+
+        {/* Bio Section */}
+        <p className="text-sm">{data?.getProfile.bio}</p>
+
+        {/* --- ACTION BUTTONS --- */}
+        <div className="flex gap-4">
+          <button
+            className="w-full bg-gray-800 hover:bg-gray-700 text-white p-1.5 md:p-3 rounded-lg md:rounded-xl text-sm font-semibold transition cursor-pointer"
+            onClick={handleEditProfile}
+          >
+            Edit profile
+          </button>
+          <button className="w-full bg-gray-800 hover:bg-gray-700 text-white p-1.5 md:p-3 rounded-lg md:rounded-xl text-sm font-semibold transition cursor-pointer">
+            View archive
+          </button>
         </div>
 
-        <section className="flex flex-col gap-4">
-          <div className="flex flex-wrap items-center gap-4">
-            <h2 className="text-xl font-light">my_creative_life</h2>
-            <button
-              className="bg-[#efefef] hover:bg-[#dbdbdb] text-black px-4 py-1.5 rounded-lg text-sm font-semibold transition"
-              onClick={handleEditProfile}
-            >
-              Edit profile
-            </button>
-            <button className="bg-[#efefef] hover:bg-[#dbdbdb] text-black px-4 py-1.5 rounded-lg text-sm font-semibold transition">
-              View archive
-            </button>
-            <button
-              onClick={() => setIsSettingsOpen(true)}
-              className="p-1 hover:text-gray-400 transition cursor-pointer"
-            >
-              <Cog size={24} />
-            </button>
-          </div>
-
-          <div className="hidden md:flex gap-10">
-            <span>
-              <strong>12</strong> posts
-            </span>
-            <span>
-              <strong>250</strong> followers
-            </span>
-            <span>
-              <strong>300</strong> following
-            </span>
-          </div>
-
-          <div>
-            <span className="font-semibold">John Doe</span>
-            <p className="text-sm">
-              Building cool things with React & GraphQL 🚀
-            </p>
-          </div>
-        </section>
-      </header>
-
-      {/* --- STORY HIGHLIGHTS (Optional placeholder) --- */}
-      <div className="flex gap-4 overflow-x-auto pb-10 scrollbar-hide">
-        {/* Repeat Story circles here if needed */}
+        {/* --- STORY HIGHLIGHTS (Optional placeholder) --- */}
+        <div className="flex gap-4 overflow-x-auto pb-10 scrollbar-hide">
+          {/* Repeat Story circles here if needed */}
+        </div>
       </div>
 
       {/* --- TABS --- */}
-      <div className="flex justify-center gap-12 text-xs font-semibold tracking-widest text-gray-500 mb-2">
-        <button className="flex items-center gap-2 border-b-2 cursor-pointer border-white text-white px-4 py-2 -mt-px">
+      <div className="grid grid-cols-3 place-items-center">
+        <button className="px-4 py-2 cursor-pointer text-white border-white border-b-2 transition">
           <Grid size={24} />
         </button>
-        <button className="flex items-center gap-2 px-4 py-2 cursor-pointer hover:text-white transition">
+        <button className="px-4 py-2 cursor-pointer text-gray-400 hover:text-white transition">
           <Bookmark size={24} />
         </button>
-        <button className="flex items-center gap-2 px-4 py-2 cursor-pointer hover:text-white transition">
+        <button className="px-4 py-2 cursor-pointer text-gray-400 hover:text-white transition">
           <SquareUser size={24} />
         </button>
       </div>
 
       {/* --- IMAGE GRID --- */}
-      <div className="grid grid-cols-3 gap-1 md:gap-7">
+      <div className="grid grid-cols-3 gap-0.5 mt-4">
         {posts.map((post) => (
           <div
             key={post.id}
