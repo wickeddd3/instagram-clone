@@ -11,7 +11,7 @@ interface PostProps {
   avatar: string;
   imageUrl: string;
   likes: number;
-  caption: string;
+  caption?: string;
   timeAgo: string;
 }
 
