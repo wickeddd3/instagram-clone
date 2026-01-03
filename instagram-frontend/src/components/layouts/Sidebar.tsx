@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
+import { useAuth } from "../../contexts/AuthContext";
 
 interface SidebarProps {
   isSidebarOpen?: boolean;
@@ -22,6 +23,8 @@ export const Sidebar = ({
   onSidebarHover,
   onCreateClick,
 }: SidebarProps) => {
+  const { authUser } = useAuth();
+
   const navigate = useNavigate();
 
   const iconSize = 24;
@@ -60,7 +63,10 @@ export const Sidebar = ({
     {
       icon: (
         <div className="w-6 h-6 rounded-full bg-gray-500 overflow-hidden">
-          <img src="https://i.pravatar.cc/150?img=3" alt="Profile" />
+          <img
+            src={authUser?.getProfile?.avatarUrl || "/ig-default.jpg"}
+            alt="Profile"
+          />
         </div>
       ),
       label: "Profile",

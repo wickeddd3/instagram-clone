@@ -15,7 +15,7 @@ interface CreatePostModalProps {
 }
 
 export const CreatePostModal = ({ isOpen, onClose }: CreatePostModalProps) => {
-  const { user } = useAuth();
+  const { user, authUser } = useAuth();
 
   const { uploadImage } = useSupabaseUpload();
   const {
@@ -122,7 +122,7 @@ export const CreatePostModal = ({ isOpen, onClose }: CreatePostModalProps) => {
             <div className="w-full md:w-[60%] h-[400px] md:h-full bg-black flex items-center justify-center relative border-r border-gray-700">
               <button
                 onClick={() => setStep("upload")}
-                className="absolute top-4 left-4 p-2 bg-black/50 rounded-full hover:bg-black/70 text-white z-10"
+                className="absolute top-4 left-4 p-2 bg-black/50 rounded-full hover:bg-black/70 text-white z-10 cursor-pointer"
               >
                 <ArrowLeft size={20} />
               </button>
@@ -157,11 +157,11 @@ export const CreatePostModal = ({ isOpen, onClose }: CreatePostModalProps) => {
 
               <div className="p-4 flex gap-3">
                 <img
-                  src="https://i.pravatar.cc/150?img=3"
-                  className="w-8 h-8 rounded-full"
+                  src={authUser?.getProfile?.avatarUrl || "/ig-default.jpg"}
+                  className="w-8 h-8 rounded-full object-cover"
                 />
                 <span className="text-white font-semibold text-sm">
-                  my_creative_life
+                  {authUser?.getProfile?.username}
                 </span>
               </div>
 

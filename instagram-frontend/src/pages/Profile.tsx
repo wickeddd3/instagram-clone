@@ -11,17 +11,9 @@ import { useState } from "react";
 import { SettingsModal } from "../components/modals/SettingsModal";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import { GET_PROFILE } from "../graphql/queries/profile";
-import type { ProfileData } from "../types/profile";
-import { useQuery } from "@apollo/client/react";
 
 const Profile = () => {
-  const { user } = useAuth();
-
-  // Fetch current profile data
-  const { data, loading: queryLoading } = useQuery<ProfileData>(GET_PROFILE, {
-    variables: { id: user?.id },
-  });
+  const { authUser, authUserLoading } = useAuth();
 
   // Mock data for the grid
   const posts = Array.from({ length: 12 }).map((_, i) => ({
@@ -39,7 +31,7 @@ const Profile = () => {
     navigate("/profile/edit");
   };
 
-  if (queryLoading)
+  if (authUserLoading)
     return (
       <div className="flex justify-center pt-20">
         <Loader2 className="animate-spin" />
@@ -53,7 +45,7 @@ const Profile = () => {
         <header className="flex flex-row items-center gap-8 md:gap-12">
           <div className="w-20 h-20 md:w-30 md:h-30 rounded-full bg-gray-800 overflow-hidden">
             <img
-              src={data?.getProfile.avatarUrl || "/ig-default.jpg"}
+              src={authUser?.getProfile.avatarUrl || "/ig-default.jpg"}
               alt="Avatar"
               className="w-full h-full object-cover"
             />
@@ -61,7 +53,7 @@ const Profile = () => {
           <section className="flex flex-col gap-2">
             <div className="flex flex-wrap items-center gap-4">
               <h2 className="text-2xl font-bold">
-                {data?.getProfile.username}
+                {authUser?.getProfile.username}
               </h2>
               <button
                 onClick={() => setIsSettingsOpen(true)}
@@ -71,7 +63,7 @@ const Profile = () => {
               </button>
             </div>
             <h1 className="text-sm font-normal">
-              {data?.getProfile.displayName}
+              {authUser?.getProfile.displayName}
             </h1>
             <div className="hidden md:flex gap-10">
               <span className="text-sm">
@@ -88,7 +80,7 @@ const Profile = () => {
         </header>
 
         {/* Bio Section */}
-        <p className="text-sm">{data?.getProfile.bio}</p>
+        <p className="text-sm">{authUser?.getProfile.bio}</p>
 
         {/* --- ACTION BUTTONS --- */}
         <div className="flex gap-4">

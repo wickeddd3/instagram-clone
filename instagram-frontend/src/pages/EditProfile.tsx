@@ -1,17 +1,15 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
-import { useMutation, useQuery } from "@apollo/client/react";
+import { useMutation } from "@apollo/client/react";
 import { UPDATE_PROFILE } from "../graphql/mutations/profile";
-import { GET_PROFILE } from "../graphql/queries/profile";
 import { Loader2, CheckCircle2 } from "lucide-react";
 import { ProfileFormSchema, type ProfileFormType } from "../validation/profile";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { ProfileData } from "../types/profile";
 import { UploadAvatarModal } from "../components/modals/UploadAvatarModal";
 
 const EditProfile = () => {
-  const { user } = useAuth();
+  const { authUser, authUserLoading } = useAuth();
 
   // Setup Form
   const form = useForm<ProfileFormType>({
@@ -27,11 +25,6 @@ const EditProfile = () => {
 
   const [isSuccess, setIsSuccess] = useState(false);
   const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
-
-  // Fetch current profile data
-  const { data, loading: queryLoading } = useQuery<ProfileData>(GET_PROFILE, {
-    variables: { id: user?.id },
-  });
 
   // Setup Update Mutation
   const [updateProfile, { loading: mutationLoading }] = useMutation(
@@ -55,17 +48,17 @@ const EditProfile = () => {
 
   // Populate form when data is fetched
   useEffect(() => {
-    if (data?.getProfile) {
-      const { displayName, bio, website } = data.getProfile;
+    if (authUser?.getProfile) {
+      const { displayName, bio, website } = authUser.getProfile;
       reset({
         displayName,
         bio,
         website,
       });
     }
-  }, [data]);
+  }, [authUser]);
 
-  if (queryLoading)
+  if (authUserLoading)
     return (
       <div className="flex justify-center pt-20">
         <Loader2 className="animate-spin" />
@@ -83,16 +76,16 @@ const EditProfile = () => {
           <div className="flex items-center gap-4">
             <div className="w-9 h-9 md:w-15 md:h-15 shrink-0">
               <img
-                src={data?.getProfile.avatarUrl || "/ig-default.jpg"}
+                src={authUser?.getProfile.avatarUrl || "/ig-default.jpg"}
                 className="rounded-full w-full h-full object-cover"
               />
             </div>
             <div className="flex flex-col">
               <span className="font-bold text-md">
-                {data?.getProfile.username}
+                {authUser?.getProfile.username}
               </span>
               <span className="font-normal text-sm text-gray-400">
-                {data?.getProfile.displayName}
+                {authUser?.getProfile.displayName}
               </span>
             </div>
           </div>
@@ -116,7 +109,7 @@ const EditProfile = () => {
             />
             <p className="text-xs text-gray-500 mt-2">
               In most cases, you'll be able to change your username back to{" "}
-              {data?.getProfile.username} for another 14 days.
+              {authUser?.getProfile.username} for another 14 days.
             </p>
           </div>
         </div>
@@ -166,7 +159,7 @@ const EditProfile = () => {
       </form>
 
       <UploadAvatarModal
-        avatarUrl={data?.getProfile.avatarUrl || "/ig-default.jpg"}
+        avatarUrl={authUser?.getProfile.avatarUrl || "/ig-default.jpg"}
         isOpen={isAvatarModalOpen}
         onClose={() => setIsAvatarModalOpen(false)}
       />
