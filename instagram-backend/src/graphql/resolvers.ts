@@ -67,6 +67,22 @@ export const resolvers = {
         },
       });
     },
+    uploadProfileAvatar: async (
+      _parent: any,
+      { avatarUrl }: { avatarUrl: string },
+      context: any
+    ) => {
+      if (!context.userId) {
+        throw new Error("Unauthorized: You must be logged in.");
+      }
+      return await prisma.profile.update({
+        where: { id: context.userId },
+        data: {
+          avatarUrl,
+        },
+      });
+    },
+
     createPost: async (
       _parent: any,
       { imageUrl, caption, location }: any,
