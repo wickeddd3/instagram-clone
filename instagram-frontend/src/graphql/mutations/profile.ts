@@ -29,3 +29,12 @@ export const UPLOAD_PROFILE_AVATAR = gql`
     }
   }
 `;
+
+export const REMOVE_PROFILE_AVATAR = gql`
+  mutation RemoveProfileAvatar {
+    removeProfileAvatar {
+      id
+      avatarUrl
+    }
+  }
+`;
