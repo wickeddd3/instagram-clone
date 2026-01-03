@@ -18,5 +18,13 @@ export const useSupabaseUpload = () => {
     return publicUrl;
   };
 
-  return { uploadImage };
+  const removeImage = async (path: string, bucketName: string) => {
+    const { error: deleteError } = await supabase.storage
+      .from(bucketName)
+      .remove([path]);
+
+    if (deleteError) throw deleteError;
+  };
+
+  return { uploadImage, removeImage };
 };
