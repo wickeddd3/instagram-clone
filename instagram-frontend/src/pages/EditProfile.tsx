@@ -7,17 +7,7 @@ import { Loader2, CheckCircle2 } from "lucide-react";
 import { ProfileFormSchema, type ProfileFormType } from "../validation/profile";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-export interface ProfileData {
-  getProfile: {
-    id: string;
-    displayName: string;
-    username: string;
-    avatarUrl: string;
-    bio: string;
-    website: string;
-  };
-}
+import type { ProfileData } from "../types/profile";
 
 const EditProfile = () => {
   const { user } = useAuth();
@@ -91,10 +81,7 @@ const EditProfile = () => {
           <div className="flex items-center gap-4">
             <div className="w-9 h-9 md:w-15 md:h-15 shrink-0">
               <img
-                src={
-                  data?.getProfile.avatarUrl ||
-                  "https://i.pravatar.cc/150?img=3"
-                }
+                src={data?.getProfile.avatarUrl || "/ig-default.jpg"}
                 className="rounded-full w-full h-full object-cover"
               />
             </div>
