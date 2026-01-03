@@ -94,6 +94,7 @@ export const typeDefs = `#graphql
   type Mutation {
     # Account
     updateProfile(displayName: String, bio: String, website: String): Profile!
+    uploadProfileAvatar(avatarUrl: String!): Profile!
     followProfile(profileId: ID!): Boolean!
     unfollowProfile(profileId: ID!): Boolean!
 
