@@ -31,6 +31,24 @@ export const resolvers = {
         },
       });
     },
+    getProfilePosts: async (
+      _parent: any,
+      { profileId, limit = 10, offset = 0 }: any
+    ) => {
+      return await prisma.post.findMany({
+        where: { authorId: profileId },
+        take: limit,
+        skip: offset,
+        orderBy: { createdAt: "desc" },
+        include: {
+          author: true,
+          likes: true,
+          _count: {
+            select: { comments: true, likes: true },
+          },
+        },
+      });
+    },
   },
 
   Mutation: {

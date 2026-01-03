@@ -83,6 +83,7 @@ export const typeDefs = `#graphql
     
     # Profile
     getProfile(id: String!): Profile
+    getProfilePosts(profileId: ID!, limit: Int, offset: Int): [Post!]!
     searchProfiles(query: String!): [Profile!]!
     
     # Comments
