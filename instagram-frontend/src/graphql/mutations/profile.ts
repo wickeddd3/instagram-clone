@@ -38,3 +38,9 @@ export const REMOVE_PROFILE_AVATAR = gql`
     }
   }
 `;
+
+export const TOGGLE_POST_LIKE = gql`
+  mutation TogglePostLike($postId: ID!) {
+    togglePostLike(postId: $postId)
+  }
+`;
