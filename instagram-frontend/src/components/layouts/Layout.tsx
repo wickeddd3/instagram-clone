@@ -2,7 +2,7 @@ import { useState } from "react";
 import { MobileNav } from "./MobileNav";
 import { Sidebar } from "./Sidebar";
 import { Outlet, useLocation } from "react-router-dom";
-import { CreatePostModal } from "../CreatePostModal";
+import { CreatePostModal } from "../modals/CreatePostModal";
 import { MobileHeader } from "./MobileHeader";
 import { motion } from "framer-motion";
 

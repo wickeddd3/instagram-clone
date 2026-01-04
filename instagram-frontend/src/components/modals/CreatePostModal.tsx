@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { X, Image as ImageIcon, ArrowLeft, Loader2 } from "lucide-react";
 import { useMutation } from "@apollo/client/react";
-import { CREATE_POST } from "../graphql/mutations/post";
-import { GET_FEED } from "../graphql/queries/post";
+import { CREATE_POST } from "../../graphql/mutations/post";
+import { GET_FEED } from "../../graphql/queries/post";
 import { motion } from "framer-motion";
-import { useAuth } from "../contexts/AuthContext";
-import { createUploadPath } from "../utils/upload";
-import { useSupabaseUpload } from "../hooks/useSupabaseUpload";
-import { usePreviewUpload } from "../hooks/usePreviewUpload";
+import { useAuth } from "../../contexts/AuthContext";
+import { createUploadPath } from "../../utils/upload";
+import { useSupabaseUpload } from "../../hooks/useSupabaseUpload";
+import { usePreviewUpload } from "../../hooks/usePreviewUpload";
 
 interface CreatePostModalProps {
   isOpen: boolean;
