@@ -222,21 +222,25 @@ export const resolvers = {
       }
     },
 
-    // 5. Add Comment (Handles both Comments and Replies)
-    // addComment: async (
-    //   _parent: any,
-    //   { postId, text, parentId }: any,
-    //   context: any
-    // ) => {
-    //   return await prisma.comment.create({
-    //     data: {
-    //       text,
-    //       postId,
-    //       authorId: context.userId,
-    //       parentId: parentId || null, // If parentId exists, it's a reply
-    //     },
-    //     include: { author: true },
-    //   });
-    // },
+    // Add Comment (Handles both Comments and Replies)
+    addComment: async (
+      _parent: any,
+      { postId, text, parentId }: any,
+      context: any
+    ) => {
+      if (!context.userId) {
+        throw new Error("Unauthorized: You must be logged in.");
+      }
+
+      return await prisma.comment.create({
+        data: {
+          text,
+          postId,
+          authorId: context.userId,
+          parentId: parentId || null, // If parentId exists, it's a reply
+        },
+        include: { author: true },
+      });
+    },
   },
 };
