@@ -7,6 +7,9 @@ export interface PostData {
     username: string;
     avatarUrl?: string;
   };
+  likesCount: number;
+  commentsCount: number;
+  isLiked: boolean;
 }
 
 export interface FeedData {
