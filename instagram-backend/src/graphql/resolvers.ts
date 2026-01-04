@@ -72,6 +72,23 @@ export const resolvers = {
         },
       });
     },
+
+    getComments: async (
+      _parent: any,
+      { postId, parentId }: { postId: string; parentId?: string }
+    ) => {
+      return await prisma.comment.findMany({
+        where: {
+          postId,
+          parentId: parentId || null, // Only fetch top-level comments initially
+        },
+        orderBy: { createdAt: "desc" },
+        include: {
+          author: true,
+          _count: { select: { replies: true } },
+        },
+      });
+    },
   },
 
   Mutation: {
