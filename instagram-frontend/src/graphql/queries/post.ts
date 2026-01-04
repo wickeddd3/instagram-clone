@@ -11,6 +11,9 @@ export const GET_FEED = gql`
         username
         avatarUrl
       }
+      likesCount
+      commentsCount
+      isLiked
     }
   }
 `;
