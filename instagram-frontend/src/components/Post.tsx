@@ -9,6 +9,7 @@ import {
 import { TOGGLE_POST_LIKE } from "../graphql/mutations/profile";
 import type { PostData } from "../types/post";
 import { formatDateToNow } from "../utils/date";
+import { AddComment } from "./comments/AddComment";
 
 interface PostProps {
   post: PostData;
@@ -32,7 +33,7 @@ export const Post = ({
   };
 
   return (
-    <article className="w-full max-w-[470px] border-b border-gray-800 pb-4 mb-4 mx-auto">
+    <article className="w-full max-w-[470px] mx-auto">
       {/* Post Header */}
       <div className="flex items-center justify-between py-3">
         <div className="flex items-center gap-3">
@@ -97,10 +98,9 @@ export const Post = ({
         <div className="text-gray-500 text-sm cursor-pointer">
           View all 12 comments
         </div>
-        <div className="text-gray-500 text-xs uppercase pt-1">
-          Add a comment...
-        </div>
       </div>
+
+      <AddComment postId={id} />
     </article>
   );
 };
