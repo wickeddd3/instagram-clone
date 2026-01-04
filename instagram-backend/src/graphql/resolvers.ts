@@ -131,5 +131,32 @@ export const resolvers = {
         include: { author: true },
       });
     },
+    // Toggle Like (Like/Unlike logic in one function)
+    togglePostLike: async (
+      _parent: any,
+      { postId }: { postId: string },
+      context: any
+    ) => {
+      const userId = context.userId;
+
+      // Check if like exists
+      const existingLike = await prisma.like.findUnique({
+        where: {
+          userId_postId: { userId, postId },
+        },
+      });
+
+      if (existingLike) {
+        await prisma.like.delete({
+          where: { id: existingLike.id },
+        });
+        return false; // Unliked
+      } else {
+        await prisma.like.create({
+          data: { userId, postId },
+        });
+        return true; // Liked
+      }
+    },
   },
 };

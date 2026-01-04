@@ -107,7 +107,7 @@ export const typeDefs = `#graphql
     unsavePost(postId: ID!): Boolean!
 
     # Interaction
-    toggleLike(postId: ID, commentId: ID): Boolean!
+    togglePostLike(postId: ID!): Boolean!
     addComment(postId: ID!, text: String!, parentId: ID): Comment!
     deleteComment(commentId: ID!): Boolean!
   }
