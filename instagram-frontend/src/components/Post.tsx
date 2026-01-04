@@ -10,12 +10,14 @@ import { TOGGLE_POST_LIKE } from "../graphql/mutations/profile";
 import type { PostData } from "../types/post";
 import { formatDateToNow } from "../utils/date";
 import { AddComment } from "./comments/AddComment";
+import { usePost } from "../contexts/PostContext";
 
 interface PostProps {
   post: PostData;
 }
 
 export const Post = ({
+  post,
   post: {
     id,
     author: { username, avatarUrl },
@@ -26,6 +28,8 @@ export const Post = ({
     isLiked,
   },
 }: PostProps) => {
+  const { openPostModal } = usePost();
+
   const [togglePostLike] = useMutation(TOGGLE_POST_LIKE);
 
   const handleTogglePostLike = () => {
@@ -95,7 +99,10 @@ export const Post = ({
           <span className="font-semibold mr-2">{username}</span>
           {caption}
         </div>
-        <div className="text-gray-500 text-sm cursor-pointer">
+        <div
+          onClick={() => openPostModal(post)}
+          className="text-gray-500 text-sm cursor-pointer"
+        >
           View all 12 comments
         </div>
       </div>

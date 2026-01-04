@@ -5,12 +5,15 @@ import { Outlet, useLocation } from "react-router-dom";
 import { CreatePostModal } from "../modals/CreatePostModal";
 import { MobileHeader } from "./MobileHeader";
 import { motion } from "framer-motion";
+import { PostModal } from "../modals/PostModal";
+import { usePost } from "../../contexts/PostContext";
 
 export const Layout = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   const location = useLocation();
+  const { isPostModalOpen, closePostModal } = usePost();
 
   return (
     <div className="w-full h-full flex flex-col md:flex-row min-h-screen bg-[#0d1015] text-white">
@@ -51,10 +54,14 @@ export const Layout = () => {
         <MobileNav />
       </div>
 
+      {/* Create Post Modal */}
       <CreatePostModal
         isOpen={isModalOpen}
         onClose={() => setModalOpen(false)}
       />
+
+      {/* Post Modal */}
+      <PostModal isOpen={isPostModalOpen} onClose={closePostModal} />
     </div>
   );
 };
