@@ -1,3 +1,4 @@
+import { useMutation } from "@apollo/client/react";
 import {
   Heart,
   MessageCircle,
@@ -5,24 +6,31 @@ import {
   Bookmark,
   MoreHorizontal,
 } from "lucide-react";
+import { TOGGLE_POST_LIKE } from "../graphql/mutations/profile";
+import type { PostData } from "../types/post";
+import { formatDateToNow } from "../utils/date";
 
 interface PostProps {
-  username: string;
-  avatar: string;
-  imageUrl: string;
-  likes: number;
-  caption?: string;
-  timeAgo: string;
+  post: PostData;
 }
 
 export const Post = ({
-  username,
-  avatar,
-  imageUrl,
-  likes,
-  caption,
-  timeAgo,
+  post: {
+    id,
+    author: { username, avatarUrl },
+    imageUrl,
+    likesCount,
+    caption,
+    createdAt,
+    isLiked,
+  },
 }: PostProps) => {
+  const [togglePostLike] = useMutation(TOGGLE_POST_LIKE);
+
+  const handleTogglePostLike = () => {
+    togglePostLike({ variables: { postId: id } });
+  };
+
   return (
     <article className="w-full max-w-[470px] border-b border-gray-800 pb-4 mb-4 mx-auto">
       {/* Post Header */}
@@ -31,14 +39,16 @@ export const Post = ({
           <div className="w-8 h-8 rounded-full bg-linear-to-tr from-yellow-400 to-purple-600 p-0.5">
             <div className="bg-black p-0.5 rounded-full w-full h-full">
               <img
-                src={avatar}
+                src={avatarUrl || "/ig-default.jpg"}
                 alt={username}
                 className="rounded-full w-full h-full object-cover"
               />
             </div>
           </div>
           <span className="font-semibold text-sm">{username}</span>
-          <span className="text-gray-500 text-sm">• {timeAgo}</span>
+          <span className="text-gray-500 text-sm">
+            • {formatDateToNow(createdAt)}
+          </span>
         </div>
         <MoreHorizontal
           className="cursor-pointer hover:text-gray-400"
@@ -58,7 +68,14 @@ export const Post = ({
       {/* Post Actions */}
       <div className="flex justify-between items-center pt-3 pb-2">
         <div className="flex gap-4">
-          <Heart className="cursor-pointer hover:text-gray-400" size={24} />
+          <button onClick={handleTogglePostLike}>
+            <Heart
+              className={`cursor-pointer ${
+                isLiked ? "text-red-500" : "hover:text-gray-400"
+              }`}
+              size={24}
+            />
+          </button>
           <MessageCircle
             className="cursor-pointer hover:text-gray-400"
             size={24}
@@ -71,7 +88,7 @@ export const Post = ({
       {/* Likes & Caption */}
       <div className="space-y-1">
         <div className="font-semibold text-sm">
-          {likes.toLocaleString()} likes
+          {likesCount.toLocaleString()} likes
         </div>
         <div className="text-sm">
           <span className="font-semibold mr-2">{username}</span>

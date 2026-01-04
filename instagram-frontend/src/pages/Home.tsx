@@ -2,7 +2,6 @@ import { Stories } from "../components/Stories";
 import { Post } from "../components/Post";
 import { GET_FEED } from "../graphql/queries/post";
 import { useQuery } from "@apollo/client/react";
-import { formatDistanceToNow } from "date-fns";
 import type { FeedData } from "../types/post";
 
 const Home = () => {
@@ -32,17 +31,7 @@ const Home = () => {
 
         <div className="mt-4">
           {data?.getFeed.map((post) => (
-            <Post
-              key={post.id}
-              username={post.author.username}
-              avatar={post.author.avatarUrl || "/ig-default.jpg"}
-              imageUrl={post.imageUrl}
-              likes={0}
-              caption={post.caption}
-              timeAgo={formatDistanceToNow(new Date(post.createdAt), {
-                addSuffix: true,
-              })}
-            />
+            <Post key={post.id} post={post} />
           ))}
         </div>
       </div>
