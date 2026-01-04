@@ -1,6 +1,30 @@
 import { prisma } from "../lib/prisma";
 
 export const resolvers = {
+  // Field resolvers for the Post type
+  Post: {
+    // 'parent' is the Post object returned from Prisma
+    likesCount: (parent: any) => parent._count?.likes ?? 0,
+    commentsCount: (parent: any) => parent._count?.comments ?? 0,
+    // Check if the current user liked this specific post
+    isLiked: async (parent: any, _args: any, context: any) => {
+      // If no user is logged in, they can't have liked it
+      if (!context.userId) return false;
+      // Check the 'likes' table for a match
+      const like = await prisma.like.findUnique({
+        where: {
+          userId_postId: {
+            userId: context.userId,
+            postId: parent.id,
+          },
+        },
+      });
+
+      // If a record exists, return true (post is liked)
+      return !!like;
+    },
+  },
+
   Query: {
     getFeed: async (
       _parent: any,
@@ -13,7 +37,6 @@ export const resolvers = {
         orderBy: { createdAt: "desc" },
         include: {
           author: true,
-          likes: true,
           _count: {
             select: { comments: true, likes: true },
           },
@@ -158,5 +181,22 @@ export const resolvers = {
         return true; // Liked
       }
     },
+
+    // 5. Add Comment (Handles both Comments and Replies)
+    // addComment: async (
+    //   _parent: any,
+    //   { postId, text, parentId }: any,
+    //   context: any
+    // ) => {
+    //   return await prisma.comment.create({
+    //     data: {
+    //       text,
+    //       postId,
+    //       authorId: context.userId,
+    //       parentId: parentId || null, // If parentId exists, it's a reply
+    //     },
+    //     include: { author: true },
+    //   });
+    // },
   },
 };
