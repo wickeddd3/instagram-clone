@@ -81,20 +81,22 @@ export const CommentItem = ({
         <div className="ml-11">
           <button
             onClick={handleFetchReplies}
-            className="flex items-center gap-4 text-xs text-gray-400 font-semibold hover:text-white mb-2"
+            className="flex items-center gap-4 text-xs text-gray-400 font-semibold hover:text-white mb-2 cursor-pointer"
           >
             <div className="w-6 border-t border-gray-600" />
             {showReplies ? "Hide replies" : `View replies (${repliesCount})`}
           </button>
 
-          {showReplies && (
-            <CommentList
-              loading={loading}
-              comments={data?.getComments || []}
-              postId={postId}
-              onReplyClick={onReplyClick}
-            />
-          )}
+          {showReplies &&
+            (loading ? (
+              <div className="p-4 text-gray-500">Loading replies...</div>
+            ) : (
+              <CommentList
+                comments={data?.getComments || []}
+                postId={postId}
+                onReplyClick={onReplyClick}
+              />
+            ))}
         </div>
       )}
     </div>

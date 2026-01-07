@@ -10,6 +10,7 @@ import type { CommentsData } from "../../types/comment";
 import { CommentList } from "../comments/CommentList";
 import { PostActions } from "../posts/PostActions";
 import { PostHeader } from "../posts/PostHeader";
+import { EmptyComments } from "../comments/EmptyComments";
 
 interface CreatePostModalProps {
   isOpen: boolean;
@@ -93,13 +94,18 @@ export const PostModal = ({ isOpen, onClose }: CreatePostModalProps) => {
           </PostHeader>
 
           {/* Post Comments Section */}
-          <div className="h-full overflow-y-auto overscroll-contain no-scrollbar p-3">
-            <CommentList
-              loading={loading}
-              comments={data?.getComments || []}
-              postId={post?.id}
-              onReplyClick={(username, id) => setReplyData({ username, id })}
-            />
+          <div className="w-full h-full overflow-y-auto overscroll-contain no-scrollbar p-3">
+            {loading ? (
+              <div className="p-4 text-gray-500">Loading comments...</div>
+            ) : data?.getComments.length ? (
+              <CommentList
+                comments={data?.getComments || []}
+                postId={post?.id}
+                onReplyClick={(username, id) => setReplyData({ username, id })}
+              />
+            ) : (
+              <EmptyComments />
+            )}
           </div>
 
           <div className="flex flex-col gap-3 mt-auto">
