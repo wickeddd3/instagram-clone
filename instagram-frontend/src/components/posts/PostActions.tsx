@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client/react";
 import { Heart, MessageCircle, Send, Bookmark } from "lucide-react";
-import { TOGGLE_POST_LIKE } from "../../graphql/mutations/profile";
+import { TOGGLE_POST_LIKE } from "../../graphql/mutations/post";
 
 interface PostActionsProps {
   isLiked: boolean;
