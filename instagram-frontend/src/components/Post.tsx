@@ -1,16 +1,9 @@
-import { useMutation } from "@apollo/client/react";
-import {
-  Heart,
-  MessageCircle,
-  Send,
-  Bookmark,
-  MoreHorizontal,
-} from "lucide-react";
-import { TOGGLE_POST_LIKE } from "../graphql/mutations/profile";
+import { MoreHorizontal } from "lucide-react";
 import type { PostData } from "../types/post";
 import { formatDateToNow } from "../utils/date";
 import { AddComment } from "./comments/AddComment";
 import { usePost } from "../contexts/PostContext";
+import { PostActions } from "./posts/PostActions";
 
 interface PostProps {
   post: PostData;
@@ -29,12 +22,6 @@ export const Post = ({
   },
 }: PostProps) => {
   const { openPostModal } = usePost();
-
-  const [togglePostLike] = useMutation(TOGGLE_POST_LIKE);
-
-  const handleTogglePostLike = () => {
-    togglePostLike({ variables: { postId: id } });
-  };
 
   return (
     <article className="w-full max-w-[470px] mx-auto">
@@ -71,24 +58,7 @@ export const Post = ({
       </div>
 
       {/* Post Actions */}
-      <div className="flex justify-between items-center pt-3 pb-2">
-        <div className="flex gap-4">
-          <button onClick={handleTogglePostLike}>
-            <Heart
-              className={`cursor-pointer ${
-                isLiked ? "text-red-500" : "hover:text-gray-400"
-              }`}
-              size={24}
-            />
-          </button>
-          <MessageCircle
-            className="cursor-pointer hover:text-gray-400"
-            size={24}
-          />
-          <Send className="cursor-pointer hover:text-gray-400" size={24} />
-        </div>
-        <Bookmark className="cursor-pointer hover:text-gray-400" size={24} />
-      </div>
+      <PostActions postId={id} isLiked={isLiked} />
 
       {/* Likes & Caption */}
       <div className="space-y-1">

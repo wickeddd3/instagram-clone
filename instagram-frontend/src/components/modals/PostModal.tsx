@@ -1,21 +1,14 @@
-import {
-  X,
-  MoreHorizontal,
-  MessageCircle,
-  Heart,
-  Send,
-  Bookmark,
-} from "lucide-react";
+import { X, MoreHorizontal } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useMutation, useQuery } from "@apollo/client/react";
 import { usePost } from "../../contexts/PostContext";
 import { formatDateToNow } from "../../utils/date";
-import { TOGGLE_POST_LIKE } from "../../graphql/mutations/profile";
 import { GET_COMMENTS } from "../../graphql/queries/comment";
 import { ADD_COMMENT } from "../../graphql/mutations/comment";
 import type { CommentsData } from "../../types/comment";
 import { CommentList } from "../comments/CommentList";
+import { PostActions } from "../posts/PostActions";
 
 interface CreatePostModalProps {
   isOpen: boolean;
@@ -24,12 +17,6 @@ interface CreatePostModalProps {
 
 export const PostModal = ({ isOpen, onClose }: CreatePostModalProps) => {
   const { post } = usePost();
-
-  const [togglePostLike] = useMutation(TOGGLE_POST_LIKE);
-
-  const handleTogglePostLike = () => {
-    togglePostLike({ variables: { postId: post?.id } });
-  };
 
   const [text, setText] = useState("");
   const [replyData, setReplyData] = useState<{
@@ -127,30 +114,11 @@ export const PostModal = ({ isOpen, onClose }: CreatePostModalProps) => {
 
           <div className="flex flex-col gap-3 mt-auto">
             {/* Post Actions */}
-            <div className="flex justify-between items-center px-4">
-              <div className="flex gap-4">
-                <button onClick={handleTogglePostLike}>
-                  <Heart
-                    className={`cursor-pointer ${
-                      post?.isLiked ? "text-red-500" : "hover:text-gray-400"
-                    }`}
-                    size={24}
-                  />
-                </button>
-                <MessageCircle
-                  className="cursor-pointer hover:text-gray-400"
-                  size={24}
-                />
-                <Send
-                  className="cursor-pointer hover:text-gray-400"
-                  size={24}
-                />
-              </div>
-              <Bookmark
-                className="cursor-pointer hover:text-gray-400"
-                size={24}
-              />
-            </div>
+            <PostActions
+              postId={post?.id || ""}
+              isLiked={post?.isLiked || false}
+              className="px-3"
+            />
 
             {/* Likes & Date */}
             <div className="flex flex-col px-4">
