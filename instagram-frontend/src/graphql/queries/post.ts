@@ -29,6 +29,9 @@ export const GET_PROFILE_POSTS = gql`
         username
         avatarUrl
       }
+      likesCount
+      commentsCount
+      isLiked
     }
   }
 `;
