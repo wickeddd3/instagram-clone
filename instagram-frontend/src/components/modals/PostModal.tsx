@@ -116,7 +116,7 @@ export const PostModal = ({ isOpen, onClose }: CreatePostModalProps) => {
           </div>
 
           {/* Post Comments Section */}
-          <div className="h-full p-3">
+          <div className="h-full overflow-y-auto overscroll-contain no-scrollbar p-3">
             <CommentList
               loading={loading}
               comments={data?.getComments || []}
