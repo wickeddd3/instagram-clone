@@ -1,12 +1,4 @@
-import {
-  Grid,
-  Bookmark,
-  Heart,
-  MessageCircle,
-  SquareUser,
-  Cog,
-  Loader2,
-} from "lucide-react";
+import { Grid, Bookmark, SquareUser, Cog, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { SettingsModal } from "../components/modals/SettingsModal";
 import { useNavigate } from "react-router-dom";
@@ -14,6 +6,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { useQuery } from "@apollo/client/react";
 import type { ProfilePostsData } from "../types/post";
 import { GET_PROFILE_POSTS } from "../graphql/queries/post";
+import { ProfilePost } from "../components/posts/ProfilePost";
 
 const Profile = () => {
   const { authUser, authUserLoading } = useAuth();
@@ -130,28 +123,7 @@ const Profile = () => {
 
       <div className="grid grid-cols-3 gap-0.5">
         {data?.getProfilePosts.map((post) => (
-          <div
-            key={post.id}
-            className="relative aspect-square group cursor-pointer bg-gray-900"
-          >
-            <img
-              src={post.imageUrl}
-              alt={`Post ${post.id}`}
-              className="w-full h-full object-cover"
-            />
-
-            {/* Hover Overlay */}
-            <div className="absolute inset-0 bg-black/40 hidden group-hover:flex items-center justify-center gap-6 text-white font-bold">
-              <div className="flex items-center gap-1">
-                <Heart className="fill-white" size={20} />
-                {12}
-              </div>
-              <div className="flex items-center gap-1">
-                <MessageCircle className="fill-white" size={20} />
-                {3}
-              </div>
-            </div>
-          </div>
+          <ProfilePost key={post.id} post={post} />
         ))}
       </div>
 
