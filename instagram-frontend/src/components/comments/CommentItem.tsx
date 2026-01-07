@@ -1,50 +1,64 @@
 import { useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { Heart } from "lucide-react";
-import { useLazyQuery } from "@apollo/client/react";
-import type { CommentsData } from "../../types/comment";
+import { useLazyQuery, useMutation } from "@apollo/client/react";
+import type { CommentData, CommentsData } from "../../types/comment";
 import { GET_COMMENTS } from "../../graphql/queries/comment";
 import { CommentList } from "./CommentList";
+import { TOGGLE_COMMENT_LIKE } from "../../graphql/mutations/comment";
 
 interface CommentItemProps {
   postId?: string;
-  comment: any;
+  comment: CommentData;
   onReplyClick: (username: string, id: string) => void;
 }
 
 export const CommentItem = ({
   postId,
-  comment,
+  comment: {
+    id,
+    author: { username, avatarUrl },
+    text,
+    createdAt,
+    isLiked,
+    repliesCount,
+  },
   onReplyClick,
 }: CommentItemProps) => {
+  const [showReplies, setShowReplies] = useState(false);
+
   const [getComments, { data, loading }] =
     useLazyQuery<CommentsData>(GET_COMMENTS);
 
+  const [toggleCommentLike] = useMutation(TOGGLE_COMMENT_LIKE);
+
   const handleFetchReplies = () => {
     setShowReplies(!showReplies);
-    getComments({ variables: { postId: postId, parentId: comment.id } });
+    getComments({ variables: { postId: postId, parentId: id } });
   };
 
-  const [showReplies, setShowReplies] = useState(false);
+  const handleToggleCommentLike = () => {
+    toggleCommentLike({ variables: { commentId: id } });
+  };
 
   return (
     <div className="flex flex-col gap-3 py-3">
       <div className="flex gap-3 items-start group">
         <img
-          src={comment.author.avatarUrl || "/default-avatar.png"}
+          src={avatarUrl || "/default-avatar.png"}
           className="w-8 h-8 rounded-full object-cover"
         />
 
         <div className="flex-1 flex flex-col text-sm">
           <div>
-            <span className="font-bold mr-2">{comment.author.username}</span>
-            <span className="text-white/90">{comment.text}</span>
+            <span className="font-bold mr-2">{username}</span>
+            <span className="text-white/90">{text}</span>
           </div>
 
           <div className="flex gap-4 mt-2 text-xs text-gray-400 font-semibold">
-            <span>{formatDistanceToNow(new Date(comment.createdAt))}</span>
+            <span>{formatDistanceToNow(new Date(createdAt))}</span>
             <button
-              onClick={() => onReplyClick(comment.author.username, comment.id)}
+              onClick={() => onReplyClick(username, id)}
               className="hover:text-white"
             >
               Reply
@@ -52,22 +66,25 @@ export const CommentItem = ({
           </div>
         </div>
 
-        <button className="pt-1 text-gray-300 hover:text-red-500 transition cursor-pointer">
-          <Heart size={14} />
+        <button onClick={handleToggleCommentLike}>
+          <Heart
+            size={14}
+            className={`cursor-pointer ${
+              isLiked ? "text-red-500" : "hover:text-red-500"
+            }`}
+          />
         </button>
       </div>
 
       {/* View Replies Toggle */}
-      {comment.repliesCount > 0 && (
+      {repliesCount > 0 && (
         <div className="ml-11">
           <button
             onClick={handleFetchReplies}
             className="flex items-center gap-4 text-xs text-gray-400 font-semibold hover:text-white mb-2"
           >
             <div className="w-6 border-t border-gray-600" />
-            {showReplies
-              ? "Hide replies"
-              : `View replies (${comment.repliesCount})`}
+            {showReplies ? "Hide replies" : `View replies (${repliesCount})`}
           </button>
 
           {showReplies && (
