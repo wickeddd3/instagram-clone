@@ -6,16 +6,16 @@ import {
   Send,
   Bookmark,
 } from "lucide-react";
-import { motion } from "framer-motion";
-import { usePost } from "../../contexts/PostContext";
-import { useMutation, useQuery } from "@apollo/client/react";
-import { TOGGLE_POST_LIKE } from "../../graphql/mutations/profile";
-import { formatDateToNow } from "../../utils/date";
-import { CommentItem } from "../comments/CommentItem";
 import { useState } from "react";
-import type { CommentsData } from "../../types/comment";
+import { motion } from "framer-motion";
+import { useMutation, useQuery } from "@apollo/client/react";
+import { usePost } from "../../contexts/PostContext";
+import { formatDateToNow } from "../../utils/date";
+import { TOGGLE_POST_LIKE } from "../../graphql/mutations/profile";
 import { GET_COMMENTS } from "../../graphql/queries/comment";
 import { ADD_COMMENT } from "../../graphql/mutations/comment";
+import type { CommentsData } from "../../types/comment";
+import { CommentList } from "../comments/CommentList";
 
 interface CreatePostModalProps {
   isOpen: boolean;
@@ -117,22 +117,12 @@ export const PostModal = ({ isOpen, onClose }: CreatePostModalProps) => {
 
           {/* Post Comments Section */}
           <div className="h-full p-3">
-            <div className="flex-1 overflow-y-auto">
-              {loading ? (
-                <div className="p-4 text-gray-500">Loading comments...</div>
-              ) : (
-                data?.getComments.map((comment) => (
-                  <CommentItem
-                    key={comment.id}
-                    postId={post?.id}
-                    comment={comment}
-                    onReplyClick={(username, id) =>
-                      setReplyData({ username, id })
-                    }
-                  />
-                ))
-              )}
-            </div>
+            <CommentList
+              loading={loading}
+              comments={data?.getComments || []}
+              postId={post?.id}
+              onReplyClick={(username, id) => setReplyData({ username, id })}
+            />
           </div>
 
           <div className="flex flex-col gap-3 mt-auto">

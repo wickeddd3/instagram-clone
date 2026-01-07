@@ -4,6 +4,7 @@ import { Heart } from "lucide-react";
 import { useLazyQuery } from "@apollo/client/react";
 import type { CommentsData } from "../../types/comment";
 import { GET_COMMENTS } from "../../graphql/queries/comment";
+import { CommentList } from "./CommentList";
 
 interface CommentItemProps {
   postId?: string;
@@ -69,21 +70,14 @@ export const CommentItem = ({
               : `View replies (${comment.repliesCount})`}
           </button>
 
-          {showReplies &&
-            (loading ? (
-              <div className="p-4 text-gray-500">Loading comments...</div>
-            ) : (
-              <div className="flex flex-col gap-2">
-                {data?.getComments?.map((reply) => (
-                  <CommentItem
-                    key={reply.id}
-                    postId={postId}
-                    comment={reply}
-                    onReplyClick={onReplyClick}
-                  />
-                ))}
-              </div>
-            ))}
+          {showReplies && (
+            <CommentList
+              loading={loading}
+              comments={data?.getComments || []}
+              postId={postId}
+              onReplyClick={onReplyClick}
+            />
+          )}
         </div>
       )}
     </div>
