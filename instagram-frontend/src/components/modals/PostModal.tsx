@@ -8,9 +8,14 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { usePost } from "../../contexts/PostContext";
-import { useMutation } from "@apollo/client/react";
+import { useMutation, useQuery } from "@apollo/client/react";
 import { TOGGLE_POST_LIKE } from "../../graphql/mutations/profile";
 import { formatDateToNow } from "../../utils/date";
+import { CommentItem } from "../comments/CommentItem";
+import { useState } from "react";
+import type { CommentsData } from "../../types/comment";
+import { GET_COMMENTS } from "../../graphql/queries/comment";
+import { ADD_COMMENT } from "../../graphql/mutations/comment";
 
 interface CreatePostModalProps {
   isOpen: boolean;
@@ -24,6 +29,37 @@ export const PostModal = ({ isOpen, onClose }: CreatePostModalProps) => {
 
   const handleTogglePostLike = () => {
     togglePostLike({ variables: { postId: post?.id } });
+  };
+
+  const [text, setText] = useState("");
+  const [replyData, setReplyData] = useState<{
+    username: string;
+    id: string;
+  } | null>(null);
+
+  const { data, loading } = useQuery<CommentsData>(GET_COMMENTS, {
+    variables: { postId: post?.id },
+    skip: !post?.id,
+  });
+
+  const [addComment] = useMutation(ADD_COMMENT, {
+    refetchQueries: [{ query: GET_COMMENTS, variables: { postId: post?.id } }],
+  });
+
+  const handleSend = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!text.trim()) return;
+
+    await addComment({
+      variables: {
+        postId: post?.id,
+        text: replyData ? `@${replyData.username} ${text}` : text,
+        parentId: replyData?.id,
+      },
+    });
+
+    setText("");
+    setReplyData(null);
   };
 
   if (!isOpen) return null;
@@ -60,7 +96,7 @@ export const PostModal = ({ isOpen, onClose }: CreatePostModalProps) => {
             <div className="flex items-center justify-between w-full">
               <div className="flex items-center w-full gap-3">
                 <div className="w-10 h-10 rounded-full p-0.5">
-                  <div className="bg-black p-0.5 rounded-full w-full h-full">
+                  <div className="p-0.5 rounded-full w-full h-full">
                     <img
                       src={post?.author.avatarUrl || "/ig-default.jpg"}
                       alt={post?.author.username}
@@ -80,7 +116,24 @@ export const PostModal = ({ isOpen, onClose }: CreatePostModalProps) => {
           </div>
 
           {/* Post Comments Section */}
-          <div className="h-full">comments</div>
+          <div className="h-full p-3">
+            <div className="flex-1 overflow-y-auto">
+              {loading ? (
+                <div className="p-4 text-gray-500">Loading comments...</div>
+              ) : (
+                data?.getComments.map((comment) => (
+                  <CommentItem
+                    key={comment.id}
+                    postId={post?.id}
+                    comment={comment}
+                    onReplyClick={(username, id) =>
+                      setReplyData({ username, id })
+                    }
+                  />
+                ))
+              )}
+            </div>
+          </div>
 
           <div className="flex flex-col gap-3 mt-auto">
             {/* Post Actions */}
@@ -108,11 +161,45 @@ export const PostModal = ({ isOpen, onClose }: CreatePostModalProps) => {
                 size={24}
               />
             </div>
-            <span className="text-gray-500 text-xs px-4">
-              {formatDateToNow(post?.createdAt || "")}
-            </span>
-            <div className="mt-auto border-t p-4 border-neutral-800 text-gray-400 text-sm flex justify-between items-center cursor-pointer hover:bg-white/5">
-              <span>Add comment</span>
+
+            {/* Likes & Date */}
+            <div className="flex flex-col px-4">
+              <span className="font-semibold text-sm">
+                {post?.likesCount.toLocaleString()} likes
+              </span>
+              <span className="text-gray-500 text-xs">
+                {formatDateToNow(post?.createdAt || "")}
+              </span>
+            </div>
+
+            {/* Add Comment Field */}
+            <div className="px-3 py-4 border-t border-neutral-800">
+              {replyData && (
+                <div className="text-xs text-gray-400 mb-2 flex justify-between">
+                  <span>Replying to {replyData.username}</span>
+                  <button
+                    onClick={() => setReplyData(null)}
+                    className="font-bold"
+                  >
+                    ✕
+                  </button>
+                </div>
+              )}
+              <form onSubmit={handleSend} className="flex items-center gap-3">
+                <input
+                  value={text}
+                  onChange={(e) => setText(e.target.value)}
+                  placeholder="Add a comment..."
+                  className="flex-1 bg-transparent border-none text-sm focus:ring-0 outline-none"
+                />
+                <button
+                  type="submit"
+                  disabled={!text.trim()}
+                  className="text-white font-bold text-sm disabled:opacity-80"
+                >
+                  Post
+                </button>
+              </form>
             </div>
           </div>
         </div>
