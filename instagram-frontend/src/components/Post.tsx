@@ -23,7 +23,7 @@ export const Post = ({
   const { openPostModal } = usePost();
 
   return (
-    <article className="w-full max-w-[470px] flex flex-col gap-4">
+    <article className="w-full max-w-[470px] mx-auto flex flex-col gap-4">
       {/* Post Header */}
       <PostHeader>
         <div className="flex items-center gap-3">
