@@ -1,9 +1,8 @@
-import { MoreHorizontal } from "lucide-react";
 import type { PostData } from "../types/post";
-import { formatDateToNow } from "../utils/date";
 import { AddComment } from "./comments/AddComment";
 import { usePost } from "../contexts/PostContext";
 import { PostActions } from "./posts/PostActions";
+import { PostHeader } from "./posts/PostHeader";
 
 interface PostProps {
   post: PostData;
@@ -24,29 +23,20 @@ export const Post = ({
   const { openPostModal } = usePost();
 
   return (
-    <article className="w-full max-w-[470px] mx-auto">
+    <article className="w-full max-w-[470px] flex flex-col gap-4">
       {/* Post Header */}
-      <div className="flex items-center justify-between py-3">
+      <PostHeader>
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-linear-to-tr from-yellow-400 to-purple-600 p-0.5">
-            <div className="bg-black p-0.5 rounded-full w-full h-full">
-              <img
-                src={avatarUrl || "/ig-default.jpg"}
-                alt={username}
-                className="rounded-full w-full h-full object-cover"
-              />
-            </div>
-          </div>
-          <span className="font-semibold text-sm">{username}</span>
-          <span className="text-gray-500 text-sm">
-            • {formatDateToNow(createdAt)}
-          </span>
+          <PostHeader.AuthorAvatar
+            avatarUrl={avatarUrl}
+            username={username}
+            className="bg-linear-to-tr from-yellow-400 to-purple-600"
+          />
+          <PostHeader.AuthorUsername username={username} />
+          <PostHeader.CreatedAt createdAt={createdAt} />
         </div>
-        <MoreHorizontal
-          className="cursor-pointer hover:text-gray-400"
-          size={20}
-        />
-      </div>
+        <PostHeader.Options />
+      </PostHeader>
 
       {/* Post Image */}
       <div className="rounded-sm overflow-hidden border border-gray-800">
@@ -71,7 +61,7 @@ export const Post = ({
         </div>
         <div
           onClick={() => openPostModal(post)}
-          className="text-gray-500 text-sm cursor-pointer"
+          className="text-neutral-400 text-sm cursor-pointer"
         >
           View all 12 comments
         </div>

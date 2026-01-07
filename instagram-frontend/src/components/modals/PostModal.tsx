@@ -1,4 +1,4 @@
-import { X, MoreHorizontal } from "lucide-react";
+import { X } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useMutation, useQuery } from "@apollo/client/react";
@@ -9,6 +9,7 @@ import { ADD_COMMENT } from "../../graphql/mutations/comment";
 import type { CommentsData } from "../../types/comment";
 import { CommentList } from "../comments/CommentList";
 import { PostActions } from "../posts/PostActions";
+import { PostHeader } from "../posts/PostHeader";
 
 interface CreatePostModalProps {
   isOpen: boolean;
@@ -79,28 +80,17 @@ export const PostModal = ({ isOpen, onClose }: CreatePostModalProps) => {
 
         <div className="w-full md:w-[40%] flex flex-col bg-neutral-900">
           {/* Post Header */}
-          <div className="border-b border-neutral-800 p-2 flex justify-between items-center">
-            <div className="flex items-center justify-between w-full">
-              <div className="flex items-center w-full gap-3">
-                <div className="w-10 h-10 rounded-full p-0.5">
-                  <div className="p-0.5 rounded-full w-full h-full">
-                    <img
-                      src={post?.author.avatarUrl || "/ig-default.jpg"}
-                      alt={post?.author.username}
-                      className="rounded-full w-full h-full object-cover"
-                    />
-                  </div>
-                </div>
-                <span className="font-semibold text-sm">
-                  {post?.author.username}
-                </span>
-              </div>
-              <MoreHorizontal
-                className="cursor-pointer hover:text-gray-400"
-                size={20}
+          <PostHeader className="p-3 border-b border-neutral-800">
+            <div className="flex items-center gap-3">
+              <PostHeader.AuthorAvatar
+                avatarUrl={post?.author.avatarUrl}
+                username={post?.author.username}
+                className="w-10 h-10"
               />
+              <PostHeader.AuthorUsername username={post?.author.username} />
             </div>
-          </div>
+            <PostHeader.Options />
+          </PostHeader>
 
           {/* Post Comments Section */}
           <div className="h-full overflow-y-auto overscroll-contain no-scrollbar p-3">
