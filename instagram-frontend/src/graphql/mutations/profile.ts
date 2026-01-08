@@ -38,3 +38,9 @@ export const REMOVE_PROFILE_AVATAR = gql`
     }
   }
 `;
+
+export const TOGGLE_FOLLOW = gql`
+  mutation ToggleFollow($username: String!) {
+    toggleFollow(username: $username)
+  }
+`;
