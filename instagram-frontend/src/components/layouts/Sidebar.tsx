@@ -64,13 +64,13 @@ export const Sidebar = ({
       icon: (
         <div className="w-6 h-6 rounded-full bg-gray-500 overflow-hidden">
           <img
-            src={authUser?.getProfile?.avatarUrl || "/ig-default.jpg"}
+            src={authUser?.getProfileById.avatarUrl || "/ig-default.jpg"}
             alt="Profile"
           />
         </div>
       ),
       label: "Profile",
-      action: () => navigate("/profile"),
+      action: () => navigate(`/${authUser?.getProfileById.username}`),
     },
   ];
 
