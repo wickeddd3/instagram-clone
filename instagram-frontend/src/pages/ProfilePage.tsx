@@ -8,7 +8,7 @@ import type { ProfilePostsData } from "../types/post";
 import { GET_PROFILE_POSTS } from "../graphql/queries/post";
 import { ProfilePost } from "../components/posts/ProfilePost";
 
-const Profile = () => {
+const ProfilePage = () => {
   const { authUser, authUserLoading } = useAuth();
   const navigate = useNavigate();
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -61,13 +61,13 @@ const Profile = () => {
             </h1>
             <div className="hidden md:flex gap-10">
               <span className="text-sm">
-                <strong>12</strong> posts
+                <strong>{authUser?.getProfile.postsCount}</strong> posts
               </span>
               <span className="text-sm">
-                <strong>250</strong> followers
+                <strong>{authUser?.getProfile.followersCount}</strong> followers
               </span>
               <span className="text-sm">
-                <strong>300</strong> following
+                <strong>{authUser?.getProfile.followingCount}</strong> following
               </span>
             </div>
           </section>
@@ -136,4 +136,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default ProfilePage;

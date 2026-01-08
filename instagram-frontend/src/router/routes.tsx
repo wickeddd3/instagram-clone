@@ -17,7 +17,7 @@ export const router = createBrowserRouter([
       {
         path: "profile",
         lazy: () =>
-          import("../pages/Profile").then((module) => ({
+          import("../pages/ProfilePage").then((module) => ({
             element: <module.default />,
           })),
       },
