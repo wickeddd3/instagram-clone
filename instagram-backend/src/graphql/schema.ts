@@ -97,8 +97,7 @@ export const typeDefs = `#graphql
     updateProfile(displayName: String, bio: String, website: String): Profile!
     uploadProfileAvatar(avatarUrl: String!): Profile!
     removeProfileAvatar: Profile!
-    followProfile(profileId: ID!): Boolean!
-    unfollowProfile(profileId: ID!): Boolean!
+    toggleFollow(username: String!): Boolean!
 
     # Content Creation
     createPost(imageUrl: String!, caption: String, location: String): Post!
