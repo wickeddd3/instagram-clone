@@ -2,11 +2,11 @@ import { Heart, MessageCircle } from "lucide-react";
 import { usePost } from "../../contexts/PostContext";
 import type { PostData } from "../../types/post";
 
-interface ProfilePostProps {
+interface PostItemProps {
   post: PostData;
 }
 
-export const ProfilePost = ({ post }: ProfilePostProps) => {
+export const PostItem = ({ post }: PostItemProps) => {
   const { openPostModal } = usePost();
 
   return (
