@@ -6,5 +6,9 @@ export interface ProfileData {
     avatarUrl: string;
     bio: string;
     website: string;
+    postsCount: number;
+    followersCount: number;
+    followingCount: number;
+    isFollowing: boolean;
   };
 }
