@@ -13,6 +13,7 @@ export const GET_PROFILE = gql`
       followersCount
       followingCount
       isFollowing
+      isMe
     }
   }
 `;
@@ -30,6 +31,7 @@ export const GET_PROFILE_BY_ID = gql`
       followersCount
       followingCount
       isFollowing
+      isMe
     }
   }
 `;
