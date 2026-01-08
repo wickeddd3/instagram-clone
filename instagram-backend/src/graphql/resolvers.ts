@@ -82,6 +82,11 @@ export const resolvers = {
 
       return !!follow;
     },
+    isMe: (parent: any, _args: any, context: any) => {
+      if (!context.userId) return false;
+
+      return parent.id === context.userId;
+    },
   },
 
   Query: {
