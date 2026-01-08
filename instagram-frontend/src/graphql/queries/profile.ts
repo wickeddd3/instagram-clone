@@ -9,6 +9,10 @@ export const GET_PROFILE = gql`
       avatarUrl
       bio
       website
+      postsCount
+      followersCount
+      followingCount
+      isFollowing
     }
   }
 `;
