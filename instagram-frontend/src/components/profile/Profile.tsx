@@ -34,13 +34,15 @@ export const SettingsButton = ({ onClick }: { onClick: () => void }) => {
 export const ActionButton = ({
   label,
   onClick,
+  className,
 }: {
   label: string;
   onClick: () => void;
+  className?: string;
 }) => {
   return (
     <button
-      className="w-full bg-gray-800 hover:bg-gray-700 text-white p-1.5 md:p-3 rounded-lg md:rounded-xl text-sm font-semibold transition cursor-pointer"
+      className={`w-full bg-gray-800 hover:bg-gray-700 text-white p-1.5 md:p-3 rounded-lg md:rounded-xl text-sm font-semibold transition cursor-pointer ${className}`}
       onClick={onClick}
     >
       {label}
