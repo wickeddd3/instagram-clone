@@ -9,6 +9,7 @@ export interface ProfileData {
   followersCount: number;
   followingCount: number;
   isFollowing: boolean;
+  isMe: boolean;
 }
 
 export interface ProfileDataById {
