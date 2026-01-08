@@ -15,14 +15,14 @@ export const router = createBrowserRouter([
           })),
       },
       {
-        path: "profile",
+        path: ":username",
         lazy: () =>
           import("../pages/ProfilePage").then((module) => ({
             element: <module.default />,
           })),
       },
       {
-        path: "profile/edit",
+        path: "accounts/edit",
         lazy: () =>
           import("../pages/EditProfile").then((module) => ({
             element: <module.default />,
