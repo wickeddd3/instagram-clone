@@ -102,7 +102,18 @@ export const resolvers = {
         },
       });
     },
-    getProfile: async (_parent: any, { id }: { id: string }) => {
+    getProfile: async (_parent: any, { username }: { username: string }) => {
+      return await prisma.profile.findUnique({
+        where: { username },
+        include: {
+          posts: { orderBy: { createdAt: "desc" } },
+          _count: {
+            select: { followers: true, following: true, posts: true },
+          },
+        },
+      });
+    },
+    getProfileById: async (_parent: any, { id }: { id: string }) => {
       return await prisma.profile.findUnique({
         where: { id },
         include: {

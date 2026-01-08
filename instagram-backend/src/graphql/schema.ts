@@ -82,7 +82,8 @@ export const typeDefs = `#graphql
     getPost(id: ID!): Post
     
     # Profile
-    getProfile(id: String!): Profile
+    getProfile(username: String!): Profile
+    getProfileById(id: ID!): Profile
     getProfilePosts(profileId: ID!, limit: Int, offset: Int): [Post!]!
     searchProfiles(query: String!): [Profile!]!
     
@@ -134,11 +135,6 @@ export const typeDefs = `#graphql
     COMMENT
     REPLY
     FOLLOW
-  }
-
-  type Query {
-    getFeed: [Post]
-    getProfile(id: ID!): Profile
   }
 
   type Mutation {
