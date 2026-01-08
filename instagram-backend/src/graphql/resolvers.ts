@@ -48,6 +48,42 @@ export const resolvers = {
     },
   },
 
+  // Field resolvers for the Profile type
+  Profile: {
+    postsCount: async (parent: any) => {
+      const count = await prisma.post.count({
+        where: { authorId: parent.id },
+      });
+      return count;
+    },
+    followersCount: async (parent: any) => {
+      const count = await prisma.follow.count({
+        where: { followingId: parent.id },
+      });
+      return count;
+    },
+    followingCount: async (parent: any) => {
+      const count = await prisma.follow.count({
+        where: { followerId: parent.id },
+      });
+      return count;
+    },
+    isFollowing: async (parent: any, _args: any, context: any) => {
+      if (!context.userId) return false;
+
+      const follow = await prisma.follow.findUnique({
+        where: {
+          followerId_followingId: {
+            followerId: context.userId,
+            followingId: parent.id,
+          },
+        },
+      });
+
+      return !!follow;
+    },
+  },
+
   Query: {
     getFeed: async (
       _parent: any,
