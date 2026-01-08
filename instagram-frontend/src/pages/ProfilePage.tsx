@@ -53,13 +53,24 @@ const ProfilePage = () => {
 
         <Profile.Bio text={data?.getProfile.bio || ""} />
 
-        <div className="flex gap-4">
-          <Profile.ActionButton
-            label="Edit profile"
-            onClick={handleEditProfile}
-          />
-          <Profile.ActionButton label="View archive" onClick={() => {}} />
-        </div>
+        {data?.getProfile.isMe ? (
+          <div className="flex gap-4">
+            <Profile.ActionButton
+              label="Edit profile"
+              onClick={handleEditProfile}
+            />
+            <Profile.ActionButton label="View archive" onClick={() => {}} />
+          </div>
+        ) : (
+          <div className="flex gap-4">
+            <Profile.ActionButton
+              label="Follow"
+              onClick={() => {}}
+              className="bg-indigo-800 hover:bg-indigo-700"
+            />
+            <Profile.ActionButton label="Message" onClick={() => {}} />
+          </div>
+        )}
 
         {/* --- STORY HIGHLIGHTS (Optional placeholder) --- */}
         <div className="flex gap-4 overflow-x-auto pb-10 scrollbar-hide">
