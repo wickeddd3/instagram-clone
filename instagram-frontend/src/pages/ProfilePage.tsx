@@ -19,7 +19,7 @@ const ProfilePage = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   const handleEditProfile = () => {
-    navigate("/profile/edit");
+    navigate("/accounts/edit");
   };
 
   if (loading)
