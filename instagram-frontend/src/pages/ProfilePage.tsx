@@ -1,11 +1,12 @@
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
-import { useQuery } from "@apollo/client/react";
+import { useMutation, useQuery } from "@apollo/client/react";
 import { SettingsModal } from "../components/modals/SettingsModal";
 import { useNavigate, useParams } from "react-router-dom";
 import { Profile } from "../components/profile/Profile";
 import type { ProfileDataByUsername } from "../types/profile";
 import { GET_PROFILE } from "../graphql/queries/profile";
+import { TOGGLE_FOLLOW } from "../graphql/mutations/profile";
 
 const ProfilePage = () => {
   const { username } = useParams();
@@ -15,11 +16,17 @@ const ProfilePage = () => {
     skip: !username,
   });
 
+  const [toggleFollow] = useMutation(TOGGLE_FOLLOW);
+
   const navigate = useNavigate();
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   const handleEditProfile = () => {
     navigate("/accounts/edit");
+  };
+
+  const handleToggleFollow = () => {
+    toggleFollow({ variables: { username } });
   };
 
   if (loading)
@@ -64,9 +71,13 @@ const ProfilePage = () => {
         ) : (
           <div className="flex gap-4">
             <Profile.ActionButton
-              label="Follow"
-              onClick={() => {}}
-              className="bg-indigo-800 hover:bg-indigo-700"
+              label={data?.getProfile.isFollowing ? "Following" : "Follow"}
+              onClick={handleToggleFollow}
+              className={
+                !data?.getProfile.isFollowing
+                  ? "bg-indigo-800 hover:bg-indigo-700"
+                  : ""
+              }
             />
             <Profile.ActionButton label="Message" onClick={() => {}} />
           </div>
