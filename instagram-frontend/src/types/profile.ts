@@ -1,14 +1,20 @@
 export interface ProfileData {
-  getProfile: {
-    id: string;
-    displayName: string;
-    username: string;
-    avatarUrl: string;
-    bio: string;
-    website: string;
-    postsCount: number;
-    followersCount: number;
-    followingCount: number;
-    isFollowing: boolean;
-  };
+  id: string;
+  displayName: string;
+  username: string;
+  avatarUrl: string;
+  bio: string;
+  website: string;
+  postsCount: number;
+  followersCount: number;
+  followingCount: number;
+  isFollowing: boolean;
+}
+
+export interface ProfileDataById {
+  getProfileById: ProfileData;
+}
+
+export interface ProfileDataByUsername {
+  getProfile: ProfileData;
 }
