@@ -1,25 +1,14 @@
-import { Grid, Bookmark, SquareUser, Cog, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { SettingsModal } from "../components/modals/SettingsModal";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import { useQuery } from "@apollo/client/react";
-import type { ProfilePostsData } from "../types/post";
-import { GET_PROFILE_POSTS } from "../graphql/queries/post";
-import { ProfilePost } from "../components/posts/ProfilePost";
+import { Profile } from "../components/profile/Profile";
 
 const ProfilePage = () => {
   const { authUser, authUserLoading } = useAuth();
   const navigate = useNavigate();
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-
-  const { loading, error, data } = useQuery<ProfilePostsData>(
-    GET_PROFILE_POSTS,
-    {
-      variables: { profileId: authUser?.getProfile.id, limit: 20, offset: 0 },
-      skip: !authUser?.getProfile.id,
-    }
-  );
 
   const handleEditProfile = () => {
     navigate("/profile/edit");
@@ -33,60 +22,37 @@ const ProfilePage = () => {
     );
 
   return (
-    <div className="max-w-3xl w-full mx-auto px-4 pt-8">
+    <Profile>
       <div className="flex flex-col gap-6">
         {/* Header Section */}
         <header className="flex flex-row items-center gap-8 md:gap-12">
-          <div className="w-20 h-20 md:w-30 md:h-30 rounded-full bg-gray-800 overflow-hidden">
-            <img
-              src={authUser?.getProfile.avatarUrl || "/ig-default.jpg"}
-              alt="Avatar"
-              className="w-full h-full object-cover"
-            />
-          </div>
+          <Profile.Avatar
+            avatarUrl={authUser?.getProfile.avatarUrl || "/ig-default.jpg"}
+          />
           <section className="flex flex-col gap-2">
             <div className="flex flex-wrap items-center gap-4">
-              <h2 className="text-2xl font-bold">
-                {authUser?.getProfile.username}
-              </h2>
-              <button
-                onClick={() => setIsSettingsOpen(true)}
-                className="p-1 hover:text-gray-400 transition cursor-pointer"
-              >
-                <Cog size={24} />
-              </button>
+              <Profile.Username name={authUser?.getProfile.username || ""} />
+              <Profile.SettingsButton onClick={() => setIsSettingsOpen(true)} />
             </div>
-            <h1 className="text-sm font-normal">
-              {authUser?.getProfile.displayName}
-            </h1>
-            <div className="hidden md:flex gap-10">
-              <span className="text-sm">
-                <strong>{authUser?.getProfile.postsCount}</strong> posts
-              </span>
-              <span className="text-sm">
-                <strong>{authUser?.getProfile.followersCount}</strong> followers
-              </span>
-              <span className="text-sm">
-                <strong>{authUser?.getProfile.followingCount}</strong> following
-              </span>
-            </div>
+            <Profile.DisplayName
+              name={authUser?.getProfile.displayName || ""}
+            />
+            <Profile.Stats
+              postsCount={authUser?.getProfile.postsCount || 0}
+              followersCount={authUser?.getProfile.followersCount || 0}
+              followingCount={authUser?.getProfile.followingCount || 0}
+            />
           </section>
         </header>
 
-        {/* Bio Section */}
-        <p className="text-sm">{authUser?.getProfile.bio}</p>
+        <Profile.Bio text={authUser?.getProfile.bio || ""} />
 
-        {/* --- ACTION BUTTONS --- */}
         <div className="flex gap-4">
-          <button
-            className="w-full bg-gray-800 hover:bg-gray-700 text-white p-1.5 md:p-3 rounded-lg md:rounded-xl text-sm font-semibold transition cursor-pointer"
+          <Profile.ActionButton
+            label="Edit profile"
             onClick={handleEditProfile}
-          >
-            Edit profile
-          </button>
-          <button className="w-full bg-gray-800 hover:bg-gray-700 text-white p-1.5 md:p-3 rounded-lg md:rounded-xl text-sm font-semibold transition cursor-pointer">
-            View archive
-          </button>
+          />
+          <Profile.ActionButton label="View archive" onClick={() => {}} />
         </div>
 
         {/* --- STORY HIGHLIGHTS (Optional placeholder) --- */}
@@ -95,44 +61,13 @@ const ProfilePage = () => {
         </div>
       </div>
 
-      {/* --- TABS --- */}
-      <div className="grid grid-cols-3 place-items-center">
-        <button className="px-6 py-2 cursor-pointer text-white border-white border-b-2 transition">
-          <Grid size={24} />
-        </button>
-        <button className="px-6 py-2 cursor-pointer text-gray-400 hover:text-white transition">
-          <Bookmark size={24} />
-        </button>
-        <button className="px-6 py-2 cursor-pointer text-gray-400 hover:text-white transition">
-          <SquareUser size={24} />
-        </button>
-      </div>
+      <Profile.Content profileId={authUser?.getProfile.id || ""} />
 
-      {/* --- IMAGE GRID --- */}
-      {loading && (
-        <div className="flex w-full justify-center pt-20 text-white">
-          Loading posts...
-        </div>
-      )}
-
-      {error && (
-        <div className="flex w-full justify-center pt-20 text-red-500">
-          Error: {error.message}
-        </div>
-      )}
-
-      <div className="grid grid-cols-3 gap-0.5">
-        {data?.getProfilePosts.map((post) => (
-          <ProfilePost key={post.id} post={post} />
-        ))}
-      </div>
-
-      {/* SETTINGS MODAL */}
       <SettingsModal
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}
       />
-    </div>
+    </Profile>
   );
 };
 
