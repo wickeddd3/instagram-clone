@@ -113,6 +113,7 @@ export const PostModal = ({ isOpen, onClose }: CreatePostModalProps) => {
             <PostActions
               postId={post?.id || ""}
               isLiked={post?.isLiked || false}
+              isSaved={post?.isSaved || false}
               className="px-3"
             />
 

@@ -1,22 +1,32 @@
 import { useMutation } from "@apollo/client/react";
 import { Heart, MessageCircle, Send, Bookmark } from "lucide-react";
-import { TOGGLE_POST_LIKE } from "../../graphql/mutations/post";
+import {
+  TOGGLE_POST_LIKE,
+  TOGGLE_POST_SAVE,
+} from "../../graphql/mutations/post";
 
 interface PostActionsProps {
-  isLiked: boolean;
   postId: string;
+  isLiked: boolean;
+  isSaved: boolean;
   className?: string;
 }
 
 export const PostActions = ({
   postId,
   isLiked,
+  isSaved,
   className,
 }: PostActionsProps) => {
   const [togglePostLike] = useMutation(TOGGLE_POST_LIKE);
+  const [togglePostSave] = useMutation(TOGGLE_POST_SAVE);
 
   const handleTogglePostLike = () => {
     togglePostLike({ variables: { postId } });
+  };
+
+  const handleTogglePostSave = () => {
+    togglePostSave({ variables: { postId } });
   };
 
   return (
@@ -38,7 +48,16 @@ export const PostActions = ({
         />
         <Send className="cursor-pointer hover:text-gray-400" size={24} />
       </div>
-      <Bookmark className="cursor-pointer hover:text-gray-400" size={24} />
+      <button onClick={handleTogglePostSave}>
+        <Bookmark
+          className={`cursor-pointer ${
+            isSaved
+              ? "text-gray-400 hover:text-white"
+              : "text-white hover:text-gray-400"
+          }`}
+          size={24}
+        />
+      </button>
     </div>
   );
 };

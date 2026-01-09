@@ -18,6 +18,7 @@ export const Post = ({
     caption,
     createdAt,
     isLiked,
+    isSaved,
   },
 }: PostProps) => {
   const { openPostModal } = usePost();
@@ -48,7 +49,7 @@ export const Post = ({
       </div>
 
       {/* Post Actions */}
-      <PostActions postId={id} isLiked={isLiked} />
+      <PostActions postId={id} isLiked={isLiked} isSaved={isSaved} />
 
       {/* Likes & Caption */}
       <div className="space-y-1">
