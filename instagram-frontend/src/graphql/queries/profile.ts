@@ -35,3 +35,25 @@ export const GET_PROFILE_BY_ID = gql`
     }
   }
 `;
+
+export const GET_FOLLOWERS = gql`
+  query GetFollowers($username: String!) {
+    getFollowers(username: $username) {
+      id
+      username
+      displayName
+      avatarUrl
+    }
+  }
+`;
+
+export const GET_FOLLOWING = gql`
+  query GetFollowing($username: String!) {
+    getFollowing(username: $username) {
+      id
+      username
+      displayName
+      avatarUrl
+    }
+  }
+`;
