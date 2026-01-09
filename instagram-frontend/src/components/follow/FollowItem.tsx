@@ -1,10 +1,26 @@
+import { useMutation } from "@apollo/client/react";
 import type { ProfileData } from "../../types/profile";
+import {
+  REMOVE_FOLLOWER,
+  REMOVE_FOLLOWING,
+} from "../../graphql/mutations/profile";
 
 interface FollowItemProps {
   profile: ProfileData;
+  type: string;
 }
 
-export const FollowItem = ({ profile }: FollowItemProps) => {
+export const FollowItem = ({ profile, type }: FollowItemProps) => {
+  const [removeFollower] = useMutation(REMOVE_FOLLOWER);
+  const [removeFollowing] = useMutation(REMOVE_FOLLOWING);
+
+  const handleToggleFollow = () => {
+    if (type === "follower") {
+      return removeFollower({ variables: { username: profile.username } });
+    }
+    return removeFollowing({ variables: { username: profile.username } });
+  };
+
   return (
     <li className="flex justify-between items-center">
       <div className="flex items-center gap-2">
@@ -24,8 +40,11 @@ export const FollowItem = ({ profile }: FollowItemProps) => {
           </h1>
         </div>
       </div>
-      <button className="bg-neutral-800 px-4 py-1 rounded-lg text-sm cursor-pointer">
-        Following
+      <button
+        onClick={handleToggleFollow}
+        className="bg-neutral-800 px-4 py-1 rounded-lg text-sm cursor-pointer"
+      >
+        {type === "follower" ? "Remove" : "Following"}
       </button>
     </li>
   );

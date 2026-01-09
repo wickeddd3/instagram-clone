@@ -21,7 +21,7 @@ export const FollowingList = ({ username }: { username: string }) => {
   return (
     <div className="w-full h-full flex flex-col gap-3 py-2 px-4">
       <SearchField />
-      <FollowList profiles={data?.getFollowing || []} />
+      <FollowList profiles={data?.getFollowing || []} type="following" />
     </div>
   );
 };
