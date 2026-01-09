@@ -20,3 +20,7 @@ export interface FeedData {
 export interface ProfilePostsData {
   getProfilePosts: PostData[];
 }
+
+export interface SavedPostsData {
+  getSavedPosts: PostData[];
+}
