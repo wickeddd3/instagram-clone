@@ -157,11 +157,11 @@ export const CreatePostModal = ({ isOpen, onClose }: CreatePostModalProps) => {
 
               <div className="p-4 flex gap-3">
                 <img
-                  src={authUser?.getProfile?.avatarUrl || "/ig-default.jpg"}
+                  src={authUser?.getProfileById?.avatarUrl || "/ig-default.jpg"}
                   className="w-8 h-8 rounded-full object-cover"
                 />
                 <span className="text-white font-semibold text-sm">
-                  {authUser?.getProfile?.username}
+                  {authUser?.getProfileById?.username}
                 </span>
               </div>
 
