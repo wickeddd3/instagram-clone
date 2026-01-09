@@ -23,6 +23,19 @@ export const resolvers = {
       // If a record exists, return true (post is liked)
       return !!like;
     },
+    isSaved: async (parent: any, _args: any, context: any) => {
+      if (!context.userId) return false;
+
+      const save = await prisma.savedPost.findUnique({
+        where: {
+          userId_postId: {
+            userId: context.userId,
+            postId: parent.id,
+          },
+        },
+      });
+      return !!save;
+    },
   },
 
   // Field resolver to map the reply count
