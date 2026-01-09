@@ -44,3 +44,15 @@ export const TOGGLE_FOLLOW = gql`
     toggleFollow(username: $username)
   }
 `;
+
+export const REMOVE_FOLLOWER = gql`
+  mutation RemoveFollower($username: String!) {
+    removeFollower(username: $username)
+  }
+`;
+
+export const REMOVE_FOLLOWING = gql`
+  mutation RemoveFollowing($username: String!) {
+    removeFollowing(username: $username)
+  }
+`;
