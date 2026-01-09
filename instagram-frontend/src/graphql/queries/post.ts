@@ -37,3 +37,22 @@ export const GET_PROFILE_POSTS = gql`
     }
   }
 `;
+
+export const GET_SAVED_POSTS = gql`
+  query GetSavedPosts {
+    getSavedPosts {
+      id
+      imageUrl
+      caption
+      createdAt
+      author {
+        username
+        avatarUrl
+      }
+      likesCount
+      commentsCount
+      isLiked
+      isSaved
+    }
+  }
+`;
