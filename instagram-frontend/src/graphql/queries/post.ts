@@ -14,6 +14,7 @@ export const GET_FEED = gql`
       likesCount
       commentsCount
       isLiked
+      isSaved
     }
   }
 `;
@@ -32,6 +33,7 @@ export const GET_PROFILE_POSTS = gql`
       likesCount
       commentsCount
       isLiked
+      isSaved
     }
   }
 `;
