@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Posts } from "./Posts";
 import { SavedPosts } from "./SavedPosts";
 import { TaggedPosts } from "./TaggedPosts";
+import { FollowModal } from "../modals/FollowModal";
 
 export const Profile = ({ children }: { children: React.ReactNode }) => {
   return <div className="max-w-3xl w-full mx-auto px-4 pt-8">{children}</div>;
@@ -54,23 +55,52 @@ export const Stats = ({
   postsCount,
   followersCount,
   followingCount,
+  username,
 }: {
   postsCount: number;
   followersCount: number;
   followingCount: number;
+  username: string;
 }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [title, setTitle] = useState<string>("");
+
+  const handleOpenModal = (title: string) => {
+    setTitle(title);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setTitle("");
+    setIsModalOpen(false);
+  };
+
   return (
-    <div className="hidden md:flex gap-10">
-      <span className="text-sm">
-        <strong>{postsCount}</strong> posts
-      </span>
-      <span className="text-sm">
-        <strong>{followersCount}</strong> followers
-      </span>
-      <span className="text-sm">
-        <strong>{followingCount}</strong> following
-      </span>
-    </div>
+    <>
+      <div className="hidden md:flex gap-10">
+        <span className="text-sm">
+          <strong>{postsCount}</strong> posts
+        </span>
+        <span
+          onClick={() => handleOpenModal("Followers")}
+          className="text-sm cursor-pointer"
+        >
+          <strong>{followersCount}</strong> followers
+        </span>
+        <span
+          onClick={() => handleOpenModal("Following")}
+          className="text-sm cursor-pointer"
+        >
+          <strong>{followingCount}</strong> following
+        </span>
+      </div>
+      <FollowModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        username={username}
+        title={title}
+      />
+    </>
   );
 };
 
