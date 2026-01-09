@@ -54,6 +54,7 @@ const ProfilePage = () => {
               postsCount={data?.getProfile.postsCount || 0}
               followersCount={data?.getProfile.followersCount || 0}
               followingCount={data?.getProfile.followingCount || 0}
+              username={data?.getProfile.username || ""}
             />
           </section>
         </header>
