@@ -365,6 +365,34 @@ export const resolvers = {
       return false;
     },
 
+    togglePostSave: async (
+      _parent: any,
+      { postId }: { postId: string },
+      context: any
+    ) => {
+      if (!context.userId) {
+        throw new Error("Unauthorized: You must be logged in.");
+      }
+
+      const userId = context.userId;
+
+      const existingSave = await prisma.savedPost.findUnique({
+        where: { userId_postId: { userId, postId } },
+      });
+
+      if (existingSave) {
+        await prisma.savedPost.delete({
+          where: { id: existingSave.id },
+        });
+        return false; // Removed from saved
+      } else {
+        await prisma.savedPost.create({
+          data: { userId, postId },
+        });
+        return true; // Added to saved
+      }
+    },
+
     createPost: async (
       _parent: any,
       { imageUrl, caption, location }: any,
