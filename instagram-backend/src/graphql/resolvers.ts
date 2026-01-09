@@ -160,6 +160,26 @@ export const resolvers = {
         },
       });
     },
+    getSavedPosts: async (_parent: any, _args: any, context: any) => {
+      if (!context.userId)
+        throw new Error("Unauthorized: You must be logged in.");
+
+      const savedRecords = await prisma.savedPost.findMany({
+        where: { userId: context.userId },
+        include: {
+          post: {
+            include: {
+              author: true,
+              _count: { select: { likes: true, comments: true } },
+            },
+          },
+        },
+        orderBy: { createdAt: "desc" },
+      });
+
+      // Flatten the result: return the Post objects directly
+      return savedRecords.map((record) => record.post);
+    },
 
     getComments: async (
       _parent: any,
