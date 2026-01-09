@@ -19,3 +19,11 @@ export interface ProfileDataById {
 export interface ProfileDataByUsername {
   getProfile: ProfileData;
 }
+
+export interface FollowersData {
+  getFollowers: ProfileData[];
+}
+
+export interface FollowingData {
+  getFollowing: ProfileData[];
+}
