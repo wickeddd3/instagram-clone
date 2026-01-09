@@ -37,8 +37,8 @@ export const typeDefs = `#graphql
     # Interactivity
     likesCount: Int!
     commentsCount: Int!
-    isLiked: Boolean # Dynamic for the logged-in user
-    isSaved: Boolean
+    isLiked: Boolean!
+    isSaved: Boolean!
     
     likes: [Like!]!
     comments: [Comment!]!
