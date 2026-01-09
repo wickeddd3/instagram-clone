@@ -10,6 +10,7 @@ export interface PostData {
   likesCount: number;
   commentsCount: number;
   isLiked: boolean;
+  isSaved: boolean;
 }
 
 export interface FeedData {
