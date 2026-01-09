@@ -310,6 +310,60 @@ export const resolvers = {
         return true; // Followed
       }
     },
+    removeFollower: async (
+      _parent: any,
+      { username }: { username: string },
+      context: any
+    ) => {
+      if (!context.userId) {
+        throw new Error("Unauthorized: You must be logged in.");
+      }
+
+      const profile = await prisma.profile.findUnique({
+        where: { username },
+      });
+
+      if (!profile) {
+        throw new Error("Invalid Profile: username doesn't exist.");
+      }
+
+      await prisma.follow.delete({
+        where: {
+          followerId_followingId: {
+            followerId: profile.id,
+            followingId: context.userId,
+          },
+        },
+      });
+      return false;
+    },
+    removeFollowing: async (
+      _parent: any,
+      { username }: { username: string },
+      context: any
+    ) => {
+      if (!context.userId) {
+        throw new Error("Unauthorized: You must be logged in.");
+      }
+
+      const profile = await prisma.profile.findUnique({
+        where: { username },
+      });
+
+      if (!profile) {
+        throw new Error("Invalid Profile: username doesn't exist.");
+      }
+
+      await prisma.follow.delete({
+        where: {
+          followerId_followingId: {
+            followerId: context.userId,
+            followingId: profile.id,
+          },
+        },
+      });
+      return false;
+    },
 
     createPost: async (
       _parent: any,
