@@ -89,12 +89,17 @@ export const typeDefs = `#graphql
     
     # Comments
     getComments(postId: ID!, parentId: ID, limit: Int, offset: Int): [Comment!]!
+
+    # Follows
+    getFollowers(username: String!): [Profile!]!
+    getFollowing(username: String!): [Profile!]!
   }
 
   # --- Mutations ---
 
   type Mutation {
     # Account
+    createProfile(id: ID!, username: String!, email: String!, avatarUrl: String, bio: String, website: String): Profile
     updateProfile(displayName: String, bio: String, website: String): Profile!
     uploadProfileAvatar(avatarUrl: String!): Profile!
     removeProfileAvatar: Profile!
@@ -135,10 +140,5 @@ export const typeDefs = `#graphql
     COMMENT
     REPLY
     FOLLOW
-  }
-
-  type Mutation {
-    createPost(imageUrl: String!, caption: String, location: String): Post
-    createProfile(id: ID!, username: String!, email: String!, avatarUrl: String, bio: String, website: String): Profile
   }
 `;

@@ -164,6 +164,46 @@ export const resolvers = {
         },
       });
     },
+
+    getFollowers: async (_parent: any, { username }: { username: string }) => {
+      const user = await prisma.profile.findUnique({
+        where: { username },
+        include: {
+          followers: {
+            include: {
+              follower: {
+                include: {
+                  _count: {
+                    select: { followers: true, following: true, posts: true },
+                  },
+                },
+              },
+            },
+          },
+        },
+      });
+      // Map the nested join table structure back to a flat Profile array
+      return user?.followers.map((f) => f.follower) || [];
+    },
+    getFollowing: async (_parent: any, { username }: { username: string }) => {
+      const user = await prisma.profile.findUnique({
+        where: { username },
+        include: {
+          following: {
+            include: {
+              following: {
+                include: {
+                  _count: {
+                    select: { followers: true, following: true, posts: true },
+                  },
+                },
+              },
+            },
+          },
+        },
+      });
+      return user?.following.map((f) => f.following) || [];
+    },
   },
 
   Mutation: {
