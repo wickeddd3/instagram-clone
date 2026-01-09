@@ -21,6 +21,7 @@ model Profile {
   posts       Post[]
   comments    Comment[]
   likes       Like[]
+  savedPosts  SavedPost[]
   
   // Follows: Self-referencing many-to-many
   followers   Follow[] @relation("following")
@@ -48,6 +49,7 @@ model Post {
   comments    Comment[]
   likes       Like[]
   notifications Notification[]
+  savedBy     SavedPost[]
 
   @@map("posts")
 }
@@ -94,6 +96,23 @@ model Like {
   @@unique([userId, postId])
   @@unique([userId, commentId])
   @@map("likes")
+}
+
+model SavedPost {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // The User who saved the post
+  userId    String   @map("user_id")
+  user      Profile  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // The Post being saved
+  postId    String   @map("post_id")
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  // Constraint: One user can only save a specific post once
+  @@unique([userId, postId])
+  @@map("saved_posts")
 }
 
 model Follow {
