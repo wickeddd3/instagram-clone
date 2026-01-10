@@ -15,6 +15,7 @@ export const Post = ({
     author: { username, avatarUrl },
     imageUrl,
     likesCount,
+    commentsCount,
     caption,
     createdAt,
     isLiked,
@@ -60,12 +61,16 @@ export const Post = ({
           <span className="font-semibold mr-2">{username}</span>
           {caption}
         </div>
-        <div
-          onClick={() => openPostModal(post)}
-          className="text-neutral-400 text-sm cursor-pointer"
-        >
-          View all 12 comments
-        </div>
+        {commentsCount > 0 && (
+          <div
+            onClick={() => openPostModal(post)}
+            className="text-neutral-400 text-sm cursor-pointer"
+          >
+            {commentsCount === 1
+              ? `View ${commentsCount} comment`
+              : `View all ${commentsCount} comments`}
+          </div>
+        )}
       </div>
 
       <AddComment postId={id} />
