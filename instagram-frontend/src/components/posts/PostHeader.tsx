@@ -1,5 +1,6 @@
 import { MoreHorizontal } from "lucide-react";
 import { formatDateToNow } from "../../utils/date";
+import { Link } from "react-router-dom";
 
 export const PostHeader = ({
   children,
@@ -58,7 +59,11 @@ export const AuthorAvatar = ({
 export const AuthorUsername = ({ username }: { username?: string }) => {
   if (!username) return null;
 
-  return <span className="font-semibold text-sm">{username}</span>;
+  return (
+    <Link to={`/${username}`} className="font-semibold text-sm">
+      {username}
+    </Link>
+  );
 };
 
 PostHeader.CreatedAt = CreatedAt;
