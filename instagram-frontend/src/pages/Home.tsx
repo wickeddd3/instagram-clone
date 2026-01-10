@@ -3,6 +3,7 @@ import { Post } from "../components/posts/Post";
 import { GET_FEED } from "../graphql/queries/post";
 import { useQuery } from "@apollo/client/react";
 import type { FeedData } from "../types/post";
+import { AuthUser } from "../components/AuthUser";
 
 const Home = () => {
   const { loading, error, data } = useQuery<FeedData>(GET_FEED);
@@ -39,21 +40,7 @@ const Home = () => {
       {/* Right Sidebar - Suggestions (Desktop Only) */}
       <div className="hidden lg:block w-[320px] pl-16 pt-10">
         {/* Current User */}
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <img
-              src="https://i.pravatar.cc/150?img=3"
-              className="w-12 h-12 rounded-full"
-            />
-            <div className="text-sm">
-              <div className="font-semibold">my_account</div>
-              <div className="text-gray-500">My Name</div>
-            </div>
-          </div>
-          <button className="text-xs font-semibold text-blue-400 hover:text-white">
-            Switch
-          </button>
-        </div>
+        <AuthUser />
 
         <div className="flex justify-between mb-4">
           <span className="text-sm font-semibold text-gray-500">
