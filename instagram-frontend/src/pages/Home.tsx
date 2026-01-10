@@ -1,5 +1,5 @@
 import { Stories } from "../components/Stories";
-import { Post } from "../components/Post";
+import { Post } from "../components/posts/Post";
 import { GET_FEED } from "../graphql/queries/post";
 import { useQuery } from "@apollo/client/react";
 import type { FeedData } from "../types/post";

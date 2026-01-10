@@ -1,8 +1,8 @@
-import type { PostData } from "../types/post";
-import { AddComment } from "./comments/AddComment";
-import { usePost } from "../contexts/PostContext";
-import { PostActions } from "./posts/PostActions";
-import { PostHeader } from "./posts/PostHeader";
+import type { PostData } from "../../types/post";
+import { AddComment } from "../comments/AddComment";
+import { usePost } from "../../contexts/PostContext";
+import { PostActions } from "./PostActions";
+import { PostHeader } from "./PostHeader";
 
 interface PostProps {
   post: PostData;
