@@ -121,6 +121,10 @@ export const typeDefs = `#graphql
     toggleCommentLike(commentId: ID!): Boolean!
     addComment(postId: ID!, text: String!, parentId: ID): Comment!
     deleteComment(commentId: ID!): Boolean!
+
+    # Activity
+    addRecentSearch(targetId: ID!): Boolean!
+    removeRecentSearch(targetId: ID!): Boolean!
   }
 
   # --- Subscriptions (Real-time) ---
