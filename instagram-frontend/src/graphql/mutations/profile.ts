@@ -67,3 +67,15 @@ export const REMOVE_FOLLOWING = gql`
     removeFollowing(username: $username)
   }
 `;
+
+export const ADD_RECENT_SEARCH = gql`
+  mutation AddRecentSearch($targetId: ID!) {
+    addRecentSearch(targetId: $targetId)
+  }
+`;
+
+export const REMOVE_RECENT_SEARCH = gql`
+  mutation RemoveRecentSearch($targetId: ID!) {
+    removeRecentSearch(targetId: $targetId)
+  }
+`;
