@@ -1,7 +1,7 @@
-// import { Navigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import { Layout } from "./layouts/Layout";
 import { MainLogin } from "./auth/MainLogin";
+import { Layout } from "./layouts/Layout";
+// import { Navigate } from "react-router-dom";
 
 export const AuthGuard = () => {
   const { session, loading } = useAuth();
