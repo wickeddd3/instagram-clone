@@ -1,4 +1,5 @@
 import { Heart } from "lucide-react";
+import { MobileSearch } from "../search/MobileSearch";
 
 export const MobileHeader = () => {
   return (
@@ -10,11 +11,7 @@ export const MobileHeader = () => {
         Instagram
       </h1>
       <div className="flex gap-3">
-        <input
-          type="text"
-          placeholder="Search"
-          className="bg-gray-800 text-white rounded-full py-2 px-3 text-sm placeholder:text-sm placeholder:font-light focus:outline-none"
-        />
+        <MobileSearch />
         <button aria-label="Menu" className="text-white cursor-pointer">
           <Heart size={24} />
         </button>

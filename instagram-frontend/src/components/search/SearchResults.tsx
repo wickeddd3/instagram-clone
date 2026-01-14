@@ -6,7 +6,7 @@ import { useEffect } from "react";
 
 interface SearchResultsProps {
   query: string;
-  onClose: () => void;
+  onClose?: () => void;
 }
 
 export const SearchResults = ({ query, onClose }: SearchResultsProps) => {
@@ -25,7 +25,7 @@ export const SearchResults = ({ query, onClose }: SearchResultsProps) => {
 
   if (loading) {
     return (
-      <div className="h-full flex justify-center items-center">
+      <div className="h-full flex justify-center items-center p-4">
         <span className="text-gray-500 text-sm">Searching...</span>
       </div>
     );
@@ -33,7 +33,7 @@ export const SearchResults = ({ query, onClose }: SearchResultsProps) => {
 
   if (!loading && !data?.searchProfiles.length) {
     return (
-      <div className="h-full flex justify-center items-center">
+      <div className="h-full flex justify-center items-center p-4">
         <span className="text-gray-500 text-sm">No results found.</span>
       </div>
     );

@@ -10,13 +10,13 @@ import { GET_RECENT_SEARCHES } from "../../graphql/queries/profile";
 
 interface SearchResultItemProps {
   user: ProfileData;
-  onClick: () => void;
+  onClick?: () => void;
   isRecentItem?: boolean;
 }
 
 export const SearchResultItem = ({
   user,
-  onClick,
+  onClick = () => {},
   isRecentItem = false,
 }: SearchResultItemProps) => {
   const [addRecentSearch] = useMutation(ADD_RECENT_SEARCH);

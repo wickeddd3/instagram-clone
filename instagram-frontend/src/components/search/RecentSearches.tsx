@@ -7,7 +7,7 @@ import { CLEAR_RECENT_SEARCHES } from "../../graphql/mutations/profile";
 
 interface RecentSearchesProps {
   query: string;
-  onClose: () => void;
+  onClose?: () => void;
 }
 
 export const RecentSearches = ({ query, onClose }: RecentSearchesProps) => {
@@ -34,7 +34,7 @@ export const RecentSearches = ({ query, onClose }: RecentSearchesProps) => {
 
   if (loading) {
     return (
-      <div className="h-full flex justify-center items-center">
+      <div className="h-full flex justify-center items-center p-4">
         <span className="text-gray-500 text-sm">Fetching...</span>
       </div>
     );
@@ -42,7 +42,7 @@ export const RecentSearches = ({ query, onClose }: RecentSearchesProps) => {
 
   if (!loading && !data?.getRecentSearches.length) {
     return (
-      <div className="h-full flex justify-center items-center">
+      <div className="h-full flex justify-center items-center p-4">
         <span className="text-gray-500 text-sm">No recent searches.</span>
       </div>
     );
