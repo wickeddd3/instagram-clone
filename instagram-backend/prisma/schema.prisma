@@ -27,9 +27,14 @@ model Profile {
   followers   Follow[] @relation("following")
   following   Follow[] @relation("follower")
 
+  // Recent Searches
+  searchesPerformed RecentSearch[] @relation("Searcher")
+  searchesReceived  RecentSearch[] @relation("SearchedTarget")
+
   // Notifications
   notificationsSent     Notification[] @relation("NotificationActor")
   notificationsReceived Notification[] @relation("NotificationRecipient")
+  
 
   @@map("profiles")
 }
@@ -126,6 +131,23 @@ model Follow {
 
   @@id([followerId, followingId])
   @@map("follows")
+}
+
+model RecentSearch {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // The user who performed the search
+  userId    String   @map("user_id")
+  user      Profile  @relation("Searcher", fields: [userId], references: [id], onDelete: Cascade)
+
+  // The user who was searched for
+  targetId  String   @map("target_id")
+  target    Profile  @relation("SearchedTarget", fields: [targetId], references: [id], onDelete: Cascade)
+
+  // Ensure a user only shows up once in the recent list
+  @@unique([userId, targetId])
+  @@map("recent_searches")
 }
 
 model Notification {
