@@ -6,6 +6,7 @@ import { LoginFormSchema, type LoginFormType } from "../../validation/login";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { Loader } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface LoginFormProps {
   onError: (value: boolean) => void;
@@ -13,6 +14,7 @@ interface LoginFormProps {
 
 export const LoginForm = ({ onError }: LoginFormProps) => {
   const { signIn } = useAuth();
+  const navigate = useNavigate();
 
   const { register, handleSubmit } = useForm<LoginFormType>({
     resolver: zodResolver(LoginFormSchema),
@@ -34,6 +36,7 @@ export const LoginForm = ({ onError }: LoginFormProps) => {
         onError(true);
         return;
       }
+      navigate("/");
     } catch (error) {
       console.log(error);
       setLoading(false);
