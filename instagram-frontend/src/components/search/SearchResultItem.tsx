@@ -6,6 +6,7 @@ import {
 } from "../../graphql/mutations/profile";
 import { useMutation } from "@apollo/client/react";
 import { X } from "lucide-react";
+import { GET_RECENT_SEARCHES } from "../../graphql/queries/profile";
 
 interface SearchResultItemProps {
   user: ProfileData;
@@ -19,7 +20,23 @@ export const SearchResultItem = ({
   isRecentItem = false,
 }: SearchResultItemProps) => {
   const [addRecentSearch] = useMutation(ADD_RECENT_SEARCH);
-  const [removeRecentSearch] = useMutation(REMOVE_RECENT_SEARCH);
+  const [removeRecentSearch] = useMutation(REMOVE_RECENT_SEARCH, {
+    update(cache) {
+      const existingSearches: any = cache.readQuery({
+        query: GET_RECENT_SEARCHES,
+      });
+      if (existingSearches) {
+        cache.writeQuery({
+          query: GET_RECENT_SEARCHES,
+          data: {
+            getRecentSearches: existingSearches.getRecentSearches.filter(
+              (item: any) => item.id !== user.id
+            ),
+          },
+        });
+      }
+    },
+  });
 
   const handleProfileClick = (targetId: string) => {
     addRecentSearch({ variables: { targetId } });
