@@ -16,12 +16,14 @@ interface SidebarProps {
   isSidebarOpen?: boolean;
   onSidebarHover?: (isOpen: boolean) => void;
   onCreateClick?: () => void;
+  onSearchClick?: () => void;
 }
 
 export const Sidebar = ({
   isSidebarOpen,
   onSidebarHover,
   onCreateClick,
+  onSearchClick,
 }: SidebarProps) => {
   const { authUser } = useAuth();
 
@@ -38,7 +40,7 @@ export const Sidebar = ({
     {
       icon: <Search size={iconSize} />,
       label: "Search",
-      action: () => navigate("/search"),
+      action: onSearchClick,
     },
     {
       icon: <Compass size={iconSize} />,

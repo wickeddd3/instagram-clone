@@ -7,10 +7,12 @@ import { MobileHeader } from "./MobileHeader";
 import { motion } from "framer-motion";
 import { PostModal } from "../modals/PostModal";
 import { usePost } from "../../contexts/PostContext";
+import { SearchSidebar } from "./SearchSidebar";
 
 export const Layout = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const location = useLocation();
   const { isPostModalOpen, closePostModal } = usePost();
@@ -33,8 +35,14 @@ export const Layout = () => {
           isSidebarOpen={isSidebarOpen}
           onSidebarHover={setSidebarOpen}
           onCreateClick={() => setModalOpen(true)}
+          onSearchClick={() => setIsSearchOpen(!isSearchOpen)}
         />
       </motion.aside>
+
+      <SearchSidebar
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+      />
 
       {/* Main Content Area */}
       <main className="flex-1 flex justify-center w-full md:mt-0 mt-14 ">
