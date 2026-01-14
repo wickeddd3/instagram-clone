@@ -5,7 +5,7 @@ import { useQuery } from "@apollo/client/react";
 import type { FeedData } from "../types/post";
 import { AuthUser } from "../components/AuthUser";
 
-const Home = () => {
+const HomePage = () => {
   const { loading, error, data } = useQuery<FeedData>(GET_FEED);
 
   if (loading) {
@@ -82,4 +82,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomePage;

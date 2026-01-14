@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UploadAvatarModal } from "../components/modals/UploadAvatarModal";
 
-const EditProfile = () => {
+const EditProfilePage = () => {
   const { authUser, authUserLoading } = useAuth();
 
   // Setup Form
@@ -167,4 +167,4 @@ const EditProfile = () => {
   );
 };
 
-export default EditProfile;
+export default EditProfilePage;

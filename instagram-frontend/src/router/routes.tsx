@@ -11,7 +11,7 @@ export const router = createBrowserRouter([
       {
         index: true,
         lazy: () =>
-          import("../pages/Home").then((module) => ({
+          import("../pages/HomePage").then((module) => ({
             element: <module.default />,
           })),
       },
@@ -25,7 +25,7 @@ export const router = createBrowserRouter([
       {
         path: "accounts/edit",
         lazy: () =>
-          import("../pages/EditProfile").then((module) => ({
+          import("../pages/EditProfilePage").then((module) => ({
             element: <module.default />,
           })),
       },
