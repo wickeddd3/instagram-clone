@@ -57,3 +57,21 @@ export const GET_FOLLOWING = gql`
     }
   }
 `;
+
+export const SEARCH_PROFILES = gql`
+  query SearchProfiles($query: String!) {
+    searchProfiles(query: $query) {
+      id
+      username
+      displayName
+      avatarUrl
+      bio
+      website
+      postsCount
+      followersCount
+      followingCount
+      isFollowing
+      isMe
+    }
+  }
+`;
