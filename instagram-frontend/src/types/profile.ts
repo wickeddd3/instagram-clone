@@ -28,6 +28,10 @@ export interface FollowingData {
   getFollowing: ProfileData[];
 }
 
-export interface ProfilesData {
+export interface SearchResultsData {
   searchProfiles: ProfileData[];
+}
+
+export interface RecentSearchesData {
+  getRecentSearches: ProfileData[];
 }
