@@ -237,6 +237,23 @@ export const resolvers = {
       });
       return user?.following.map((f) => f.following) || [];
     },
+    searchProfiles: async (
+      _parent: any,
+      { query }: { query: string },
+      context: any
+    ) => {
+      if (!query) return [];
+
+      return await prisma.profile.findMany({
+        where: {
+          OR: [
+            { username: { contains: query, mode: "insensitive" } },
+            { displayName: { contains: query, mode: "insensitive" } },
+          ],
+        },
+        take: 10,
+      });
+    },
   },
 
   Mutation: {
