@@ -33,12 +33,23 @@ export const router = createBrowserRouter([
 
   // --- PUBLIC/AUTH ROUTES ---
   {
-    path: "/auth",
-    // These routes do not require the user to be logged in
-    lazy: () =>
-      import("../pages/Auth").then((module) => ({
-        element: <module.default />,
-      })),
+    path: "/accounts",
+    children: [
+      {
+        path: "login",
+        lazy: () =>
+          import("../pages/LoginPage").then((module) => ({
+            element: <module.default />,
+          })),
+      },
+      {
+        path: "signup",
+        lazy: () =>
+          import("../pages/SignupPage").then((module) => ({
+            element: <module.default />,
+          })),
+      },
+    ],
   },
 
   // --- 404/Catch-all ---
