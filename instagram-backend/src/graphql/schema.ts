@@ -87,6 +87,7 @@ export const typeDefs = `#graphql
     getProfilePosts(profileId: ID!, limit: Int, offset: Int): [Post!]!
     getSavedPosts: [Post!]!
     searchProfiles(query: String!): [Profile!]!
+    getRecentSearches: [Profile!]!
     
     # Comments
     getComments(postId: ID!, parentId: ID, limit: Int, offset: Int): [Comment!]!
