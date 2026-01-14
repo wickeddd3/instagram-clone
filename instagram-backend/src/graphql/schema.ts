@@ -100,7 +100,7 @@ export const typeDefs = `#graphql
 
   type Mutation {
     # Account
-    createProfile(id: ID!, username: String!, email: String!, avatarUrl: String, bio: String, website: String): Profile
+    createProfile(id: ID!, username: String!, email: String!, displayName: String!): Profile
     updateProfile(displayName: String, bio: String, website: String): Profile!
     uploadProfileAvatar(avatarUrl: String!): Profile!
     removeProfileAvatar: Profile!

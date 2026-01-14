@@ -242,7 +242,7 @@ export const resolvers = {
   Mutation: {
     createProfile: async (
       _parent: any,
-      { id, username, email, avatarUrl, bio, website }: any,
+      { id, username, email, displayName }: any,
       context: any
     ) => {
       return await prisma.profile.create({
@@ -250,9 +250,7 @@ export const resolvers = {
           id,
           username,
           email,
-          avatarUrl,
-          bio,
-          website,
+          displayName,
         },
       });
     },
