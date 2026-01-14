@@ -79,3 +79,9 @@ export const REMOVE_RECENT_SEARCH = gql`
     removeRecentSearch(targetId: $targetId)
   }
 `;
+
+export const CLEAR_RECENT_SEARCHES = gql`
+  mutation ClearRecentSearches {
+    clearRecentSearches
+  }
+`;
