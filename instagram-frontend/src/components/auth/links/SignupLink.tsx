@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export const NoAccountLink = () => {
+export const SignupLink = () => {
   return (
     <Link
       to="/accounts/signup"
