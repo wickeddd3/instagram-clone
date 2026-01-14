@@ -572,5 +572,14 @@ export const resolvers = {
       });
       return true;
     },
+    clearRecentSearches: async (_parent: any, _args: any, context: any) => {
+      if (!context.userId) return false;
+
+      await prisma.recentSearch.deleteMany({
+        where: { userId: context.userId },
+      });
+
+      return true;
+    },
   },
 };

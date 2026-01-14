@@ -125,6 +125,7 @@ export const typeDefs = `#graphql
     # Activity
     addRecentSearch(targetId: ID!): Boolean!
     removeRecentSearch(targetId: ID!): Boolean!
+    clearRecentSearches: Boolean!
   }
 
   # --- Subscriptions (Real-time) ---
