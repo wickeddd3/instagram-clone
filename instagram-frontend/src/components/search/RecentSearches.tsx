@@ -40,7 +40,7 @@ export const RecentSearches = ({ query, onClose }: RecentSearchesProps) => {
     <div className="h-full flex flex-col gap-1">
       <div className="text-sm font-bold mt-2 px-2 pb-2">Recent</div>
       {data?.getRecentSearches.map((user) => (
-        <SearchResultItem user={user} onClick={onClose} />
+        <SearchResultItem user={user} onClick={onClose} isRecentItem={true} />
       ))}
     </div>
   );

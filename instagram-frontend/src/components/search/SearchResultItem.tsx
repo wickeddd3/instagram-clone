@@ -10,9 +10,14 @@ import { X } from "lucide-react";
 interface SearchResultItemProps {
   user: ProfileData;
   onClick: () => void;
+  isRecentItem?: boolean;
 }
 
-export const SearchResultItem = ({ user, onClick }: SearchResultItemProps) => {
+export const SearchResultItem = ({
+  user,
+  onClick,
+  isRecentItem = false,
+}: SearchResultItemProps) => {
   const [addRecentSearch] = useMutation(ADD_RECENT_SEARCH);
   const [removeRecentSearch] = useMutation(REMOVE_RECENT_SEARCH);
 
@@ -47,12 +52,14 @@ export const SearchResultItem = ({ user, onClick }: SearchResultItemProps) => {
           <span className="text-sm text-gray-400">{user.displayName}</span>
         </div>
       </div>
-      <button
-        onClick={(event) => handleRemoveRecentSearch(event, user.id)}
-        className="cursor-pointer"
-      >
-        <X size={24} className="text-gray-400" />
-      </button>
+      {isRecentItem && (
+        <button
+          onClick={(event) => handleRemoveRecentSearch(event, user.id)}
+          className="cursor-pointer"
+        >
+          <X size={24} className="text-gray-400" />
+        </button>
+      )}
     </Link>
   );
 };
