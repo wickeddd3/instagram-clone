@@ -18,8 +18,7 @@ interface AuthContextType {
   ) => Promise<{ data: { user: User | null }; error: Error | null }>;
   signUp: (
     email: string,
-    password: string,
-    username: string
+    password: string
   ) => Promise<{ data: { user: User | null }; error: Error | null }>;
 }
 
@@ -70,13 +69,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     return await supabase.auth.signInWithPassword({ email, password });
   };
 
-  const signUp = async (email: string, password: string, username: string) => {
+  const signUp = async (email: string, password: string) => {
     return await supabase.auth.signUp({
       email,
       password,
-      options: {
-        data: { username }, // Pass username to user metadata
-      },
     });
   };
 
