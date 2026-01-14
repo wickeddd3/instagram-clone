@@ -1,10 +1,8 @@
-import { useState, useEffect } from "react";
-import { useLazyQuery } from "@apollo/client/react";
-import { SEARCH_PROFILES } from "../../graphql/queries/profile";
-import { Link } from "react-router-dom";
+import { useState } from "react";
 import { X, XCircle } from "lucide-react";
 import { motion } from "framer-motion";
-import type { ProfilesData } from "../../types/profile";
+import { RecentSearches } from "../search/RecentSearches";
+import { SearchResults } from "../search/SearchResults";
 
 interface SearchSidebarProps {
   isOpen: boolean;
@@ -13,18 +11,6 @@ interface SearchSidebarProps {
 
 export const SearchSidebar = ({ isOpen, onClose }: SearchSidebarProps) => {
   const [query, setQuery] = useState("");
-  const [executeSearch, { data, loading }] =
-    useLazyQuery<ProfilesData>(SEARCH_PROFILES);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (query.trim()) {
-        executeSearch({ variables: { query } });
-      }
-    }, 300);
-
-    return () => clearTimeout(timer);
-  }, [query, executeSearch]);
 
   if (!isOpen) return;
 
@@ -65,36 +51,10 @@ export const SearchSidebar = ({ isOpen, onClose }: SearchSidebarProps) => {
 
         {/* Results List */}
         <div className="flex-1 overflow-y-auto">
-          {loading ? (
-            <div className="flex justify-center p-4 text-gray-500 text-sm">
-              Searching...
-            </div>
-          ) : data?.searchProfiles ? (
-            data?.searchProfiles.map((user: any) => (
-              <Link
-                key={user.id}
-                to={`/${user.username}`}
-                onClick={onClose}
-                className="flex items-center gap-3 p-2 hover:bg-[#1a1a1a] rounded-lg transition"
-              >
-                <img
-                  src={user.avatarUrl || "/default-avatar.png"}
-                  className="w-11 h-11 rounded-full object-cover"
-                />
-                <div className="flex flex-col">
-                  <span className="text-sm font-bold">{user.username}</span>
-                  <span className="text-sm text-gray-400">
-                    {user.displayName}
-                  </span>
-                </div>
-              </Link>
-            ))
-          ) : query ? (
-            <div className="text-center mt-10 text-gray-500 text-sm">
-              No results found.
-            </div>
+          {query ? (
+            <SearchResults query={query} onClose={onClose} />
           ) : (
-            <div className="text-sm font-bold mt-2 px-2">Recent</div>
+            <RecentSearches query={query} onClose={onClose} />
           )}
         </div>
       </div>
