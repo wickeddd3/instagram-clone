@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import { AuthGuard } from "../components/AuthGuard";
+import { GuestGuard } from "../components/GuestGuard";
 
 export const router = createBrowserRouter([
   // --- PROTECTED ROUTES ---
@@ -34,6 +35,7 @@ export const router = createBrowserRouter([
   // --- PUBLIC/AUTH ROUTES ---
   {
     path: "/accounts",
+    element: <GuestGuard />,
     children: [
       {
         path: "login",
