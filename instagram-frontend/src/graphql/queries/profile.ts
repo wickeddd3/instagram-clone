@@ -67,11 +67,19 @@ export const SEARCH_PROFILES = gql`
       avatarUrl
       bio
       website
-      postsCount
-      followersCount
-      followingCount
-      isFollowing
-      isMe
+    }
+  }
+`;
+
+export const GET_RECENT_SEARCHES = gql`
+  query GetRecentSearches {
+    getRecentSearches {
+      id
+      username
+      displayName
+      avatarUrl
+      bio
+      website
     }
   }
 `;
