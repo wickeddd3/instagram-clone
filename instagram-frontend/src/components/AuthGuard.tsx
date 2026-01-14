@@ -1,16 +1,13 @@
 import { useAuth } from "../contexts/AuthContext";
 import { MainLogin } from "./auth/MainLogin";
 import { Layout } from "./layouts/Layout";
+import { LoadingScreen } from "./loaders/LoadingScreen";
 
 export const AuthGuard = () => {
-  const { session, loading } = useAuth();
+  const { session, authUserLoading } = useAuth();
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen bg-black text-white">
-        <h1 className="text-xl">Checking authentication status...</h1>
-      </div>
-    );
+  if (authUserLoading) {
+    return <LoadingScreen />;
   }
 
   if (!session) {
