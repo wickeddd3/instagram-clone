@@ -59,7 +59,7 @@ export const Layout = () => {
 
       {/* Bottom Nav - Hidden on Desktop */}
       <div className="md:hidden fixed bottom-0 w-full z-50 bg-[#0d1015] border-t border-gray-800">
-        <MobileNav />
+        <MobileNav onCreateClick={() => setModalOpen(true)} />
       </div>
 
       {/* Create Post Modal */}
