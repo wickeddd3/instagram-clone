@@ -6,7 +6,7 @@ import { IgLabel } from "./Iglabel";
 import { LoginForm } from "./LoginForm";
 import { ForgotPasswordLink } from "./links/ForgotPasswordLinkt";
 import { LoginWithFbLink } from "./links/LoginWithFbLink";
-import { NoAccountLink } from "./links/SignupLink";
+import { SignupLink } from "./links/SignupLink";
 
 export const MainLogin = () => {
   const [hasError, setHasError] = useState(false);
@@ -28,7 +28,7 @@ export const MainLogin = () => {
             )}
             <ForgotPasswordLink />
           </div>
-          <NoAccountLink />
+          <SignupLink />
         </div>
       </div>
       <Footer />
