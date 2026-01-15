@@ -35,3 +35,7 @@ export interface SearchResultsData {
 export interface RecentSearchesData {
   getRecentSearches: ProfileData[];
 }
+
+export interface SuggestedProfilesData {
+  getSuggestedProfiles: ProfileData[];
+}
