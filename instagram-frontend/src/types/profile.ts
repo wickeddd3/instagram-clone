@@ -10,6 +10,7 @@ export interface ProfileData {
   followingCount: number;
   isFollowing: boolean;
   isMe: boolean;
+  mutualFriend?: string;
 }
 
 export interface ProfileDataById {
