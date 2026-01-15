@@ -36,6 +36,13 @@ export const router = createBrowserRouter([
             element: <module.default />,
           })),
       },
+      {
+        path: "explore/people",
+        lazy: () =>
+          import("../pages/ExplorePeoplePage").then((module) => ({
+            element: <module.default />,
+          })),
+      },
     ],
   },
 
