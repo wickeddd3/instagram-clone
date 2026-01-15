@@ -24,3 +24,7 @@ export interface ProfilePostsData {
 export interface SavedPostsData {
   getSavedPosts: PostData[];
 }
+
+export interface ExploreData {
+  getExplorePosts: PostData[];
+}
