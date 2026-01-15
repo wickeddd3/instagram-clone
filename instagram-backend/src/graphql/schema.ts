@@ -80,6 +80,7 @@ export const typeDefs = `#graphql
     getFeed(limit: Int, offset: Int): [Post!]!
     getExplorePosts(limit: Int, offset: Int): [Post!]!
     getPost(id: ID!): Post
+
     
     # Profile
     getProfile(username: String!): Profile
@@ -88,6 +89,7 @@ export const typeDefs = `#graphql
     getSavedPosts: [Post!]!
     searchProfiles(query: String!): [Profile!]!
     getRecentSearches: [Profile!]!
+    getSuggestedProfiles(limit: Int): [Profile!]!
     
     # Comments
     getComments(postId: ID!, parentId: ID, limit: Int, offset: Int): [Comment!]!

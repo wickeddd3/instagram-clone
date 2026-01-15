@@ -131,6 +131,36 @@ export const resolvers = {
         },
       });
     },
+    getSuggestedProfiles: async (_parent: any, { limit = 5 }, context: any) => {
+      const { userId } = context;
+
+      if (!userId) return [];
+
+      // Get the IDs of everyone the current user is already following
+      const following = await prisma.follow.findMany({
+        where: { followerId: userId },
+        select: { followingId: true },
+      });
+
+      const followingIds = following.map((f: any) => f.followingId);
+
+      // Query for suggestions
+      return await prisma.profile.findMany({
+        where: {
+          AND: [
+            { id: { not: userId } }, // Not auth user
+            { id: { notIn: followingIds } }, // Not auth user already follow
+          ],
+        },
+        take: limit,
+        orderBy: {
+          followers: {
+            _count: "desc", // Prioritize popular users
+          },
+        },
+      });
+    },
+
     getProfile: async (_parent: any, { username }: { username: string }) => {
       return await prisma.profile.findUnique({
         where: { username },
