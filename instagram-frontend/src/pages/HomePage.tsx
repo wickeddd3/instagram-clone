@@ -4,6 +4,7 @@ import { GET_FEED } from "../graphql/queries/post";
 import { useQuery } from "@apollo/client/react";
 import type { FeedData } from "../types/post";
 import { AuthUser } from "../components/AuthUser";
+import { SuggestionsSidebar } from "../components/layouts/SuggestionsSidebar";
 
 const HomePage = () => {
   const { loading, error, data } = useQuery<FeedData>(GET_FEED);
@@ -38,39 +39,12 @@ const HomePage = () => {
       </div>
 
       {/* Right Sidebar - Suggestions (Desktop Only) */}
-      <div className="hidden lg:block w-[320px] pl-16 pt-10">
+      <div className="hidden w-[320px] pl-16 pt-10 lg:flex flex-col gap-6">
         {/* Current User */}
         <AuthUser />
 
-        <div className="flex justify-between mb-4">
-          <span className="text-sm font-semibold text-gray-500">
-            Suggested for you
-          </span>
-          <span className="text-xs font-semibold text-white cursor-pointer">
-            See All
-          </span>
-        </div>
-
         {/* Suggestion List */}
-        {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-3">
-              <img
-                src={`https://i.pravatar.cc/150?img=${i + 40}`}
-                className="w-8 h-8 rounded-full"
-              />
-              <div className="text-xs">
-                <div className="font-semibold hover:underline cursor-pointer">
-                  user_suggest_{i}
-                </div>
-                <div className="text-gray-500">Followed by friend_x</div>
-              </div>
-            </div>
-            <button className="text-xs font-semibold text-blue-400 hover:text-white">
-              Follow
-            </button>
-          </div>
-        ))}
+        <SuggestionsSidebar />
 
         {/* Footer Links */}
         <div className="mt-8 text-xs text-gray-500 space-y-4">
