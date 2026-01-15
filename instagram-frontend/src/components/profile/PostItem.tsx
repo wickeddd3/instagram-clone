@@ -11,7 +11,7 @@ export const PostItem = ({ post }: PostItemProps) => {
 
   return (
     <article
-      className="relative aspect-square group cursor-pointer"
+      className="relative group cursor-pointer"
       onClick={() => openPostModal(post)}
     >
       <img
