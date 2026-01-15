@@ -20,6 +20,7 @@ export const typeDefs = `#graphql
     savedPosts: [Post!]!
     followers: [Profile!]!
     following: [Profile!]!
+    mutualFriend: String
     
     # Auth metadata
     isFollowing: Boolean # Dynamic based on viewer

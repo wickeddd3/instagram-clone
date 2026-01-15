@@ -100,6 +100,26 @@ export const resolvers = {
 
       return parent.id === context.userId;
     },
+    mutualFriend: async (parent: any, _args: any, context: any) => {
+      if (!context.userId) return null;
+
+      // Find one user that I follow who also follows this suggested profile
+      const mutual = await prisma.follow.findFirst({
+        where: {
+          followerId: context.userId, // Someone I follow
+          following: {
+            following: {
+              some: {
+                followingId: parent.id, // ...who also follows the suggested user
+              },
+            },
+          },
+        },
+        include: { following: true },
+      });
+
+      return mutual?.following.username || null;
+    },
   },
 
   Query: {
