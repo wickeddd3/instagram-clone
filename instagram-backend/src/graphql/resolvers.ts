@@ -120,6 +120,17 @@ export const resolvers = {
         },
       });
     },
+    getExplorePosts: async (_parent: any, { limit = 20 }, context: any) => {
+      // TODO: Exclude user's own posts and people user follow
+      return await prisma.post.findMany({
+        take: limit,
+        orderBy: { createdAt: "desc" },
+        include: {
+          author: true,
+          _count: { select: { likes: true, comments: true } },
+        },
+      });
+    },
     getProfile: async (_parent: any, { username }: { username: string }) => {
       return await prisma.profile.findUnique({
         where: { username },
