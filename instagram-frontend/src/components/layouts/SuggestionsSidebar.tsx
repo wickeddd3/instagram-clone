@@ -33,7 +33,7 @@ export const SuggestionsSidebar = () => {
       {/* Suggested Users List */}
       <div className="flex flex-col gap-3">
         {data?.getSuggestedProfiles.map((user) => (
-          <SuggestionItem user={user} />
+          <SuggestionItem key={user.id} user={user} />
         ))}
       </div>
     </div>
