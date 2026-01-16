@@ -11,7 +11,7 @@ export const Profile = ({ children }: { children: React.ReactNode }) => {
 
 export const Avatar = ({ avatarUrl }: { avatarUrl: string }) => {
   return (
-    <div className="w-20 h-20 md:w-30 md:h-30 rounded-full bg-gray-800 overflow-hidden">
+    <div className="w-20 h-20 md:w-30 md:h-30 lg:w-40 lg:h-40 rounded-full bg-gray-800 overflow-hidden">
       <img
         src={avatarUrl}
         alt="Avatar"
@@ -122,7 +122,7 @@ export const Content = ({ profileId }: { profileId: string }) => {
   );
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col pt-12">
       <div className="grid grid-cols-3 place-items-center">
         <button
           onClick={() => setActiveTab("POSTS")}
