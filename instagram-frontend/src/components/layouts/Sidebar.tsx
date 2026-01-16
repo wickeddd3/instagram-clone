@@ -4,9 +4,9 @@ import {
   Compass,
   Heart,
   Plus,
-  MessageCircle,
   Menu,
   Instagram,
+  Send,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
@@ -38,6 +38,11 @@ export const Sidebar = ({
       action: () => navigate("/"),
     },
     {
+      icon: <Send size={iconSize} />,
+      label: "Messages",
+      action: () => navigate("/inbox"),
+    },
+    {
       icon: <Search size={iconSize} />,
       label: "Search",
       action: onSearchClick,
@@ -46,11 +51,6 @@ export const Sidebar = ({
       icon: <Compass size={iconSize} />,
       label: "Explore",
       action: () => navigate("/explore"),
-    },
-    {
-      icon: <MessageCircle size={iconSize} />,
-      label: "Messages",
-      action: () => navigate("/messages"),
     },
     {
       icon: <Heart size={iconSize} />,

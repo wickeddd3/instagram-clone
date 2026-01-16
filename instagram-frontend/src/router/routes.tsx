@@ -43,6 +43,13 @@ export const router = createBrowserRouter([
             element: <module.default />,
           })),
       },
+      {
+        path: "inbox",
+        lazy: () =>
+          import("../pages/InboxPage").then((module) => ({
+            element: <module.default />,
+          })),
+      },
     ],
   },
 
