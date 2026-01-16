@@ -11,6 +11,7 @@ import { CommentList } from "../comments/CommentList";
 import { PostActions } from "../posts/PostActions";
 import { PostHeader } from "../posts/PostHeader";
 import { EmptyComments } from "../comments/EmptyComments";
+import { CommentSkeleton } from "../loaders/CommentSkeleton";
 
 interface CreatePostModalProps {
   isOpen: boolean;
@@ -96,7 +97,11 @@ export const PostModal = ({ isOpen, onClose }: CreatePostModalProps) => {
           {/* Post Comments Section */}
           <div className="w-full h-full overflow-y-auto overscroll-contain no-scrollbar p-3">
             {loading ? (
-              <div className="p-4 text-gray-500">Loading comments...</div>
+              <div className="w-full flex flex-col gap-4">
+                {[...Array(8)].map((_, i) => (
+                  <CommentSkeleton key={i} />
+                ))}
+              </div>
             ) : data?.getComments.length ? (
               <CommentList
                 comments={data?.getComments || []}
