@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { formatDistanceToNow } from "date-fns";
-import { Heart } from "lucide-react";
+import { Heart, Loader } from "lucide-react";
 import { useLazyQuery, useMutation } from "@apollo/client/react";
 import type { CommentData, CommentsData } from "../../types/comment";
 import { GET_COMMENTS } from "../../graphql/queries/comment";
@@ -85,18 +85,16 @@ export const CommentItem = ({
           >
             <div className="w-6 border-t border-gray-600" />
             {showReplies ? "Hide replies" : `View replies (${repliesCount})`}
+            {loading && <Loader className="animate-spin" size={14} />}
           </button>
 
-          {showReplies &&
-            (loading ? (
-              <div className="p-4 text-gray-500">Loading replies...</div>
-            ) : (
-              <CommentList
-                comments={data?.getComments || []}
-                postId={postId}
-                onReplyClick={onReplyClick}
-              />
-            ))}
+          {showReplies && (
+            <CommentList
+              comments={data?.getComments || []}
+              postId={postId}
+              onReplyClick={onReplyClick}
+            />
+          )}
         </div>
       )}
     </div>
