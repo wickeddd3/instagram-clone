@@ -14,6 +14,10 @@ export const MobileNav = ({ onCreateClick }: MobileNavProps) => {
     navigate("/");
   };
 
+  const handleRedirectExplore = () => {
+    navigate("/explore");
+  };
+
   const handleRedirectToProfile = () => {
     navigate(`/${authUser?.getProfileById.username}`);
   };
@@ -29,6 +33,7 @@ export const MobileNav = ({ onCreateClick }: MobileNavProps) => {
         <Home size={24} />
       </button>
       <button
+        onClick={handleRedirectExplore}
         aria-label="Explore"
         title="Explore"
         className="text-white cursor-pointer"
