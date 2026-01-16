@@ -2,6 +2,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
+import { useEffect, useState } from "react";
+import { StoriesSkeleton } from "./loaders/StoriesSkeleton";
 
 export const Stories = () => {
   const stories = Array.from({ length: 15 }).map((_, i) => ({
@@ -9,6 +11,20 @@ export const Stories = () => {
     username: `user_${i}`,
     avatar: `https://i.pravatar.cc/150?img=${i + 10}`,
   }));
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+
+    return () => clearTimeout(timeoutId);
+  }, []);
+
+  if (loading) {
+    return <StoriesSkeleton />;
+  }
 
   return (
     <div className="w-full mx-auto py-4 relative group">
@@ -23,7 +39,7 @@ export const Stories = () => {
           <SwiperSlide key={story.id} className="w-auto!">
             <div className="flex flex-col items-center gap-1 cursor-pointer">
               {/* Gradient Ring */}
-              <div className="w-[66px] h-[66px] rounded-full bg-linear-to-tr from-yellow-400 to-fuchsia-600 p-0.5">
+              <div className="w-22 h-22 rounded-full bg-linear-to-tr from-yellow-400 to-fuchsia-600 p-0.5">
                 <div className="bg-black p-0.5 rounded-full w-full h-full">
                   <img
                     src={story.avatar}

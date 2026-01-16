@@ -10,16 +10,6 @@ import { PostSkeleton } from "../components/loaders/PostSkeleton";
 const HomePage = () => {
   const { loading, error, data } = useQuery<FeedData>(GET_FEED);
 
-  if (loading) {
-    return (
-      <div className="w-full flex flex-col gap-8">
-        {[...Array(8)].map((_, i) => (
-          <PostSkeleton key={i} />
-        ))}
-      </div>
-    );
-  }
-
   if (error) {
     return (
       <div className="flex w-full justify-center pt-20 text-red-500">
@@ -34,11 +24,19 @@ const HomePage = () => {
       <div className="w-full lg:w-[630px] flex flex-col gap-4 pt-4">
         <Stories />
 
-        <div className="flex flex-col gap-6">
-          {data?.getFeed.map((post) => (
-            <Post key={post.id} post={post} />
-          ))}
-        </div>
+        {loading ? (
+          <div className="w-full flex flex-col gap-8">
+            {[...Array(8)].map((_, i) => (
+              <PostSkeleton key={i} />
+            ))}
+          </div>
+        ) : (
+          <div className="flex flex-col gap-6">
+            {data?.getFeed.map((post) => (
+              <Post key={post.id} post={post} />
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Right Sidebar - Suggestions (Desktop Only) */}
