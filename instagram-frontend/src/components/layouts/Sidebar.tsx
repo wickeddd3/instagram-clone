@@ -17,6 +17,7 @@ interface SidebarProps {
   onSidebarHover?: (isOpen: boolean) => void;
   onCreateClick?: () => void;
   onSearchClick?: () => void;
+  onNotificationClick?: () => void;
 }
 
 export const Sidebar = ({
@@ -24,6 +25,7 @@ export const Sidebar = ({
   onSidebarHover,
   onCreateClick,
   onSearchClick,
+  onNotificationClick,
 }: SidebarProps) => {
   const { authUser } = useAuth();
 
@@ -55,7 +57,7 @@ export const Sidebar = ({
     {
       icon: <Heart size={iconSize} />,
       label: "Notifications",
-      action: () => navigate("/notifications"),
+      action: onNotificationClick,
     },
     {
       icon: <Plus size={iconSize} />,

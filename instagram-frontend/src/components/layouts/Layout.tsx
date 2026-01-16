@@ -8,11 +8,13 @@ import { motion } from "framer-motion";
 import { PostModal } from "../modals/PostModal";
 import { usePost } from "../../contexts/PostContext";
 import { SearchSidebar } from "./SearchSidebar";
+import { NotificationsSidebar } from "./NotificationsSidebar";
 
 export const Layout = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
 
   const location = useLocation();
   const { isPostModalOpen, closePostModal } = usePost();
@@ -36,12 +38,18 @@ export const Layout = () => {
           onSidebarHover={setSidebarOpen}
           onCreateClick={() => setModalOpen(true)}
           onSearchClick={() => setIsSearchOpen(!isSearchOpen)}
+          onNotificationClick={() => setIsNotificationOpen(!isNotificationOpen)}
         />
       </motion.aside>
 
       <SearchSidebar
         isOpen={isSearchOpen}
         onClose={() => setIsSearchOpen(false)}
+      />
+
+      <NotificationsSidebar
+        isOpen={isNotificationOpen}
+        onClose={() => setIsNotificationOpen(false)}
       />
 
       {/* Main Content Area */}
