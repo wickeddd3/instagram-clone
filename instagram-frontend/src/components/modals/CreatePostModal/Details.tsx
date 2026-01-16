@@ -76,67 +76,63 @@ export const Details = ({
   };
 
   return (
-    <>
-      <div className="w-full md:w-[60%] h-[400px] md:h-full bg-black flex items-center justify-center relative border-r border-gray-700">
+    <div className="w-full h-full flex flex-col items-center justify-center text-white">
+      <div className="bg-neutral-950 border-b border-neutral-800 w-full flex items-center justify-between">
         <button
           onClick={() => setStep("upload")}
-          className="absolute top-4 left-4 p-2 bg-black/50 rounded-full hover:bg-black/70 text-white z-10 cursor-pointer"
+          className="rounded-full text-white cursor-pointer pl-4"
         >
-          <ArrowLeft size={20} />
+          <ArrowLeft size={24} />
         </button>
-        <img
-          src={previewUrl}
-          alt="Preview"
-          className="w-full h-full object-cover"
-        />
-      </div>
-
-      <div className="w-full md:w-[40%] flex flex-col bg-neutral-900">
-        <div className="border-b border-neutral-800 p-3 flex justify-between items-center">
-          <span className="text-transparent">Back</span>
-          <span className="text-white font-semibold">Compose</span>
-
-          {/* SHARE BUTTON */}
-          <button
-            onClick={handleShare}
-            disabled={isUploading}
-            className="text-[#0095f6] font-bold text-sm hover:text-white transition disabled:opacity-50"
-          >
-            {isUploading ? "Sharing..." : "Share"}
-          </button>
-        </div>
-
-        {isUploading && (
-          <div className="w-full bg-blue-500/20 text-blue-200 text-xs p-2 text-center flex items-center justify-center gap-2">
-            <Loader2 className="animate-spin" size={14} /> Uploading to
-            server...
-          </div>
-        )}
-
-        <div className="p-4 flex gap-3">
-          <img
-            src={authUser?.getProfileById?.avatarUrl || "/ig-default.jpg"}
-            className="w-8 h-8 rounded-full object-cover"
-          />
-          <span className="text-white font-semibold text-sm">
-            {authUser?.getProfileById?.username}
-          </span>
-        </div>
-
-        <textarea
-          className="bg-transparent text-white w-full h-[200px] p-4 resize-none focus:outline-none placeholder-gray-500"
-          placeholder="Write a caption..."
-          value={caption}
-          onChange={(e) => setCaption(e.target.value)}
+        <h1 className="text-center py-3 font-semibold">Create new post</h1>
+        {/* SHARE BUTTON */}
+        <button
+          onClick={handleShare}
           disabled={isUploading}
-        />
+          className="text-indigo-400 font-semibold text-sm hover:text-indigo-300 hover:underline transition disabled:opacity-50 pr-4 cursor-pointer"
+        >
+          {isUploading ? "Sharing..." : "Share"}
+        </button>
+      </div>
 
-        {/* Metadata Options */}
-        <div className="mt-auto p-4 border-t border-neutral-800 text-gray-400 text-sm flex justify-between items-center cursor-pointer hover:bg-white/5">
-          <span>Add Location</span>
-          <span>📍</span>
+      <div className="flex-1 h-[400px] w-full flex flex-col md:flex-row">
+        {/* Preview Image */}
+        <div className="w-full md:w-[60%] h-1/2 md:h-full bg-black flex items-center justify-center relative border-r border-gray-700">
+          <img
+            src={previewUrl}
+            alt="Preview"
+            className="w-full h-full object-cover"
+          />
+        </div>
+        {/* Details */}
+        <div className="w-full h-full md:w-[40%] flex flex-col bg-neutral-900">
+          {isUploading && (
+            <div className="w-full bg-indigo-500/20 text-indigo-200 text-xs p-2 text-center flex items-center justify-center gap-2">
+              <Loader2 className="animate-spin" size={14} /> Uploading...
+            </div>
+          )}
+
+          <div className="p-4 flex gap-3">
+            <img
+              src={authUser?.getProfileById?.avatarUrl || "/ig-default.jpg"}
+              className="w-8 h-8 rounded-full object-cover"
+            />
+            <span className="text-white font-semibold text-sm">
+              {authUser?.getProfileById?.username}
+            </span>
+          </div>
+
+          <textarea
+            className="bg-transparent text-white w-full h-[200px] p-4 resize-none focus:outline-none placeholder-gray-500"
+            placeholder="Write a caption..."
+            value={caption}
+            onChange={(e) => setCaption(e.target.value)}
+            disabled={isUploading}
+          />
+
+          {/* TODO: Metadata Options */}
         </div>
       </div>
-    </>
+    </div>
   );
 };

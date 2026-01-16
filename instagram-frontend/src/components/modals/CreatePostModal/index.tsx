@@ -33,7 +33,7 @@ export const CreatePostModal = ({ isOpen, onClose }: CreatePostModalProps) => {
         onClick={onClose}
         className="absolute top-4 right-4 text-white hover:text-gray-300"
       >
-        <X size={32} />
+        <X size={24} />
       </button>
       <motion.div
         initial={{ scale: 1.1, opacity: 0 }}
