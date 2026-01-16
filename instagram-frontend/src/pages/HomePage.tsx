@@ -5,14 +5,17 @@ import { useQuery } from "@apollo/client/react";
 import type { FeedData } from "../types/post";
 import { AuthUser } from "../components/AuthUser";
 import { SuggestionsSidebar } from "../components/layouts/SuggestionsSidebar";
+import { PostSkeleton } from "../components/loaders/PostSkeleton";
 
 const HomePage = () => {
   const { loading, error, data } = useQuery<FeedData>(GET_FEED);
 
   if (loading) {
     return (
-      <div className="flex w-full justify-center pt-20 text-white">
-        Loading feed...
+      <div className="w-full flex flex-col gap-8">
+        {[...Array(8)].map((_, i) => (
+          <PostSkeleton key={i} />
+        ))}
       </div>
     );
   }
