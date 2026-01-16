@@ -2,17 +2,14 @@ import { useQuery } from "@apollo/client/react";
 import type { SavedPostsData } from "../../types/post";
 import { GET_SAVED_POSTS } from "../../graphql/queries/post";
 import { PostItem } from "./PostItem";
+import { ProfilePostsSkeleton } from "../loaders/ProfilePostsSkeleton";
 
 export const SavedPosts = () => {
   const { loading, error, data } = useQuery<SavedPostsData>(GET_SAVED_POSTS);
 
   return (
     <>
-      {loading && (
-        <div className="flex w-full justify-center pt-20 text-white">
-          Loading posts...
-        </div>
-      )}
+      {loading && <ProfilePostsSkeleton />}
 
       {error && (
         <div className="flex w-full justify-center pt-20 text-red-500">

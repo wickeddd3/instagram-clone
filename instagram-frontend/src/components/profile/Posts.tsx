@@ -2,6 +2,7 @@ import { useQuery } from "@apollo/client/react";
 import type { ProfilePostsData } from "../../types/post";
 import { GET_PROFILE_POSTS } from "../../graphql/queries/post";
 import { PostItem } from "./PostItem";
+import { ProfilePostsSkeleton } from "../loaders/ProfilePostsSkeleton";
 
 export const Posts = ({ profileId }: { profileId: string }) => {
   const { loading, error, data } = useQuery<ProfilePostsData>(
@@ -14,11 +15,7 @@ export const Posts = ({ profileId }: { profileId: string }) => {
 
   return (
     <>
-      {loading && (
-        <div className="flex w-full justify-center pt-20 text-white">
-          Loading posts...
-        </div>
-      )}
+      {loading && <ProfilePostsSkeleton />}
 
       {error && (
         <div className="flex w-full justify-center pt-20 text-red-500">
