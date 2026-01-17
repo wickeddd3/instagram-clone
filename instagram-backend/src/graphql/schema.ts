@@ -85,7 +85,7 @@ export const typeDefs = `#graphql
   type Query {
     # Feed and Discovery
     getFeedPosts(cursor: String, limit: Int): FeedResponse
-    getExplorePosts(limit: Int, offset: Int): [Post!]!
+    getExplorePosts(cursor: String, limit: Int): FeedResponse
     getPost(id: ID!): Post
 
     

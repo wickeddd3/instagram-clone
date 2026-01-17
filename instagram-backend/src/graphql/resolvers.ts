@@ -155,16 +155,37 @@ export const resolvers = {
         nextCursor,
       };
     },
-    getExplorePosts: async (_parent: any, { limit = 20 }, context: any) => {
+    getExplorePosts: async (
+      _parent: any,
+      { cursor, limit = 9 }: { cursor: string; limit: number },
+      context: any
+    ) => {
       // TODO: Exclude user's own posts and people user follow
-      return await prisma.post.findMany({
+      // Base query options
+      const queryOptions: Prisma.PostFindManyArgs = {
         take: limit,
         orderBy: { createdAt: "desc" },
         include: {
           author: true,
-          _count: { select: { likes: true, comments: true } },
+          _count: { select: { comments: true, likes: true } },
         },
-      });
+      };
+
+      // Only add cursor and skip if a cursor exists
+      if (cursor && cursor !== null) {
+        queryOptions.cursor = { id: cursor };
+        queryOptions.skip = 1; // Skip the actual cursor record to avoid duplicates
+      }
+
+      const posts = await prisma.post.findMany(queryOptions);
+      const hasMore = posts.length === limit; // if posts length exactly the limit, there might be more
+      const nextCursor = hasMore ? posts[posts.length - 1]?.id : null;
+
+      return {
+        posts,
+        hasMore,
+        nextCursor,
+      };
     },
     getSuggestedProfiles: async (_parent: any, { limit = 5 }, context: any) => {
       const { userId } = context;
