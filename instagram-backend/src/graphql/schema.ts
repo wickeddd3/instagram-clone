@@ -92,7 +92,7 @@ export const typeDefs = `#graphql
     # Profile
     getProfile(username: String!): Profile
     getProfileById(id: ID!): Profile
-    getProfilePosts(profileId: ID!, limit: Int, offset: Int): [Post!]!
+    getProfilePosts(profileId: ID!, cursor: String, limit: Int): FeedResponse
     getSavedPosts: [Post!]!
     searchProfiles(query: String!): [Profile!]!
     getRecentSearches: [Profile!]!

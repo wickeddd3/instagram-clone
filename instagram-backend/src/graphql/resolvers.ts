@@ -220,21 +220,34 @@ export const resolvers = {
     },
     getProfilePosts: async (
       _parent: any,
-      { profileId, limit = 10, offset = 0 }: any
+      { profileId, cursor, limit = 10 }: any
     ) => {
-      return await prisma.post.findMany({
+      // Base query options
+      const queryOptions: Prisma.PostFindManyArgs = {
         where: { authorId: profileId },
         take: limit,
-        skip: offset,
         orderBy: { createdAt: "desc" },
         include: {
           author: true,
-          likes: true,
-          _count: {
-            select: { comments: true, likes: true },
-          },
+          _count: { select: { comments: true, likes: true } },
         },
-      });
+      };
+
+      // Only add cursor and skip if a cursor exists
+      if (cursor && cursor !== null) {
+        queryOptions.cursor = { id: cursor };
+        queryOptions.skip = 1; // Skip the actual cursor record to avoid duplicates
+      }
+
+      const posts = await prisma.post.findMany(queryOptions);
+      const hasMore = posts.length === limit; // if posts length exactly the limit, there might be more
+      const nextCursor = hasMore ? posts[posts.length - 1]?.id : null;
+
+      return {
+        posts,
+        hasMore,
+        nextCursor,
+      };
     },
     getSavedPosts: async (_parent: any, _args: any, context: any) => {
       if (!context.userId)
