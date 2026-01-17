@@ -3,25 +3,73 @@ import type { SavedPostsData } from "../../types/post";
 import { GET_SAVED_POSTS } from "../../graphql/queries/post";
 import { PostItem } from "./PostItem";
 import { ProfilePostsSkeleton } from "../loaders/ProfilePostsSkeleton";
+import { useEffect, useRef } from "react";
+import { Loader } from "lucide-react";
 
 export const SavedPosts = () => {
-  const { loading, error, data } = useQuery<SavedPostsData>(GET_SAVED_POSTS);
+  const { loading, error, data, fetchMore } = useQuery<SavedPostsData>(
+    GET_SAVED_POSTS,
+    {
+      variables: { cursor: null, limit: 9 },
+    }
+  );
+
+  const {
+    posts = [],
+    hasMore = false,
+    nextCursor = null,
+  } = data?.getSavedPosts || {};
+
+  const sentinelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Only fetch more if there is more to fetch
+    if (!sentinelRef.current || loading || !hasMore) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          fetchMore({
+            variables: { cursor: nextCursor, limit: 9 },
+          });
+        }
+      },
+      { threshold: 0.8 }
+    );
+
+    observer.observe(sentinelRef.current);
+
+    return () => observer.disconnect();
+  }, [nextCursor, hasMore, loading, fetchMore]);
+
+  if (error) {
+    return (
+      <div className="flex w-full justify-center pt-20 text-red-500">
+        Error: {error.message}
+      </div>
+    );
+  }
 
   return (
     <>
-      {loading && <ProfilePostsSkeleton />}
+      {loading && !posts.length && <ProfilePostsSkeleton />}
 
-      {error && (
-        <div className="flex w-full justify-center pt-20 text-red-500">
-          Error: {error.message}
+      {!!posts.length && (
+        <div className="grid grid-cols-3 gap-0.5">
+          {posts.map((post) => (
+            <PostItem key={post.id} post={post} />
+          ))}
         </div>
       )}
 
-      <div className="grid grid-cols-3 gap-0.5">
-        {data?.getSavedPosts.map((post) => (
-          <PostItem key={post.id} post={post} />
-        ))}
-      </div>
+      {hasMore && (
+        <div
+          ref={sentinelRef}
+          className="w-full flex justify-center items-center py-10 pb-5"
+        >
+          <Loader className="animate-spin text-gray-500" size={34} />
+        </div>
+      )}
     </>
   );
 };

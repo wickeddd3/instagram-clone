@@ -47,6 +47,15 @@ export const client = new ApolloClient({
               };
             },
           },
+          getSavedPosts: {
+            keyArgs: false,
+            merge(existing, incoming) {
+              return {
+                ...incoming,
+                posts: [...(existing?.posts || []), ...incoming.posts],
+              };
+            },
+          },
         },
       },
     },

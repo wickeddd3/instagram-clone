@@ -30,7 +30,11 @@ export interface ProfilePostsData {
 }
 
 export interface SavedPostsData {
-  getSavedPosts: PostData[];
+  getSavedPosts: {
+    posts: PostData[];
+    hasMore: boolean;
+    nextCursor: string;
+  };
 }
 
 export interface ExploreData {

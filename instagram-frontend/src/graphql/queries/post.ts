@@ -40,9 +40,13 @@ export const GET_PROFILE_POSTS = gql`
 `;
 
 export const GET_SAVED_POSTS = gql`
-  query GetSavedPosts {
-    getSavedPosts {
-      ...PostFields
+  query GetSavedPosts($cursor: String, $limit: Int) {
+    getSavedPosts(cursor: $cursor, limit: $limit) {
+      posts {
+        ...PostFields
+      }
+      hasMore
+      nextCursor
     }
   }
 
