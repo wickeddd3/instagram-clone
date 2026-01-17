@@ -16,9 +16,13 @@ export const GET_FEED_POSTS = gql`
 `;
 
 export const GET_EXPLORE_POSTS = gql`
-  query GetExplorePosts($limit: Int, $offset: Int) {
-    getExplorePosts(limit: $limit, offset: $offset) {
-      ...PostFields
+  query GetExplorePosts($cursor: String, $limit: Int) {
+    getExplorePosts(cursor: $cursor, limit: $limit) {
+      posts {
+        ...PostFields
+      }
+      hasMore
+      nextCursor
     }
   }
 
