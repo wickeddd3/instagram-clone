@@ -32,3 +32,7 @@ export interface SavedPostsData {
 export interface ExploreData {
   getExplorePosts: PostData[];
 }
+
+export interface CreatedPost {
+  createPost: PostData;
+}
