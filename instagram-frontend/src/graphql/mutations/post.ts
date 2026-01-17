@@ -1,12 +1,14 @@
 import { gql } from "@apollo/client";
+import { POST_FIELDS } from "../fragments/post";
 
 export const CREATE_POST = gql`
   mutation CreatePost($imageUrl: String!, $caption: String) {
     createPost(imageUrl: $imageUrl, caption: $caption) {
-      imageUrl
-      caption
+      ...PostFields
     }
   }
+
+  ${POST_FIELDS}
 `;
 
 export const TOGGLE_POST_LIKE = gql`
