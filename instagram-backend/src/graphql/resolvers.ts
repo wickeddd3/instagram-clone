@@ -249,25 +249,50 @@ export const resolvers = {
         nextCursor,
       };
     },
-    getSavedPosts: async (_parent: any, _args: any, context: any) => {
+    getSavedPosts: async (
+      _parent: any,
+      { cursor, limit = 10 }: any,
+      context: any
+    ) => {
       if (!context.userId)
         throw new Error("Unauthorized: You must be logged in.");
 
-      const savedRecords = await prisma.savedPost.findMany({
+      // Base query options
+      const queryOptions: Prisma.SavedPostFindManyArgs = {
         where: { userId: context.userId },
+        take: limit,
+        orderBy: { createdAt: "desc" },
         include: {
           post: {
             include: {
               author: true,
-              _count: { select: { likes: true, comments: true } },
+              _count: { select: { comments: true, likes: true } },
             },
           },
         },
-        orderBy: { createdAt: "desc" },
-      });
+      };
 
+      // Only add cursor and skip if a cursor exists
+      if (cursor && cursor !== null) {
+        queryOptions.cursor = { id: cursor };
+        queryOptions.skip = 1; // Skip the actual cursor record to avoid duplicates
+      }
+
+      const savedRecords = (await prisma.savedPost.findMany(
+        queryOptions
+      )) as any[];
       // Flatten the result: return the Post objects directly
-      return savedRecords.map((record) => record.post);
+      const posts = savedRecords.map((record: any) => record.post);
+      const hasMore = savedRecords.length === limit; // if posts length exactly the limit, there might be more
+      const nextCursor = hasMore
+        ? savedRecords[savedRecords.length - 1]?.id
+        : null;
+
+      return {
+        posts,
+        hasMore,
+        nextCursor,
+      };
     },
 
     getComments: async (
