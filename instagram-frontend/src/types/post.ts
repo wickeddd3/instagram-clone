@@ -13,8 +13,12 @@ export interface PostData {
   isSaved: boolean;
 }
 
-export interface FeedData {
-  getFeed: PostData[];
+export interface FeedPostsdData {
+  getFeedPosts: {
+    posts: PostData[];
+    hasMore: boolean;
+    nextCursor: string;
+  };
 }
 
 export interface ProfilePostsData {
