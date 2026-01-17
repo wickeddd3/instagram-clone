@@ -74,11 +74,17 @@ export const typeDefs = `#graphql
     createdAt: DateTime!
   }
 
+  type FeedResponse {
+    posts: [Post!]!
+    nextCursor: String
+    hasMore: Boolean!
+  }
+
   # --- Queries ---
 
   type Query {
     # Feed and Discovery
-    getFeed(limit: Int, offset: Int): [Post!]!
+    getFeedPosts(cursor: String, limit: Int): FeedResponse
     getExplorePosts(limit: Int, offset: Int): [Post!]!
     getPost(id: ID!): Post
 
