@@ -1,20 +1,24 @@
 import { gql } from "@apollo/client";
 
-export const GET_FEED = gql`
-  query GetFeed {
-    getFeed {
-      id
-      imageUrl
-      caption
-      createdAt
-      author {
-        username
-        avatarUrl
+export const GET_FEED_POSTS = gql`
+  query GetFeedPosts($cursor: String, $limit: Int) {
+    getFeedPosts(cursor: $cursor, limit: $limit) {
+      posts {
+        id
+        imageUrl
+        caption
+        createdAt
+        author {
+          username
+          avatarUrl
+        }
+        likesCount
+        commentsCount
+        isLiked
+        isSaved
       }
-      likesCount
-      commentsCount
-      isLiked
-      isSaved
+      hasMore
+      nextCursor
     }
   }
 `;
