@@ -38,6 +38,15 @@ export const client = new ApolloClient({
               };
             },
           },
+          getProfilePosts: {
+            keyArgs: false,
+            merge(existing, incoming) {
+              return {
+                ...incoming,
+                posts: [...(existing?.posts || []), ...incoming.posts],
+              };
+            },
+          },
         },
       },
     },

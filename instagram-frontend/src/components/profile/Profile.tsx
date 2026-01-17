@@ -6,7 +6,11 @@ import { TaggedPosts } from "./TaggedPosts";
 import { FollowModal } from "../modals/FollowModal";
 
 export const Profile = ({ children }: { children: React.ReactNode }) => {
-  return <div className="max-w-3xl w-full mx-auto px-4 pt-8">{children}</div>;
+  return (
+    <div className="max-w-3xl w-full h-full flex flex-col mx-auto px-4 pt-8">
+      {children}
+    </div>
+  );
 };
 
 export const Avatar = ({ avatarUrl }: { avatarUrl: string }) => {
@@ -122,7 +126,7 @@ export const Content = ({ profileId }: { profileId: string }) => {
   );
 
   return (
-    <div className="flex flex-col pt-12">
+    <div className="flex-1 flex flex-col pt-12 pb-6">
       <div className="grid grid-cols-3 place-items-center">
         <button
           onClick={() => setActiveTab("POSTS")}

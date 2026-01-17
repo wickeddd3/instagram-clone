@@ -26,9 +26,13 @@ export const GET_EXPLORE_POSTS = gql`
 `;
 
 export const GET_PROFILE_POSTS = gql`
-  query GetProfilePosts($profileId: ID!, $limit: Int, $offset: Int) {
-    getProfilePosts(profileId: $profileId, limit: $limit, offset: $offset) {
-      ...PostFields
+  query GetProfilePosts($profileId: ID!, $cursor: String, $limit: Int) {
+    getProfilePosts(profileId: $profileId, cursor: $cursor, limit: $limit) {
+      posts {
+        ...PostFields
+      }
+      hasMore
+      nextCursor
     }
   }
 

@@ -22,7 +22,11 @@ export interface FeedPostsdData {
 }
 
 export interface ProfilePostsData {
-  getProfilePosts: PostData[];
+  getProfilePosts: {
+    posts: PostData[];
+    hasMore: boolean;
+    nextCursor: string;
+  };
 }
 
 export interface SavedPostsData {
