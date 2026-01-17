@@ -4,8 +4,8 @@ import { useSupabaseUpload } from "../../../hooks/useSupabaseUpload";
 import { createUploadPath } from "../../../utils/upload";
 import { useMutation } from "@apollo/client/react";
 import { CREATE_POST } from "../../../graphql/mutations/post";
-import { GET_FEED_POSTS } from "../../../graphql/queries/post";
 import { useState } from "react";
+import type { CreatedPost } from "../../../types/post";
 
 interface DetailsProps {
   previewUrl: string;
@@ -34,8 +34,23 @@ export const Details = ({
 
   const [caption, setCaption] = useState("");
 
-  const [createPost] = useMutation(CREATE_POST, {
-    refetchQueries: [{ query: GET_FEED_POSTS }],
+  const [createPost] = useMutation<CreatedPost>(CREATE_POST, {
+    // Manually update the cache
+    update(cache, { data }) {
+      const newPost = data?.createPost;
+      if (!newPost) return;
+
+      cache.modify({
+        fields: {
+          getFeedPosts(existingFeedData) {
+            return {
+              ...existingFeedData,
+              posts: [newPost, ...existingFeedData.posts],
+            };
+          },
+        },
+      });
+    },
     onCompleted: () => {
       resetState();
       onClose();
