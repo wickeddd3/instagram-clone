@@ -4,7 +4,7 @@ import { useSupabaseUpload } from "../../../hooks/useSupabaseUpload";
 import { createUploadPath } from "../../../utils/upload";
 import { useMutation } from "@apollo/client/react";
 import { CREATE_POST } from "../../../graphql/mutations/post";
-import { GET_FEED } from "../../../graphql/queries/post";
+import { GET_FEED_POSTS } from "../../../graphql/queries/post";
 import { useState } from "react";
 
 interface DetailsProps {
@@ -35,7 +35,7 @@ export const Details = ({
   const [caption, setCaption] = useState("");
 
   const [createPost] = useMutation(CREATE_POST, {
-    refetchQueries: [{ query: GET_FEED }],
+    refetchQueries: [{ query: GET_FEED_POSTS }],
     onCompleted: () => {
       resetState();
       onClose();
