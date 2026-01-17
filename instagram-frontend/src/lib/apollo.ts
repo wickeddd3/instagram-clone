@@ -24,5 +24,22 @@ const authLink = new SetContextLink((prevContext, _) => {
 
 export const client = new ApolloClient({
   link: authLink.concat(baseLink),
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+          getFeedPosts: {
+            keyArgs: false,
+            merge(existing, incoming) {
+              return {
+                ...incoming,
+                // Append the new posts to the existing ones
+                posts: [...(existing?.posts || []), ...incoming.posts],
+              };
+            },
+          },
+        },
+      },
+    },
+  }),
 });
