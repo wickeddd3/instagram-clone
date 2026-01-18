@@ -1,10 +1,11 @@
-import type { CommentData } from "../../types/comment";
+import type { CommentData } from "../../../types/comment";
+import type { ReplyDataType } from "./AddComment";
 import { CommentItem } from "./CommentItem";
 
 interface CommentListProps {
   comments: CommentData[];
   postId?: string;
-  onReplyClick: (username: string, id: string) => void;
+  onReplyClick: (value: ReplyDataType | null) => void;
 }
 
 export const CommentList = ({

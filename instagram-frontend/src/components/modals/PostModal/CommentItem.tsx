@@ -2,15 +2,16 @@ import { useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { Heart, Loader } from "lucide-react";
 import { useLazyQuery, useMutation } from "@apollo/client/react";
-import type { CommentData, CommentsData } from "../../types/comment";
-import { GET_COMMENTS } from "../../graphql/queries/comment";
+import type { CommentData, CommentsData } from "../../../types/comment";
+import { GET_COMMENTS } from "../../../graphql/queries/comment";
 import { CommentList } from "./CommentList";
-import { TOGGLE_COMMENT_LIKE } from "../../graphql/mutations/comment";
+import { TOGGLE_COMMENT_LIKE } from "../../../graphql/mutations/comment";
+import type { ReplyDataType } from "./AddComment";
 
 interface CommentItemProps {
   postId?: string;
   comment: CommentData;
-  onReplyClick: (username: string, id: string) => void;
+  onReplyClick: (value: ReplyDataType | null) => void;
 }
 
 export const CommentItem = ({
@@ -58,7 +59,7 @@ export const CommentItem = ({
           <div className="flex gap-4 mt-2 text-xs text-gray-400 font-semibold">
             <span>{formatDistanceToNow(new Date(createdAt))}</span>
             <button
-              onClick={() => onReplyClick(username, id)}
+              onClick={() => onReplyClick({ username, id })}
               className="hover:text-white"
             >
               Reply

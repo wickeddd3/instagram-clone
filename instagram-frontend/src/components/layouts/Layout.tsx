@@ -5,7 +5,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import { CreatePostModal } from "../modals/CreatePostModal/index";
 import { MobileHeader } from "./MobileHeader";
 import { motion } from "framer-motion";
-import { PostModal } from "../modals/PostModal";
+import { PostModal } from "../modals/PostModal/index";
 import { usePost } from "../../contexts/PostContext";
 import { SearchSidebar } from "./SearchSidebar";
 import { NotificationsSidebar } from "./NotificationsSidebar";
