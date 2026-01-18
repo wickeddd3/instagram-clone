@@ -1,5 +1,5 @@
 import type { PostData } from "../../types/post";
-import { AddComment } from "../comments/AddComment";
+import { AddComment } from "./AddComment";
 import { usePost } from "../../contexts/PostContext";
 import { PostActions } from "./PostActions";
 import { PostHeader } from "./PostHeader";
