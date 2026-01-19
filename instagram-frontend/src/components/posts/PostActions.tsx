@@ -1,63 +1,94 @@
-import { useMutation } from "@apollo/client/react";
 import { Heart, MessageCircle, Send, Bookmark } from "lucide-react";
-import {
-  TOGGLE_POST_LIKE,
-  TOGGLE_POST_SAVE,
-} from "../../graphql/mutations/post";
-
-interface PostActionsProps {
-  postId: string;
-  isLiked: boolean;
-  isSaved: boolean;
-  className?: string;
-}
+import { useState } from "react";
 
 export const PostActions = ({
-  postId,
-  isLiked,
-  isSaved,
+  children,
   className,
-}: PostActionsProps) => {
-  const [togglePostLike] = useMutation(TOGGLE_POST_LIKE);
-  const [togglePostSave] = useMutation(TOGGLE_POST_SAVE);
-
-  const handleTogglePostLike = () => {
-    togglePostLike({ variables: { postId } });
-  };
-
-  const handleTogglePostSave = () => {
-    togglePostSave({ variables: { postId } });
-  };
-
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => {
   return (
     <div
       className={`flex justify-between items-center text-white ${className}`}
     >
-      <div className="flex items-center gap-4">
-        <button onClick={handleTogglePostLike}>
-          <Heart
-            className={`cursor-pointer ${
-              isLiked ? "text-red-500" : "hover:text-red-500"
-            }`}
-            size={24}
-          />
-        </button>
-        <MessageCircle
-          className="cursor-pointer hover:text-gray-400"
-          size={24}
-        />
-        <Send className="cursor-pointer hover:text-gray-400" size={24} />
-      </div>
-      <button onClick={handleTogglePostSave}>
-        <Bookmark
-          className={`cursor-pointer ${
-            isSaved
-              ? "text-gray-400 hover:text-white"
-              : "text-white hover:text-gray-400"
-          }`}
-          size={24}
-        />
-      </button>
+      {children}
     </div>
   );
 };
+
+export const LikeButton = ({
+  isLiked,
+  onClick,
+}: {
+  isLiked: boolean;
+  onClick: () => void;
+}) => {
+  const [animate, setAnimate] = useState(false);
+
+  const handleLike = () => {
+    setAnimate(true);
+    // Reset animation class after 450ms
+    setTimeout(() => setAnimate(false), 450);
+    onClick();
+  };
+
+  return (
+    <button onClick={handleLike} className="group relative">
+      <Heart
+        size={28}
+        className={`transition-all duration-200 cursor-pointer ${
+          isLiked
+            ? "fill-red-500 text-red-500"
+            : "text-white group-hover:text-gray-400"
+        } ${animate ? "animate-like-heart" : ""}`}
+      />
+    </button>
+  );
+};
+
+export const CommentButton = () => {
+  return (
+    <button>
+      <MessageCircle className="cursor-pointer hover:text-gray-400" size={24} />
+    </button>
+  );
+};
+
+export const ChatButton = () => {
+  return (
+    <button>
+      <Send className="cursor-pointer hover:text-gray-400" size={24} />
+    </button>
+  );
+};
+
+export const BookmarkButton = ({
+  isSaved,
+  onClick,
+}: {
+  isSaved: boolean;
+  onClick: () => void;
+}) => {
+  const handleBookmark = () => {
+    onClick();
+  };
+
+  return (
+    <button onClick={handleBookmark} className="group relative">
+      <Bookmark
+        size={28}
+        className={`transition-all duration-200 cursor-pointer ${
+          isSaved
+            ? "fill-white text-white"
+            : "text-white group-hover:text-gray-400"
+        }`}
+      />
+    </button>
+  );
+};
+
+PostActions.LikeButton = LikeButton;
+PostActions.CommentButton = CommentButton;
+PostActions.ChatButton = ChatButton;
+PostActions.BookmarkButton = BookmarkButton;
