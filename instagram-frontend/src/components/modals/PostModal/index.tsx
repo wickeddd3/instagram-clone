@@ -7,6 +7,7 @@ import { PostActions } from "../../posts/PostActions";
 import { PostHeader } from "../../posts/PostHeader";
 import { Comments } from "./Comments";
 import { AddComment, type ReplyDataType } from "./AddComment";
+import { usePostActions } from "../../../hooks/usePostActions";
 
 interface PostModalProps {
   isOpen: boolean;
@@ -14,12 +15,35 @@ interface PostModalProps {
 }
 
 export const PostModal = ({ isOpen, onClose }: PostModalProps) => {
-  const { post } = usePost();
+  if (!isOpen) return null;
+
+  const { post, updatePost } = usePost();
+
+  if (!post) return null;
+
+  const { togglePostLike, togglePostSave } = usePostActions({ post });
 
   const [text, setText] = useState("");
   const [replyData, setReplyData] = useState<ReplyDataType | null>(null);
 
-  if (!isOpen) return null;
+  const handleLikeClick = () => {
+    togglePostLike({
+      variables: { postId: post?.id },
+    });
+    updatePost({
+      ...post,
+      isLiked: !post.isLiked,
+      likesCount: post.isLiked ? post.likesCount - 1 : post.likesCount + 1,
+    });
+  };
+
+  const handleBookmarkClick = () => {
+    togglePostSave({ variables: { postId: post?.id } });
+    updatePost({
+      ...post,
+      isSaved: !post.isSaved,
+    });
+  };
 
   return (
     <motion.div
@@ -48,7 +72,6 @@ export const PostModal = ({ isOpen, onClose }: PostModalProps) => {
         </div>
 
         <div className="w-full md:w-[40%] flex flex-col bg-neutral-900">
-          {/* Post Header */}
           <PostHeader className="p-3 border-b border-neutral-800">
             <div className="flex items-center gap-3">
               <PostHeader.AuthorAvatar
@@ -61,17 +84,23 @@ export const PostModal = ({ isOpen, onClose }: PostModalProps) => {
             <PostHeader.Options />
           </PostHeader>
 
-          {/* Post Comments Section */}
           <Comments postId={post?.id || ""} onReplyClick={setReplyData} />
 
           <div className="flex flex-col gap-3 mt-auto">
-            {/* Post Actions */}
-            <PostActions
-              postId={post?.id || ""}
-              isLiked={post?.isLiked || false}
-              isSaved={post?.isSaved || false}
-              className="px-3"
-            />
+            <PostActions className="px-3 pt-1">
+              <div className="flex items-center gap-4">
+                <PostActions.LikeButton
+                  isLiked={post?.isLiked || false}
+                  onClick={handleLikeClick}
+                />
+                <PostActions.CommentButton />
+                <PostActions.ChatButton />
+              </div>
+              <PostActions.BookmarkButton
+                isSaved={post?.isSaved || false}
+                onClick={handleBookmarkClick}
+              />
+            </PostActions>
 
             {/* Likes & Date */}
             <div className="flex flex-col px-4">
@@ -83,7 +112,6 @@ export const PostModal = ({ isOpen, onClose }: PostModalProps) => {
               </span>
             </div>
 
-            {/* Add Comment Field */}
             <AddComment
               postId={post?.id || ""}
               text={text}
