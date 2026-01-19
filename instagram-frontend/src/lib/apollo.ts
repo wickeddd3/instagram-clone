@@ -65,6 +65,15 @@ export const client = new ApolloClient({
               };
             },
           },
+          getComments: {
+            keyArgs: false,
+            merge(existing, incoming) {
+              return {
+                ...incoming,
+                comments: [...(existing?.comments || []), ...incoming.comments],
+              };
+            },
+          },
         },
       },
     },

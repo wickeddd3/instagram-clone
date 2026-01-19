@@ -1,24 +1,21 @@
 import { gql } from "@apollo/client";
+import { COMMENT_FIELDS } from "../fragments/comment";
 
 export const GET_COMMENTS = gql`
-  query GetComments($postId: ID!, $parentId: ID, $limit: Int, $offset: Int) {
+  query GetComments($postId: ID!, $parentId: ID, $cursor: String, $limit: Int) {
     getComments(
       postId: $postId
       parentId: $parentId
+      cursor: $cursor
       limit: $limit
-      offset: $offset
     ) {
-      id
-      text
-      createdAt
-      author {
-        id
-        username
-        avatarUrl
+      comments {
+        ...CommentFields
       }
-      repliesCount
-      likesCount
-      isLiked
+      hasMore
+      nextCursor
     }
   }
+
+  ${COMMENT_FIELDS}
 `;

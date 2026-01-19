@@ -14,7 +14,7 @@ const HomePage = () => {
     GET_FEED_POSTS,
     {
       variables: { cursor: null, limit: 5 },
-    }
+    },
   );
 
   const {
@@ -37,7 +37,7 @@ const HomePage = () => {
           });
         }
       },
-      { threshold: 0.8 }
+      { threshold: 0.8 },
     );
 
     observer.observe(sentinelRef.current);

@@ -13,5 +13,9 @@ export interface CommentData {
 }
 
 export interface CommentsData {
-  getComments: CommentData[];
+  getComments: {
+    comments: CommentData[];
+    hasMore: boolean;
+    nextCursor: string;
+  };
 }

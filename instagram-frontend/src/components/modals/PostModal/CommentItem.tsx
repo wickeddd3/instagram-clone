@@ -31,6 +31,12 @@ export const CommentItem = ({
   const [getComments, { data, loading }] =
     useLazyQuery<CommentsData>(GET_COMMENTS);
 
+  const {
+    comments = [],
+    // hasMore = false,
+    // nextCursor = null,
+  } = data?.getComments || {};
+
   const [toggleCommentLike] = useMutation(TOGGLE_COMMENT_LIKE);
 
   const handleFetchReplies = () => {
@@ -91,7 +97,7 @@ export const CommentItem = ({
 
           {showReplies && (
             <CommentList
-              comments={data?.getComments || []}
+              comments={comments || []}
               postId={postId}
               onReplyClick={onReplyClick}
             />
