@@ -6,6 +6,7 @@ interface PostContextType {
   isPostModalOpen: boolean;
   openPostModal: (postData: PostData) => void;
   closePostModal: () => void;
+  updatePost: (updatedPost: PostData) => void;
 }
 
 export const PostContext = createContext<PostContextType | null>(null);
@@ -24,9 +25,22 @@ export const PostProvider = ({ children }: { children: React.ReactNode }) => {
     setIsPostModalOpen(false);
   };
 
+  const updatePost = (updatedPost: PostData) => {
+    setPost({
+      ...post,
+      ...updatedPost,
+    });
+  };
+
   return (
     <PostContext.Provider
-      value={{ post, isPostModalOpen, openPostModal, closePostModal }}
+      value={{
+        post,
+        isPostModalOpen,
+        openPostModal,
+        closePostModal,
+        updatePost,
+      }}
     >
       {children}
     </PostContext.Provider>
