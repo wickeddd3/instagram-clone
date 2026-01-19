@@ -610,7 +610,7 @@ export const resolvers = {
     togglePostLike: async (
       _parent: any,
       { postId }: { postId: string },
-      context: any
+      context: any,
     ) => {
       const userId = context.userId;
 
@@ -625,13 +625,25 @@ export const resolvers = {
         await prisma.like.delete({
           where: { id: existingLike.id },
         });
-        return false; // Unliked
       } else {
         await prisma.like.create({
           data: { userId, postId },
         });
-        return true; // Liked
       }
+
+      // Fetch the updated post to get the fresh count
+      const updatedPost = await prisma.post.findUnique({
+        where: { id: postId },
+        include: {
+          _count: { select: { likes: true } },
+        },
+      });
+
+      return {
+        id: postId,
+        isLiked: !existingLike, // If it existed, it's now false. If not, true.
+        likesCount: updatedPost?._count.likes || 0,
+      };
     },
     toggleCommentLike: async (
       _parent: any,
