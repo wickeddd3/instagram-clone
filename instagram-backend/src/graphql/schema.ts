@@ -86,6 +86,11 @@ export const typeDefs = `#graphql
     likesCount: Int
   }
 
+  type PostSaveResponse {
+    id: ID
+    isSaved: Boolean
+  }
+
   # --- Queries ---
 
   type Query {
@@ -132,7 +137,7 @@ export const typeDefs = `#graphql
 
     # Interaction
     togglePostLike(postId: ID!): PostLikeResponse
-    togglePostSave(postId: ID!): Boolean!
+    togglePostSave(postId: ID!): PostSaveResponse
     toggleCommentLike(commentId: ID!): Boolean!
     addComment(postId: ID!, text: String!, parentId: ID): Comment!
     deleteComment(commentId: ID!): Boolean!

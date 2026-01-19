@@ -562,7 +562,7 @@ export const resolvers = {
     togglePostSave: async (
       _parent: any,
       { postId }: { postId: string },
-      context: any
+      context: any,
     ) => {
       if (!context.userId) {
         throw new Error("Unauthorized: You must be logged in.");
@@ -578,13 +578,16 @@ export const resolvers = {
         await prisma.savedPost.delete({
           where: { id: existingSave.id },
         });
-        return false; // Removed from saved
       } else {
         await prisma.savedPost.create({
           data: { userId, postId },
         });
-        return true; // Added to saved
       }
+
+      return {
+        id: postId,
+        isSaved: !existingSave,
+      };
     },
 
     createPost: async (
