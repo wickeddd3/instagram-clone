@@ -127,7 +127,7 @@ export const resolvers = {
     getFeedPosts: async (
       _parent: any,
       { cursor, limit = 5 }: { cursor: string; limit: number },
-      context: any
+      context: any,
     ) => {
       // Base query options
       const queryOptions: Prisma.PostFindManyArgs = {
@@ -158,7 +158,7 @@ export const resolvers = {
     getExplorePosts: async (
       _parent: any,
       { cursor, limit = 9 }: { cursor: string; limit: number },
-      context: any
+      context: any,
     ) => {
       // TODO: Exclude user's own posts and people user follow
       // Base query options
@@ -241,7 +241,7 @@ export const resolvers = {
     },
     getProfilePosts: async (
       _parent: any,
-      { profileId, cursor, limit = 10 }: any
+      { profileId, cursor, limit = 10 }: any,
     ) => {
       // Base query options
       const queryOptions: Prisma.PostFindManyArgs = {
@@ -273,7 +273,7 @@ export const resolvers = {
     getSavedPosts: async (
       _parent: any,
       { cursor, limit = 10 }: any,
-      context: any
+      context: any,
     ) => {
       if (!context.userId)
         throw new Error("Unauthorized: You must be logged in.");
@@ -300,7 +300,7 @@ export const resolvers = {
       }
 
       const savedRecords = (await prisma.savedPost.findMany(
-        queryOptions
+        queryOptions,
       )) as any[];
       // Flatten the result: return the Post objects directly
       const posts = savedRecords.map((record: any) => record.post);
@@ -318,19 +318,42 @@ export const resolvers = {
 
     getComments: async (
       _parent: any,
-      { postId, parentId }: { postId: string; parentId?: string }
+      {
+        postId,
+        parentId,
+        cursor,
+        limit = 10,
+      }: { postId: string; parentId?: string; cursor?: string; limit: number },
     ) => {
-      return await prisma.comment.findMany({
+      // Base query options
+      const queryOptions: Prisma.CommentFindManyArgs = {
         where: {
           postId,
           parentId: parentId || null, // Only fetch top-level comments initially
         },
+        take: limit,
         orderBy: { createdAt: "desc" },
         include: {
           author: true,
           _count: { select: { replies: true } },
         },
-      });
+      };
+
+      // Only add cursor and skip if a cursor exists
+      if (cursor && cursor !== null) {
+        queryOptions.cursor = { id: cursor };
+        queryOptions.skip = 1; // Skip the actual cursor record to avoid duplicates
+      }
+
+      const comments = await prisma.comment.findMany(queryOptions);
+      const hasMore = comments.length === limit; // if posts length exactly the limit, there might be more
+      const nextCursor = hasMore ? comments[comments.length - 1]?.id : null;
+
+      return {
+        comments,
+        hasMore,
+        nextCursor,
+      };
     },
 
     getFollowers: async (_parent: any, { username }: { username: string }) => {
@@ -375,7 +398,7 @@ export const resolvers = {
     searchProfiles: async (
       _parent: any,
       { query }: { query: string },
-      context: any
+      context: any,
     ) => {
       if (!query) return [];
 
@@ -406,7 +429,7 @@ export const resolvers = {
     createProfile: async (
       _parent: any,
       { id, username, email, displayName }: any,
-      context: any
+      context: any,
     ) => {
       return await prisma.profile.create({
         data: {
@@ -420,7 +443,7 @@ export const resolvers = {
     updateProfile: async (
       _parent: any,
       { displayName, bio, website }: any,
-      context: any
+      context: any,
     ) => {
       if (!context.userId) {
         throw new Error("Unauthorized: You must be logged in.");
@@ -437,7 +460,7 @@ export const resolvers = {
     uploadProfileAvatar: async (
       _parent: any,
       { avatarUrl }: { avatarUrl: string },
-      context: any
+      context: any,
     ) => {
       if (!context.userId) {
         throw new Error("Unauthorized: You must be logged in.");
@@ -464,7 +487,7 @@ export const resolvers = {
     toggleFollow: async (
       _parent: any,
       { username }: { username: string },
-      context: any
+      context: any,
     ) => {
       if (!context.userId) {
         throw new Error("Unauthorized: You must be logged in.");
@@ -507,7 +530,7 @@ export const resolvers = {
     removeFollower: async (
       _parent: any,
       { username }: { username: string },
-      context: any
+      context: any,
     ) => {
       if (!context.userId) {
         throw new Error("Unauthorized: You must be logged in.");
@@ -534,7 +557,7 @@ export const resolvers = {
     removeFollowing: async (
       _parent: any,
       { username }: { username: string },
-      context: any
+      context: any,
     ) => {
       if (!context.userId) {
         throw new Error("Unauthorized: You must be logged in.");
@@ -593,7 +616,7 @@ export const resolvers = {
     createPost: async (
       _parent: any,
       { imageUrl, caption, location }: any,
-      context: any
+      context: any,
     ) => {
       if (!context.userId) {
         throw new Error("Unauthorized: You must be logged in.");
@@ -651,7 +674,7 @@ export const resolvers = {
     toggleCommentLike: async (
       _parent: any,
       { commentId }: { commentId: string },
-      context: any
+      context: any,
     ) => {
       const userId = context.userId;
 
@@ -679,7 +702,7 @@ export const resolvers = {
     addComment: async (
       _parent: any,
       { postId, text, parentId }: any,
-      context: any
+      context: any,
     ) => {
       if (!context.userId) {
         throw new Error("Unauthorized: You must be logged in.");
@@ -700,7 +723,7 @@ export const resolvers = {
     addRecentSearch: async (
       _parent: any,
       { targetId }: { targetId: string },
-      context: any
+      context: any,
     ) => {
       if (!context.userId) return false;
 
@@ -715,7 +738,7 @@ export const resolvers = {
     removeRecentSearch: async (
       _parent: any,
       { targetId }: { targetId: string },
-      context: any
+      context: any,
     ) => {
       await prisma.recentSearch.delete({
         where: { userId_targetId: { userId: context.userId, targetId } },

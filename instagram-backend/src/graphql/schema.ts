@@ -80,6 +80,12 @@ export const typeDefs = `#graphql
     hasMore: Boolean!
   }
 
+  type CommentResponse {
+    comments: [Comment!]!
+    nextCursor: String
+    hasMore: Boolean!
+  }
+
   type PostLikeResponse {
     id: ID
     isLiked: Boolean
@@ -110,7 +116,7 @@ export const typeDefs = `#graphql
     getSuggestedProfiles(limit: Int): [Profile!]!
     
     # Comments
-    getComments(postId: ID!, parentId: ID, limit: Int, offset: Int): [Comment!]!
+    getComments(postId: ID!, parentId: ID, cursor: String, limit: Int): CommentResponse
 
     # Follows
     getFollowers(username: String!): [Profile!]!
