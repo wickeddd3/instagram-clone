@@ -23,6 +23,9 @@ export const TOGGLE_POST_LIKE = gql`
 
 export const TOGGLE_POST_SAVE = gql`
   mutation TogglePostSave($postId: ID!) {
-    togglePostSave(postId: $postId)
+    togglePostSave(postId: $postId) {
+      id
+      isSaved
+    }
   }
 `;
