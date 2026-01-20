@@ -42,7 +42,7 @@ export const SearchResults = ({ query, onClose }: SearchResultsProps) => {
   return (
     <div className="h-full flex flex-col gap-1">
       {data?.searchProfiles.map((user) => (
-        <SearchResultItem user={user} onClick={onClose} />
+        <SearchResultItem key={user.id} user={user} onClick={onClose} />
       ))}
     </div>
   );

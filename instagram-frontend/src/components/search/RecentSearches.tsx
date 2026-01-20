@@ -60,7 +60,12 @@ export const RecentSearches = ({ query, onClose }: RecentSearchesProps) => {
         </button>
       </div>
       {data?.getRecentSearches.map((user) => (
-        <SearchResultItem user={user} onClick={onClose} isRecentItem={true} />
+        <SearchResultItem
+          key={user.id}
+          user={user}
+          onClick={onClose}
+          isRecentItem={true}
+        />
       ))}
     </div>
   );
