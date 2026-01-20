@@ -5,7 +5,7 @@ export const CommentTypes = `#graphql
 
   extend type Mutation {
     addComment(postId: ID!, text: String!, parentId: ID): Comment!
-    toggleCommentLike(commentId: ID!): Boolean!
+    toggleCommentLike(commentId: ID!): CommentLikeResponse
   }
 
   type Comment {
@@ -29,5 +29,11 @@ export const CommentTypes = `#graphql
     comments: [Comment!]!
     nextCursor: String
     hasMore: Boolean!
+  }
+
+  type CommentLikeResponse {
+    id: ID
+    isLiked: Boolean
+    likesCount: Int
   }
 `;

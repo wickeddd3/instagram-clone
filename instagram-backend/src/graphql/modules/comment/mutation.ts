@@ -38,12 +38,24 @@ export const CommentMutation = {
       await prisma.like.delete({
         where: { id: existingLike.id },
       });
-      return false; // Unliked
     } else {
       await prisma.like.create({
         data: { userId, commentId },
       });
-      return true; // Liked
     }
+
+    // Fetch the updated post to get the fresh count
+    const updatedComment = await prisma.comment.findUnique({
+      where: { id: commentId },
+      include: {
+        _count: { select: { likes: true } },
+      },
+    });
+
+    return {
+      id: commentId,
+      isLiked: !existingLike, // If it existed, it's now false. If not, true.
+      likesCount: updatedComment?._count.likes || 0,
+    };
   },
 };

@@ -21,7 +21,7 @@ export const CommentQuery = {
       orderBy: { createdAt: "asc" },
       include: {
         author: true,
-        _count: { select: { replies: true } },
+        _count: { select: { likes: true, replies: true } },
       },
     };
 
