@@ -1,6 +1,5 @@
 import { useMutation } from "@apollo/client/react";
 import { ADD_COMMENT } from "../../../graphql/mutations/comment";
-import { GET_COMMENTS } from "../../../graphql/queries/comment";
 
 export type ReplyDataType = {
   username: string;
@@ -23,22 +22,54 @@ export const AddComment = ({
   setReplyData,
 }: AddCommentProps) => {
   const [addComment] = useMutation(ADD_COMMENT, {
-    refetchQueries: [{ query: GET_COMMENTS, variables: { postId } }],
+    update(cache, { data: { addComment } }: any) {
+      const newComment = addComment;
+      if (!newComment) return;
+
+      // Write the new comment into that specific bucket
+      cache.modify({
+        fields: {
+          getComments(existingCommentData, { storeFieldName }) {
+            if (!storeFieldName.includes(postId)) return existingCommentData;
+
+            return {
+              ...existingCommentData,
+              comments: [...existingCommentData.comments, newComment],
+            };
+          },
+        },
+      });
+
+      // Update the total count on the Post object
+      cache.modify({
+        id: cache.identify({ __typename: "Post", id: postId }),
+        fields: {
+          commentsCount: (prev) => prev + 1,
+        },
+      });
+    },
   });
 
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!text.trim()) return;
 
-    await addComment({
-      variables: {
-        postId,
-        text: replyData ? `@${replyData.username} ${text}` : text,
-        parentId: replyData?.id,
-      },
-    });
+    const commentText = text;
+    setText(""); // Clear input immediately for better UX
 
-    setText("");
+    try {
+      await addComment({
+        variables: {
+          postId,
+          text: replyData ? `@${replyData.username} ${text}` : text,
+          parentId: replyData?.id,
+        },
+      });
+    } catch (error) {
+      console.error(error);
+      setText(commentText); // Put text back if it fails
+    }
+
     setReplyData(null);
   };
 
