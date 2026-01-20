@@ -81,7 +81,7 @@ export const CommentItem = ({
         />
 
         <div className="flex-1 flex flex-col text-sm">
-          <div>
+          <div className="flex flex-wrap">
             <span className="font-bold mr-2">{username}</span>
             <span className="text-white/90">{text}</span>
           </div>
@@ -118,7 +118,7 @@ export const CommentItem = ({
 
       {/* View Replies Toggle */}
       {repliesCount > 0 && (
-        <div className="ml-11">
+        <div className="pl-11">
           <button
             onClick={handleFetchReplies}
             className="flex items-center gap-4 text-xs text-gray-400 font-semibold hover:text-white mb-2 cursor-pointer"
