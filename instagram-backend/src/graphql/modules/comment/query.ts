@@ -18,7 +18,7 @@ export const CommentQuery = {
         parentId: parentId || null, // Only fetch top-level comments initially
       },
       take: limit,
-      orderBy: { createdAt: "desc" },
+      orderBy: { createdAt: "asc" },
       include: {
         author: true,
         _count: { select: { replies: true } },
