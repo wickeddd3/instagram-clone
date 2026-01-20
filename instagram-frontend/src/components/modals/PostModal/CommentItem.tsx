@@ -22,11 +22,13 @@ export const CommentItem = ({
     text,
     createdAt,
     isLiked,
+    likesCount,
     repliesCount,
   },
   onReplyClick,
 }: CommentItemProps) => {
   const [showReplies, setShowReplies] = useState(false);
+  const [animate, setAnimate] = useState(false);
 
   const [getComments, { data, loading }] =
     useLazyQuery<CommentsData>(GET_COMMENTS);
@@ -37,7 +39,26 @@ export const CommentItem = ({
     // nextCursor = null,
   } = data?.getComments || {};
 
-  const [toggleCommentLike] = useMutation(TOGGLE_COMMENT_LIKE);
+  const [toggleCommentLike] = useMutation(TOGGLE_COMMENT_LIKE, {
+    optimisticResponse: (vars) => ({
+      toggleCommentLike: {
+        id: vars.commentId,
+        isLiked: !isLiked,
+        likesCount: isLiked ? likesCount - 1 : likesCount + 1,
+        __typename: "CommentLikeResponse",
+      },
+    }),
+    // This update function links the Response to the Post object in cache
+    update(cache, { data: { toggleCommentLike } }: any) {
+      cache.modify({
+        id: cache.identify({ __typename: "Comment", id }),
+        fields: {
+          isLiked: () => toggleCommentLike.isLiked,
+          likesCount: () => toggleCommentLike.likesCount,
+        },
+      });
+    },
+  });
 
   const handleFetchReplies = () => {
     setShowReplies(!showReplies);
@@ -45,6 +66,9 @@ export const CommentItem = ({
   };
 
   const handleToggleCommentLike = () => {
+    setAnimate(true);
+    // Reset animation class after 450ms
+    setTimeout(() => setAnimate(false), 450);
     toggleCommentLike({ variables: { commentId: id } });
   };
 
@@ -64,6 +88,13 @@ export const CommentItem = ({
 
           <div className="flex gap-4 mt-2 text-xs text-gray-400 font-semibold">
             <span>{formatDistanceToNow(new Date(createdAt))}</span>
+            {likesCount > 0 && (
+              <span>
+                {likesCount === 1
+                  ? `${likesCount} like`
+                  : `${likesCount} likes`}
+              </span>
+            )}
             <button
               onClick={() => onReplyClick({ username, id })}
               className="hover:text-white cursor-pointer"
@@ -76,9 +107,11 @@ export const CommentItem = ({
         <button onClick={handleToggleCommentLike}>
           <Heart
             size={14}
-            className={`cursor-pointer ${
-              isLiked ? "text-red-500" : "hover:text-red-500"
-            }`}
+            className={`transition-all duration-200 cursor-pointer ${
+              isLiked
+                ? "fill-red-500 text-red-500"
+                : "text-white group-hover:text-gray-400"
+            } ${animate ? "animate-like-heart" : ""}`}
           />
         </button>
       </div>
