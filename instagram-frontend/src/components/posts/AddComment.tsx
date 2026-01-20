@@ -2,7 +2,13 @@ import { useState } from "react";
 import { useMutation } from "@apollo/client/react";
 import { ADD_COMMENT } from "../../graphql/mutations/comment";
 
-export const AddComment = ({ postId }: { postId: string }) => {
+export const AddComment = ({
+  postId,
+  inputRef,
+}: {
+  postId: string;
+  inputRef: React.RefObject<HTMLInputElement | null>;
+}) => {
   const [text, setText] = useState("");
 
   const [addComment] = useMutation(ADD_COMMENT, {
@@ -54,6 +60,7 @@ export const AddComment = ({ postId }: { postId: string }) => {
   return (
     <form onSubmit={handleSend} className="flex items-center gap-3 py-1">
       <input
+        ref={inputRef}
         value={text}
         onChange={(e) => setText(e.target.value)}
         placeholder="Add a comment..."

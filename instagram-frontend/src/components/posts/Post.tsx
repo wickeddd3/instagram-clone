@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Heart } from "lucide-react";
 import type { PostData } from "../../types/post";
 import { PostHeader } from "./PostHeader";
@@ -27,6 +27,7 @@ export const Post = ({
   },
 }: PostProps) => {
   const [showOverlayHeart, setShowOverlayHeart] = useState(false);
+  const commentInputRef = useRef<HTMLInputElement>(null);
 
   const { togglePostLike, togglePostSave } = usePostActions({ post });
 
@@ -44,6 +45,10 @@ export const Post = ({
     togglePostLike({ variables: { postId: id } });
     setShowOverlayHeart(true);
     setTimeout(() => setShowOverlayHeart(false), 1000);
+  };
+
+  const handleFocusComment = () => {
+    commentInputRef.current?.focus();
   };
 
   return (
@@ -77,7 +82,7 @@ export const Post = ({
       <PostActions>
         <div className="flex items-center gap-4">
           <PostActions.LikeButton isLiked={isLiked} onClick={handleLikeClick} />
-          <PostActions.CommentButton />
+          <PostActions.CommentButton onClick={handleFocusComment} />
           <PostActions.ChatButton />
         </div>
         <PostActions.BookmarkButton
@@ -92,7 +97,7 @@ export const Post = ({
         <PostDetails.Comments commentsCount={commentsCount} post={post} />
       </PostDetails>
 
-      <AddComment postId={id} />
+      <AddComment postId={id} inputRef={commentInputRef} />
     </article>
   );
 };
