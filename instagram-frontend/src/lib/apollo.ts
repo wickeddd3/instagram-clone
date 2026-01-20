@@ -66,7 +66,8 @@ export const client = new ApolloClient({
             },
           },
           getComments: {
-            keyArgs: false,
+            // Crucial: separate the cache by postId
+            keyArgs: ["postId"],
             merge(existing, incoming) {
               return {
                 ...incoming,
