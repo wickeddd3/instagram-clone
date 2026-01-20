@@ -47,17 +47,17 @@ export const LikeButton = ({
   );
 };
 
-export const CommentButton = () => {
+export const CommentButton = ({ onClick }: { onClick?: () => void }) => {
   return (
-    <button>
+    <button onClick={onClick}>
       <MessageCircle className="cursor-pointer hover:text-gray-400" size={24} />
     </button>
   );
 };
 
-export const ChatButton = () => {
+export const ChatButton = ({ onClick }: { onClick?: () => void }) => {
   return (
-    <button>
+    <button onClick={onClick}>
       <Send className="cursor-pointer hover:text-gray-400" size={24} />
     </button>
   );
