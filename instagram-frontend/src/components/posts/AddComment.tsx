@@ -5,20 +5,50 @@ import { ADD_COMMENT } from "../../graphql/mutations/comment";
 export const AddComment = ({ postId }: { postId: string }) => {
   const [text, setText] = useState("");
 
-  const [addComment] = useMutation(ADD_COMMENT);
+  const [addComment] = useMutation(ADD_COMMENT, {
+    update(cache, { data: { addComment } }: any) {
+      const newComment = addComment;
+      if (!newComment) return;
+
+      // Write the new comment into that specific bucket
+      cache.modify({
+        fields: {
+          getComments(existingCommentData, { storeFieldName }) {
+            if (!storeFieldName.includes(postId)) return existingCommentData;
+
+            return {
+              ...existingCommentData,
+              comments: [...existingCommentData.comments, newComment],
+            };
+          },
+        },
+      });
+
+      // Update the total count on the Post object
+      cache.modify({
+        id: cache.identify({ __typename: "Post", id: postId }),
+        fields: {
+          commentsCount: (prev) => prev + 1,
+        },
+      });
+    },
+  });
 
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!text.trim()) return;
 
-    await addComment({
-      variables: {
-        postId,
-        text: text,
-      },
-    });
+    const commentText = text;
+    setText(""); // Clear input immediately for better UX
 
-    setText("");
+    try {
+      await addComment({
+        variables: { postId, text: commentText },
+      });
+    } catch (err) {
+      console.error(err);
+      setText(commentText); // Put text back if it fails
+    }
   };
 
   return (
