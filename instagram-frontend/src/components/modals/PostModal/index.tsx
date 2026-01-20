@@ -1,6 +1,6 @@
 import { X } from "lucide-react";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { usePost } from "../../../contexts/PostContext";
 import { formatDateToNow } from "../../../utils/date";
 import { PostActions } from "../../posts/PostActions";
@@ -25,6 +25,7 @@ export const PostModal = ({ isOpen, onClose }: PostModalProps) => {
 
   const [text, setText] = useState("");
   const [replyData, setReplyData] = useState<ReplyDataType | null>(null);
+  const commentInputRef = useRef<HTMLInputElement>(null);
 
   const handleLikeClick = () => {
     togglePostLike({
@@ -43,6 +44,12 @@ export const PostModal = ({ isOpen, onClose }: PostModalProps) => {
       ...post,
       isSaved: !post.isSaved,
     });
+  };
+
+  const handleReplyClick = (replyData: ReplyDataType | null) => {
+    setReplyData(replyData);
+    setText(`@${replyData?.username}`);
+    commentInputRef.current?.focus();
   };
 
   return (
@@ -84,7 +91,7 @@ export const PostModal = ({ isOpen, onClose }: PostModalProps) => {
             <PostHeader.Options />
           </PostHeader>
 
-          <Comments postId={post?.id || ""} onReplyClick={setReplyData} />
+          <Comments postId={post?.id || ""} onReplyClick={handleReplyClick} />
 
           <div className="flex flex-col gap-3 mt-auto">
             <PostActions className="px-3 pt-1">
@@ -118,6 +125,7 @@ export const PostModal = ({ isOpen, onClose }: PostModalProps) => {
               setText={setText}
               replyData={replyData}
               setReplyData={setReplyData}
+              inputRef={commentInputRef}
             />
           </div>
         </div>

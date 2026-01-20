@@ -66,7 +66,7 @@ export const CommentItem = ({
             <span>{formatDistanceToNow(new Date(createdAt))}</span>
             <button
               onClick={() => onReplyClick({ username, id })}
-              className="hover:text-white"
+              className="hover:text-white cursor-pointer"
             >
               Reply
             </button>

@@ -12,6 +12,7 @@ interface AddCommentProps {
   setText: (value: string) => void;
   replyData: ReplyDataType | null;
   setReplyData: (value: ReplyDataType | null) => void;
+  inputRef: React.RefObject<HTMLInputElement | null>;
 }
 
 export const AddComment = ({
@@ -20,6 +21,7 @@ export const AddComment = ({
   setText,
   replyData,
   setReplyData,
+  inputRef,
 }: AddCommentProps) => {
   const [addComment] = useMutation(ADD_COMMENT, {
     update(cache, { data: { addComment } }: any) {
@@ -61,7 +63,7 @@ export const AddComment = ({
       await addComment({
         variables: {
           postId,
-          text: replyData ? `@${replyData.username} ${text}` : text,
+          text,
           parentId: replyData?.id,
         },
       });
@@ -79,6 +81,7 @@ export const AddComment = ({
       className="flex items-center gap-3 border-t border-neutral-800 px-3 py-4"
     >
       <input
+        ref={inputRef}
         value={text}
         onChange={(e) => setText(e.target.value)}
         placeholder="Add a comment..."
