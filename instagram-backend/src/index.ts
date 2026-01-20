@@ -5,8 +5,7 @@ import dotenv from "dotenv";
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@as-integrations/express5";
 import { json } from "body-parser";
-import { typeDefs } from "./graphql/schema";
-import { resolvers } from "./graphql/resolvers";
+import { typeDefs, resolvers } from "./graphql";
 import { verifySupabaseToken } from "./lib/supabase";
 
 dotenv.config();
@@ -36,12 +35,12 @@ const startServer = async () => {
         // 3. Return the userId to be used in resolvers
         return { userId };
       },
-    })
+    }),
   );
 
   const PORT = process.env.PORT || 4000;
   await new Promise<void>((resolve) =>
-    httpServer.listen({ port: PORT }, resolve)
+    httpServer.listen({ port: PORT }, resolve),
   );
   console.log(`🚀 Server ready at http://localhost:${PORT}/graphql`);
 };
