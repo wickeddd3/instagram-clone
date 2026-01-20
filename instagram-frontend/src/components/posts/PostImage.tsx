@@ -11,7 +11,7 @@ export const PostImage = ({
     <img
       src={imageUrl}
       alt="Post Image"
-      className="w-full h-auto object-cover"
+      className="w-full h-auto object-cover cursor-pointer"
       onClick={onClick}
       onDoubleClick={onDoubleClick}
     />
