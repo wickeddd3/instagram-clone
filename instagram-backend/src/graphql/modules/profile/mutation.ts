@@ -67,11 +67,11 @@ export const ProfileMutation = {
       throw new Error("Unauthorized: You must be logged in.");
     }
 
-    const profile = await prisma.profile.findUnique({
+    const targetProfile = await prisma.profile.findUnique({
       where: { username },
     });
 
-    if (!profile) {
+    if (!targetProfile) {
       throw new Error("Invalid Profile: username doesn't exist.");
     }
 
@@ -79,7 +79,7 @@ export const ProfileMutation = {
       where: {
         followerId_followingId: {
           followerId: context.userId,
-          followingId: profile.id,
+          followingId: targetProfile.id,
         },
       },
     });
@@ -89,17 +89,30 @@ export const ProfileMutation = {
         where: {
           followerId_followingId: {
             followerId: context.userId,
-            followingId: profile.id,
+            followingId: targetProfile.id,
           },
         },
       });
-      return false; // Unfollowed
     } else {
       await prisma.follow.create({
-        data: { followerId: context.userId, followingId: profile.id },
+        data: { followerId: context.userId, followingId: targetProfile.id },
       });
-      return true; // Followed
     }
+
+    const updatedProfile = await prisma.profile.findUnique({
+      where: { id: targetProfile.id },
+      include: {
+        _count: {
+          select: { followers: true },
+        },
+      },
+    });
+
+    return {
+      id: targetProfile.id,
+      isFollowing: !existingFollow,
+      followersCount: updatedProfile?._count.followers,
+    };
   },
   removeFollower: async (
     _parent: any,

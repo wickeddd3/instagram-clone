@@ -13,7 +13,7 @@ export const ProfileTypes = `#graphql
     updateProfile(displayName: String, bio: String, website: String): Profile!
     uploadProfileAvatar(avatarUrl: String!): Profile!
     removeProfileAvatar: Profile!
-    toggleFollow(username: String!): Boolean!
+    toggleFollow(username: String!): ProfileFollowResponse!
     removeFollower(username: String!): Boolean!
     removeFollowing(username: String!): Boolean!
   }
@@ -43,5 +43,11 @@ export const ProfileTypes = `#graphql
     isFollowing: Boolean # Dynamic based on viewer
     isMe: Boolean
     createdAt: DateTime!
+  }
+
+  type ProfileFollowResponse {
+    id: ID!
+    isFollowing: Boolean!
+    followersCount: Int!
   }
 `;
