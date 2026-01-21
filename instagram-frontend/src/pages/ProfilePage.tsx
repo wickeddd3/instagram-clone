@@ -7,9 +7,11 @@ import type { ProfileDataByUsername } from "../types/profile";
 import { GET_PROFILE } from "../graphql/queries/profile";
 import { TOGGLE_FOLLOW } from "../graphql/mutations/profile";
 import { ProfileHeaderSkeleton } from "../components/loaders/ProfileHeaderSkeleton";
+import { useAuth } from "../contexts/AuthContext";
 
 const ProfilePage = () => {
   const { username } = useParams();
+  const { authUser } = useAuth();
 
   const { data, loading } = useQuery<ProfileDataByUsername>(GET_PROFILE, {
     variables: { username },
@@ -27,14 +29,32 @@ const ProfilePage = () => {
           : (data?.getProfile.followersCount || 0) + 1,
       },
     },
+
     update(cache, { data: { toggleFollow } }: any) {
+      const targetId = data?.getProfile.id;
+      const authId = authUser?.getProfileById.id;
+
+      // The Target User (profile you are looking at)
       cache.modify({
-        id: cache.identify({ __typename: "Profile", id: data?.getProfile.id }),
+        id: cache.identify({ __typename: "Profile", id: targetId }),
         fields: {
           isFollowing: () => toggleFollow.isFollowing,
           followersCount: () => toggleFollow.followersCount,
         },
       });
+
+      // Authenticated User (You)
+      if (authId && authId !== targetId) {
+        cache.modify({
+          id: cache.identify({ __typename: "Profile", id: authId }),
+          fields: {
+            followingCount: (prev) => {
+              // If we just followed, increment. If we unfollowed, decrement.
+              return toggleFollow.isFollowing ? prev + 1 : prev - 1;
+            },
+          },
+        });
+      }
     },
   });
 
