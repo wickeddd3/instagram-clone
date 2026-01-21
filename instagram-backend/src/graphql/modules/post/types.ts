@@ -12,8 +12,8 @@ export const PostTypes = `#graphql
     createPost(imageUrl: String!, caption: String, location: String): Post!
 
     # Interaction
-    togglePostLike(postId: ID!): PostLikeResponse
-    togglePostSave(postId: ID!): PostSaveResponse
+    togglePostLike(postId: ID!): PostLikeResponse!
+    togglePostSave(postId: ID!): PostSaveResponse!
   }
 
   type Post {
@@ -52,13 +52,13 @@ export const PostTypes = `#graphql
   }
 
   type PostLikeResponse {
-    id: ID
-    isLiked: Boolean
-    likesCount: Int
+    id: ID!
+    isLiked: Boolean!
+    likesCount: Int!
   }
 
   type PostSaveResponse {
-    id: ID
-    isSaved: Boolean
+    id: ID!
+    isSaved: Boolean!
   }
 `;

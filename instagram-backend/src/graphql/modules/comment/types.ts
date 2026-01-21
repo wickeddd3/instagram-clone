@@ -32,8 +32,8 @@ export const CommentTypes = `#graphql
   }
 
   type CommentLikeResponse {
-    id: ID
-    isLiked: Boolean
-    likesCount: Int
+    id: ID!
+    isLiked: Boolean!
+    likesCount: Int!
   }
 `;
