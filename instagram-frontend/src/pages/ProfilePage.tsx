@@ -16,7 +16,27 @@ const ProfilePage = () => {
     skip: !username,
   });
 
-  const [toggleFollow] = useMutation(TOGGLE_FOLLOW);
+  const [toggleFollow] = useMutation(TOGGLE_FOLLOW, {
+    optimisticResponse: {
+      toggleFollow: {
+        __typename: "Profile",
+        id: data?.getProfile.id,
+        isFollowing: !data?.getProfile.isFollowing,
+        followersCount: data?.getProfile.isFollowing
+          ? (data?.getProfile.followersCount || 0) - 1
+          : (data?.getProfile.followersCount || 0) + 1,
+      },
+    },
+    update(cache, { data: { toggleFollow } }: any) {
+      cache.modify({
+        id: cache.identify({ __typename: "Profile", id: data?.getProfile.id }),
+        fields: {
+          isFollowing: () => toggleFollow.isFollowing,
+          followersCount: () => toggleFollow.followersCount,
+        },
+      });
+    },
+  });
 
   const navigate = useNavigate();
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
