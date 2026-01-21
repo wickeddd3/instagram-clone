@@ -5,7 +5,13 @@ import { GET_FOLLOWING } from "../../graphql/queries/profile";
 import { Loader2 } from "lucide-react";
 import type { FollowingData } from "../../types/profile";
 
-export const FollowingList = ({ username }: { username: string }) => {
+export const FollowingList = ({
+  username,
+  ownerId,
+}: {
+  username: string;
+  ownerId: string;
+}) => {
   const { data, loading } = useQuery<FollowingData>(GET_FOLLOWING, {
     variables: { username },
     skip: !username,
@@ -21,7 +27,12 @@ export const FollowingList = ({ username }: { username: string }) => {
   return (
     <div className="w-full h-full flex flex-col gap-3 py-2 px-4">
       <SearchField />
-      <FollowList profiles={data?.getFollowing || []} type="following" />
+      <FollowList
+        profiles={data?.getFollowing || []}
+        type="following"
+        viewerUsername={username}
+        ownerId={ownerId}
+      />
     </div>
   );
 };

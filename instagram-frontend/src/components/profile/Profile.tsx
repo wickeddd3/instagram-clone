@@ -60,11 +60,13 @@ export const Stats = ({
   followersCount,
   followingCount,
   username,
+  ownerId,
 }: {
   postsCount: number;
   followersCount: number;
   followingCount: number;
   username: string;
+  ownerId: string;
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [title, setTitle] = useState<string>("");
@@ -102,6 +104,7 @@ export const Stats = ({
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         username={username}
+        ownerId={ownerId}
         title={title}
       />
     </>
@@ -122,7 +125,7 @@ export const Bio = ({ text }: { text: string }) => {
 
 export const Content = ({ profileId }: { profileId: string }) => {
   const [activeTab, setActiveTab] = useState<"POSTS" | "SAVED" | "TAGGED">(
-    "POSTS"
+    "POSTS",
   );
 
   return (

@@ -9,13 +9,88 @@ import { Link } from "react-router-dom";
 interface FollowItemProps {
   profile: ProfileData;
   type: string;
+  viewerUsername: string;
+  ownerId: string;
 }
 
-export const FollowItem = ({ profile, type }: FollowItemProps) => {
-  const [removeFollower] = useMutation(REMOVE_FOLLOWER);
-  const [removeFollowing] = useMutation(REMOVE_FOLLOWING);
+export const FollowItem = ({
+  profile,
+  type,
+  viewerUsername,
+  ownerId,
+}: FollowItemProps) => {
+  const [removeFollower] = useMutation(REMOVE_FOLLOWER, {
+    optimisticResponse: {
+      removeFollower: {
+        id: profile.id,
+        __typename: "Profile",
+      },
+    },
+    update(cache) {
+      // Remove from the "Followers" list cache
+      cache.modify({
+        fields: {
+          getFollowers(existingData, { storeFieldName }) {
+            // Only modify the list belonging to the profile we are viewing
+            if (!storeFieldName.includes(viewerUsername)) return existingData;
 
-  const handleToggleFollow = () => {
+            return [
+              ...existingData.filter(
+                (u: any) =>
+                  u.__ref !==
+                  cache.identify({ __typename: "Profile", id: profile.id }),
+              ),
+            ];
+          },
+        },
+      });
+
+      // Decrement followersCount on the profile being viewed
+      cache.modify({
+        id: cache.identify({ __typename: "Profile", id: ownerId }),
+        fields: {
+          followersCount: (prev) => prev - 1,
+        },
+      });
+    },
+  });
+  const [removeFollowing] = useMutation(REMOVE_FOLLOWING, {
+    optimisticResponse: {
+      removeFollowing: {
+        id: profile.id,
+        __typename: "Profile",
+      },
+    },
+    update(cache) {
+      // Remove from the "Following" list cache
+      cache.modify({
+        fields: {
+          getFollowing(existingData, { storeFieldName }) {
+            if (!storeFieldName.includes(viewerUsername)) return existingData;
+
+            return [
+              ...existingData.filter(
+                (u: any) =>
+                  u.__ref !==
+                  cache.identify({ __typename: "Profile", id: profile.id }),
+              ),
+            ];
+          },
+        },
+      });
+
+      // Decrement followingCount on the profile being viewed
+      cache.modify({
+        id: cache.identify({ __typename: "Profile", id: ownerId }),
+        fields: {
+          followingCount: (prev) => prev - 1,
+        },
+      });
+    },
+  });
+
+  const handleToggleFollow = (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent link navigation
     if (type === "follower") {
       return removeFollower({ variables: { username: profile.username } });
     }

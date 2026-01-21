@@ -73,6 +73,7 @@ const ProfilePage = () => {
                 followersCount={data?.getProfile.followersCount || 0}
                 followingCount={data?.getProfile.followingCount || 0}
                 username={data?.getProfile.username || ""}
+                ownerId={data?.getProfile.id || ""}
               />
             </section>
           </header>
