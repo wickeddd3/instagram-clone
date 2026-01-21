@@ -8,9 +8,11 @@ import type { FollowersData } from "../../types/profile";
 export const FollowerList = ({
   username,
   ownerId,
+  canModify,
 }: {
   username: string;
   ownerId: string;
+  canModify: boolean;
 }) => {
   const { data, loading } = useQuery<FollowersData>(GET_FOLLOWERS, {
     variables: { username },
@@ -32,6 +34,7 @@ export const FollowerList = ({
         type="follower"
         viewerUsername={username}
         ownerId={ownerId}
+        canModify={canModify}
       />
     </div>
   );

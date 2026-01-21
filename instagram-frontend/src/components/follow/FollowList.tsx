@@ -6,6 +6,7 @@ interface FollowListProps {
   type: string;
   viewerUsername: string;
   ownerId: string;
+  canModify: boolean;
 }
 
 export const FollowList = ({
@@ -13,6 +14,7 @@ export const FollowList = ({
   type,
   viewerUsername,
   ownerId,
+  canModify,
 }: FollowListProps) => {
   return (
     <ul className="flex-1 flex flex-col overflow-y-auto">
@@ -23,6 +25,7 @@ export const FollowList = ({
           type={type}
           viewerUsername={viewerUsername}
           ownerId={ownerId}
+          canModify={canModify}
         />
       ))}
     </ul>

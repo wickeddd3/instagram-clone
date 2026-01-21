@@ -9,6 +9,7 @@ interface FollowModalProps {
   username: string;
   ownerId: string;
   title: string;
+  canModify: boolean;
 }
 
 export const FollowModal = ({
@@ -17,6 +18,7 @@ export const FollowModal = ({
   username,
   ownerId,
   title,
+  canModify,
 }: FollowModalProps) => {
   if (!isOpen) return null;
 
@@ -44,9 +46,17 @@ export const FollowModal = ({
           </div>
           <div className="flex-1">
             {title === "Followers" ? (
-              <FollowerList username={username} ownerId={ownerId} />
+              <FollowerList
+                username={username}
+                ownerId={ownerId}
+                canModify={canModify}
+              />
             ) : (
-              <FollowingList username={username} ownerId={ownerId} />
+              <FollowingList
+                username={username}
+                ownerId={ownerId}
+                canModify={canModify}
+              />
             )}
           </div>
         </div>

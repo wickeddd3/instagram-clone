@@ -11,6 +11,7 @@ interface FollowItemProps {
   type: string;
   viewerUsername: string;
   ownerId: string;
+  canModify: boolean;
 }
 
 export const FollowItem = ({
@@ -18,6 +19,7 @@ export const FollowItem = ({
   type,
   viewerUsername,
   ownerId,
+  canModify,
 }: FollowItemProps) => {
   const [removeFollower] = useMutation(REMOVE_FOLLOWER, {
     optimisticResponse: {
@@ -120,12 +122,14 @@ export const FollowItem = ({
             </h1>
           </div>
         </div>
-        <button
-          onClick={handleToggleFollow}
-          className="bg-neutral-800 px-4 py-1 rounded-lg text-sm cursor-pointer"
-        >
-          {type === "follower" ? "Remove" : "Following"}
-        </button>
+        {canModify && (
+          <button
+            onClick={handleToggleFollow}
+            className="bg-neutral-800 px-4 py-1 rounded-lg text-sm cursor-pointer"
+          >
+            {type === "follower" ? "Remove" : "Following"}
+          </button>
+        )}
       </Link>
     </li>
   );

@@ -61,12 +61,14 @@ export const Stats = ({
   followingCount,
   username,
   ownerId,
+  canModify,
 }: {
   postsCount: number;
   followersCount: number;
   followingCount: number;
   username: string;
   ownerId: string;
+  canModify: boolean;
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [title, setTitle] = useState<string>("");
@@ -106,6 +108,7 @@ export const Stats = ({
         username={username}
         ownerId={ownerId}
         title={title}
+        canModify={canModify}
       />
     </>
   );

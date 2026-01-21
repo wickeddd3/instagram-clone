@@ -18,6 +18,9 @@ const ProfilePage = () => {
     skip: !username,
   });
 
+  const targetId = data?.getProfile.id;
+  const authId = authUser?.getProfileById.id;
+
   const [toggleFollow] = useMutation(TOGGLE_FOLLOW, {
     optimisticResponse: {
       toggleFollow: {
@@ -31,9 +34,6 @@ const ProfilePage = () => {
     },
 
     update(cache, { data: { toggleFollow } }: any) {
-      const targetId = data?.getProfile.id;
-      const authId = authUser?.getProfileById.id;
-
       // The Target User (profile you are looking at)
       cache.modify({
         id: cache.identify({ __typename: "Profile", id: targetId }),
@@ -94,6 +94,13 @@ const ProfilePage = () => {
                 followingCount={data?.getProfile.followingCount || 0}
                 username={data?.getProfile.username || ""}
                 ownerId={data?.getProfile.id || ""}
+                canModify={
+                  !!(
+                    authId &&
+                    data?.getProfile.id &&
+                    authId === data?.getProfile.id
+                  )
+                }
               />
             </section>
           </header>
