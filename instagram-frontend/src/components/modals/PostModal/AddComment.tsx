@@ -76,10 +76,7 @@ export const AddComment = ({
   };
 
   return (
-    <form
-      onSubmit={handleSend}
-      className="flex items-center gap-3 border-t border-neutral-800 px-3 py-4"
-    >
+    <form onSubmit={handleSend} className="flex items-center gap-3  px-3 py-4">
       <input
         ref={inputRef}
         value={text}

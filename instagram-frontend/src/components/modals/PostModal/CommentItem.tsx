@@ -73,7 +73,7 @@ export const CommentItem = ({
   };
 
   return (
-    <div className="flex flex-col gap-3 py-3">
+    <div className="flex flex-col gap-3">
       <div className="flex gap-3 items-start group">
         <img
           src={avatarUrl || "/default-avatar.png"}
@@ -82,14 +82,16 @@ export const CommentItem = ({
 
         <div className="flex-1 flex flex-col text-sm">
           <div className="flex flex-wrap">
-            <span className="font-bold mr-2">{username}</span>
+            <span className="font-semibold mr-2">{username}</span>
             <span className="text-white/90">{text}</span>
           </div>
 
-          <div className="flex gap-4 mt-2 text-xs text-gray-400 font-semibold">
-            <span>{formatDistanceToNow(new Date(createdAt))}</span>
+          <div className="flex gap-4 mt-2 text-xs text-gray-400">
+            <span className="font-light">
+              {formatDistanceToNow(new Date(createdAt))}
+            </span>
             {likesCount > 0 && (
-              <span>
+              <span className="font-medium">
                 {likesCount === 1
                   ? `${likesCount} like`
                   : `${likesCount} likes`}
@@ -97,7 +99,7 @@ export const CommentItem = ({
             )}
             <button
               onClick={() => onReplyClick({ username, id })}
-              className="hover:text-white cursor-pointer"
+              className="font-medium hover:text-white cursor-pointer"
             >
               Reply
             </button>

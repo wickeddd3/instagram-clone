@@ -60,7 +60,7 @@ export const PostModal = ({ isOpen, onClose }: PostModalProps) => {
     >
       <button
         onClick={onClose}
-        className="absolute top-4 right-4 text-white hover:text-gray-300"
+        className="absolute top-4 right-2.5 text-white hover:text-gray-300 z-70 cursor-pointer"
       >
         <X size={28} />
       </button>
@@ -68,18 +68,36 @@ export const PostModal = ({ isOpen, onClose }: PostModalProps) => {
         initial={{ scale: 1.1, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ type: "spring", duration: 0.4 }}
-        className="bg-neutral-900 rounded-xl w-full max-w-5/6 h-full max-h-5/6 flex flex-col md:flex-row overflow-hidden"
+        className="bg-neutral-900 w-4/5 h-4/5 md:h-[90vh] md:max-w-5/6 lg:max-w-4/5 flex flex-col md:flex-row rounded-xl overflow-hidden"
       >
-        <div className="w-full md:w-[60%] h-[400px] md:h-full flex items-center justify-center relative border-r border-gray-700">
+        {/* MOBILE HEADER: Shown only on small screens */}
+        <div className="md:hidden border-b border-neutral-800">
+          <PostHeader className="p-3">
+            <div className="flex items-center gap-3">
+              <PostHeader.AuthorAvatar
+                avatarUrl={post?.author.avatarUrl}
+                username={post?.author.username}
+                className="w-10 h-10"
+              />
+              <PostHeader.AuthorUsername username={post?.author.username} />
+            </div>
+            <PostHeader.Options />
+          </PostHeader>
+        </div>
+
+        {/* IMAGE SECTION */}
+        <div className="w-full max-h-1/2 md:max-h-full md:w-[60%] bg-black flex items-center justify-center relative md:border-r border-neutral-800">
           <img
             src={post?.imageUrl}
             alt="Preview"
-            className="w-full h-full object-cover"
+            className="w-full h-full md:h-auto object-contain"
           />
         </div>
 
+        {/* CONTENT SECTION (Header, Comments, Actions) */}
         <div className="w-full md:w-[40%] flex flex-col bg-neutral-900">
-          <PostHeader className="p-3 border-b border-neutral-800">
+          {/* DESKTOP HEADER: Hidden on small screens */}
+          <PostHeader className="hidden md:flex p-3 border-b border-neutral-800">
             <div className="flex items-center gap-3">
               <PostHeader.AuthorAvatar
                 avatarUrl={post?.author.avatarUrl}
@@ -91,10 +109,9 @@ export const PostModal = ({ isOpen, onClose }: PostModalProps) => {
             <PostHeader.Options />
           </PostHeader>
 
-          <Comments postId={post?.id || ""} onReplyClick={handleReplyClick} />
-
-          <div className="flex flex-col gap-3 mt-auto">
-            <PostActions className="px-3 pt-1">
+          {/* ACTIONS SECTION (On mobile, this comes right after the image) */}
+          <div className="flex flex-col order-first md:order-last">
+            <PostActions className="px-3 pt-2">
               <div className="flex items-center gap-4">
                 <PostActions.LikeButton
                   isLiked={post?.isLiked || false}
@@ -110,8 +127,8 @@ export const PostModal = ({ isOpen, onClose }: PostModalProps) => {
             </PostActions>
 
             {/* Likes & Date */}
-            <div className="flex flex-col px-4">
-              <span className="font-semibold text-sm">
+            <div className="flex flex-col px-4 md:py-2">
+              <span className="font-medium text-sm py-2 md:py-0">
                 {post?.likesCount.toLocaleString()} likes
               </span>
               <span className="text-gray-500 text-xs">
@@ -119,6 +136,27 @@ export const PostModal = ({ isOpen, onClose }: PostModalProps) => {
               </span>
             </div>
 
+            {/* Desktop Add Comment stays here */}
+            <div className="hidden md:block border-t border-neutral-800">
+              <AddComment
+                postId={post?.id || ""}
+                text={text}
+                setText={setText}
+                replyData={replyData}
+                setReplyData={setReplyData}
+                inputRef={commentInputRef}
+              />
+            </div>
+          </div>
+
+          {/* COMMENTS SECTION */}
+          {/* On mobile, this grows to fill space; on desktop, it occupies the middle */}
+          <div className="flex-1 overflow-y-auto max-h-[165px] md:max-h-full overscroll-contain no-scrollbar">
+            <Comments postId={post?.id || ""} onReplyClick={handleReplyClick} />
+          </div>
+
+          {/* MOBILE FIXED BOTTOM INPUT */}
+          <div className="md:hidden sticky bottom-0 border-t border-neutral-800 bg-neutral-900">
             <AddComment
               postId={post?.id || ""}
               text={text}

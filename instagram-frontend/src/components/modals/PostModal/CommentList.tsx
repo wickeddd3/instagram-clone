@@ -14,7 +14,7 @@ export const CommentList = ({
   onReplyClick,
 }: CommentListProps) => {
   return (
-    <div className="w-full flex-1 flex flex-col gap-2">
+    <div className="w-full flex-1 flex flex-col gap-6">
       {comments.map((comment) => (
         <CommentItem
           key={comment.id}
