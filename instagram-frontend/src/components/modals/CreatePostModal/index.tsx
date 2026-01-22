@@ -31,7 +31,7 @@ export const CreatePostModal = ({ isOpen, onClose }: CreatePostModalProps) => {
     >
       <button
         onClick={onClose}
-        className="absolute top-4 right-4 text-white hover:text-gray-300"
+        className="absolute top-4 right-3 text-white hover:text-gray-300 cursor-pointer"
       >
         <X size={24} />
       </button>

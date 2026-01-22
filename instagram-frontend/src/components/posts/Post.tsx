@@ -52,8 +52,8 @@ export const Post = ({
   };
 
   return (
-    <article className="w-full max-w-[470px] mx-auto flex flex-col gap-4">
-      <PostHeader>
+    <article className="w-full max-w-[470px] mx-auto flex flex-col gap-2">
+      <PostHeader className="pl-2">
         <div className="flex items-center gap-3">
           <PostHeader.AuthorAvatar
             avatarUrl={avatarUrl}
@@ -79,7 +79,7 @@ export const Post = ({
         )}
       </div>
 
-      <PostActions>
+      <PostActions className="pl-2">
         <div className="flex items-center gap-4">
           <PostActions.LikeButton isLiked={isLiked} onClick={handleLikeClick} />
           <PostActions.CommentButton onClick={handleFocusComment} />
@@ -91,13 +91,15 @@ export const Post = ({
         />
       </PostActions>
 
-      <PostDetails>
+      <PostDetails className="pl-2">
         <PostDetails.Likes likesCount={likesCount} />
         <PostDetails.Caption username={username} caption={caption || ""} />
         <PostDetails.Comments commentsCount={commentsCount} post={post} />
       </PostDetails>
 
-      <AddComment postId={id} inputRef={commentInputRef} />
+      <div className="pl-2 pr-1">
+        <AddComment postId={id} inputRef={commentInputRef} />
+      </div>
     </article>
   );
 };

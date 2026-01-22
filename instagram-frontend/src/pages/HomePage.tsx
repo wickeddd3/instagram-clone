@@ -60,7 +60,7 @@ const HomePage = () => {
         <Stories />
 
         {loading && !posts.length && (
-          <div className="w-full flex flex-col gap-8">
+          <div className="w-full flex flex-col gap-8 p-2">
             {[...Array(8)].map((_, i) => (
               <PostSkeleton key={i} />
             ))}
@@ -68,7 +68,7 @@ const HomePage = () => {
         )}
 
         {!!posts.length && (
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-6 p-2">
             {posts.map((post) => (
               <Post key={post.id} post={post} />
             ))}
@@ -80,14 +80,14 @@ const HomePage = () => {
         {hasMore && (
           <div
             ref={sentinelRef}
-            className="w-full flex justify-center items-center py-10 pb-5"
+            className="w-full flex justify-center items-center py-4 mb-14"
           >
             <Loader className="animate-spin text-gray-500" size={34} />
           </div>
         )}
 
         {!hasMore && posts.length > 0 && (
-          <p className="text-gray-500 text-xs text-center py-10">
+          <p className="text-gray-500 text-xs text-center py-4 mb-14">
             You've caught up with everything!
           </p>
         )}

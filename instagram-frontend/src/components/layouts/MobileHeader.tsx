@@ -3,9 +3,9 @@ import { MobileSearch } from "../search/MobileSearch";
 
 export const MobileHeader = () => {
   return (
-    <header className="w-full p-3 bg-[#0d1015] border-b border-gray-800 flex items-center justify-between">
+    <header className="w-full px-3 py-2 bg-[#0d1015] flex items-center justify-between">
       <h1
-        className="text-2xl font-medium"
+        className="text-3xl font-medium"
         style={{ fontFamily: "Grand Hotel, cursive" }}
       >
         Instagram

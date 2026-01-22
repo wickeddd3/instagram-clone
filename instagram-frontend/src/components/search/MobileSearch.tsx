@@ -37,11 +37,11 @@ export const MobileSearch = () => {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search"
-          className="w-full bg-gray-900 border-none rounded-full py-2 pl-10 pr-4 text-sm placeholder:text-sm placeholder:font-light focus:outline-none"
+          className="w-full bg-neutral-800 border-none rounded-full py-3 pl-10 pr-4 text-sm placeholder:text-sm placeholder:font-light focus:outline-none"
         />
       </div>
       {isFocused && (
-        <div className="absolute top-10 -left-17 w-xs bg-gray-900 border-b border-gray-800 z-50 max-h-[70vh] overflow-y-auto rounded-lg shadow-2xl">
+        <div className="absolute top-12 -left-17 w-xs bg-gray-900 border-b border-gray-800 z-50 max-h-[70vh] overflow-y-auto rounded-lg shadow-2xl">
           <div className="flex flex-col gap-2 p-2">
             {query ? (
               <SearchResults query={query} />

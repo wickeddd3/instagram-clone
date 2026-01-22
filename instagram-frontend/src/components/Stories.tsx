@@ -39,8 +39,8 @@ export const Stories = () => {
           <SwiperSlide key={story.id} className="w-auto!">
             <div className="flex flex-col items-center gap-1 cursor-pointer">
               {/* Gradient Ring */}
-              <div className="w-22 h-22 rounded-full bg-linear-to-tr from-yellow-400 to-fuchsia-600 p-0.5">
-                <div className="bg-black p-0.5 rounded-full w-full h-full">
+              <div className="w-21 h-21 rounded-full bg-linear-to-tr from-yellow-400 to-fuchsia-600 p-[3px]">
+                <div className="bg-[#0d1015] p-1 rounded-full w-full h-full">
                   <img
                     src={story.avatar}
                     alt={story.username}
