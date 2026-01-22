@@ -9,11 +9,13 @@ export const SuggestionsSidebar = () => {
     GET_SUGGESTED_PROFILES,
     {
       variables: { limit: 5 },
-    }
+    },
   );
 
   if (loading)
     return <div className="animate-pulse w-full h-40 bg-gray-900 rounded-lg" />;
+
+  if (data?.getSuggestedProfiles.length === 0) return;
 
   return (
     <div className="w-full">
