@@ -3,6 +3,8 @@ import { useAuth } from "../contexts/AuthContext";
 export const AuthUser = () => {
   const { authUser } = useAuth();
 
+  if (!authUser?.getProfileById) return null;
+
   return (
     <div className="flex items-center justify-between mb-6">
       <div className="flex items-center gap-3">

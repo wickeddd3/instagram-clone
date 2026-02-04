@@ -8,6 +8,9 @@ interface MobileNavProps {
 
 export const MobileNav = ({ onCreateClick }: MobileNavProps) => {
   const { authUser } = useAuth();
+
+  if (!authUser?.getProfileById) return null;
+
   const navigate = useNavigate();
 
   const handleRedirectToHome = () => {

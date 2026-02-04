@@ -29,6 +29,8 @@ export const Sidebar = ({
 }: SidebarProps) => {
   const { authUser } = useAuth();
 
+  if (!authUser?.getProfileById) return null;
+
   const navigate = useNavigate();
 
   const iconSize = 24;
@@ -68,7 +70,7 @@ export const Sidebar = ({
       icon: (
         <div className="w-6 h-6 rounded-full bg-gray-500 overflow-hidden">
           <img
-            src={authUser?.getProfileById.avatarUrl || "/ig-default.jpg"}
+            src={authUser?.getProfileById?.avatarUrl || "/ig-default.jpg"}
             alt="Profile"
           />
         </div>
