@@ -6,15 +6,15 @@ services:
     container_name: instagram-db
     restart: always
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
       POSTGRES_DB: instagram_db
     ports:
       - "5432:5432"
     networks:
       - instagram-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U user -d instagram_db"]
+      test: ["CMD-SHELL", "pg_isready -U root -d instagram_db"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -26,6 +26,20 @@ services:
         max-size: "10m"
         max-file: "3"
 
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: instagram-pgadmin
+    depends_on:
+      - db
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: root@root.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
+    networks:
+      - instagram-network
+
   instagram-backend:
     build: ./instagram-backend
     container_name: instagram-backend
@@ -36,12 +50,12 @@ services:
     env_file:
       - ./instagram-backend/.env
     environment:
-      - DATABASE_URL=postgresql://user:password@db:5432/instagram_db
+      - DATABASE_URL=postgresql://root:root@db:5432/instagram_db
     depends_on:
       db:
         condition: service_healthy
     command: >
-      sh -c "export DATABASE_URL=postgresql://user:password@db:5432/instagram_db && 
+      sh -c "export DATABASE_URL=postgresql://root:root@db:5432/instagram_db && 
              npx prisma generate && 
              npx prisma db push &&
              yarn dev"
