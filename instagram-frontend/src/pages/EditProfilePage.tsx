@@ -76,16 +76,16 @@ const EditProfilePage = () => {
           <div className="flex items-center gap-4">
             <div className="w-9 h-9 md:w-15 md:h-15 shrink-0">
               <img
-                src={authUser?.getProfileById.avatarUrl || "/ig-default.jpg"}
+                src={authUser?.getProfileById?.avatarUrl || "/ig-default.jpg"}
                 className="rounded-full w-full h-full object-cover"
               />
             </div>
             <div className="flex flex-col">
               <span className="font-bold text-md">
-                {authUser?.getProfileById.username}
+                {authUser?.getProfileById?.username}
               </span>
               <span className="font-normal text-sm text-gray-400">
-                {authUser?.getProfileById.displayName}
+                {authUser?.getProfileById?.displayName}
               </span>
             </div>
           </div>
@@ -109,7 +109,7 @@ const EditProfilePage = () => {
             />
             <p className="text-xs text-gray-500 mt-2">
               In most cases, you'll be able to change your username back to{" "}
-              {authUser?.getProfileById.username} for another 14 days.
+              {authUser?.getProfileById?.username} for another 14 days.
             </p>
           </div>
         </div>
@@ -159,7 +159,7 @@ const EditProfilePage = () => {
       </form>
 
       <UploadAvatarModal
-        avatarUrl={authUser?.getProfileById.avatarUrl || "/ig-default.jpg"}
+        avatarUrl={authUser?.getProfileById?.avatarUrl || "/ig-default.jpg"}
         isOpen={isAvatarModalOpen}
         onClose={() => setIsAvatarModalOpen(false)}
       />
