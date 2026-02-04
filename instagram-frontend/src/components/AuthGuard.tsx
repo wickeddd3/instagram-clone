@@ -4,13 +4,13 @@ import { Layout } from "./layouts/Layout";
 import { LoadingScreen } from "./loaders/LoadingScreen";
 
 export const AuthGuard = () => {
-  const { session, authUserLoading } = useAuth();
+  const { session, authUser, authUserLoading } = useAuth();
 
   if (authUserLoading) {
     return <LoadingScreen />;
   }
 
-  if (!session) {
+  if (!session || !authUser?.getProfileById) {
     return <MainLogin />;
   }
 
