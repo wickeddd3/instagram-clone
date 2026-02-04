@@ -1,17 +1,16 @@
-# Stage 1 — Build the TypeScript code
-FROM node:20-alpine AS builder
-WORKDIR /app
-COPY package*.json ./
-RUN yarn install
-COPY . .
-RUN yarn build
+FROM node:20
 
-# Stage 2 — Run the server
-FROM node:20-alpine
+RUN apt-get update -y && apt-get install -y openssl
+
 WORKDIR /app
-COPY --from=builder /app/dist ./dist
+
 COPY package*.json ./
-RUN yarn install --omit=dev
+COPY prisma ./prisma/
+
+RUN yarn install
+
+COPY . .
 
 EXPOSE 4000
-CMD ["node", "dist/index.js"]
+
+CMD ["yarn", "dev"]
