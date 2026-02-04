@@ -1,0 +1,76 @@
+name: instagram-clone
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: instagram-db
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: instagram_db
+    ports:
+      - "5432:5432"
+    networks:
+      - instagram-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d instagram_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    command: postgres -c listen_addresses='*'
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  instagram-backend:
+    build: ./instagram-backend
+    container_name: instagram-backend
+    ports:
+      - "4000:4000"
+    networks:
+      - instagram-network
+    env_file:
+      - ./instagram-backend/.env
+    environment:
+      - DATABASE_URL=postgresql://user:password@db:5432/instagram_db
+    depends_on:
+      db:
+        condition: service_healthy
+    command: >
+      sh -c "export DATABASE_URL=postgresql://user:password@db:5432/instagram_db && 
+             npx prisma generate && 
+             npx prisma db push &&
+             yarn dev"
+    volumes:
+      - ./instagram-backend:/app
+      - /app/node_modules
+      - /app/dist
+
+  instagram-frontend:
+    build: ./instagram-frontend
+    container_name: instagram-frontend
+    ports:
+      - "5173:5173"
+    networks:
+      - instagram-network
+    env_file:
+      - ./instagram-frontend/.env
+    environment:
+      - VITE_API_URL=http://localhost:4000/graphql
+    depends_on:
+      - instagram-backend
+    volumes:
+      - ./instagram-frontend:/app
+      - /app/node_modules
+      - /app/dist
+
+networks:
+  instagram-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
