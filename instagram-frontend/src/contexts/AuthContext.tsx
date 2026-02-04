@@ -14,11 +14,11 @@ interface AuthContextType {
   signOut: () => Promise<void>;
   signIn: (
     email: string,
-    password: string
+    password: string,
   ) => Promise<{ data: { user: User | null }; error: Error | null }>;
   signUp: (
     email: string,
-    password: string
+    password: string,
   ) => Promise<{ data: { user: User | null }; error: Error | null }>;
 }
 
@@ -52,7 +52,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
-      }
+      },
     );
 
     // Cleanup the subscription listener on component unmount
