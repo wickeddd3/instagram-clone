@@ -43,3 +43,4 @@ jobs:
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
           vercel-args: "--prod" # Deploy directly to production
           working-directory: ./instagram-frontend
+          vercel-project-name: "instagram-frontend"
