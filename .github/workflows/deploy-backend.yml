@@ -1,0 +1,46 @@
+name: Backend CI/CD
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "instagram-backend/**" # Only trigger if backend code changes
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "yarn"
+          cache-dependency-path: "./instagram-backend/yarn.lock"
+
+      - name: Install Dependencies
+        run: |
+          cd instagram-backend
+          yarn install --frozen-lockfile
+
+      - name: Prisma Generate
+        run: |
+          cd instagram-backend
+          npx prisma generate
+
+      - name: Build Check
+        run: |
+          cd instagram-backend
+          yarn build
+
+      - name: Deploy to Render
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          # Render provides a "Deploy Hook" URL in your service settings
+          curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
