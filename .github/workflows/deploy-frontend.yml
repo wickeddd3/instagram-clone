@@ -44,6 +44,16 @@ jobs:
 
           # 3. Create a dummy config so Vercel knows it's a static site
           echo '{"version": 3}' > .vercel/output/config.json
+
+          # 4. Move the vercel.json into the output config
+          # This ensures Vercel knows about rewrite rules
+          if [ -f vercel.json ]; then
+            cp vercel.json .vercel/output/config.json
+          else
+            echo '{"version": 3, "rewrites": [{"source": "/(.*)", "destination": "/index.html"}]}' > .vercel/output/config.json
+          fi
+
+          echo "✅ Build complete and rewrite rules injected"
         env:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
