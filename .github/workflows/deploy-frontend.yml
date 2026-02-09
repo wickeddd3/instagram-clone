@@ -32,10 +32,18 @@ jobs:
       - name: Install Vercel CLI
         run: npm install --global vercel
 
-      - name: Build Check
+      - name: Build Project
         run: |
           cd instagram-frontend
+          # 1. Run the standard Vite build with your secrets
           yarn build
+
+          # 2. Manually create the folder structure Vercel '--prebuilt' requires
+          mkdir -p .vercel/output/static
+          cp -r dist/* .vercel/output/static
+
+          # 3. Create a dummy config so Vercel knows it's a static site
+          echo '{"version": 3}' > .vercel/output/config.json
         env:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
