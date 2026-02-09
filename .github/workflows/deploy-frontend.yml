@@ -40,27 +40,20 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Build Project Artifacts
-        run: |
-          # 1. Move into the frontend directory
-          cd instagram-frontend
-
-          # 2. Create the .env file exactly where vite.config.ts is
-          echo "VITE_SUPABASE_URL=${{ secrets.VITE_SUPABASE_URL }}" > .env
-          echo "VITE_SUPABASE_ANON_KEY=${{ secrets.VITE_SUPABASE_ANON_KEY }}" >> .env
-
-          # 3. Log a success message (but don't print the file content for security!)
-          echo "✅ .env file created in $(pwd)"
-
-          # 4. Run the vercel build
-          # Because we are already in the directory, vercel will use the local .env
-          vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+        # This step bakes your GitHub Secrets into the JS bundle
+        # Added --cwd . to prevent the 'spawn sh' error
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }} --cwd .
+        working-directory: ./instagram-frontend
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_USER_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
 
       - name: Deploy to Vercel
         # Use --prebuilt to tell Vercel to use the 'dist' folder created in the previous step
-        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+        # Added --cwd . so it finds the .vercel folder created in the build step
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }} --cwd .
         working-directory: ./instagram-frontend
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_USER_ID }}
