@@ -1,0 +1,45 @@
+name: Frontend CI/CD
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "instagram-frontend/**" # Only trigger if frontend code changes
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-node: "20"
+          cache: "yarn"
+          cache-dependency-path: "./instagram-frontend/yarn.lock"
+
+      - name: Install Dependencies
+        run: |
+          cd instagram-frontend
+          yarn install --frozen-lockfile
+
+      - name: Build Check
+        run: |
+          cd instagram-frontend
+          yarn build
+
+      - name: Deploy to Vercel
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_USER_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: "--prod" # Deploy directly to production
+          working-directory: ./instagram-frontend
