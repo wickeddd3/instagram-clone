@@ -32,28 +32,17 @@ jobs:
       - name: Install Vercel CLI
         run: npm install --global vercel
 
-      - name: Pull Vercel Environment Information
-        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-        working-directory: ./instagram-frontend
+      - name: Build Check
+        run: |
+          cd instagram-frontend
+          yarn build
         env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_USER_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
-      - name: Build Project Artifacts
-        # This step bakes your GitHub Secrets into the JS bundle
-        # Added --cwd . to prevent the 'spawn sh' error
-        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }} --cwd .
-        working-directory: ./instagram-frontend
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_USER_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
 
       - name: Deploy to Vercel
-        # Use --prebuilt to tell Vercel to use the 'dist' folder created in the previous step
-        # Added --cwd . so it finds the .vercel folder created in the build step
-        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }} --cwd .
+        run: |
+          vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
         working-directory: ./instagram-frontend
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_USER_ID }}
