@@ -138,7 +138,10 @@ docker compose up
 ## 📁 Project Structure
 
 ```
-
+├── .github/
+│   └── workflows/
+│       ├── deploy-frontend.yml  # Global Action for Frontend
+│       └── deploy-backend.yml   # Global Action for Backend
 ├── instagram-backend/ # Node.js + Apollo + Prisma
 ├── instagram-frontend/ # React + Vite
 ├── docker-compose.yml # Infrastructure orchestration
