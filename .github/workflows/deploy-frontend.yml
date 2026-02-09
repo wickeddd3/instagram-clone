@@ -54,7 +54,6 @@ jobs:
           cd instagram-frontend
 
           # 2. Run deploy from here. 
-          # We don't need 'working-directory' at the step level anymore.
           vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_USER_ID }}
