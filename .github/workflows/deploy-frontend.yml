@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - "instagram-frontend/**" # Only trigger if frontend code changes
+  workflow_dispatch:
   pull_request:
     branches:
       - main
