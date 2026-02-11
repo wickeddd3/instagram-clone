@@ -30,7 +30,7 @@ export const SearchResultItem = ({
           query: GET_RECENT_SEARCHES,
           data: {
             getRecentSearches: existingSearches.getRecentSearches.filter(
-              (item: any) => item.id !== user.id
+              (item: any) => item.id !== user.id,
             ),
           },
         });
@@ -45,7 +45,7 @@ export const SearchResultItem = ({
 
   const handleRemoveRecentSearch = (
     event: React.MouseEvent,
-    targetId: string
+    targetId: string,
   ) => {
     event.preventDefault(); // Stop Link navigation
     event.stopPropagation(); // Stop event from reaching the Link
@@ -61,7 +61,7 @@ export const SearchResultItem = ({
     >
       <div className="flex items-center gap-3">
         <img
-          src={user.avatarUrl || "/default-avatar.png"}
+          src={user.avatarUrl || "/ig-default.jpg"}
           className="w-11 h-11 rounded-full object-cover"
         />
         <div className="flex flex-col">

@@ -18,7 +18,7 @@ export const SuggestionItem = ({ user }: SuggestionItemProps) => {
     <div key={user.id} className="flex items-center justify-between">
       <Link to={`/${user.username}`} className="flex items-center gap-3">
         <img
-          src={user.avatarUrl || "/default.png"}
+          src={user.avatarUrl || "/ig-default.jpg"}
           className="w-8 h-8 rounded-full object-cover"
         />
         <div className="flex flex-col leading-tight">
