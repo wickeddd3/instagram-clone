@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Profile {
-  id          String   @id // This will match the Supabase Auth User ID
+  id          String   @id @db.Uuid// This will match the Supabase Auth User ID
   username    String   @unique
   email       String   @unique
   displayName String?  @map("display_name")
@@ -48,7 +48,7 @@ model Post {
   updatedAt   DateTime  @updatedAt @map("updated_at")
 
   // Relationships
-  authorId    String    @map("author_id")
+  authorId    String    @map("author_id") @db.Uuid
   author      Profile   @relation(fields: [authorId], references: [id], onDelete: Cascade)
   
   comments    Comment[]
@@ -65,7 +65,7 @@ model Comment {
   createdAt   DateTime  @default(now()) @map("created_at")
 
   // Relationships
-  authorId    String    @map("author_id")
+  authorId    String    @map("author_id") @db.Uuid
   author      Profile   @relation(fields: [authorId], references: [id], onDelete: Cascade)
   
   postId      String    @map("post_id")
@@ -87,7 +87,7 @@ model Like {
   createdAt   DateTime  @default(now()) @map("created_at")
 
   // User who liked
-  userId      String    @map("user_id")
+  userId      String    @map("user_id") @db.Uuid
   user        Profile   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   // A like can belong to a post OR a comment
@@ -108,7 +108,7 @@ model SavedPost {
   createdAt DateTime @default(now()) @map("created_at")
 
   // The User who saved the post
-  userId    String   @map("user_id")
+  userId    String   @map("user_id") @db.Uuid
   user      Profile  @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   // The Post being saved
@@ -121,10 +121,10 @@ model SavedPost {
 }
 
 model Follow {
-  followerId  String   @map("follower_id")
+  followerId  String   @map("follower_id") @db.Uuid
   follower    Profile  @relation("follower", fields: [followerId], references: [id], onDelete: Cascade)
   
-  followingId String   @map("following_id")
+  followingId String   @map("following_id") @db.Uuid
   following   Profile  @relation("following", fields: [followingId], references: [id], onDelete: Cascade)
   
   createdAt   DateTime @default(now()) @map("created_at")
@@ -138,11 +138,11 @@ model RecentSearch {
   createdAt DateTime @default(now()) @map("created_at")
 
   // The user who performed the search
-  userId    String   @map("user_id")
+  userId    String   @map("user_id") @db.Uuid
   user      Profile  @relation("Searcher", fields: [userId], references: [id], onDelete: Cascade)
 
   // The user who was searched for
-  targetId  String   @map("target_id")
+  targetId  String   @map("target_id") @db.Uuid
   target    Profile  @relation("SearchedTarget", fields: [targetId], references: [id], onDelete: Cascade)
 
   // Ensure a user only shows up once in the recent list
@@ -156,11 +156,11 @@ model Notification {
   createdAt   DateTime         @default(now()) @map("created_at")
 
   // The person who triggered the notification (e.g., the liker)
-  actorId     String           @map("actor_id")
+  actorId     String           @map("actor_id") @db.Uuid
   actor       Profile          @relation("NotificationActor", fields: [actorId], references: [id], onDelete: Cascade)
 
   // The person receiving the notification
-  recipientId String           @map("recipient_id")
+  recipientId String           @map("recipient_id") @db.Uuid
   recipient   Profile          @relation("NotificationRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
 
   postId      String?          @map("post_id")
