@@ -1,5 +1,3 @@
-import { X } from "lucide-react";
-import { motion } from "framer-motion";
 import { useRef, useState } from "react";
 import { usePost } from "../../../contexts/PostContext";
 import { formatDateToNow } from "../../../utils/date";
@@ -8,6 +6,7 @@ import { PostHeader } from "../../posts/PostHeader";
 import { Comments } from "./Comments";
 import { AddComment, type ReplyDataType } from "./AddComment";
 import { usePostActions } from "../../../hooks/usePostActions";
+import { Modal } from "../../Modal";
 
 interface PostModalProps {
   isOpen: boolean;
@@ -53,23 +52,12 @@ export const PostModal = ({ isOpen, onClose }: PostModalProps) => {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="fixed inset-0 bg-black/60 flex items-center justify-center z-60"
-    >
-      <button
-        onClick={onClose}
-        className="absolute top-4 right-2.5 text-white hover:text-gray-300 z-70 cursor-pointer"
-      >
-        <X size={28} />
-      </button>
-      <motion.div
-        initial={{ scale: 1.1, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ type: "spring", duration: 0.4 }}
-        className="bg-neutral-900 w-4/5 h-4/5 md:h-[90vh] md:max-w-5/6 lg:max-w-4/5 flex flex-col md:flex-row rounded-xl overflow-hidden"
-      >
+    <Modal>
+      <Modal.CloseButton
+        onClose={onClose}
+        className="absolute top-4 right-2.5 z-70"
+      />
+      <Modal.Content className="w-4/5 h-4/5 md:h-[90vh] md:max-w-5/6 lg:max-w-4/5 flex flex-col md:flex-row">
         {/* MOBILE HEADER: Shown only on small screens */}
         <div className="md:hidden border-b border-neutral-800">
           <PostHeader className="p-3">
@@ -167,7 +155,7 @@ export const PostModal = ({ isOpen, onClose }: PostModalProps) => {
             />
           </div>
         </div>
-      </motion.div>
-    </motion.div>
+      </Modal.Content>
+    </Modal>
   );
 };
