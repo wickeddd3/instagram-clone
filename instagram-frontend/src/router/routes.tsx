@@ -10,45 +10,45 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        lazy: () =>
-          import("../pages/HomePage").then((module) => ({
-            element: <module.default />,
-          })),
+        lazy: async () => {
+          const module = await import("../pages/HomePage");
+          return { Component: module.default };
+        },
       },
       {
         path: ":username",
-        lazy: () =>
-          import("../pages/ProfilePage").then((module) => ({
-            element: <module.default />,
-          })),
+        lazy: async () => {
+          const module = await import("../pages/ProfilePage");
+          return { Component: module.default };
+        },
       },
       {
         path: "accounts/edit",
-        lazy: () =>
-          import("../pages/EditProfilePage").then((module) => ({
-            element: <module.default />,
-          })),
+        lazy: async () => {
+          const module = await import("../pages/EditProfilePage");
+          return { Component: module.default };
+        },
       },
       {
         path: "explore",
-        lazy: () =>
-          import("../pages/ExplorePage").then((module) => ({
-            element: <module.default />,
-          })),
+        lazy: async () => {
+          const module = await import("../pages/ExplorePage");
+          return { Component: module.default };
+        },
       },
       {
         path: "explore/people",
-        lazy: () =>
-          import("../pages/ExplorePeoplePage").then((module) => ({
-            element: <module.default />,
-          })),
+        lazy: async () => {
+          const module = await import("../pages/ExplorePeoplePage");
+          return { Component: module.default };
+        },
       },
       {
         path: "inbox",
-        lazy: () =>
-          import("../pages/InboxPage").then((module) => ({
-            element: <module.default />,
-          })),
+        lazy: async () => {
+          const module = await import("../pages/InboxPage");
+          return { Component: module.default };
+        },
       },
     ],
   },
@@ -60,17 +60,17 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "login",
-        lazy: () =>
-          import("../pages/LoginPage").then((module) => ({
-            element: <module.default />,
-          })),
+        lazy: async () => {
+          const module = await import("../pages/LoginPage");
+          return { Component: module.default };
+        },
       },
       {
         path: "signup",
-        lazy: () =>
-          import("../pages/SignupPage").then((module) => ({
-            element: <module.default />,
-          })),
+        lazy: async () => {
+          const module = await import("../pages/SignupPage");
+          return { Component: module.default };
+        },
       },
     ],
   },
