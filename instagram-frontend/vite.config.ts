@@ -9,4 +9,20 @@ export default defineConfig({
     host: true, // Listen on all local IPs
     port: 5173,
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          // Creates a separate chunk for everything in node_modules
+          if (id.includes("node_modules")) {
+            return id
+              .toString()
+              .split("node_modules/")[1]
+              .split("/")[0]
+              .toString();
+          }
+        },
+      },
+    },
+  },
 });
