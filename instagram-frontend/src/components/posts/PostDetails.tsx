@@ -1,4 +1,5 @@
 import { usePost } from "../../contexts/PostContext";
+import { useModalTrigger } from "../../hooks/useModalTrigger";
 import type { PostData } from "../../types/post";
 
 export const PostDetails = ({
@@ -37,12 +38,16 @@ export const Comments = ({
   commentsCount: number;
   post: PostData;
 }) => {
-  const { openPostModal } = usePost();
+  const { selectPost } = usePost();
+  const { openPostModal } = useModalTrigger();
 
   return (
     commentsCount > 0 && (
       <div
-        onClick={() => openPostModal(post)}
+        onClick={() => {
+          selectPost(post);
+          openPostModal();
+        }}
         className="text-neutral-400 text-sm cursor-pointer"
       >
         {commentsCount === 1

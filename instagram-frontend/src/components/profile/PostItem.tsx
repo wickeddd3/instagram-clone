@@ -1,18 +1,23 @@
 import { Heart, MessageCircle } from "lucide-react";
 import { usePost } from "../../contexts/PostContext";
 import type { PostData } from "../../types/post";
+import { useModalTrigger } from "../../hooks/useModalTrigger";
 
 interface PostItemProps {
   post: PostData;
 }
 
 export const PostItem = ({ post }: PostItemProps) => {
-  const { openPostModal } = usePost();
+  const { selectPost } = usePost();
+  const { openPostModal } = useModalTrigger();
 
   return (
     <article
       className="relative group cursor-pointer"
-      onClick={() => openPostModal(post)}
+      onClick={() => {
+        selectPost(post);
+        openPostModal();
+      }}
     >
       <img
         src={post.imageUrl}

@@ -9,7 +9,7 @@ import { usePostActions } from "../../../hooks/usePostActions";
 import { ModalContent } from "../../Modal";
 
 export const PostModal = () => {
-  const { post, updatePost } = usePost();
+  const { post, updateSelectedPost } = usePost();
 
   if (!post) return null;
 
@@ -23,7 +23,7 @@ export const PostModal = () => {
     togglePostLike({
       variables: { postId: post?.id },
     });
-    updatePost({
+    updateSelectedPost({
       ...post,
       isLiked: !post.isLiked,
       likesCount: post.isLiked ? post.likesCount - 1 : post.likesCount + 1,
@@ -32,7 +32,7 @@ export const PostModal = () => {
 
   const handleBookmarkClick = () => {
     togglePostSave({ variables: { postId: post?.id } });
-    updatePost({
+    updateSelectedPost({
       ...post,
       isSaved: !post.isSaved,
     });
