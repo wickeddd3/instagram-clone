@@ -8,33 +8,29 @@ import { useMutation } from "@apollo/client/react";
 import { createUploadPath, getFileData } from "../../utils/upload";
 import { useAuth } from "../../contexts/AuthContext";
 import { Loader2 } from "lucide-react";
-import { Modal } from "../Modal";
+import { useModal } from "../../contexts/ModalContext";
+import { ModalContent } from "../Modal";
 
 interface UploadAvatarModalProps {
   avatarUrl?: string;
-  isOpen: boolean;
-  onClose: () => void;
 }
 
-export const UploadAvatarModal = ({
-  avatarUrl,
-  isOpen,
-  onClose,
-}: UploadAvatarModalProps) => {
+export const UploadAvatarModal = ({ avatarUrl }: UploadAvatarModalProps) => {
   const { user } = useAuth();
+  const { closeModal } = useModal();
 
   const { uploadImage, removeImage } = useSupabaseUpload();
   const { previewUrl, isUploading, setIsUploading } = usePreviewUpload();
 
   const [removeAvatar] = useMutation(REMOVE_PROFILE_AVATAR, {
     onCompleted: () => {
-      onClose();
+      closeModal();
     },
   });
 
   const [uploadAvatar] = useMutation(UPLOAD_PROFILE_AVATAR, {
     onCompleted: () => {
-      onClose();
+      closeModal();
       setIsUploading(false);
     },
   });
@@ -78,59 +74,55 @@ export const UploadAvatarModal = ({
     const profileAvatarPath = url?.split("avatars/")[1];
     await removeAvatar();
     await removeImage(profileAvatarPath, "avatars");
-    onClose();
+    closeModal();
   };
 
-  if (!isOpen) return null;
-
   return (
-    <Modal>
-      <Modal.Content className="w-[400px] m-2">
-        <div className="flex flex-col">
-          <div className="flex flex-col items-center gap-4 p-6 border-b border-neutral-800">
-            <div className="w-9 h-9 md:w-15 md:h-15 shrink-0">
-              <img
-                src={previewUrl || avatarUrl || "/ig-default.jpg"}
-                className="rounded-full w-full h-full object-cover"
-              />
-            </div>
-            {isUploading && (
-              <div className="w-full bg-indigo-500/20 text-indigo-200 text-xs p-2 text-center flex items-center justify-center gap-2">
-                <Loader2 className="animate-spin" size={14} /> Uploading...
-              </div>
-            )}
-            <span className="font-semibold text-lg">Change Profile Photo</span>
-          </div>
-          <label className="py-3.5 text-sm text-indigo-700 font-bold border-b border-neutral-800 active:bg-white/5 transition-colors cursor-pointer text-center">
-            Upload Photo
-            <input
-              type="file"
-              className="hidden"
-              onChange={(e) => handleUploadPhoto(e, CURRENT_USER_ID)}
-              accept="image/*"
+    <ModalContent className="w-[400px] m-2">
+      <div className="flex flex-col">
+        <div className="flex flex-col items-center gap-4 p-6 border-b border-neutral-800">
+          <div className="w-9 h-9 md:w-15 md:h-15 shrink-0">
+            <img
+              src={previewUrl || avatarUrl || "/ig-default.jpg"}
+              className="rounded-full w-full h-full object-cover"
             />
-          </label>
-          <button
-            disabled={true}
-            className="py-3.5 text-sm text-white font-normal border-b border-neutral-800 active:bg-white/5 transition-colors cursor-pointer"
-          >
-            Manage sync settings
-          </button>
-          <button
-            disabled={!avatarUrl}
-            onClick={() => handleRemoveCurrentPhoto(avatarUrl)}
-            className="py-3.5 text-sm text-red-500 font-bold border-b border-neutral-800 active:bg-white/5 transition-colors cursor-pointer"
-          >
-            Remove Current Photo
-          </button>
-          <button
-            onClick={onClose}
-            className="py-3.5 text-sm text-white font-normal active:bg-white/5 transition-colors cursor-pointer"
-          >
-            Cancel
-          </button>
+          </div>
+          {isUploading && (
+            <div className="w-full bg-indigo-500/20 text-indigo-200 text-xs p-2 text-center flex items-center justify-center gap-2">
+              <Loader2 className="animate-spin" size={14} /> Uploading...
+            </div>
+          )}
+          <span className="font-semibold text-lg">Change Profile Photo</span>
         </div>
-      </Modal.Content>
-    </Modal>
+        <label className="py-3.5 text-sm text-indigo-700 font-bold border-b border-neutral-800 active:bg-white/5 transition-colors cursor-pointer text-center">
+          Upload Photo
+          <input
+            type="file"
+            className="hidden"
+            onChange={(e) => handleUploadPhoto(e, CURRENT_USER_ID)}
+            accept="image/*"
+          />
+        </label>
+        <button
+          disabled={true}
+          className="py-3.5 text-sm text-white font-normal border-b border-neutral-800 active:bg-white/5 transition-colors cursor-pointer"
+        >
+          Manage sync settings
+        </button>
+        <button
+          disabled={!avatarUrl}
+          onClick={() => handleRemoveCurrentPhoto(avatarUrl)}
+          className="py-3.5 text-sm text-red-500 font-bold border-b border-neutral-800 active:bg-white/5 transition-colors cursor-pointer"
+        >
+          Remove Current Photo
+        </button>
+        <button
+          onClick={closeModal}
+          className="py-3.5 text-sm text-white font-normal active:bg-white/5 transition-colors cursor-pointer"
+        >
+          Cancel
+        </button>
+      </div>
+    </ModalContent>
   );
 };
