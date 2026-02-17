@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { X } from "lucide-react";
 import type { ReactNode } from "react";
 
-export const Modal = ({
+export const ModalWrapper = ({
   children,
   className,
 }: {
@@ -13,14 +13,14 @@ export const Modal = ({
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className={`fixed inset-0 bg-black/60 flex items-center justify-center z-60 ${className}`}
+      className={`fixed inset-0 bg-black/60 flex flex-col items-center justify-center w-full z-60 ${className}`}
     >
       {children}
     </motion.div>
   );
 };
 
-export const Content = ({
+export const ModalContent = ({
   children,
   className,
 }: {
@@ -39,7 +39,7 @@ export const Content = ({
   );
 };
 
-export const CloseButton = ({
+export const ModalCloseButton = ({
   onClose,
   className,
   iconSize = 28,
@@ -58,5 +58,24 @@ export const CloseButton = ({
   );
 };
 
-Modal.Content = Content;
-Modal.CloseButton = CloseButton;
+export const Modal = ({
+  content,
+  onClose,
+  hasCloseButton = false,
+}: {
+  content: ReactNode;
+  hasCloseButton?: boolean;
+  onClose: () => void;
+}) => {
+  return (
+    <ModalWrapper>
+      {hasCloseButton && (
+        <ModalCloseButton
+          onClose={onClose}
+          className="absolute top-4 right-2.5 z-70"
+        />
+      )}
+      {content}
+    </ModalWrapper>
+  );
+};
