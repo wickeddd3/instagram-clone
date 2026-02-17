@@ -11,6 +11,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAuth } from "../../contexts/AuthContext";
+import { useModalTrigger } from "../../hooks/useModalTrigger";
 
 interface SidebarProps {
   isSidebarOpen?: boolean;
@@ -23,11 +24,11 @@ interface SidebarProps {
 export const Sidebar = ({
   isSidebarOpen,
   onSidebarHover,
-  onCreateClick,
   onSearchClick,
   onNotificationClick,
 }: SidebarProps) => {
   const { authUser } = useAuth();
+  const { openCreatePostModal } = useModalTrigger();
 
   if (!authUser?.getProfileById) return null;
 
@@ -64,7 +65,7 @@ export const Sidebar = ({
     {
       icon: <Plus size={iconSize} />,
       label: "Create",
-      action: onCreateClick,
+      action: openCreatePostModal,
     },
     {
       icon: (

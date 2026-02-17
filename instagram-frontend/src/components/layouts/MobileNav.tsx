@@ -1,13 +1,11 @@
 import { Compass, Home, Plus, Send, SquarePlay } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useModalTrigger } from "../../hooks/useModalTrigger";
 
-interface MobileNavProps {
-  onCreateClick?: () => void;
-}
-
-export const MobileNav = ({ onCreateClick }: MobileNavProps) => {
+export const MobileNav = () => {
   const { authUser } = useAuth();
+  const { openCreatePostModal } = useModalTrigger();
 
   if (!authUser?.getProfileById) return null;
 
@@ -51,7 +49,7 @@ export const MobileNav = ({ onCreateClick }: MobileNavProps) => {
         <SquarePlay size={24} />
       </button>
       <button
-        onClick={onCreateClick}
+        onClick={openCreatePostModal}
         aria-label="New Post"
         title="New Post"
         className="text-white cursor-pointer"
