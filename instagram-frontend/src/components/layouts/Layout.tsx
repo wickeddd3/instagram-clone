@@ -2,22 +2,25 @@ import { useState } from "react";
 import { MobileNav } from "./MobileNav";
 import { Sidebar } from "./Sidebar";
 import { Outlet, useLocation } from "react-router-dom";
-import { CreatePostModal } from "../modals/CreatePostModal/index";
 import { MobileHeader } from "./MobileHeader";
 import { motion } from "framer-motion";
-import { PostModal } from "../modals/PostModal/index";
-import { usePost } from "../../contexts/PostContext";
 import { SearchSidebar } from "./SearchSidebar";
 import { NotificationsSidebar } from "./NotificationsSidebar";
+import { Modal } from "../Modal";
+import { useModal } from "../../contexts/ModalContext";
 
 export const Layout = () => {
-  const [isModalOpen, setModalOpen] = useState(false);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
 
   const location = useLocation();
-  const { isPostModalOpen, closePostModal } = usePost();
+  const {
+    isOpen: isModalOpen,
+    content: modalContent,
+    hasCloseButton,
+    closeModal,
+  } = useModal();
 
   return (
     <div className="w-full h-full flex flex-col md:flex-row min-h-screen bg-[#0d1015] text-white">
@@ -36,7 +39,6 @@ export const Layout = () => {
         <Sidebar
           isSidebarOpen={isSidebarOpen}
           onSidebarHover={setSidebarOpen}
-          onCreateClick={() => setModalOpen(true)}
           onSearchClick={() => setIsSearchOpen(!isSearchOpen)}
           onNotificationClick={() => setIsNotificationOpen(!isNotificationOpen)}
         />
@@ -67,17 +69,17 @@ export const Layout = () => {
 
       {/* Bottom Nav - Hidden on Desktop */}
       <div className="md:hidden fixed bottom-0 w-full z-50 bg-[#0d1015] border-t border-gray-800">
-        <MobileNav onCreateClick={() => setModalOpen(true)} />
+        <MobileNav />
       </div>
 
-      {/* Create Post Modal */}
-      <CreatePostModal
-        isOpen={isModalOpen}
-        onClose={() => setModalOpen(false)}
-      />
-
-      {/* Post Modal */}
-      <PostModal isOpen={isPostModalOpen} onClose={closePostModal} />
+      {/* Modal */}
+      {isModalOpen && (
+        <Modal
+          content={modalContent}
+          onClose={closeModal}
+          hasCloseButton={hasCloseButton}
+        />
+      )}
     </div>
   );
 };
