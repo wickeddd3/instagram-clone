@@ -6,10 +6,11 @@ import { Loader2, CheckCircle2 } from "lucide-react";
 import { ProfileFormSchema, type ProfileFormType } from "../validation/profile";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { UploadAvatarModal } from "../components/modals/UploadAvatarModal";
+import { useModalTrigger } from "../hooks/useModalTrigger";
 
 const EditProfilePage = () => {
   const { authUser, authUserLoading } = useAuth();
+  const { openUploadAvatarModal } = useModalTrigger();
 
   // Setup Form
   const form = useForm<ProfileFormType>({
@@ -24,7 +25,6 @@ const EditProfilePage = () => {
   const { register, reset, handleSubmit } = form;
 
   const [isSuccess, setIsSuccess] = useState(false);
-  const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
 
   // Setup Update Mutation
   const [updateProfile, { loading: mutationLoading }] = useMutation(
@@ -34,7 +34,7 @@ const EditProfilePage = () => {
         setIsSuccess(true);
         setTimeout(() => setIsSuccess(false), 3000);
       },
-    }
+    },
   );
 
   // Handle Form Submission
@@ -92,7 +92,7 @@ const EditProfilePage = () => {
           <button
             type="button"
             className="bg-indigo-800 px-4 py-2 text-sm font-bold rounded-lg cursor-pointer hover:text-white"
-            onClick={() => setIsAvatarModalOpen(true)}
+            onClick={openUploadAvatarModal}
           >
             Change photo
           </button>
@@ -157,12 +157,6 @@ const EditProfilePage = () => {
           )}
         </div>
       </form>
-
-      <UploadAvatarModal
-        avatarUrl={authUser?.getProfileById?.avatarUrl || "/ig-default.jpg"}
-        isOpen={isAvatarModalOpen}
-        onClose={() => setIsAvatarModalOpen(false)}
-      />
     </div>
   );
 };
