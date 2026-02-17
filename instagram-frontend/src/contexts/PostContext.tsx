@@ -3,43 +3,38 @@ import type { PostData } from "../types/post";
 
 interface PostContextType {
   post: PostData | null;
-  isPostModalOpen: boolean;
-  openPostModal: (postData: PostData) => void;
-  closePostModal: () => void;
-  updatePost: (updatedPost: PostData) => void;
+  selectPost: (postData: PostData | null) => void;
+  updateSelectedPost: (updatedPost: PostData) => void;
+  resetSelectedPost: () => void;
 }
 
 export const PostContext = createContext<PostContextType | null>(null);
 
 export const PostProvider = ({ children }: { children: ReactNode }) => {
   const [post, setPost] = useState<PostData | null>(null);
-  const [isPostModalOpen, setIsPostModalOpen] = useState(false);
 
-  const openPostModal = (postData: PostData) => {
+  const selectPost = (postData: PostData | null) => {
     setPost(postData);
-    setIsPostModalOpen(true);
   };
 
-  const closePostModal = () => {
-    setPost(null);
-    setIsPostModalOpen(false);
-  };
-
-  const updatePost = (updatedPost: PostData) => {
+  const updateSelectedPost = (updatedPost: PostData) => {
     setPost({
       ...post,
       ...updatedPost,
     });
   };
 
+  const resetSelectedPost = () => {
+    setPost(null);
+  };
+
   return (
     <PostContext.Provider
       value={{
         post,
-        isPostModalOpen,
-        openPostModal,
-        closePostModal,
-        updatePost,
+        selectPost,
+        updateSelectedPost,
+        resetSelectedPost,
       }}
     >
       {children}
