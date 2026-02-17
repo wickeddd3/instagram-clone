@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, type ReactNode } from "react";
 import type { PostData } from "../types/post";
 
 interface PostContextType {
@@ -11,7 +11,7 @@ interface PostContextType {
 
 export const PostContext = createContext<PostContextType | null>(null);
 
-export const PostProvider = ({ children }: { children: React.ReactNode }) => {
+export const PostProvider = ({ children }: { children: ReactNode }) => {
   const [post, setPost] = useState<PostData | null>(null);
   const [isPostModalOpen, setIsPostModalOpen] = useState(false);
 
