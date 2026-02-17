@@ -1,6 +1,4 @@
-import { useState } from "react";
 import { useMutation, useQuery } from "@apollo/client/react";
-import { SettingsModal } from "../components/modals/SettingsModal";
 import { useNavigate, useParams } from "react-router-dom";
 import { Profile } from "../components/profile/Profile";
 import type { ProfileDataByUsername } from "../types/profile";
@@ -8,6 +6,7 @@ import { GET_PROFILE } from "../graphql/queries/profile";
 import { TOGGLE_FOLLOW } from "../graphql/mutations/profile";
 import { ProfileHeaderSkeleton } from "../components/loaders/ProfileHeaderSkeleton";
 import { useAuth } from "../contexts/AuthContext";
+import { useModalTrigger } from "../hooks/useModalTrigger";
 
 const ProfilePage = () => {
   const { username } = useParams();
@@ -59,7 +58,7 @@ const ProfilePage = () => {
   });
 
   const navigate = useNavigate();
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const { openSettingsModal } = useModalTrigger();
 
   const handleEditProfile = () => {
     navigate("/accounts/edit");
@@ -83,24 +82,13 @@ const ProfilePage = () => {
             <section className="flex flex-col gap-2">
               <div className="flex flex-wrap items-center gap-4">
                 <Profile.Username name={data?.getProfile.username || ""} />
-                <Profile.SettingsButton
-                  onClick={() => setIsSettingsOpen(true)}
-                />
+                <Profile.SettingsButton onClick={openSettingsModal} />
               </div>
               <Profile.DisplayName name={data?.getProfile.displayName || ""} />
               <Profile.Stats
                 postsCount={data?.getProfile.postsCount || 0}
                 followersCount={data?.getProfile.followersCount || 0}
                 followingCount={data?.getProfile.followingCount || 0}
-                username={data?.getProfile.username || ""}
-                ownerId={data?.getProfile.id || ""}
-                canModify={
-                  !!(
-                    authId &&
-                    data?.getProfile.id &&
-                    authId === data?.getProfile.id
-                  )
-                }
               />
             </section>
           </header>
@@ -133,11 +121,6 @@ const ProfilePage = () => {
       )}
 
       <Profile.Content profileId={data?.getProfile.id || ""} />
-
-      <SettingsModal
-        isOpen={isSettingsOpen}
-        onClose={() => setIsSettingsOpen(false)}
-      />
     </Profile>
   );
 };

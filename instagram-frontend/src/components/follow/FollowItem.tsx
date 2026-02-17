@@ -9,16 +9,16 @@ import { Link } from "react-router-dom";
 interface FollowItemProps {
   profile: ProfileData;
   type: string;
-  viewerUsername: string;
-  ownerId: string;
+  profileUsername: string;
+  profileId: string;
   canModify: boolean;
 }
 
 export const FollowItem = ({
   profile,
   type,
-  viewerUsername,
-  ownerId,
+  profileUsername,
+  profileId,
   canModify,
 }: FollowItemProps) => {
   const [removeFollower] = useMutation(REMOVE_FOLLOWER, {
@@ -34,7 +34,7 @@ export const FollowItem = ({
         fields: {
           getFollowers(existingData, { storeFieldName }) {
             // Only modify the list belonging to the profile we are viewing
-            if (!storeFieldName.includes(viewerUsername)) return existingData;
+            if (!storeFieldName.includes(profileUsername)) return existingData;
 
             return [
               ...existingData.filter(
@@ -49,13 +49,14 @@ export const FollowItem = ({
 
       // Decrement followersCount on the profile being viewed
       cache.modify({
-        id: cache.identify({ __typename: "Profile", id: ownerId }),
+        id: cache.identify({ __typename: "Profile", id: profileId }),
         fields: {
           followersCount: (prev) => prev - 1,
         },
       });
     },
   });
+
   const [removeFollowing] = useMutation(REMOVE_FOLLOWING, {
     optimisticResponse: {
       removeFollowing: {
@@ -68,7 +69,7 @@ export const FollowItem = ({
       cache.modify({
         fields: {
           getFollowing(existingData, { storeFieldName }) {
-            if (!storeFieldName.includes(viewerUsername)) return existingData;
+            if (!storeFieldName.includes(profileUsername)) return existingData;
 
             return [
               ...existingData.filter(
@@ -83,7 +84,7 @@ export const FollowItem = ({
 
       // Decrement followingCount on the profile being viewed
       cache.modify({
-        id: cache.identify({ __typename: "Profile", id: ownerId }),
+        id: cache.identify({ __typename: "Profile", id: profileId }),
         fields: {
           followingCount: (prev) => prev - 1,
         },

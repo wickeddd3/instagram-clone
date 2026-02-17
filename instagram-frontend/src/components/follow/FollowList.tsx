@@ -4,16 +4,16 @@ import { FollowItem } from "./FollowItem";
 interface FollowListProps {
   profiles: ProfileData[];
   type: string;
-  viewerUsername: string;
-  ownerId: string;
+  profileUsername: string;
+  profileId: string;
   canModify: boolean;
 }
 
 export const FollowList = ({
   profiles,
   type,
-  viewerUsername,
-  ownerId,
+  profileUsername,
+  profileId,
   canModify,
 }: FollowListProps) => {
   return (
@@ -23,8 +23,8 @@ export const FollowList = ({
           key={profile.id}
           profile={profile}
           type={type}
-          viewerUsername={viewerUsername}
-          ownerId={ownerId}
+          profileUsername={profileUsername}
+          profileId={profileId}
           canModify={canModify}
         />
       ))}
