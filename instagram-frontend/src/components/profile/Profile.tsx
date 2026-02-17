@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Posts } from "./Posts";
 import { SavedPosts } from "./SavedPosts";
 import { TaggedPosts } from "./TaggedPosts";
-import { FollowModal } from "../modals/FollowModal";
+import { useModalTrigger } from "../../hooks/useModalTrigger";
 
 export const Profile = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -59,58 +59,25 @@ export const Stats = ({
   postsCount,
   followersCount,
   followingCount,
-  username,
-  ownerId,
-  canModify,
 }: {
   postsCount: number;
   followersCount: number;
   followingCount: number;
-  username: string;
-  ownerId: string;
-  canModify: boolean;
 }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [title, setTitle] = useState<string>("");
-
-  const handleOpenModal = (title: string) => {
-    setTitle(title);
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setTitle("");
-    setIsModalOpen(false);
-  };
+  const { openFollowerModal, openFollowingModal } = useModalTrigger();
 
   return (
-    <>
-      <div className="hidden md:flex gap-10">
-        <span className="text-sm">
-          <strong>{postsCount}</strong> posts
-        </span>
-        <span
-          onClick={() => handleOpenModal("Followers")}
-          className="text-sm cursor-pointer"
-        >
-          <strong>{followersCount}</strong> followers
-        </span>
-        <span
-          onClick={() => handleOpenModal("Following")}
-          className="text-sm cursor-pointer"
-        >
-          <strong>{followingCount}</strong> following
-        </span>
-      </div>
-      <FollowModal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        username={username}
-        ownerId={ownerId}
-        title={title}
-        canModify={canModify}
-      />
-    </>
+    <div className="hidden md:flex gap-10">
+      <span className="text-sm">
+        <strong>{postsCount}</strong> posts
+      </span>
+      <span onClick={openFollowerModal} className="text-sm cursor-pointer">
+        <strong>{followersCount}</strong> followers
+      </span>
+      <span onClick={openFollowingModal} className="text-sm cursor-pointer">
+        <strong>{followingCount}</strong> following
+      </span>
+    </div>
   );
 };
 
