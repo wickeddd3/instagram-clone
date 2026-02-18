@@ -4,23 +4,25 @@ import { Sidebar } from "./Sidebar";
 import { Outlet, useLocation } from "react-router-dom";
 import { MobileHeader } from "./MobileHeader";
 import { motion } from "framer-motion";
-import { SearchSidebar } from "./SearchSidebar";
-import { NotificationsSidebar } from "./NotificationsSidebar";
 import { Modal } from "../Modal";
 import { useModal } from "../../contexts/ModalContext";
+import { useDrawer } from "../../contexts/DrawerContext";
+import { Drawer } from "../Drawer";
 
 export const Layout = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
 
   const location = useLocation();
+
   const {
     isOpen: isModalOpen,
     content: modalContent,
     hasCloseButton,
     closeModal,
   } = useModal();
+
+  const { isDrawerOpen, drawerContent, hasDrawerCloseButton, closeDrawer } =
+    useDrawer();
 
   return (
     <div className="w-full h-full flex flex-col md:flex-row min-h-screen bg-[#0d1015] text-white">
@@ -39,20 +41,8 @@ export const Layout = () => {
         <Sidebar
           isSidebarOpen={isSidebarOpen}
           onSidebarHover={setSidebarOpen}
-          onSearchClick={() => setIsSearchOpen(!isSearchOpen)}
-          onNotificationClick={() => setIsNotificationOpen(!isNotificationOpen)}
         />
       </motion.aside>
-
-      <SearchSidebar
-        isOpen={isSearchOpen}
-        onClose={() => setIsSearchOpen(false)}
-      />
-
-      <NotificationsSidebar
-        isOpen={isNotificationOpen}
-        onClose={() => setIsNotificationOpen(false)}
-      />
 
       {/* Main Content Area */}
       <main className="flex-1 flex justify-center w-full md:mt-0 mt-14 ">
@@ -78,6 +68,15 @@ export const Layout = () => {
           content={modalContent}
           onClose={closeModal}
           hasCloseButton={hasCloseButton}
+        />
+      )}
+
+      {/* Drawer */}
+      {isDrawerOpen && (
+        <Drawer
+          content={drawerContent}
+          hasCloseButton={hasDrawerCloseButton}
+          onClose={closeDrawer}
         />
       )}
     </div>
