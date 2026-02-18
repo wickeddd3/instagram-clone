@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { MobileNav } from "./MobileNav";
-import { Sidebar } from "./Sidebar";
 import { Outlet, useLocation } from "react-router-dom";
-import { MobileHeader } from "./MobileHeader";
 import { motion } from "framer-motion";
-import { Modal } from "../Modal";
-import { useModal } from "../../contexts/ModalContext";
-import { useDrawer } from "../../contexts/DrawerContext";
-import { Drawer } from "../Drawer";
+import { MobileNav } from "@/components/layouts/MobileNav";
+import { Sidebar } from "@/components/layouts/Sidebar";
+import { MobileHeader } from "@/components/layouts/MobileHeader";
+import { useModal } from "@/contexts/ModalContext";
+import { useDrawer } from "@/contexts/DrawerContext";
+import { Modal } from "@/components/Modal";
+import { Drawer } from "@/components/Drawer";
 
 export const Layout = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
