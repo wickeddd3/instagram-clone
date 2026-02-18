@@ -1,9 +1,9 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
 
 interface ModalContextType {
-  isOpen: boolean;
-  content: ReactNode;
-  hasCloseButton: boolean;
+  isModalOpen: boolean;
+  modalContent: ReactNode;
+  hasModalCloseButton: boolean;
   openModal: ({
     content,
     hasCloseButton,
@@ -17,9 +17,9 @@ interface ModalContextType {
 export const ModalContext = createContext<ModalContextType | null>(null);
 
 export const ModalProvider = ({ children }: { children: ReactNode }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [hasCloseButton, setHasCloseButton] = useState(false);
-  const [content, setContent] = useState<ReactNode | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [hasModalCloseButton, setHasModalCloseButton] = useState(false);
+  const [modalContent, setModalContent] = useState<ReactNode | null>(null);
 
   const openModal = ({
     content,
@@ -28,20 +28,26 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
     content: ReactNode;
     hasCloseButton?: boolean;
   }) => {
-    setContent(content);
-    setHasCloseButton(hasCloseButton);
-    setIsOpen(true);
+    setModalContent(content);
+    setHasModalCloseButton(hasCloseButton);
+    setIsModalOpen(true);
   };
 
   const closeModal = () => {
-    setContent(null);
-    setHasCloseButton(false);
-    setIsOpen(false);
+    setModalContent(null);
+    setHasModalCloseButton(false);
+    setIsModalOpen(false);
   };
 
   return (
     <ModalContext.Provider
-      value={{ isOpen, content, hasCloseButton, openModal, closeModal }}
+      value={{
+        isModalOpen,
+        modalContent,
+        hasModalCloseButton,
+        openModal,
+        closeModal,
+      }}
     >
       {children}
     </ModalContext.Provider>

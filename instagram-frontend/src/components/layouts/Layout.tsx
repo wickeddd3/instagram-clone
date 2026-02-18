@@ -14,12 +14,8 @@ export const Layout = () => {
 
   const location = useLocation();
 
-  const {
-    isOpen: isModalOpen,
-    content: modalContent,
-    hasCloseButton,
-    closeModal,
-  } = useModal();
+  const { isModalOpen, modalContent, hasModalCloseButton, closeModal } =
+    useModal();
 
   const { isDrawerOpen, drawerContent, hasDrawerCloseButton, closeDrawer } =
     useDrawer();
@@ -67,7 +63,7 @@ export const Layout = () => {
         <Modal
           content={modalContent}
           onClose={closeModal}
-          hasCloseButton={hasCloseButton}
+          hasCloseButton={hasModalCloseButton}
         />
       )}
 
