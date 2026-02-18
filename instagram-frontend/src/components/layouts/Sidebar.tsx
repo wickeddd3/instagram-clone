@@ -12,23 +12,17 @@ import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAuth } from "../../contexts/AuthContext";
 import { useModalTrigger } from "../../hooks/useModalTrigger";
+import { useDrawerTrigger } from "../../hooks/useDrawerTrigger";
 
 interface SidebarProps {
   isSidebarOpen?: boolean;
   onSidebarHover?: (isOpen: boolean) => void;
-  onCreateClick?: () => void;
-  onSearchClick?: () => void;
-  onNotificationClick?: () => void;
 }
 
-export const Sidebar = ({
-  isSidebarOpen,
-  onSidebarHover,
-  onSearchClick,
-  onNotificationClick,
-}: SidebarProps) => {
+export const Sidebar = ({ isSidebarOpen, onSidebarHover }: SidebarProps) => {
   const { authUser } = useAuth();
   const { openCreatePostModal } = useModalTrigger();
+  const { openSearchDrawer, openNotificationsDrawer } = useDrawerTrigger();
 
   if (!authUser?.getProfileById) return null;
 
@@ -50,7 +44,7 @@ export const Sidebar = ({
     {
       icon: <Search size={iconSize} />,
       label: "Search",
-      action: onSearchClick,
+      action: openSearchDrawer,
     },
     {
       icon: <Compass size={iconSize} />,
@@ -60,7 +54,7 @@ export const Sidebar = ({
     {
       icon: <Heart size={iconSize} />,
       label: "Notifications",
-      action: onNotificationClick,
+      action: openNotificationsDrawer,
     },
     {
       icon: <Plus size={iconSize} />,
