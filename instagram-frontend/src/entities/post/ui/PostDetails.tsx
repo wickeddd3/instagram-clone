@@ -1,7 +1,3 @@
-import { usePost } from "@/app/providers/PostContext";
-import { useModalTrigger } from "@/hooks/useModalTrigger";
-import type { Post } from "./../model/types";
-
 export const PostDetails = ({
   children,
   className,
@@ -31,33 +27,5 @@ export const Caption = ({
   );
 };
 
-export const Comments = ({
-  commentsCount,
-  post,
-}: {
-  commentsCount: number;
-  post: Post;
-}) => {
-  const { selectPost } = usePost();
-  const { openPostModal } = useModalTrigger();
-
-  return (
-    commentsCount > 0 && (
-      <div
-        onClick={() => {
-          selectPost(post);
-          openPostModal();
-        }}
-        className="text-neutral-400 text-sm cursor-pointer"
-      >
-        {commentsCount === 1
-          ? `View ${commentsCount} comment`
-          : `View all ${commentsCount} comments`}
-      </div>
-    )
-  );
-};
-
 PostDetails.Likes = Likes;
 PostDetails.Caption = Caption;
-PostDetails.Comments = Comments;
