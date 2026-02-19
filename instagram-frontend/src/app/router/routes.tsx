@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
-import { AuthGuard } from "@/components/AuthGuard";
-import { GuestGuard } from "@/components/GuestGuard";
+import { AuthGuard } from "./../providers/AuthGuard";
+import { GuestGuard } from "./../providers/GuestGuard";
 
 export const router = createBrowserRouter([
   // --- PROTECTED ROUTES ---
