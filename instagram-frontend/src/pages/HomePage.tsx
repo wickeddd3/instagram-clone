@@ -1,7 +1,7 @@
 import { Stories } from "../components/Stories";
 import { AuthUser } from "../components/AuthUser";
 import { SuggestionsSidebar } from "../components/layouts/SuggestionsSidebar";
-import { Feed } from "@/widgets/feed/ui/Feed";
+import { Feed } from "@/widgets/feed";
 
 const HomePage = () => {
   return (
