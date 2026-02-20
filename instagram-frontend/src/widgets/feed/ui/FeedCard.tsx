@@ -10,11 +10,9 @@ import {
 import { LikeButton } from "@/features/post/like-post";
 import { SaveButton } from "@/features/post/save-post";
 import { AddCommentField } from "@/features/comment/add-comment";
-import { usePost } from "@/app/providers/PostContext";
 import { usePostModal } from "@/widgets/post-modal";
 
 export const FeedCard = ({ post }: { post: Post }) => {
-  const { selectPost } = usePost();
   const { openPostDetailsModal } = usePostModal();
 
   // Ref for focusing the comment input when comment button is clicked
@@ -24,8 +22,7 @@ export const FeedCard = ({ post }: { post: Post }) => {
   };
 
   const handleOpenPostDetailsModal = (post: Post) => {
-    selectPost(post);
-    openPostDetailsModal();
+    openPostDetailsModal(post);
   };
 
   return (
