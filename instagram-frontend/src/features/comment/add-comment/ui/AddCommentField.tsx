@@ -1,12 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAddComment } from "../model/useAddComment";
 
 export const AddCommentField = ({
   postId,
   inputRef,
+  replyData,
+  formClassName,
 }: {
   postId: string;
   inputRef: React.RefObject<HTMLInputElement | null>;
+  replyData?: { username: string; id: string } | null;
+  formClassName?: string;
 }) => {
   const { addComment } = useAddComment({ postId });
   const [text, setText] = useState("");
@@ -20,7 +24,11 @@ export const AddCommentField = ({
 
     try {
       await addComment({
-        variables: { postId, text: commentText },
+        variables: {
+          postId,
+          text: commentText,
+          ...(replyData?.id && { parentId: replyData?.id }),
+        },
       });
     } catch (err) {
       console.error(err);
@@ -28,8 +36,19 @@ export const AddCommentField = ({
     }
   };
 
+  useEffect(() => {
+    if (replyData) {
+      setText(`@${replyData?.username}`);
+      setTimeout(() => inputRef.current?.focus(), 450);
+      console.log("REPLY: comment field initial value set");
+    }
+  }, [replyData]);
+
   return (
-    <form onSubmit={handleSend} className="flex items-center gap-3 py-1">
+    <form
+      onSubmit={handleSend}
+      className={`flex items-center gap-3 py-1 ${formClassName}`}
+    >
       <input
         ref={inputRef}
         value={text}
@@ -40,7 +59,7 @@ export const AddCommentField = ({
       <button
         type="submit"
         disabled={!text.trim()}
-        className="text-white font-bold text-sm disabled:opacity-80"
+        className="text-white font-bold text-sm disabled:opacity-80 cursor-pointer"
       >
         Post
       </button>
