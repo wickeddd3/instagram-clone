@@ -11,7 +11,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAuth } from "@/app/providers/AuthContext";
-import { useModalTrigger } from "@/hooks/useModalTrigger";
+import { useCreatePostModal } from "@/widgets/create-post-modal";
 import { useDrawerTrigger } from "@/hooks/useDrawerTrigger";
 
 interface SidebarProps {
@@ -21,7 +21,7 @@ interface SidebarProps {
 
 export const Sidebar = ({ isSidebarOpen, onSidebarHover }: SidebarProps) => {
   const { authUser } = useAuth();
-  const { openCreatePostModal } = useModalTrigger();
+  const { openCreatePostModal } = useCreatePostModal();
   const { openSearchDrawer, openNotificationsDrawer } = useDrawerTrigger();
 
   if (!authUser?.getProfileById) return null;

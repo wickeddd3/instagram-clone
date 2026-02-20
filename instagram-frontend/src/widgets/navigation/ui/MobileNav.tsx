@@ -1,11 +1,11 @@
 import { Compass, Home, Plus, Send, SquarePlay } from "lucide-react";
 import { useAuth } from "@/app/providers/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { useModalTrigger } from "@/hooks/useModalTrigger";
+import { useCreatePostModal } from "@/widgets/create-post-modal";
 
 export const MobileNav = () => {
   const { authUser } = useAuth();
-  const { openCreatePostModal } = useModalTrigger();
+  const { openCreatePostModal } = useCreatePostModal();
 
   if (!authUser?.getProfileById) return null;
 
