@@ -1,7 +1,7 @@
-import { Stories } from "../components/Stories";
-import { AuthUser } from "../components/AuthUser";
-import { SuggestionsSidebar } from "../components/layouts/SuggestionsSidebar";
+import { Stories } from "@/widgets/stories";
 import { Feed } from "@/widgets/feed";
+import { AuthAppbar, Footer } from "@/widgets/navigation";
+import { SuggestionsSidebar } from "@/widgets/suggestions-sidebar";
 
 const HomePage = () => {
   return (
@@ -13,13 +13,9 @@ const HomePage = () => {
       </div>
       {/* Right Sidebar - Suggestions (Desktop Only) */}
       <div className="hidden w-[320px] pl-16 pt-10 lg:flex flex-col gap-6">
-        <AuthUser />
+        <AuthAppbar />
         <SuggestionsSidebar />
-        {/* Footer Links */}
-        <div className="mt-8 text-xs text-gray-500 space-y-4">
-          <p>About · Help · Press · API · Jobs · Privacy · Terms</p>
-          <p>© 2023 INSTAGRAM FROM META</p>
-        </div>
+        <Footer />
       </div>
     </div>
   );
