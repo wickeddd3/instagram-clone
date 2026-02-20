@@ -3,7 +3,13 @@ import { Heart } from "lucide-react";
 import { useState } from "react";
 import { useLikePost } from "../model/useLikePost";
 
-export const LikeButton = ({ post }: { post: Post }) => {
+export const LikeButton = ({
+  post,
+  callback,
+}: {
+  post: Post;
+  callback?: () => void;
+}) => {
   const [animate, setAnimate] = useState(false);
   const { togglePostLike } = useLikePost({ post });
 
@@ -15,6 +21,7 @@ export const LikeButton = ({ post }: { post: Post }) => {
     togglePostLike({
       variables: { postId: post.id },
     });
+    callback?.();
   };
 
   return (

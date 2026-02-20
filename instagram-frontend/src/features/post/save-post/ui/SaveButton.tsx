@@ -2,11 +2,18 @@ import type { Post } from "@/entities/post";
 import { Bookmark } from "lucide-react";
 import { useSavePost } from "../model/useSavePost";
 
-export const SaveButton = ({ post }: { post: Post }) => {
+export const SaveButton = ({
+  post,
+  callback,
+}: {
+  post: Post;
+  callback?: () => void;
+}) => {
   const { togglePostSave } = useSavePost({ post });
 
   const handleSaveClick = () => {
     togglePostSave({ variables: { postId: post.id } });
+    callback?.();
   };
 
   return (
