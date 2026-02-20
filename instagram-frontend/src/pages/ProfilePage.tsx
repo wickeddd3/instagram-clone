@@ -5,8 +5,8 @@ import type { ProfileDataByUsername } from "../types/profile";
 import { GET_PROFILE } from "../graphql/queries/profile";
 import { TOGGLE_FOLLOW } from "../graphql/mutations/profile";
 import { ProfileHeaderSkeleton } from "../components/loaders/ProfileHeaderSkeleton";
-import { useAuth } from "../contexts/AuthContext";
-import { useModalTrigger } from "../hooks/useModalTrigger";
+import { useAuth } from "../app/providers/AuthContext";
+import { useSettingsModal } from "@/widgets/settings-modal";
 
 const ProfilePage = () => {
   const { username } = useParams();
@@ -58,7 +58,7 @@ const ProfilePage = () => {
   });
 
   const navigate = useNavigate();
-  const { openSettingsModal } = useModalTrigger();
+  const { openSettingsModal } = useSettingsModal();
 
   const handleEditProfile = () => {
     navigate("/accounts/edit");
