@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../app/providers/AuthContext";
 import { useMutation } from "@apollo/client/react";
 import { UPDATE_PROFILE } from "../graphql/mutations/profile";
 import { Loader2, CheckCircle2 } from "lucide-react";
 import { ProfileFormSchema, type ProfileFormType } from "../validation/profile";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useModalTrigger } from "../hooks/useModalTrigger";
+import { useUploadAvatarModal } from "@/widgets/upload-avatar-modal";
 
 const EditProfilePage = () => {
   const { authUser, authUserLoading } = useAuth();
-  const { openUploadAvatarModal } = useModalTrigger();
+  const { openUploadAvatarModal } = useUploadAvatarModal();
 
   // Setup Form
   const form = useForm<ProfileFormType>({
@@ -92,7 +92,11 @@ const EditProfilePage = () => {
           <button
             type="button"
             className="bg-indigo-800 px-4 py-2 text-sm font-bold rounded-lg cursor-pointer hover:text-white"
-            onClick={openUploadAvatarModal}
+            onClick={() =>
+              openUploadAvatarModal({
+                avatarUrl: authUser?.getProfileById?.avatarUrl,
+              })
+            }
           >
             Change photo
           </button>
