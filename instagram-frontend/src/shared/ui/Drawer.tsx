@@ -38,7 +38,6 @@ export const Drawer = ({
       animate={{ width: width }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
       className="hidden md:flex flex-col h-screen fixed top-0 z-60 bg-[#0d1015] border-r border-gray-800"
-      onBlur={onClose}
     >
       <div className="p-6 flex flex-col h-full relative">
         {hasCloseButton && <DrawerCloseButton onClose={onClose} />}
