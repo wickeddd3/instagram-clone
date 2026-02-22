@@ -1,7 +1,7 @@
-import { ProfileHeader, type Profile } from "@/entities/profile";
+import { type Profile } from "@/entities/profile";
 import { useFollowProfile } from "../model/useFollowProfile";
 
-export const FollowProfileButton = ({
+export const FollowProfileSuggestionButton = ({
   authId,
   targetProfile,
 }: {
@@ -18,12 +18,11 @@ export const FollowProfileButton = ({
   };
 
   return (
-    <ProfileHeader.ActionButton
-      label={targetProfile?.isFollowing ? "Following" : "Follow"}
+    <button
       onClick={() => handleToggleFollow(targetProfile.username)}
-      className={
-        !targetProfile?.isFollowing ? "bg-indigo-800 hover:bg-indigo-700" : ""
-      }
-    />
+      className="text-xs font-bold text-indigo-400 hover:text-indigo-300 cursor-pointer"
+    >
+      {targetProfile?.isFollowing ? "Unfollow" : "Follow"}
+    </button>
   );
 };
