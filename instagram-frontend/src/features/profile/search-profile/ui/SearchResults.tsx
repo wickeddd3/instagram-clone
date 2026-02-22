@@ -1,14 +1,14 @@
 import { useEffect } from "react";
 import { useSearchProfiles } from "../model/useSearchProfiles";
-import { ProfileLink } from "@/entities/profile";
 import { useRecentSearches } from "../model/useRecentSearches";
+import { ProfileLink } from "@/entities/profile";
 
 export const SearchResults = ({
   query,
   onClose,
 }: {
   query: string;
-  onClose: () => void;
+  onClose?: () => void;
 }) => {
   const { executeSearch, results, loading } = useSearchProfiles();
   const { addRecentSearch } = useRecentSearches();
@@ -25,7 +25,7 @@ export const SearchResults = ({
 
   const handleAddRecentSearch = (targetId: string) => {
     addRecentSearch({ variables: { targetId } });
-    onClose();
+    onClose?.();
   };
 
   if (loading) {

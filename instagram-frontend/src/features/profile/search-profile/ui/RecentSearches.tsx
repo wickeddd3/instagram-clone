@@ -1,14 +1,14 @@
 import { useEffect } from "react";
+import { X } from "lucide-react";
 import { useRecentSearches } from "../model/useRecentSearches";
 import { ProfileLink } from "@/entities/profile";
-import { X } from "lucide-react";
 
 export const RecentSearches = ({
   query,
   onClose,
 }: {
   query: string;
-  onClose: () => void;
+  onClose?: () => void;
 }) => {
   const {
     recentSearches,
