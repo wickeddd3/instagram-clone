@@ -1,5 +1,5 @@
 import { Heart } from "lucide-react";
-import { MobileSearch } from "@/components/search/MobileSearch";
+import { MobileSearch } from "./MobileSearch";
 
 export const MobileHeader = () => {
   return (
