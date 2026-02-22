@@ -6,12 +6,13 @@ import {
   ProfileHeaderSkeleton,
 } from "@/entities/profile";
 import { useAuth } from "@/app/providers/AuthContext";
-import { useSettingsModal } from "@/widgets/settings-modal";
 import { useAccountProfile } from "../model/useAccountProfile";
 import { FollowProfileButton } from "@/features/profile/follow-profile";
-import { useModalTrigger } from "@/hooks/useModalTrigger";
 import { ProfilePosts } from "./ProfilePosts";
 import { SavedPosts } from "./SavedPosts";
+import { useSettingsModal } from "@/widgets/settings-modal";
+import { useFollowersModal } from "@/widgets/followers-modal";
+import { useFollowingModal } from "@/widgets/following-modal";
 
 export const AccountProfile = ({ username }: { username: string }) => {
   if (!username) return;
@@ -24,7 +25,8 @@ export const AccountProfile = ({ username }: { username: string }) => {
 
   const navigate = useNavigate();
   const { openSettingsModal } = useSettingsModal();
-  const { openFollowerModal, openFollowingModal } = useModalTrigger();
+  const { openFollowersModal } = useFollowersModal();
+  const { openFollowingModal } = useFollowingModal();
 
   const handleEditProfile = () => {
     navigate("/accounts/edit");
@@ -50,8 +52,22 @@ export const AccountProfile = ({ username }: { username: string }) => {
                 postsCount={profile?.postsCount || 0}
                 followersCount={profile?.followersCount || 0}
                 followingCount={profile?.followingCount || 0}
-                onClickFollowers={openFollowerModal}
-                onClickFollowing={openFollowingModal}
+                onClickFollowers={() =>
+                  openFollowersModal({
+                    username: profile?.username || "",
+                    authId: authId || "",
+                    profileId: profile?.id || "",
+                    profileUsername: profile?.username || "",
+                  })
+                }
+                onClickFollowing={() =>
+                  openFollowingModal({
+                    username: profile?.username || "",
+                    authId: authId || "",
+                    profileId: profile?.id || "",
+                    profileUsername: profile?.username || "",
+                  })
+                }
               />
             </section>
           </ProfileHeader>
