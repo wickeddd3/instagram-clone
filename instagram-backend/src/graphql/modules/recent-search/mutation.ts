@@ -14,7 +14,7 @@ export const RecentSearchMutation = {
       update: { createdAt: new Date() },
       create: { userId: context.userId, targetId },
     });
-    return true;
+    return targetId;
   },
   removeRecentSearch: async (
     _parent: any,
@@ -24,7 +24,7 @@ export const RecentSearchMutation = {
     await prisma.recentSearch.delete({
       where: { userId_targetId: { userId: context.userId, targetId } },
     });
-    return true;
+    return targetId;
   },
   clearRecentSearches: async (_parent: any, _args: any, context: any) => {
     if (!context.userId) return false;
