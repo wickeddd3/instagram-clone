@@ -1,13 +1,7 @@
+import { SuggestedProfiles } from "@/widgets/suggested-profiles";
 import { Link } from "react-router-dom";
-import { SuggestionItem } from "./SuggestionItem";
-import { useSuggestedProfiles } from "../model/useSuggestedProfiles";
 
 export const SuggestionsSidebar = () => {
-  const { suggestedProfiles, loading } = useSuggestedProfiles();
-
-  if (loading)
-    return <div className="animate-pulse w-full h-40 bg-gray-900 rounded-lg" />;
-
   return (
     <div className="w-full">
       {/* Header */}
@@ -24,11 +18,7 @@ export const SuggestionsSidebar = () => {
       </div>
 
       {/* Suggested Users List */}
-      <div className="flex flex-col gap-3">
-        {suggestedProfiles.map((profile) => (
-          <SuggestionItem key={profile.id} profile={profile} />
-        ))}
-      </div>
+      <SuggestedProfiles limit={5} />
     </div>
   );
 };
