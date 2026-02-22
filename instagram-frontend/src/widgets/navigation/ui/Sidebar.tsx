@@ -13,7 +13,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useAuth } from "@/app/providers/AuthContext";
 import { useCreatePostModal } from "@/widgets/create-post-modal";
 import { useSearchProfilesDrawer } from "@/widgets/search-profiles-drawer";
-import { useDrawerTrigger } from "@/hooks/useDrawerTrigger";
+import { useNotificationsDrawer } from "@/widgets/notifications-drawer";
 
 interface SidebarProps {
   isSidebarOpen?: boolean;
@@ -24,7 +24,7 @@ export const Sidebar = ({ isSidebarOpen, onSidebarHover }: SidebarProps) => {
   const { authUser } = useAuth();
   const { openCreatePostModal } = useCreatePostModal();
   const { openSearchProfilesDrawer } = useSearchProfilesDrawer();
-  const { openNotificationsDrawer } = useDrawerTrigger();
+  const { openNotificationsDrawer } = useNotificationsDrawer();
 
   if (!authUser?.getProfileById) return null;
 
