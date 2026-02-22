@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAuth } from "@/app/providers/AuthContext";
 import { useCreatePostModal } from "@/widgets/create-post-modal";
+import { useSearchProfilesDrawer } from "@/widgets/search-profiles-drawer";
 import { useDrawerTrigger } from "@/hooks/useDrawerTrigger";
 
 interface SidebarProps {
@@ -22,7 +23,8 @@ interface SidebarProps {
 export const Sidebar = ({ isSidebarOpen, onSidebarHover }: SidebarProps) => {
   const { authUser } = useAuth();
   const { openCreatePostModal } = useCreatePostModal();
-  const { openSearchDrawer, openNotificationsDrawer } = useDrawerTrigger();
+  const { openSearchProfilesDrawer } = useSearchProfilesDrawer();
+  const { openNotificationsDrawer } = useDrawerTrigger();
 
   if (!authUser?.getProfileById) return null;
 
@@ -44,7 +46,7 @@ export const Sidebar = ({ isSidebarOpen, onSidebarHover }: SidebarProps) => {
     {
       icon: <Search size={iconSize} />,
       label: "Search",
-      action: openSearchDrawer,
+      action: openSearchProfilesDrawer,
     },
     {
       icon: <Compass size={iconSize} />,
