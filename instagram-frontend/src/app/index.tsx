@@ -5,7 +5,6 @@ import { ApolloProvider } from "@apollo/client/react";
 import { AuthProvider } from "./providers/AuthContext.tsx";
 import { DrawerProvider } from "./providers/DrawerContext.tsx";
 import { ModalProvider } from "./providers/ModalContext.tsx";
-import { PostProvider } from "./providers/PostContext.tsx";
 
 export const App = () => {
   return (
@@ -13,9 +12,7 @@ export const App = () => {
       <AuthProvider>
         <DrawerProvider>
           <ModalProvider>
-            <PostProvider>
-              <RouterProvider router={router} />
-            </PostProvider>
+            <RouterProvider router={router} />
           </ModalProvider>
         </DrawerProvider>
       </AuthProvider>
