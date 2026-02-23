@@ -1,15 +1,17 @@
+import {
+  Divider,
+  ErrorMessage,
+  Footer,
+  ForgotPasswordLink,
+  IgLabel,
+  LoginForm,
+  LoginWithFbLink,
+  SignupLink,
+} from "@/widgets/auth";
 import { useState } from "react";
-import { Divider } from "../components/auth/Divider";
-import { ErrorMessage } from "../components/auth/ErrorMessage";
-import { Footer } from "../components/auth/Footer";
-import { IgLabel } from "../components/auth/Iglabel";
-import { LoginForm } from "../components/auth/LoginForm";
-import { ForgotPasswordLink } from "../components/auth/links/ForgotPasswordLinkt";
-import { LoginWithFbLink } from "../components/auth/links/LoginWithFbLink";
-import { SignupLink } from "../components/auth/links/SignupLink";
 
 const LoginPage = () => {
-  const [hasError, setHasError] = useState(false);
+  const [error, setError] = useState("");
 
   return (
     <div className="w-full h-full min-h-screen flex flex-col justify-between md:justify-center items-center gap-12 p-4 bg-[#0d1015] text-white">
@@ -18,12 +20,10 @@ const LoginPage = () => {
           <div className="w-full flex flex-col justify-center items-center gap-12 border-gray-800 border px-10 pb-6 pt-12">
             <IgLabel />
             <div className="w-full flex flex-col justify-center items-center gap-4">
-              <LoginForm onError={setHasError} />
+              <LoginForm onError={setError} />
               <Divider />
               <LoginWithFbLink />
-              {hasError && (
-                <ErrorMessage message="Sorry, your password was incorrect. Please double-check your password." />
-              )}
+              {error && <ErrorMessage message={error} />}
               <ForgotPasswordLink />
             </div>
           </div>
