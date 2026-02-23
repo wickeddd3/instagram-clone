@@ -12,3 +12,11 @@ export interface Profile {
   isMe: boolean;
   mutualFriend?: string;
 }
+
+export interface ProfileById {
+  getProfileById: Profile;
+}
+
+export interface ProfileByUsername {
+  getProfile: Profile;
+}
