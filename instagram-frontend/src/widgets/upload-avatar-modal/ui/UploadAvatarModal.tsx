@@ -10,11 +10,11 @@ import {
 import { RemoveAvatarButton } from "@/features/profile/remove-avatar";
 
 export const UploadAvatarModal = ({ avatarUrl }: { avatarUrl?: string }) => {
-  const { user } = useAuth();
+  const { authUser } = useAuth();
 
-  if (!user) return;
+  if (!authUser) return;
 
-  const CURRENT_USER_ID = user?.id;
+  const CURRENT_USER_ID = authUser?.id;
   const { closeModal } = useModal();
   const { previewUrl, isUploading, handleUploadAvatar } = useUploadAvatar({
     userId: CURRENT_USER_ID,

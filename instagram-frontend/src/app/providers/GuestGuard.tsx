@@ -3,13 +3,13 @@ import { Navigate, Outlet } from "react-router-dom";
 import { LoadingScreen } from "@/shared/ui/LoadingScreen";
 
 export const GuestGuard = () => {
-  const { session, loading, authUser } = useAuth();
+  const { session, authUserLoading, authProfile } = useAuth();
 
-  if (loading) {
+  if (authUserLoading) {
     return <LoadingScreen />;
   }
 
-  if (session || authUser?.getProfileById) {
+  if (session || authProfile) {
     return <Navigate to="/" replace />;
   }
 

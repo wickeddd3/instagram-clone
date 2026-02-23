@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useUploadAvatarModal } from "@/widgets/upload-avatar-modal";
 
 const EditProfilePage = () => {
-  const { authUser, authUserLoading } = useAuth();
+  const { authProfile, authProfileLoading } = useAuth();
   const { openUploadAvatarModal } = useUploadAvatarModal();
 
   // Setup Form
@@ -48,22 +48,23 @@ const EditProfilePage = () => {
 
   // Populate form when data is fetched
   useEffect(() => {
-    if (authUser?.getProfileById) {
-      const { displayName, bio, website } = authUser.getProfileById;
+    if (authProfile) {
+      const { displayName, bio, website } = authProfile;
       reset({
         displayName,
         bio,
         website,
       });
     }
-  }, [authUser]);
+  }, [authProfile]);
 
-  if (authUserLoading)
+  if (authProfileLoading) {
     return (
       <div className="flex justify-center pt-20">
         <Loader2 className="animate-spin" />
       </div>
     );
+  }
 
   return (
     <div className="max-w-xl w-full mx-auto mt-8">
@@ -76,16 +77,14 @@ const EditProfilePage = () => {
           <div className="flex items-center gap-4">
             <div className="w-9 h-9 md:w-15 md:h-15 shrink-0">
               <img
-                src={authUser?.getProfileById?.avatarUrl || "/ig-default.jpg"}
+                src={authProfile?.avatarUrl || "/ig-default.jpg"}
                 className="rounded-full w-full h-full object-cover"
               />
             </div>
             <div className="flex flex-col">
-              <span className="font-bold text-md">
-                {authUser?.getProfileById?.username}
-              </span>
+              <span className="font-bold text-md">{authProfile?.username}</span>
               <span className="font-normal text-sm text-gray-400">
-                {authUser?.getProfileById?.displayName}
+                {authProfile?.displayName}
               </span>
             </div>
           </div>
@@ -94,7 +93,7 @@ const EditProfilePage = () => {
             className="bg-indigo-800 px-4 py-2 text-sm font-bold rounded-lg cursor-pointer hover:text-white"
             onClick={() =>
               openUploadAvatarModal({
-                avatarUrl: authUser?.getProfileById?.avatarUrl,
+                avatarUrl: authProfile?.avatarUrl,
               })
             }
           >
@@ -113,7 +112,7 @@ const EditProfilePage = () => {
             />
             <p className="text-xs text-gray-500 mt-2">
               In most cases, you'll be able to change your username back to{" "}
-              {authUser?.getProfileById?.username} for another 14 days.
+              {authProfile?.username} for another 14 days.
             </p>
           </div>
         </div>

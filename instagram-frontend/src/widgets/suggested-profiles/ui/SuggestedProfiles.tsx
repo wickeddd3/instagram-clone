@@ -7,7 +7,7 @@ import { useMemo } from "react";
 export const SuggestedProfiles = ({ limit }: { limit?: number }) => {
   const { suggestedProfiles, loading } = useSuggestedProfiles({ limit });
   const { authUser } = useAuth();
-  const authId = useMemo(() => authUser?.getProfileById?.id, [authUser]);
+  const authId = useMemo(() => authUser?.id, [authUser]);
 
   if (loading)
     return <div className="animate-pulse w-full h-40 bg-gray-900 rounded-lg" />;

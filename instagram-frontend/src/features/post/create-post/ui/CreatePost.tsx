@@ -27,11 +27,11 @@ export const CreatePost = ({
   setStep,
   onClose,
 }: DetailsProps) => {
-  const { user, authUser } = useAuth();
+  const { authUser, authProfile } = useAuth();
 
-  if (!user) return;
+  if (!authUser) return;
 
-  const CURRENT_USER_ID = user?.id;
+  const CURRENT_USER_ID = authUser?.id;
   const [caption, setCaption] = useState("");
 
   const handleResetState = () => {
@@ -87,8 +87,8 @@ export const CreatePost = ({
           {isUploading && <LoadingSpinner />}
 
           <AuthUser
-            avatarUrl={authUser?.getProfileById?.avatarUrl}
-            username={authUser?.getProfileById?.username || ""}
+            avatarUrl={authProfile?.avatarUrl}
+            username={authProfile?.username || ""}
           />
           <CaptionTextarea
             value={caption}

@@ -19,7 +19,7 @@ export const AccountProfile = ({ username }: { username: string }) => {
 
   const { authUser } = useAuth();
 
-  const authId = useMemo(() => authUser?.getProfileById?.id, [authUser]);
+  const authId = useMemo(() => authUser?.id, [authUser]);
 
   const { profile, loading } = useAccountProfile({ username: username || "" });
 

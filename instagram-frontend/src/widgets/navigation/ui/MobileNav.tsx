@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { useCreatePostModal } from "@/widgets/create-post-modal";
 
 export const MobileNav = () => {
-  const { authUser } = useAuth();
+  const { authProfile } = useAuth();
   const { openCreatePostModal } = useCreatePostModal();
 
-  if (!authUser?.getProfileById) return null;
+  if (!authProfile) return null;
 
   const navigate = useNavigate();
 
@@ -20,7 +20,7 @@ export const MobileNav = () => {
   };
 
   const handleRedirectToProfile = () => {
-    navigate(`/${authUser?.getProfileById.username}`);
+    navigate(`/${authProfile?.username}`);
   };
 
   return (
@@ -71,7 +71,7 @@ export const MobileNav = () => {
       >
         <div className="w-6 h-6 rounded-full bg-gray-500 overflow-hidden">
           <img
-            src={authUser?.getProfileById.avatarUrl || "/ig-default.jpg"}
+            src={authProfile?.avatarUrl || "/ig-default.jpg"}
             alt="Profile"
           />
         </div>

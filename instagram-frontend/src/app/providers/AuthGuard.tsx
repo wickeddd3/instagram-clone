@@ -1,16 +1,16 @@
 import { useAuth } from "./AuthContext";
-import { MainLogin } from "@/components/auth/MainLogin";
 import { MainLayout } from "./../layouts";
 import { LoadingScreen } from "@/shared/ui/LoadingScreen";
+import { MainLogin } from "@/widgets/auth";
 
 export const AuthGuard = () => {
-  const { session, authUser, authUserLoading } = useAuth();
+  const { session, authProfile, authProfileLoading } = useAuth();
 
-  if (authUserLoading) {
+  if (authProfileLoading) {
     return <LoadingScreen />;
   }
 
-  if (!session || !authUser?.getProfileById) {
+  if (!session || !authProfile) {
     return <MainLogin />;
   }
 

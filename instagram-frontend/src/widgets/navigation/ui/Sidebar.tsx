@@ -21,12 +21,12 @@ interface SidebarProps {
 }
 
 export const Sidebar = ({ isSidebarOpen, onSidebarHover }: SidebarProps) => {
-  const { authUser } = useAuth();
+  const { authProfile } = useAuth();
   const { openCreatePostModal } = useCreatePostModal();
   const { openSearchProfilesDrawer } = useSearchProfilesDrawer();
   const { openNotificationsDrawer } = useNotificationsDrawer();
 
-  if (!authUser?.getProfileById) return null;
+  if (!authProfile) return null;
 
   const navigate = useNavigate();
 
@@ -67,13 +67,13 @@ export const Sidebar = ({ isSidebarOpen, onSidebarHover }: SidebarProps) => {
       icon: (
         <div className="w-6 h-6 rounded-full bg-gray-500 overflow-hidden">
           <img
-            src={authUser?.getProfileById?.avatarUrl || "/ig-default.jpg"}
+            src={authProfile?.avatarUrl || "/ig-default.jpg"}
             alt="Profile"
           />
         </div>
       ),
       label: "Profile",
-      action: () => navigate(`/${authUser?.getProfileById.username}`),
+      action: () => navigate(`/${authProfile?.username}`),
     },
   ];
 
