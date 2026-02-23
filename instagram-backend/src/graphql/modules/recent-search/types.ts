@@ -4,8 +4,8 @@ export const RecentSearchTypes = `#graphql
   }
 
   extend type Mutation {
-    addRecentSearch(targetId: ID!): Boolean!
-    removeRecentSearch(targetId: ID!): Boolean!
+    addRecentSearch(targetId: ID!): String!
+    removeRecentSearch(targetId: ID!): String!
     clearRecentSearches: Boolean!
   }
 

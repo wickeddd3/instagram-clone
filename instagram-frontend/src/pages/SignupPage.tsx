@@ -1,11 +1,17 @@
-import { Divider } from "../components/auth/Divider";
-import { Footer } from "../components/auth/Footer";
-import { IgLabel } from "../components/auth/Iglabel";
-import { SignupForm } from "../components/auth/SignupForm";
-import { LoginLink } from "../components/auth/links/LoginLink";
-import { LoginWithFbLink } from "../components/auth/links/LoginWithFbLink";
+import {
+  Divider,
+  ErrorMessage,
+  Footer,
+  IgLabel,
+  LoginLink,
+  LoginWithFbLink,
+  SignupForm,
+} from "@/widgets/auth";
+import { useState } from "react";
 
 const SignupPage = () => {
+  const [error, setError] = useState("");
+
   return (
     <div className="w-full h-full min-h-screen flex flex-col justify-between md:justify-center items-center gap-12 p-4 bg-[#0d1015] text-white">
       <div className="flex-1 w-full h-full flex flex-col justify-center items-center">
@@ -18,7 +24,8 @@ const SignupPage = () => {
             <LoginWithFbLink />
             <Divider />
             <div className="w-full flex flex-col justify-center items-center gap-4">
-              <SignupForm />
+              <SignupForm onError={setError} />
+              {error && <ErrorMessage message={error} />}
             </div>
           </div>
           <div className="w-full border-gray-800 border p-5">
