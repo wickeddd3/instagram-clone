@@ -6,56 +6,44 @@ import {
   type ReactNode,
 } from "react";
 import type { Session, User } from "@supabase/supabase-js";
-import { supabase } from "../../shared/lib/supabase";
-import { useQuery } from "@apollo/client/react";
-import type { ProfileDataById } from "../../types/profile";
-import { GET_PROFILE_BY_ID } from "../../graphql/queries/profile";
+import { supabase } from "@/shared/lib/supabase";
+import type { Profile } from "@/entities/profile";
+import { useProfileById } from "@/widgets/auth";
 
 interface AuthContextType {
   session: Session | null;
-  user: User | null;
-  loading: boolean;
-  authUser: ProfileDataById | undefined;
+  authUser: User | null;
   authUserLoading: boolean;
-  signOut: () => Promise<void>;
-  signIn: (
-    email: string,
-    password: string,
-  ) => Promise<{ data: { user: User | null }; error: Error | null }>;
-  signUp: (
-    email: string,
-    password: string,
-  ) => Promise<{ data: { user: User | null }; error: Error | null }>;
+  authProfile: Profile | undefined;
+  authProfileLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [authUser, setAuthUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [authUserLoading, setAuthUserLoading] = useState(true);
 
   // Fetch current profile data
-  const { data: authUser, loading: authUserLoading } =
-    useQuery<ProfileDataById>(GET_PROFILE_BY_ID, {
-      variables: { id: user?.id },
-      skip: !user?.id,
-    });
+  const { profile, loading: profileLoading } = useProfileById({
+    userId: authUser?.id ?? "",
+  });
 
   useEffect(() => {
     // Get the initial session status
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
-      setUser(session?.user ?? null);
-      setLoading(false);
+      setAuthUser(session?.user ?? null);
+      setAuthUserLoading(false);
     });
 
     // Listen for authentication changes (login, logout, token refresh)
     const { data: listener } = supabase.auth.onAuthStateChange(
       (_event, session) => {
         setSession(session);
-        setUser(session?.user ?? null);
-        setLoading(false);
+        setAuthUser(session?.user ?? null);
+        setAuthUserLoading(false);
       },
     );
 
@@ -65,32 +53,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
   }, []);
 
-  const signOut = async () => {
-    await supabase.auth.signOut();
-  };
-
-  const signIn = async (email: string, password: string) => {
-    return await supabase.auth.signInWithPassword({ email, password });
-  };
-
-  const signUp = async (email: string, password: string) => {
-    return await supabase.auth.signUp({
-      email,
-      password,
-    });
-  };
-
   return (
     <AuthContext.Provider
       value={{
         session,
-        user,
-        loading,
         authUser,
         authUserLoading,
-        signOut,
-        signIn,
-        signUp,
+        authProfile: profile,
+        authProfileLoading: profileLoading,
       }}
     >
       {children}
