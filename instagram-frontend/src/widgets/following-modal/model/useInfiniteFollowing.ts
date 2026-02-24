@@ -3,13 +3,33 @@ import type { Following } from "./types";
 import { GET_FOLLOWING } from "../api/query";
 
 export const useInfiniteFollowing = ({ username }: { username: string }) => {
-  const { data, loading } = useQuery<Following>(GET_FOLLOWING, {
-    variables: { username },
-    skip: !username,
-  });
+  const { data, loading, error, fetchMore, networkStatus } =
+    useQuery<Following>(GET_FOLLOWING, {
+      variables: { username, cursor: null, limit: 10 },
+      notifyOnNetworkStatusChange: true,
+      skip: !username,
+    });
+
+  const {
+    following = [],
+    hasMore = false,
+    nextCursor = null,
+  } = data?.getFollowing || {};
+
+  const loadMore = () => {
+    if (!hasMore || loading) return;
+    fetchMore({
+      variables: { username, cursor: nextCursor, limit: 10 },
+    });
+  };
 
   return {
-    following: data?.getFollowing || [],
+    following,
+    hasMore,
+    nextCursor,
     loading,
+    error,
+    isLoadingMore: networkStatus === 6 || networkStatus === 3,
+    loadMore,
   };
 };
