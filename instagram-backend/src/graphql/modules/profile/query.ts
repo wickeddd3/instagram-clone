@@ -69,25 +69,56 @@ export const ProfileQuery = {
       take: 10,
     });
   },
-  getFollowers: async (_parent: any, { username }: { username: string }) => {
-    const user = await prisma.profile.findUnique({
+  getFollowers: async (
+    _parent: any,
+    {
+      username,
+      cursor,
+      limit = 10,
+    }: { username: string; cursor?: string; limit: number },
+  ) => {
+    const targetUser = await prisma.profile.findUnique({
       where: { username },
+      select: { id: true },
+    });
+
+    if (!targetUser) throw new Error("User not found");
+
+    const followers = await prisma.follow.findMany({
+      where: { followingId: targetUser.id },
+      take: limit,
+      orderBy: { createdAt: "desc" },
       include: {
-        followers: {
+        follower: {
           include: {
-            follower: {
-              include: {
-                _count: {
-                  select: { followers: true, following: true, posts: true },
-                },
-              },
+            _count: {
+              select: { followers: true, following: true, posts: true },
             },
           },
         },
       },
+      ...(cursor && {
+        skip: 1,
+        cursor: {
+          followerId_followingId: {
+            followerId: cursor,
+            followingId: targetUser.id,
+          },
+        },
+      }),
     });
-    // Map the nested join table structure back to a flat Profile array
-    return user?.followers.map((f) => f.follower) || [];
+
+    const followersProfiles = followers.map((f) => ({ ...f.follower }));
+    const hasMore = followers.length === limit;
+    const nextCursor = hasMore
+      ? followers[followers.length - 1]?.followerId
+      : null;
+
+    return {
+      followers: followersProfiles,
+      hasMore,
+      nextCursor,
+    };
   },
   getFollowing: async (_parent: any, { username }: { username: string }) => {
     const user = await prisma.profile.findUnique({

@@ -4,7 +4,7 @@ export const ProfileTypes = `#graphql
     getProfileById(id: ID!): Profile
     getSuggestedProfiles(limit: Int): [Profile!]!
     searchProfiles(query: String!): [Profile!]!
-    getFollowers(username: String!): [Profile!]!
+    getFollowers(username: String!, cursor: String, limit: Int): FollowersResponse
     getFollowing(username: String!): [Profile!]!
   }
 
@@ -49,5 +49,11 @@ export const ProfileTypes = `#graphql
     id: ID!
     isFollowing: Boolean!
     followersCount: Int!
+  }
+
+  type FollowersResponse {
+    followers: [Profile!]!
+    nextCursor: String
+    hasMore: Boolean!
   }
 `;
