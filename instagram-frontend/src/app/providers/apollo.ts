@@ -75,6 +75,18 @@ export const client = new ApolloClient({
               };
             },
           },
+          getFollowers: {
+            keyArgs: ["username"],
+            merge(existing, incoming) {
+              return {
+                ...incoming,
+                followers: [
+                  ...(existing?.followers || []),
+                  ...incoming.followers,
+                ],
+              };
+            },
+          },
         },
       },
     },
