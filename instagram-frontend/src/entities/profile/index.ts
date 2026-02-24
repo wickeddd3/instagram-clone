@@ -5,3 +5,4 @@ export { ProfileContent } from "./ui/ProfileContent";
 export { ProfileLink } from "./ui/ProfileLink";
 export { SuggestionProfileLink } from "./ui/SuggestionProfileLink";
 export type { Profile, ProfileById, ProfileByUsername } from "./model/types";
+export { PROFILE_FRAGMENT } from "./api/fragment";
