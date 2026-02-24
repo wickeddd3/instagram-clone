@@ -6,11 +6,13 @@ A modern Instagram clone built with React, Node.js (Apollo GraphQL), Prisma, and
 
 ## 🛠 Tech Stack
 
-- **Frontend:** React, Typescript, Vite, Tailwind CSS, Apollo Client
+- **Frontend:** React, Typescript, Vite, Tailwind CSS, Framer Motion
 - **Backend:** Node.js, Express.js, Typescript, Apollo Server (GraphQL), Prisma ORM
 - **Database:** PostgreSQL (Local Docker) & Supabase PostgreSQL (Production)
 - **Authentication & Storage:** Supabase (Auth & S3 Buckets)
+- **State/API:** Apollo Client (GraphQL), Supabase (Auth)
 - **Infrastructure:** Docker & Docker Compose
+- **Architecture:** Feature-Sliced Design (FSD)
 
 ## 🌟 Project Features
 
@@ -37,6 +39,49 @@ graph TD
     BE -->|ORM| PR[Prisma]
     PR -->|SQL| DB[(PostgreSQL Container)]
 ```
+
+## 🏗 Architecture & Performance
+
+This project follows the **Feature-Sliced Design (FSD)** methodology to ensure scalability and maintainability. To optimize the user experience, and implemented a multi-layered code-splitting strategy.
+
+### 📁 Layered Structure
+
+Strictly separate concerns into layers to prevent circular dependencies and "spaghetti code":
+
+- **App:** Global providers (Auth, Apollo), global layouts, global styling, and routing.
+- **Pages:** Composed of multiple widgets. This is the primary entry point for **Route-Level Lazy Loading**.
+- **Widgets:** Complex, self-contained blocks (e.g., `Feed`, `PostDetailsModal`).
+- **Features:** User actions with business logic (e.g., `LikePost`, `AddComment`).
+- **Entities:** Domain-specific UI/Logic (e.g., `PostCard`, `ProfileHeader`).
+- **Shared:** Reusable UI components (Modal, Inputs) and utility functions.
+
+### Optimistic UI Updates
+
+For a high-performance "social media" feel, leverage **Apollo Client Cache Modification**:
+
+- **Mutations**: `optimisticResponse` and `cache.modify` to update likes, bookmarks, and comment counts instantly.
+- **Infinite Streams**: Post and Comment lists use cursor-based pagination with automatic cache merging.
+
+## 🔐 Data Flow & Authentication Architecture
+
+The application uses a "Security-First" data flow, integrating **Supabase Auth** for identity and **Apollo Client** for data orchestration.
+
+### Authentication Lifecycle
+
+- **Sign-up/Login**: Handled via Supabase Auth. Upon successful authentication, a JWT is stored in the local session.
+- **Profile Synchronization**: On initial signup, the `AuthGuard` triggers a check. If a user exists in Supabase but not in our PostgreSQL `profiles` table, a profile is automatically created via a GraphQL mutation.
+- **Auth Guarding**: Route-level protection is managed in the `app` layer, ensuring sensitive widgets (like the Feed) never mount without a valid session.
+
+### Request Authorization
+
+Every GraphQL request is automatically authenticated, using `Apollo Link` to intercept outgoing requests and inject the Supabase JWT into the `Authorization` header.
+
+### Real-time Cache Consistency
+
+Because it use FSD Entities, the data is normalized in the Apollo Cache.
+
+- **Scenario**: When a user "Likes" a post in the `PostDetailsModal` (Widget), the `LikeButton` (Feature) triggers a mutation.
+- **Result**: Because the mutation returns the updated `Post` object, Apollo automatically updates that same post in the `HomeFeed` (Widget) and `Profile` (Page) without a page refresh or manual state syncing.
 
 ## 🚀 Quick Start Guide
 
