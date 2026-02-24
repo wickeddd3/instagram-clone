@@ -13,7 +13,7 @@ export const ModalWrapper = ({
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className={`fixed inset-0 bg-black/60 flex flex-col items-center justify-center w-full z-60 ${className}`}
+      className={`fixed inset-0 bg-black/60 flex flex-col items-center justify-center w-full z-100 ${className}`}
     >
       {children}
     </motion.div>
@@ -32,7 +32,7 @@ export const ModalContent = ({
       initial={{ scale: 1.1, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ type: "spring", duration: 0.4 }}
-      className={`bg-neutral-900 rounded-xl overflow-hidden ${className}`}
+      className={`bg-neutral-900 rounded-xl overflow-hidden z-100 ${className}`}
     >
       {children}
     </motion.div>
