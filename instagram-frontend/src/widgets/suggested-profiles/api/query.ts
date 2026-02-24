@@ -1,16 +1,14 @@
+import { PROFILE_FRAGMENT } from "@/entities/profile";
 import { gql } from "@apollo/client";
 
 export const GET_SUGGESTED_PROFILES = gql`
   query GetSuggestedProfiles($limit: Int) {
     getSuggestedProfiles(limit: $limit) {
-      id
-      username
-      displayName
-      avatarUrl
-      bio
-      website
+      ...ProfileFields
       followersCount
       mutualFriend
     }
   }
+
+  ${PROFILE_FRAGMENT}
 `;

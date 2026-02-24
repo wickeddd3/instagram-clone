@@ -1,15 +1,11 @@
 import { POST_FRAGMENT } from "@/entities/post";
+import { PROFILE_FRAGMENT } from "@/entities/profile";
 import { gql } from "@apollo/client";
 
 export const GET_PROFILE = gql`
   query GetProfile($username: String!) {
     getProfile(username: $username) {
-      id
-      username
-      displayName
-      avatarUrl
-      bio
-      website
+      ...ProfileFields
       postsCount
       followersCount
       followingCount
@@ -17,6 +13,8 @@ export const GET_PROFILE = gql`
       isMe
     }
   }
+
+  ${PROFILE_FRAGMENT}
 `;
 
 export const GET_SAVED_POSTS = gql`
