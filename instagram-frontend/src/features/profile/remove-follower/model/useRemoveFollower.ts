@@ -25,8 +25,9 @@ export const useRemoveFollower = ({
             // Only modify the list belonging to the profile we are viewing
             if (!storeFieldName.includes(profileUsername)) return existingData;
 
-            return [
-              ...existingData.filter(
+            return {
+              ...existingData,
+              followers: existingData.followers.filter(
                 (u: any) =>
                   u.__ref !==
                   cache.identify({
@@ -34,7 +35,7 @@ export const useRemoveFollower = ({
                     id: targetProfileId,
                   }),
               ),
-            ];
+            };
           },
         },
       });

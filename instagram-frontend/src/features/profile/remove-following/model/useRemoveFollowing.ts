@@ -24,8 +24,9 @@ export const useRemoveFollowing = ({
           getFollowing(existingData, { storeFieldName }) {
             if (!storeFieldName.includes(profileUsername)) return existingData;
 
-            return [
-              ...existingData.filter(
+            return {
+              ...existingData,
+              following: existingData.following.filter(
                 (u: any) =>
                   u.__ref !==
                   cache.identify({
@@ -33,7 +34,7 @@ export const useRemoveFollowing = ({
                     id: targetProfileId,
                   }),
               ),
-            ];
+            };
           },
         },
       });

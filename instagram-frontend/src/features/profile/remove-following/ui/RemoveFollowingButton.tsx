@@ -19,6 +19,7 @@ export const RemoveFollowingButton = ({
 
   const handleRemoveFollowing = (e: React.MouseEvent) => {
     e.preventDefault(); // Prevent link navigation
+    e.stopPropagation(); // Stop event from reaching the Link
     return removeFollowing({ variables: { username: targetProfileUsername } });
   };
 
