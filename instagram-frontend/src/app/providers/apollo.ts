@@ -99,6 +99,30 @@ export const client = new ApolloClient({
               };
             },
           },
+          searchFollowers: {
+            keyArgs: ["username"],
+            merge(existing, incoming) {
+              return {
+                ...incoming,
+                followers: [
+                  ...(existing?.followers || []),
+                  ...incoming.followers,
+                ],
+              };
+            },
+          },
+          searchFollowing: {
+            keyArgs: ["username"],
+            merge(existing, incoming) {
+              return {
+                ...incoming,
+                following: [
+                  ...(existing?.following || []),
+                  ...incoming.following,
+                ],
+              };
+            },
+          },
         },
       },
     },
