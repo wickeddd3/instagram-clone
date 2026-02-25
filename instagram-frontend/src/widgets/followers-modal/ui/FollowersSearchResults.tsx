@@ -1,16 +1,19 @@
+import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
-import { useInfiniteFollowers } from "../model/useInfiniteFollowers";
+import { useSearchFollowers } from "../model/useSearchFollowers";
 import { Spinner } from "@/shared/ui/Spinner";
 import { ProfileLink } from "@/entities/profile";
 import { RemoveFollowerButton } from "@/features/profile/remove-follower";
 import { useModal } from "@/app/providers/ModalContext";
 
-export const FollowersList = ({
+export const FollowersSearchResults = ({
+  query,
   username,
   profileId,
   profileUsername,
   canModify = false,
 }: {
+  query: string;
   username: string;
   profileId: string;
   profileUsername: string;
@@ -18,8 +21,8 @@ export const FollowersList = ({
 }) => {
   const { closeModal } = useModal();
 
-  const { followers, hasMore, loading, isLoadingMore, loadMore } =
-    useInfiniteFollowers({
+  const { followers, hasMore, loading, loadMore, searchFollowers } =
+    useSearchFollowers({
       username,
     });
 
@@ -27,9 +30,16 @@ export const FollowersList = ({
     threshold: 0.1,
     rootMargin: "100px",
     onChange: (inView) => {
-      if (inView && hasMore && !isLoadingMore && !loading) loadMore();
+      if (inView && hasMore && !loading) loadMore(query);
     },
   });
+
+  useEffect(() => {
+    if (query)
+      searchFollowers({
+        variables: { username, query, cursor: null, limit: 10 },
+      });
+  }, [query, username, searchFollowers]);
 
   return (
     <div className="flex-1 overflow-y-auto custom-scrollbar px-4">
@@ -43,7 +53,7 @@ export const FollowersList = ({
       {/* Show empty placeholder for empty search results */}
       {!loading && followers.length === 0 && (
         <div className="flex flex-col items-center justify-center py-10 text-neutral-500">
-          <p>No followers yet</p>
+          <p>No results found for "{query}"</p>
         </div>
       )}
 

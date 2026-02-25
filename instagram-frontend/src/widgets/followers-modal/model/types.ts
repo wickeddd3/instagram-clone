@@ -7,3 +7,11 @@ export interface Followers {
     nextCursor: string;
   };
 }
+
+export interface SearchFollowersResults {
+  searchFollowers: {
+    followers: Profile[];
+    hasMore: boolean;
+    nextCursor: string;
+  };
+}

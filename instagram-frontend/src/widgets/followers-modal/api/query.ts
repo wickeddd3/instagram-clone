@@ -14,3 +14,27 @@ export const GET_FOLLOWERS = gql`
 
   ${PROFILE_FRAGMENT}
 `;
+
+export const SEARCH_FOLLOWERS = gql`
+  query SearchFollowers(
+    $username: String!
+    $query: String
+    $cursor: String
+    $limit: Int
+  ) {
+    searchFollowers(
+      username: $username
+      query: $query
+      cursor: $cursor
+      limit: $limit
+    ) {
+      followers {
+        ...ProfileFields
+      }
+      hasMore
+      nextCursor
+    }
+  }
+
+  ${PROFILE_FRAGMENT}
+`;
