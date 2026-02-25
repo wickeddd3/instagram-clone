@@ -1,6 +1,6 @@
 import { useModal } from "@/app/providers/ModalContext";
 import { ModalCloseButton, ModalContent } from "@/shared/ui/Modal";
-import { FollowingList } from "./FollowingList";
+import { Following } from "./Following";
 
 export const FollowingModal = ({
   username,
@@ -23,7 +23,7 @@ export const FollowingModal = ({
           <ModalCloseButton onClose={closeModal} iconSize={24} />
         </div>
         <div className="flex-1 min-h-0">
-          <FollowingList
+          <Following
             username={username}
             authId={authId}
             profileId={profileId}

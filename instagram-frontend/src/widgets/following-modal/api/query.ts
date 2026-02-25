@@ -14,3 +14,27 @@ export const GET_FOLLOWING = gql`
 
   ${PROFILE_FRAGMENT}
 `;
+
+export const SEARCH_FOLLOWING = gql`
+  query SearchFollowing(
+    $username: String!
+    $query: String
+    $cursor: String
+    $limit: Int
+  ) {
+    searchFollowing(
+      username: $username
+      query: $query
+      cursor: $cursor
+      limit: $limit
+    ) {
+      following {
+        ...ProfileFields
+      }
+      hasMore
+      nextCursor
+    }
+  }
+
+  ${PROFILE_FRAGMENT}
+`;

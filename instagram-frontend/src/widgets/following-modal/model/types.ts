@@ -7,3 +7,11 @@ export interface Following {
     nextCursor: string;
   };
 }
+
+export interface SearchFollowingResults {
+  searchFollowing: {
+    following: Profile[];
+    hasMore: boolean;
+    nextCursor: string;
+  };
+}
