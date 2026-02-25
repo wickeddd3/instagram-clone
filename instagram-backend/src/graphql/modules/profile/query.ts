@@ -230,4 +230,64 @@ export const ProfileQuery = {
       nextCursor,
     };
   },
+  searchFollowing: async (
+    _parent: any,
+    {
+      username,
+      query = "",
+      cursor,
+      limit = 10,
+    }: { username: string; query: string; cursor?: string; limit: number },
+  ) => {
+    const targetUser = await prisma.profile.findUnique({
+      where: { username },
+      select: { id: true },
+    });
+
+    if (!targetUser) throw new Error("User not found");
+
+    const following = await prisma.follow.findMany({
+      where: {
+        followerId: targetUser.id,
+        following: {
+          OR: [
+            { username: { contains: query, mode: "insensitive" } },
+            { displayName: { contains: query, mode: "insensitive" } },
+          ],
+        },
+      },
+      take: limit,
+      orderBy: { createdAt: "desc" },
+      include: {
+        following: {
+          include: {
+            _count: {
+              select: { followers: true, following: true, posts: true },
+            },
+          },
+        },
+      },
+      ...(cursor && {
+        skip: 1,
+        cursor: {
+          followerId_followingId: {
+            followerId: targetUser.id,
+            followingId: cursor,
+          },
+        },
+      }),
+    });
+
+    const followingProfiles = following.map((f) => ({ ...f.following }));
+    const hasMore = following.length === limit;
+    const nextCursor = hasMore
+      ? following[following.length - 1]?.followingId
+      : null;
+
+    return {
+      following: followingProfiles,
+      hasMore,
+      nextCursor,
+    };
+  },
 };
