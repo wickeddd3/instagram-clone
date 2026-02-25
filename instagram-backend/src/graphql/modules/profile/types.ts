@@ -6,6 +6,7 @@ export const ProfileTypes = `#graphql
     searchProfiles(query: String!): [Profile!]!
     getFollowers(username: String!, cursor: String, limit: Int): FollowersResponse
     getFollowing(username: String!, cursor: String, limit: Int): FollowingResponse
+    searchFollowers(username: String!, query: String, cursor: String, limit: Int): SearchFollowersResponse
   }
 
   extend type Mutation {
@@ -59,6 +60,12 @@ export const ProfileTypes = `#graphql
 
   type FollowingResponse {
     following: [Profile!]!
+    nextCursor: String
+    hasMore: Boolean!
+  }
+
+  type SearchFollowersResponse {
+    followers: [Profile!]!
     nextCursor: String
     hasMore: Boolean!
   }
