@@ -46,7 +46,9 @@ export const AccountProfile = ({ username }: { username: string }) => {
             <section className="flex flex-col gap-2">
               <div className="flex flex-wrap items-center gap-4">
                 <ProfileHeader.Username name={profile?.username || ""} />
-                <ProfileHeader.SettingsButton onClick={openSettingsModal} />
+                {profile?.isMe && (
+                  <ProfileHeader.SettingsButton onClick={openSettingsModal} />
+                )}
               </div>
               <ProfileHeader.DisplayName name={profile?.displayName || ""} />
               <ProfileHeader.Stats
