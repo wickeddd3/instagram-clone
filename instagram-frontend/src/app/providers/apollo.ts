@@ -100,7 +100,7 @@ export const client = new ApolloClient({
             },
           },
           searchFollowers: {
-            keyArgs: ["username"],
+            keyArgs: ["username", "query"],
             merge(existing, incoming) {
               return {
                 ...incoming,
@@ -112,7 +112,7 @@ export const client = new ApolloClient({
             },
           },
           searchFollowing: {
-            keyArgs: ["username"],
+            keyArgs: ["username", "query"],
             merge(existing, incoming) {
               return {
                 ...incoming,
