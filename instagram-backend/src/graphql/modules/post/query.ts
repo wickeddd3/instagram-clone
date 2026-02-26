@@ -98,15 +98,12 @@ export const PostQuery = {
   },
   getSavedPosts: async (
     _parent: any,
-    { cursor, limit = 10 }: any,
+    { profileId, cursor, limit = 10 }: any,
     context: any,
   ) => {
-    if (!context.userId)
-      throw new Error("Unauthorized: You must be logged in.");
-
     // Base query options
     const queryOptions: Prisma.SavedPostFindManyArgs = {
-      where: { userId: context.userId },
+      where: { userId: profileId },
       take: limit,
       orderBy: { createdAt: "desc" },
       include: {

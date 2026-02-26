@@ -4,7 +4,7 @@ export const PostTypes = `#graphql
     getFeedPosts(cursor: String, limit: Int): FeedResponse
     getExplorePosts(cursor: String, limit: Int): FeedResponse
     getProfilePosts(profileId: ID!, cursor: String, limit: Int): FeedResponse
-    getSavedPosts(cursor: String, limit: Int): FeedResponse
+    getSavedPosts(profileId: ID!, cursor: String, limit: Int): FeedResponse
   }
 
   extend type Mutation {
