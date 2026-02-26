@@ -3,10 +3,11 @@ import { GET_SAVED_POSTS } from "../api/query";
 import type { SavedPosts } from "./types";
 import { NetworkStatus } from "@apollo/client";
 
-export const useInfiniteSavedPosts = () => {
+export const useInfiniteSavedPosts = ({ profileId }: { profileId: string }) => {
   const { data, loading, error, fetchMore, networkStatus } =
     useQuery<SavedPosts>(GET_SAVED_POSTS, {
-      variables: { cursor: null, limit: 5 },
+      variables: { profileId, cursor: null, limit: 5 },
+      skip: !profileId,
       notifyOnNetworkStatusChange: true,
     });
 

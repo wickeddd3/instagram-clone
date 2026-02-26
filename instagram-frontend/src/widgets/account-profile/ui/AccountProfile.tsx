@@ -100,7 +100,7 @@ export const AccountProfile = ({ username }: { username: string }) => {
 
       <ProfileContent
         profilePostsSlot={<ProfilePosts profileId={profile?.id || ""} />}
-        savedPostsSlot={<SavedPosts />}
+        savedPostsSlot={<SavedPosts profileId={profile?.id || ""} />}
         taggedPostsSlot={<TaggedPosts />}
       />
     </div>

@@ -3,9 +3,9 @@ import { useInfiniteSavedPosts } from "../model/useInfiniteSavedPosts";
 import { Posts } from "./Posts";
 import { PostsEmpty } from "./PostsEmpty";
 
-export const SavedPosts = () => {
+export const SavedPosts = ({ profileId }: { profileId: string }) => {
   const { posts, hasMore, loading, isLoadingMore, loadMore } =
-    useInfiniteSavedPosts();
+    useInfiniteSavedPosts({ profileId });
 
   return !loading && posts.length === 0 ? (
     <PostsEmpty
