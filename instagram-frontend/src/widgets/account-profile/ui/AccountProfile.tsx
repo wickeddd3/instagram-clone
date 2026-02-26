@@ -10,6 +10,7 @@ import { useAccountProfile } from "../model/useAccountProfile";
 import { FollowProfileButton } from "@/features/profile/follow-profile";
 import { ProfilePosts } from "./ProfilePosts";
 import { SavedPosts } from "./SavedPosts";
+import { TaggedPosts } from "./TaggedPosts";
 import { useSettingsModal } from "@/widgets/settings-modal";
 import { useFollowersModal } from "@/widgets/followers-modal";
 import { useFollowingModal } from "@/widgets/following-modal";
@@ -98,7 +99,7 @@ export const AccountProfile = ({ username }: { username: string }) => {
       <ProfileContent
         profilePostsSlot={<ProfilePosts profileId={profile?.id || ""} />}
         savedPostsSlot={<SavedPosts />}
-        taggedPostsSlot={<h3 className="text-center py-8">tagged posts</h3>}
+        taggedPostsSlot={<TaggedPosts />}
       />
     </div>
   );

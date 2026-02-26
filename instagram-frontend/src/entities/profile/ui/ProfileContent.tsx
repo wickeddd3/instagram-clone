@@ -16,7 +16,7 @@ export const ProfileContent = ({
 
   return (
     <div className="flex-1 flex flex-col pt-12 pb-6">
-      <div className="grid grid-cols-3 place-items-center">
+      <div className="grid grid-cols-3 place-items-center border-b border-gray-800">
         <button
           onClick={() => setActiveTab("POSTS")}
           className={`px-6 py-2 cursor-pointer transition ${
