@@ -57,7 +57,7 @@ export const client = new ApolloClient({
             },
           },
           getSavedPosts: {
-            keyArgs: false,
+            keyArgs: ["profileId"],
             merge(existing, incoming) {
               return {
                 ...incoming,
