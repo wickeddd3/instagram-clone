@@ -48,7 +48,7 @@ export const client = new ApolloClient({
             },
           },
           getProfilePosts: {
-            keyArgs: false,
+            keyArgs: ["profileId"],
             merge(existing, incoming) {
               return {
                 ...incoming,
