@@ -25,7 +25,7 @@ export const DisplayName = ({ name }: { name: string }) => {
 };
 
 export const Username = ({ name }: { name: string }) => {
-  return <h2 className="text-2xl font-bold">{name}</h2>;
+  return <h2 className="text-lg md:text-2xl font-bold">{name}</h2>;
 };
 
 export const Bio = ({ text }: { text: string }) => {
@@ -76,7 +76,7 @@ export const Stats = ({
   onClickFollowing: () => void;
 }) => {
   return (
-    <div className="hidden md:flex gap-10">
+    <div className="flex gap-4 md:gap-10">
       <span className="text-sm">
         <strong>{postsCount}</strong> posts
       </span>
