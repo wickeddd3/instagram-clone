@@ -102,6 +102,7 @@ export const AccountProfile = ({ username }: { username: string }) => {
         profilePostsSlot={<ProfilePosts profileId={profile?.id || ""} />}
         savedPostsSlot={<SavedPosts profileId={profile?.id || ""} />}
         taggedPostsSlot={<TaggedPosts />}
+        isMyProfile={!!profile?.isMe}
       />
     </div>
   );

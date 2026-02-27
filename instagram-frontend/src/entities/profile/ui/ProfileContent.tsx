@@ -5,10 +5,12 @@ export const ProfileContent = ({
   profilePostsSlot,
   savedPostsSlot,
   taggedPostsSlot,
+  isMyProfile,
 }: {
   profilePostsSlot: ReactNode;
   savedPostsSlot: ReactNode;
   taggedPostsSlot: ReactNode;
+  isMyProfile: boolean;
 }) => {
   const [activeTab, setActiveTab] = useState<"POSTS" | "SAVED" | "TAGGED">(
     "POSTS",
@@ -16,7 +18,9 @@ export const ProfileContent = ({
 
   return (
     <div className="flex-1 flex flex-col pt-12 pb-6">
-      <div className="grid grid-cols-3 place-items-center border-b border-gray-800">
+      <div
+        className={`grid grid-flow-col place-items-center border-b border-gray-800`}
+      >
         <button
           onClick={() => setActiveTab("POSTS")}
           className={`px-6 py-2 cursor-pointer transition ${
@@ -27,16 +31,18 @@ export const ProfileContent = ({
         >
           <Grid size={24} />
         </button>
-        <button
-          onClick={() => setActiveTab("SAVED")}
-          className={`px-6 py-2 cursor-pointer transition ${
-            activeTab === "SAVED"
-              ? "text-white border-white border-b-2"
-              : "text-gray-400"
-          }`}
-        >
-          <Bookmark size={24} />
-        </button>
+        {isMyProfile && (
+          <button
+            onClick={() => setActiveTab("SAVED")}
+            className={`px-6 py-2 cursor-pointer transition ${
+              activeTab === "SAVED"
+                ? "text-white border-white border-b-2"
+                : "text-gray-400"
+            }`}
+          >
+            <Bookmark size={24} />
+          </button>
+        )}
         <button
           onClick={() => setActiveTab("TAGGED")}
           className={`px-6 py-2 cursor-pointer transition ${
@@ -49,7 +55,7 @@ export const ProfileContent = ({
         </button>
       </div>
       {activeTab === "POSTS" && profilePostsSlot}
-      {activeTab === "SAVED" && savedPostsSlot}
+      {activeTab === "SAVED" && isMyProfile && savedPostsSlot}
       {activeTab === "TAGGED" && taggedPostsSlot}
     </div>
   );
