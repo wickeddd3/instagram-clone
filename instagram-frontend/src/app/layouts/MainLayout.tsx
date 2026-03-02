@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
+import { Toaster } from "sonner";
 import { useModal } from "@/app/providers/ModalContext";
 import { useDrawer } from "@/app/providers/DrawerContext";
 import { MobileHeader } from "@/widgets/mobile-header";
@@ -74,6 +75,9 @@ export const MainLayout = () => {
           onClose={closeDrawer}
         />
       )}
+
+      {/* Snackbar */}
+      <Toaster />
     </div>
   );
 };
