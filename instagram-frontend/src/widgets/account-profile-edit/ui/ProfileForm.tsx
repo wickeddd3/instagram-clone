@@ -1,19 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useProfileForm } from "../model/useProfileForm";
 import { useUpdateProfile } from "../model/useUpdateProfile";
 import type { ProfileFormType } from "../model/validation";
 import type { Profile } from "@/entities/profile";
-import { CheckCircle2 } from "lucide-react";
+import { toast } from "sonner";
 
 export const ProfileForm = ({ profile }: { profile: Profile }) => {
-  const [isSuccess, setIsSuccess] = useState(false);
-
   const { registerField, resetForm, handleSubmit } = useProfileForm();
 
   const { updateProfile, isProfileUpdating } = useUpdateProfile({
     onCompleted: () => {
-      setIsSuccess(true);
-      setTimeout(() => setIsSuccess(false), 3000);
+      toast.success("Profile updated");
     },
   });
 
@@ -82,12 +79,6 @@ export const ProfileForm = ({ profile }: { profile: Profile }) => {
           </div>
         </div>
       </div>
-
-      {isSuccess && (
-        <span className="text-green-500 flex items-center gap-1 text-sm">
-          <CheckCircle2 size={16} /> Profile saved.
-        </span>
-      )}
 
       {/* Submit Button */}
       <div className="flex  justify-end gap-8 mt-4">
