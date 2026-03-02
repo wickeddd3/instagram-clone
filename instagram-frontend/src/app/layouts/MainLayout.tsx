@@ -20,7 +20,7 @@ export const MainLayout = () => {
     useDrawer();
 
   return (
-    <div className="w-full h-full flex flex-col md:flex-row min-h-screen bg-[#0d1015] text-white">
+    <div className="w-full flex flex-col md:flex-row h-screen overflow-y-auto custom-scrollbar bg-[#0d1015] text-white">
       {/* Top Header - Hidden on Desktop */}
       <div className="md:hidden fixed top-0 w-full z-50 bg-[#0d1015]">
         <MobileHeader />
@@ -40,7 +40,7 @@ export const MainLayout = () => {
       </motion.aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 flex justify-center w-full md:mt-0 mt-14 ">
+      <main className="flex-1 flex justify-center w-full md:mt-0 mt-14">
         <motion.div
           key={location.pathname}
           initial={{ opacity: 0, y: 10 }}
