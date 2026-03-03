@@ -1,5 +1,6 @@
 export const ProfileTypes = `#graphql
   extend type Query {
+    checkAvailability(email: String, username: String): AvailabilityResponse!
     getProfile(username: String!): Profile
     getProfileById(id: ID!): Profile
     getSuggestedProfiles(limit: Int): [Profile!]!
@@ -75,5 +76,10 @@ export const ProfileTypes = `#graphql
     following: [Profile!]!
     nextCursor: String
     hasMore: Boolean!
+  }
+
+  type AvailabilityResponse {
+    isEmailAvailable: Boolean!
+    isUsernameAvailable: Boolean!
   }
 `;

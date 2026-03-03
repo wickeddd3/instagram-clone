@@ -1,6 +1,20 @@
 import { prisma } from "../../../lib/prisma";
 
 export const ProfileQuery = {
+  checkAvailability: async (
+    _parent: any,
+    { email, username }: { email: string; username: string },
+  ) => {
+    const emailExists = await prisma.profile.findUnique({ where: { email } });
+    const usernameExists = await prisma.profile.findUnique({
+      where: { username },
+    });
+
+    return {
+      isEmailAvailable: !emailExists,
+      isUsernameAvailable: !usernameExists,
+    };
+  },
   getProfile: async (_parent: any, { username }: { username: string }) => {
     return await prisma.profile.findUnique({
       where: { username },
