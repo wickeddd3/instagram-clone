@@ -1,171 +1,98 @@
-import { prisma } from "../../../lib/prisma";
-
 export const ProfileMutation = {
-  createProfile: async (
+  createProfile: (
     _parent: any,
     { id, username, email, displayName }: any,
-    context: any,
+    { services }: any,
   ) => {
-    return await prisma.profile.create({
-      data: {
-        id,
-        username,
-        email,
-        displayName,
-      },
+    return services.profile.createProfile({
+      id,
+      username,
+      email,
+      displayName,
     });
   },
-  updateProfile: async (
+
+  updateProfile: (
     _parent: any,
     { displayName, bio, website }: any,
-    context: any,
+    { userId, services }: any,
   ) => {
-    if (!context.userId) {
-      throw new Error("Unauthorized: You must be logged in.");
-    }
-    return await prisma.profile.update({
-      where: { id: context.userId },
-      data: {
-        displayName,
-        bio,
-        website,
-      },
+    if (!userId) throw new Error("Unauthorized");
+
+    return services.profile.updateProfile(userId, {
+      displayName,
+      bio,
+      website,
     });
   },
-  uploadProfileAvatar: async (
+
+  uploadProfileAvatar: (
     _parent: any,
     { avatarUrl }: { avatarUrl: string },
-    context: any,
+    { userId, services }: any,
   ) => {
-    if (!context.userId) {
-      throw new Error("Unauthorized: You must be logged in.");
-    }
-    return await prisma.profile.update({
-      where: { id: context.userId },
-      data: {
-        avatarUrl,
-      },
-    });
+    if (!userId) throw new Error("Unauthorized");
+
+    return services.profile.updateProfile(userId, { avatarUrl });
   },
-  removeProfileAvatar: async (_parent: any, _args: any, context: any) => {
-    if (!context.userId) {
-      throw new Error("Unauthorized: You must be logged in.");
-    }
-    return await prisma.profile.update({
-      where: { id: context.userId },
-      data: {
-        avatarUrl: null,
-      },
-    });
+
+  removeProfileAvatar: async (
+    _parent: any,
+    _args: any,
+    { userId, services }: any,
+  ) => {
+    if (!userId) throw new Error("Unauthorized");
+
+    return services.profile.updateProfile(userId, { avatarUrl: null });
   },
+
   toggleFollow: async (
     _parent: any,
     { username }: { username: string },
-    context: any,
+    { userId, services }: any,
   ) => {
-    if (!context.userId) {
-      throw new Error("Unauthorized: You must be logged in.");
-    }
+    if (!userId) throw new Error("Unauthorized");
 
-    const targetProfile = await prisma.profile.findUnique({
-      where: { username },
-    });
-
-    if (!targetProfile) {
-      throw new Error("Invalid Profile: username doesn't exist.");
-    }
-
-    const existingFollow = await prisma.follow.findUnique({
-      where: {
-        followerId_followingId: {
-          followerId: context.userId,
-          followingId: targetProfile.id,
-        },
-      },
-    });
-
-    if (existingFollow) {
-      await prisma.follow.delete({
-        where: {
-          followerId_followingId: {
-            followerId: context.userId,
-            followingId: targetProfile.id,
-          },
-        },
-      });
-    } else {
-      await prisma.follow.create({
-        data: { followerId: context.userId, followingId: targetProfile.id },
-      });
-    }
-
-    const updatedProfile = await prisma.profile.findUnique({
-      where: { id: targetProfile.id },
-      include: {
-        _count: {
-          select: { followers: true },
-        },
-      },
-    });
-
-    return {
-      id: targetProfile.id,
-      isFollowing: !existingFollow,
-      followersCount: updatedProfile?._count.followers,
-    };
+    return services.profile.toggleFollow(userId, username);
   },
+
   removeFollower: async (
     _parent: any,
     { username }: { username: string },
-    context: any,
+    { userId, services }: any,
   ) => {
-    if (!context.userId) {
-      throw new Error("Unauthorized: You must be logged in.");
-    }
+    if (!userId) throw new Error("Unauthorized");
 
-    const profile = await prisma.profile.findUnique({
-      where: { username },
+    // Find the user who is following me
+    const follower = await services.profile.getProfile({ username });
+    if (!follower) throw new Error("User not found");
+
+    // "Remove Follower" means the follower is the target, and WE are the one being followed
+    await services.profile.removeConnection({
+      followerId: follower.id,
+      followingId: userId,
     });
 
-    if (!profile) {
-      throw new Error("Invalid Profile: username doesn't exist.");
-    }
-
-    await prisma.follow.delete({
-      where: {
-        followerId_followingId: {
-          followerId: profile.id,
-          followingId: context.userId,
-        },
-      },
-    });
     return false;
   },
+
   removeFollowing: async (
     _parent: any,
     { username }: { username: string },
-    context: any,
+    { userId, services }: any,
   ) => {
-    if (!context.userId) {
-      throw new Error("Unauthorized: You must be logged in.");
-    }
+    if (!userId) throw new Error("Unauthorized");
 
-    const profile = await prisma.profile.findUnique({
-      where: { username },
+    // Find the user who I follow
+    const following = await services.profile.getProfile({ username });
+    if (!following) throw new Error("User not found");
+
+    // "Remove Following" means WE are the follower, and they are the one being followed
+    await services.profile.removeConnection({
+      followerId: userId,
+      followingId: following.id,
     });
 
-    if (!profile) {
-      throw new Error("Invalid Profile: username doesn't exist.");
-    }
-
-    await prisma.follow.delete({
-      where: {
-        followerId_followingId: {
-          followerId: context.userId,
-          followingId: profile.id,
-        },
-      },
-    });
     return false;
   },
 };

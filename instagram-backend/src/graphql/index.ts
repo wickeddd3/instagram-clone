@@ -2,6 +2,7 @@ import {
   ProfileMutation,
   ProfileQuery,
   ProfileResolvers,
+  ProfileService,
   ProfileTypes,
 } from "./modules/profile";
 import {
@@ -21,6 +22,7 @@ import {
   RecentSearchQuery,
   RecentSearchTypes,
 } from "./modules/recent-search";
+import { prisma } from "../lib/prisma";
 
 const BaseType = `#graphql
   scalar DateTime
@@ -58,4 +60,8 @@ export const resolvers = {
   Profile: ProfileResolvers,
   Post: PostResolvers,
   Comment: CommentResolvers,
+};
+
+export const services = {
+  profile: new ProfileService(prisma),
 };
