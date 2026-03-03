@@ -7,6 +7,7 @@ import { ErrorMessage } from "./ErrorMessage";
 import { ForgotPasswordLink } from "./ForgotPasswordLinkt";
 import { SignupLink } from "./SignupLink";
 import { Footer } from "./Footer";
+import { Toaster } from "sonner";
 
 export const MainLogin = () => {
   const [error, setError] = useState("");
@@ -30,6 +31,8 @@ export const MainLogin = () => {
         </div>
       </div>
       <Footer />
+      {/* Snackbar */}
+      <Toaster />
     </div>
   );
 };
