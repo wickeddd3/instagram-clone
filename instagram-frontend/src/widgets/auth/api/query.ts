@@ -15,3 +15,12 @@ export const GET_PROFILE_BY_ID = gql`
 
   ${PROFILE_FRAGMENT}
 `;
+
+export const CHECK_AVAILABILITY = gql`
+  query CheckAvailability($email: String, $username: String) {
+    checkAvailability(email: $email, username: $username) {
+      isEmailAvailable
+      isUsernameAvailable
+    }
+  }
+`;

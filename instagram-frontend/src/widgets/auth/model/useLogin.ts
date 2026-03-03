@@ -13,7 +13,11 @@ export const useLogin = ({
 }) => {
   const [loading, setLoading] = useState(false);
 
-  const { register, handleSubmit } = useForm<LoginFormType>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormType>({
     resolver: zodResolver(LoginFormSchema),
     defaultValues: {
       email: "",
@@ -35,7 +39,9 @@ export const useLogin = ({
       }
       onSuccess?.();
     } catch (error) {
-      console.error(error);
+      onError?.("An error occurred during login.");
+      setLoading(false);
+    } finally {
       setLoading(false);
     }
   });
@@ -44,5 +50,6 @@ export const useLogin = ({
     registerField: register,
     loginUser,
     loading,
+    errors,
   };
 };

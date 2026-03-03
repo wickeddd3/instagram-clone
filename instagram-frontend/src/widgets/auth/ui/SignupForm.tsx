@@ -3,6 +3,7 @@ import { Loader } from "lucide-react";
 import { TextField } from "./TextField";
 import { SubmitButton } from "./SubmitButton";
 import { useRegister } from "../model/useRegister";
+import { toast } from "sonner";
 
 export const SignupForm = ({
   onError,
@@ -13,7 +14,10 @@ export const SignupForm = ({
 
   const { registerField, registerUser, loading, errors } = useRegister({
     onError,
-    onSuccess: () => navigate("/"),
+    onSuccess: () => {
+      navigate("/");
+      toast.success("Account created successfully.");
+    },
   });
 
   return (

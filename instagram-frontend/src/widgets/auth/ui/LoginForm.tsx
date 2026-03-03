@@ -11,7 +11,7 @@ export const LoginForm = ({
 }) => {
   const navigate = useNavigate();
 
-  const { registerField, loginUser, loading } = useLogin({
+  const { registerField, loginUser, loading, errors } = useLogin({
     onError,
     onSuccess: () => navigate("/"),
   });
@@ -23,11 +23,13 @@ export const LoginForm = ({
           label="Phone number, username, or email"
           type="text"
           {...registerField("email")}
+          error={errors.email?.message}
         />
         <TextField
           label="Password"
           type="password"
           {...registerField("password")}
+          error={errors.password?.message}
         />
       </div>
       <SubmitButton disabled={loading}>
