@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@as-integrations/express5";
 import { json } from "body-parser";
-import { typeDefs, resolvers } from "./graphql";
+import { typeDefs, resolvers, services } from "./graphql";
 import { verifySupabaseToken } from "./lib/supabase";
 
 dotenv.config();
@@ -32,8 +32,8 @@ const startServer = async () => {
         const authHeader = req.headers.authorization;
         // 2. Verify it and get the User UUID
         const userId = await verifySupabaseToken(authHeader || "");
-        // 3. Return the userId to be used in resolvers
-        return { userId };
+        // 3. Return the userId and services to be used in resolvers
+        return { userId, services };
       },
     }),
   );
