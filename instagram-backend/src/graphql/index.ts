@@ -16,6 +16,7 @@ import {
   CommentMutation,
   CommentQuery,
   CommentResolvers,
+  CommentService,
   CommentTypes,
 } from "./modules/comment";
 import {
@@ -66,4 +67,5 @@ export const resolvers = {
 export const services = {
   profile: new ProfileService(prisma),
   post: new PostService(prisma),
+  comment: new CommentService(prisma),
 };
