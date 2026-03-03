@@ -22,6 +22,7 @@ import {
 import {
   RecentSearchMutation,
   RecentSearchQuery,
+  RecentSearchService,
   RecentSearchTypes,
 } from "./modules/recent-search";
 import { prisma } from "../lib/prisma";
@@ -68,4 +69,5 @@ export const services = {
   profile: new ProfileService(prisma),
   post: new PostService(prisma),
   comment: new CommentService(prisma),
+  recentSearch: new RecentSearchService(prisma),
 };

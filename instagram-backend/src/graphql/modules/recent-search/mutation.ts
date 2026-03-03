@@ -1,38 +1,31 @@
-import { prisma } from "../../../lib/prisma";
-
 export const RecentSearchMutation = {
   addRecentSearch: async (
     _parent: any,
     { targetId }: { targetId: string },
-    context: any,
+    { userId, services }: any,
   ) => {
-    if (!context.userId) return false;
+    if (!userId) return null;
 
-    // Upsert: If it exists, update the timestamp to bring it to the top
-    await prisma.recentSearch.upsert({
-      where: { userId_targetId: { userId: context.userId, targetId } },
-      update: { createdAt: new Date() },
-      create: { userId: context.userId, targetId },
-    });
-    return targetId;
+    return services.recentSearch.addRecentSearch(userId, targetId);
   },
+
   removeRecentSearch: async (
     _parent: any,
     { targetId }: { targetId: string },
-    context: any,
+    { userId, services }: any,
   ) => {
-    await prisma.recentSearch.delete({
-      where: { userId_targetId: { userId: context.userId, targetId } },
-    });
-    return targetId;
+    if (!userId) throw new Error("Unauthorized");
+
+    return services.recentSearch.removeRecentSearch(userId, targetId);
   },
-  clearRecentSearches: async (_parent: any, _args: any, context: any) => {
-    if (!context.userId) return false;
 
-    await prisma.recentSearch.deleteMany({
-      where: { userId: context.userId },
-    });
+  clearRecentSearches: async (
+    _parent: any,
+    _args: any,
+    { userId, services }: any,
+  ) => {
+    if (!userId) throw new Error("Unauthorized");
 
-    return true;
+    return services.recentSearch.clearAll(userId);
   },
 };
