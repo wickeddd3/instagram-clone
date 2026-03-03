@@ -9,6 +9,7 @@ import {
   PostMutation,
   PostQuery,
   PostResolvers,
+  PostService,
   PostTypes,
 } from "./modules/post";
 import {
@@ -64,4 +65,5 @@ export const resolvers = {
 
 export const services = {
   profile: new ProfileService(prisma),
+  post: new PostService(prisma),
 };
