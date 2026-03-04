@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { lazy, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   ProfileContent,
@@ -8,12 +8,19 @@ import {
 import { useAuth } from "@/app/providers/AuthContext";
 import { useAccountProfile } from "../model/useAccountProfile";
 import { FollowProfileButton } from "@/features/profile/follow-profile";
-import { ProfilePosts } from "./ProfilePosts";
-import { SavedPosts } from "./SavedPosts";
-import { TaggedPosts } from "./TaggedPosts";
 import { useSettingsModal } from "@/widgets/settings-modal";
 import { useFollowersModal } from "@/widgets/followers-modal";
 import { useFollowingModal } from "@/widgets/following-modal";
+
+const LazyProfilePosts = lazy(() =>
+  import("./ProfilePosts").then((m) => ({ default: m.ProfilePosts })),
+);
+const LazySavedPosts = lazy(() =>
+  import("./SavedPosts").then((m) => ({ default: m.SavedPosts })),
+);
+const LazyTaggedPosts = lazy(() =>
+  import("./TaggedPosts").then((m) => ({ default: m.TaggedPosts })),
+);
 
 export const AccountProfile = ({ username }: { username: string }) => {
   if (!username) return;
@@ -29,11 +36,11 @@ export const AccountProfile = ({ username }: { username: string }) => {
   const { openFollowingModal } = useFollowingModal();
 
   const profilePosts = useMemo(
-    () => <ProfilePosts profileId={profile?.id || ""} />,
+    () => <LazyProfilePosts profileId={profile?.id || ""} />,
     [profile],
   );
   const savedPosts = useMemo(
-    () => <SavedPosts profileId={profile?.id || ""} />,
+    () => <LazySavedPosts profileId={profile?.id || ""} />,
     [profile],
   );
 
@@ -109,7 +116,7 @@ export const AccountProfile = ({ username }: { username: string }) => {
       <ProfileContent
         profilePostsSlot={profilePosts}
         savedPostsSlot={savedPosts}
-        taggedPostsSlot={<TaggedPosts />}
+        taggedPostsSlot={<LazyTaggedPosts />}
         isMyProfile={isMyProfile}
       />
     </div>

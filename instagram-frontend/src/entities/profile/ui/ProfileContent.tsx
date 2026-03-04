@@ -1,5 +1,6 @@
 import { Bookmark, Grid, SquareUser } from "lucide-react";
-import { memo, useState, type ReactNode } from "react";
+import { memo, Suspense, useState, type ReactNode } from "react";
+import { ProfilePostsSkeleton } from "./ProfilePostsSkeleton";
 
 export const ProfileContent = memo(
   ({
@@ -43,17 +44,23 @@ export const ProfileContent = memo(
           />
         </div>
         <div className={activeTab === "POSTS" ? "block" : "hidden"}>
-          {profilePostsSlot}
+          <Suspense fallback={<ProfilePostsSkeleton />}>
+            {profilePostsSlot}
+          </Suspense>
         </div>
 
         {isMyProfile && (
           <div className={activeTab === "SAVED" ? "block" : "hidden"}>
-            {savedPostsSlot}
+            <Suspense fallback={<ProfilePostsSkeleton />}>
+              {savedPostsSlot}
+            </Suspense>
           </div>
         )}
 
         <div className={activeTab === "TAGGED" ? "block" : "hidden"}>
-          {taggedPostsSlot}
+          <Suspense fallback={<ProfilePostsSkeleton />}>
+            {taggedPostsSlot}
+          </Suspense>
         </div>
       </div>
     );
