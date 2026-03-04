@@ -1,9 +1,10 @@
 import { useLazyQuery } from "@apollo/client/react";
 import { GET_COMMENTS } from "../api/query";
 import type { Comments } from "./types";
+import { useCallback } from "react";
 
 export const useInfiniteReply = () => {
-  const [getComments, { data, loading, error, fetchMore }] =
+  const [getComments, { data, loading, fetchMore }] =
     useLazyQuery<Comments>(GET_COMMENTS);
 
   const {
@@ -12,19 +13,17 @@ export const useInfiniteReply = () => {
     nextCursor = null,
   } = data?.getComments || {};
 
-  const loadMore = () => {
+  const loadMore = useCallback(() => {
     if (!hasMore || loading) return;
     fetchMore({
       variables: { cursor: nextCursor, limit: 5 },
     });
-  };
+  }, [hasMore, loading, nextCursor]);
 
   return {
     comments,
     hasMore,
-    nextCursor,
     loading,
-    error,
     loadMore,
     getComments,
   };
