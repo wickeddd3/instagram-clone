@@ -1,141 +1,37 @@
-import { Prisma } from "../../../client";
-import { prisma } from "../../../lib/prisma";
-
 export const PostQuery = {
-  getFeedPosts: async (
+  getFeedPosts: (
     _parent: any,
     { cursor, limit = 5 }: { cursor: string; limit: number },
-    context: any,
+    { userId, services }: any,
   ) => {
-    // Base query options
-    const queryOptions: Prisma.PostFindManyArgs = {
-      take: limit,
-      orderBy: { createdAt: "desc" },
-      include: {
-        author: true,
-        _count: { select: { comments: true, likes: true } },
-      },
-    };
+    if (!userId) return { posts: [], hasMore: false, nextCursor: null };
 
-    // Only add cursor and skip if a cursor exists
-    if (cursor && cursor !== null) {
-      queryOptions.cursor = { id: cursor };
-      queryOptions.skip = 1; // Skip the actual cursor record to avoid duplicates
-    }
-
-    const posts = await prisma.post.findMany(queryOptions);
-    const hasMore = posts.length === limit; // if posts length exactly the limit, there might be more
-    const nextCursor = hasMore ? posts[posts.length - 1]?.id : null;
-
-    return {
-      posts,
-      hasMore,
-      nextCursor,
-    };
+    return services.post.getFeedPosts(userId, cursor, limit);
   },
+
   getExplorePosts: async (
     _parent: any,
     { cursor, limit = 9 }: { cursor: string; limit: number },
-    context: any,
+    { userId, services }: any,
   ) => {
-    // TODO: Exclude user's own posts and people user follow
-    // Base query options
-    const queryOptions: Prisma.PostFindManyArgs = {
-      take: limit,
-      orderBy: { createdAt: "desc" },
-      include: {
-        author: true,
-        _count: { select: { comments: true, likes: true } },
-      },
-    };
-
-    // Only add cursor and skip if a cursor exists
-    if (cursor && cursor !== null) {
-      queryOptions.cursor = { id: cursor };
-      queryOptions.skip = 1; // Skip the actual cursor record to avoid duplicates
-    }
-
-    const posts = await prisma.post.findMany(queryOptions);
-    const hasMore = posts.length === limit; // if posts length exactly the limit, there might be more
-    const nextCursor = hasMore ? posts[posts.length - 1]?.id : null;
-
-    return {
-      posts,
-      hasMore,
-      nextCursor,
-    };
+    return services.post.getExplorePosts(userId, cursor, limit);
   },
+
   getProfilePosts: async (
     _parent: any,
-    { profileId, cursor, limit = 10 }: any,
+    { profileId, cursor, limit = 5 }: any,
+    { services }: any,
   ) => {
-    // Base query options
-    const queryOptions: Prisma.PostFindManyArgs = {
-      where: { authorId: profileId },
-      take: limit,
-      orderBy: { createdAt: "desc" },
-      include: {
-        author: true,
-        _count: { select: { comments: true, likes: true } },
-      },
-    };
+    if (!profileId) return { posts: [], hasMore: false, nextCursor: null };
 
-    // Only add cursor and skip if a cursor exists
-    if (cursor && cursor !== null) {
-      queryOptions.cursor = { id: cursor };
-      queryOptions.skip = 1; // Skip the actual cursor record to avoid duplicates
-    }
-
-    const posts = await prisma.post.findMany(queryOptions);
-    const hasMore = posts.length === limit; // if posts length exactly the limit, there might be more
-    const nextCursor = hasMore ? posts[posts.length - 1]?.id : null;
-
-    return {
-      posts,
-      hasMore,
-      nextCursor,
-    };
+    return services.post.getProfilePosts(profileId, cursor, limit);
   },
+
   getSavedPosts: async (
     _parent: any,
     { profileId, cursor, limit = 10 }: any,
-    context: any,
+    { services }: any,
   ) => {
-    // Base query options
-    const queryOptions: Prisma.SavedPostFindManyArgs = {
-      where: { userId: profileId },
-      take: limit,
-      orderBy: { createdAt: "desc" },
-      include: {
-        post: {
-          include: {
-            author: true,
-            _count: { select: { comments: true, likes: true } },
-          },
-        },
-      },
-    };
-
-    // Only add cursor and skip if a cursor exists
-    if (cursor && cursor !== null) {
-      queryOptions.cursor = { id: cursor };
-      queryOptions.skip = 1; // Skip the actual cursor record to avoid duplicates
-    }
-
-    const savedRecords = (await prisma.savedPost.findMany(
-      queryOptions,
-    )) as any[];
-    // Flatten the result: return the Post objects directly
-    const posts = savedRecords.map((record: any) => record.post);
-    const hasMore = savedRecords.length === limit; // if posts length exactly the limit, there might be more
-    const nextCursor = hasMore
-      ? savedRecords[savedRecords.length - 1]?.id
-      : null;
-
-    return {
-      posts,
-      hasMore,
-      nextCursor,
-    };
+    return services.post.getSavedPosts(profileId, cursor, limit);
   },
 };

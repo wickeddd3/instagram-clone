@@ -2,25 +2,30 @@ import {
   ProfileMutation,
   ProfileQuery,
   ProfileResolvers,
+  ProfileService,
   ProfileTypes,
 } from "./modules/profile";
 import {
   PostMutation,
   PostQuery,
   PostResolvers,
+  PostService,
   PostTypes,
 } from "./modules/post";
 import {
   CommentMutation,
   CommentQuery,
   CommentResolvers,
+  CommentService,
   CommentTypes,
 } from "./modules/comment";
 import {
   RecentSearchMutation,
   RecentSearchQuery,
+  RecentSearchService,
   RecentSearchTypes,
 } from "./modules/recent-search";
+import { prisma } from "../lib/prisma";
 
 const BaseType = `#graphql
   scalar DateTime
@@ -58,4 +63,11 @@ export const resolvers = {
   Profile: ProfileResolvers,
   Post: PostResolvers,
   Comment: CommentResolvers,
+};
+
+export const services = {
+  profile: new ProfileService(prisma),
+  post: new PostService(prisma),
+  comment: new CommentService(prisma),
+  recentSearch: new RecentSearchService(prisma),
 };
