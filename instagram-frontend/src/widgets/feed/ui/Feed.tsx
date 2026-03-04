@@ -3,16 +3,30 @@ import { useInfiniteFeed } from "../model/useInfiniteFeed";
 import { PostSkeleton } from "@/entities/post";
 import { Spinner } from "@/shared/ui/Spinner";
 import { FeedCard } from "./FeedCard";
+import { useCallback, useMemo } from "react";
 
 export const Feed = () => {
   const { posts, hasMore, loading, isLoadingMore, loadMore } =
     useInfiniteFeed();
 
-  const { ref } = useInView({
-    onChange: (inView) => {
-      if (inView && hasMore && !isLoadingMore) loadMore();
+  // Stable callback for the intersection observer
+  const handleInViewChange = useCallback(
+    (inView: boolean) => {
+      if (inView && hasMore && !isLoadingMore) {
+        loadMore();
+      }
     },
+    [hasMore, isLoadingMore, loadMore],
+  );
+
+  const { ref } = useInView({
+    threshold: 0.1,
+    onChange: handleInViewChange,
   });
+
+  const renderedPosts = useMemo(() => {
+    return posts.map((post) => <FeedCard key={post.id} post={post} />);
+  }, [posts]);
 
   return (
     <div className="flex flex-col gap-8 py-8">
@@ -26,9 +40,7 @@ export const Feed = () => {
       )}
 
       {/* Render posts once loaded */}
-      {posts.map((post) => (
-        <FeedCard key={post.id} post={post} />
-      ))}
+      {renderedPosts}
 
       {/* Sentinel for Infinite Scrolling */}
       {hasMore && (
