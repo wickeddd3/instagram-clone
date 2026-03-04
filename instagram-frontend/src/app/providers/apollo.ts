@@ -29,39 +29,46 @@ export const client = new ApolloClient({
       Query: {
         fields: {
           getFeedPosts: {
-            keyArgs: false,
+            keyArgs: false, // Maintain one list regardless of arguments
             merge(existing, incoming) {
+              const existingPosts = existing?.posts || [];
+              const incomingPosts = incoming?.posts || [];
               return {
                 ...incoming,
-                // Append the new posts to the existing ones
-                posts: [...(existing?.posts || []), ...incoming.posts],
+                posts: [...existingPosts, ...incomingPosts],
               };
             },
           },
           getExplorePosts: {
             keyArgs: false,
             merge(existing, incoming) {
+              const existingPosts = existing?.posts || [];
+              const incomingPosts = incoming?.posts || [];
               return {
                 ...incoming,
-                posts: [...(existing?.posts || []), ...incoming.posts],
+                posts: [...existingPosts, ...incomingPosts],
               };
             },
           },
           getProfilePosts: {
             keyArgs: ["profileId"],
             merge(existing, incoming) {
+              const existingPosts = existing?.posts || [];
+              const incomingPosts = incoming?.posts || [];
               return {
                 ...incoming,
-                posts: [...(existing?.posts || []), ...incoming.posts],
+                posts: [...existingPosts, ...incomingPosts],
               };
             },
           },
           getSavedPosts: {
             keyArgs: ["profileId"],
             merge(existing, incoming) {
+              const existingPosts = existing?.posts || [];
+              const incomingPosts = incoming?.posts || [];
               return {
                 ...incoming,
-                posts: [...(existing?.posts || []), ...incoming.posts],
+                posts: [...existingPosts, ...incomingPosts],
               };
             },
           },
@@ -69,9 +76,11 @@ export const client = new ApolloClient({
             // Crucial: separate the cache by postId
             keyArgs: ["postId", "parentId"],
             merge(existing, incoming) {
+              const existingComments = existing?.comments || [];
+              const incomingComments = incoming?.comments || [];
               return {
                 ...incoming,
-                comments: [...(existing?.comments || []), ...incoming.comments],
+                comments: [...existingComments, ...incomingComments],
               };
             },
           },
