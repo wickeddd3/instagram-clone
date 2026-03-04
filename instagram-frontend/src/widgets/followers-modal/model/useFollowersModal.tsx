@@ -1,8 +1,8 @@
-import { useModal } from "@/app/providers/ModalContext";
+import { useModalActions } from "@/app/providers/ModalContext";
 import { FollowersModal } from "../ui/FollowersModal";
 
 export const useFollowersModal = () => {
-  const { openModal } = useModal();
+  const { openModal } = useModalActions();
 
   const openFollowersModal = ({
     username,

@@ -1,14 +1,24 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { Search } from "lucide-react";
 import {
   RecentSearches,
   SearchResults,
 } from "@/features/profile/search-profile";
+import { useDebounce } from "@/shared/lib/useDebounce";
 
 export const MobileSearch = () => {
   const [query, setQuery] = useState("");
+  const debouncedQuery = useDebounce(query, 500);
   const [isFocused, setIsFocused] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const content = useMemo(() => {
+    const trimmedQuery = debouncedQuery.trim();
+    if (!trimmedQuery) {
+      return <RecentSearches />;
+    }
+    return <SearchResults query={trimmedQuery} />;
+  }, [debouncedQuery]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -44,13 +54,7 @@ export const MobileSearch = () => {
       </div>
       {isFocused && (
         <div className="absolute top-12 -left-17 w-xs bg-gray-900 border-b border-gray-800 z-50 max-h-[70vh] overflow-y-auto rounded-lg shadow-2xl">
-          <div className="flex flex-col gap-2 p-2">
-            {query ? (
-              <SearchResults query={query} />
-            ) : (
-              <RecentSearches query={query} />
-            )}
-          </div>
+          <div className="flex flex-col gap-2 p-2">{content}</div>
         </div>
       )}
     </div>

@@ -2,15 +2,14 @@ import { useQuery } from "@apollo/client/react";
 import { GET_FEED } from "../api/query";
 import type { Feed } from "./types";
 import { NetworkStatus } from "@apollo/client";
+import { useCallback } from "react";
 
 export const useInfiniteFeed = () => {
-  const { data, loading, error, fetchMore, networkStatus } = useQuery<Feed>(
-    GET_FEED,
-    {
-      variables: { cursor: null, limit: 5 },
-      notifyOnNetworkStatusChange: true, // Important for loading state during fetchMore
-    },
-  );
+  const { data, error, fetchMore, networkStatus } = useQuery<Feed>(GET_FEED, {
+    variables: { cursor: null, limit: 5 },
+    // Allows the loading state to update when fetchMore is called
+    notifyOnNetworkStatusChange: true,
+  });
 
   const {
     posts = [],
@@ -18,20 +17,20 @@ export const useInfiniteFeed = () => {
     nextCursor = null,
   } = data?.getFeedPosts || {};
 
-  const loadMore = () => {
-    if (!hasMore || loading) return;
+  const loadMore = useCallback(() => {
+    if (!hasMore || networkStatus === NetworkStatus.fetchMore) return;
+
     fetchMore({
       variables: { cursor: nextCursor },
     });
-  };
+  }, [hasMore, nextCursor, fetchMore, networkStatus]);
 
   return {
     posts,
     hasMore,
-    nextCursor,
-    loading,
-    error,
-    isLoadingMore: networkStatus === NetworkStatus.refetch, // Indicates loading state during fetchMore
+    loading: networkStatus === NetworkStatus.loading, // Only true for initial load
+    isLoadingMore: networkStatus === NetworkStatus.fetchMore,
     loadMore,
+    error,
   };
 };

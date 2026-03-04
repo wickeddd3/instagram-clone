@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { useModal } from "@/app/providers/ModalContext";
+import { useModalActions } from "@/app/providers/ModalContext";
 import { ModalContent } from "@/shared/ui/Modal";
 import { signOut } from "@/shared/lib/supabase-auth";
 
 export const SettingsModal = () => {
   const navigate = useNavigate();
-  const { closeModal } = useModal();
+  const { closeModal } = useModalActions();
 
   const handleLogout = async () => {
     await signOut();

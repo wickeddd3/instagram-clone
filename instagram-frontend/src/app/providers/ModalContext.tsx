@@ -1,63 +1,82 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
 
-interface ModalContextType {
+interface ModalState {
   isModalOpen: boolean;
   modalContent: ReactNode;
   hasModalCloseButton: boolean;
-  openModal: ({
-    content,
-    hasCloseButton,
-  }: {
-    content: ReactNode;
-    hasCloseButton?: boolean;
-  }) => void;
+}
+
+interface ModalActions {
+  openModal: (params: { content: ReactNode; hasCloseButton?: boolean }) => void;
   closeModal: () => void;
 }
 
-export const ModalContext = createContext<ModalContextType | null>(null);
+const ModalStateContext = createContext<ModalState | undefined>(undefined);
+const ModalActionsContext = createContext<ModalActions | undefined>(undefined);
 
 export const ModalProvider = ({ children }: { children: ReactNode }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [hasModalCloseButton, setHasModalCloseButton] = useState(false);
-  const [modalContent, setModalContent] = useState<ReactNode | null>(null);
+  const [state, setState] = useState<ModalState>({
+    isModalOpen: false,
+    modalContent: null,
+    hasModalCloseButton: false,
+  });
 
-  const openModal = ({
-    content,
-    hasCloseButton = false,
-  }: {
-    content: ReactNode;
-    hasCloseButton?: boolean;
-  }) => {
-    setModalContent(content);
-    setHasModalCloseButton(hasCloseButton);
-    setIsModalOpen(true);
-  };
+  const openModal = useCallback(
+    ({
+      content,
+      hasCloseButton = false,
+    }: {
+      content: ReactNode;
+      hasCloseButton?: boolean;
+    }) => {
+      setState({
+        isModalOpen: true,
+        modalContent: content,
+        hasModalCloseButton: hasCloseButton,
+      });
+    },
+    [],
+  );
 
-  const closeModal = () => {
-    setModalContent(null);
-    setHasModalCloseButton(false);
-    setIsModalOpen(false);
-  };
+  const closeModal = useCallback(() => {
+    setState({
+      isModalOpen: false,
+      modalContent: null,
+      hasModalCloseButton: false,
+    });
+  }, []);
+
+  const actions = useMemo(
+    () => ({ openModal, closeModal }),
+    [openModal, closeModal],
+  );
 
   return (
-    <ModalContext.Provider
-      value={{
-        isModalOpen,
-        modalContent,
-        hasModalCloseButton,
-        openModal,
-        closeModal,
-      }}
-    >
-      {children}
-    </ModalContext.Provider>
+    <ModalStateContext.Provider value={state}>
+      <ModalActionsContext.Provider value={actions}>
+        {children}
+      </ModalActionsContext.Provider>
+    </ModalStateContext.Provider>
   );
 };
 
-export const useModal = () => {
-  const context = useContext(ModalContext);
-  if (!context) {
-    throw new Error("useModal must be used within a ModalProvider");
-  }
+export const useModalState = () => {
+  const context = useContext(ModalStateContext);
+  if (!context)
+    throw new Error("useModalState must be used within ModalProvider");
+  return context;
+};
+
+export const useModalActions = () => {
+  const context = useContext(ModalActionsContext);
+  if (!context)
+    throw new Error("useModalActions must be used within ModalProvider");
   return context;
 };

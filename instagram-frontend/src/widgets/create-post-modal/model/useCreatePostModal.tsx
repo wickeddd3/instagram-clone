@@ -1,8 +1,8 @@
-import { useModal } from "@/app/providers/ModalContext";
+import { useModalActions } from "@/app/providers/ModalContext";
 import { CreatePostModal } from "../ui/CreatePostModal";
 
 export const useCreatePostModal = () => {
-  const { openModal } = useModal();
+  const { openModal } = useModalActions();
 
   const openCreatePostModal = () => {
     openModal({

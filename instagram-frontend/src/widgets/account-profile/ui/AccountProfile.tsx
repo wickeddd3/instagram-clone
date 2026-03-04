@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { lazy, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   ProfileContent,
@@ -8,26 +8,41 @@ import {
 import { useAuth } from "@/app/providers/AuthContext";
 import { useAccountProfile } from "../model/useAccountProfile";
 import { FollowProfileButton } from "@/features/profile/follow-profile";
-import { ProfilePosts } from "./ProfilePosts";
-import { SavedPosts } from "./SavedPosts";
-import { TaggedPosts } from "./TaggedPosts";
 import { useSettingsModal } from "@/widgets/settings-modal";
 import { useFollowersModal } from "@/widgets/followers-modal";
 import { useFollowingModal } from "@/widgets/following-modal";
+
+const LazyProfilePosts = lazy(() =>
+  import("./ProfilePosts").then((m) => ({ default: m.ProfilePosts })),
+);
+const LazySavedPosts = lazy(() =>
+  import("./SavedPosts").then((m) => ({ default: m.SavedPosts })),
+);
+const LazyTaggedPosts = lazy(() =>
+  import("./TaggedPosts").then((m) => ({ default: m.TaggedPosts })),
+);
 
 export const AccountProfile = ({ username }: { username: string }) => {
   if (!username) return;
 
   const { authUser } = useAuth();
-
   const authId = useMemo(() => authUser?.id, [authUser]);
-
   const { profile, loading } = useAccountProfile({ username: username || "" });
+  const isMyProfile = useMemo(() => !!profile?.isMe, [profile?.isMe]);
 
   const navigate = useNavigate();
   const { openSettingsModal } = useSettingsModal();
   const { openFollowersModal } = useFollowersModal();
   const { openFollowingModal } = useFollowingModal();
+
+  const profilePosts = useMemo(
+    () => <LazyProfilePosts profileId={profile?.id || ""} />,
+    [profile],
+  );
+  const savedPosts = useMemo(
+    () => <LazySavedPosts profileId={profile?.id || ""} />,
+    [profile],
+  );
 
   const handleEditProfile = () => {
     navigate("/accounts/edit");
@@ -99,10 +114,10 @@ export const AccountProfile = ({ username }: { username: string }) => {
       )}
 
       <ProfileContent
-        profilePostsSlot={<ProfilePosts profileId={profile?.id || ""} />}
-        savedPostsSlot={<SavedPosts profileId={profile?.id || ""} />}
-        taggedPostsSlot={<TaggedPosts />}
-        isMyProfile={!!profile?.isMe}
+        profilePostsSlot={profilePosts}
+        savedPostsSlot={savedPosts}
+        taggedPostsSlot={<LazyTaggedPosts />}
+        isMyProfile={isMyProfile}
       />
     </div>
   );

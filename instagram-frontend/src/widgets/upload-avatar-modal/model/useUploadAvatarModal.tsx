@@ -1,8 +1,8 @@
-import { useModal } from "@/app/providers/ModalContext";
+import { useModalActions } from "@/app/providers/ModalContext";
 import { UploadAvatarModal } from "../ui/UploadAvatarModal";
 
 export const useUploadAvatarModal = () => {
-  const { openModal } = useModal();
+  const { openModal } = useModalActions();
 
   const openUploadAvatarModal = ({ avatarUrl }: { avatarUrl?: string }) => {
     openModal({

@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { memo, useCallback, useMemo, useRef } from "react";
 import { FeedCardImage } from "./FeedCardImage";
 import {
   ChatButton,
@@ -12,37 +12,48 @@ import { SaveButton } from "@/features/post/save-post";
 import { AddCommentField } from "@/features/comment/add-comment";
 import { usePostModal } from "@/widgets/post-modal";
 
-export const FeedCard = ({ post }: { post: Post }) => {
+export const FeedCard = memo(({ post }: { post: Post }) => {
   const { openPostDetailsModal } = usePostModal();
 
-  // Ref for focusing the comment input when comment button is clicked
-  const commentInputRef = useRef<HTMLInputElement>(null);
-  const handleFocusComment = () => {
-    commentInputRef.current?.focus();
-  };
-
-  const handleOpenPostDetailsModal = (post: Post) => {
+  const handleOpenPostDetailsModal = useCallback(() => {
     openPostDetailsModal(post);
-  };
+  }, [post, openPostDetailsModal]);
+
+  const commentInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFocusComment = useCallback(() => {
+    commentInputRef.current?.focus();
+  }, []);
+
+  const slots = useMemo(
+    () => ({
+      image: <FeedCardImage post={post} />,
+      like: <LikeButton post={post} />,
+      save: <SaveButton post={post} />,
+      totalComments: (
+        <TotalComments
+          commentsCount={post.commentsCount}
+          onClick={handleOpenPostDetailsModal}
+        />
+      ),
+      commentField: <AddCommentField postId={post.id} ref={commentInputRef} />,
+    }),
+    [post, openPostDetailsModal],
+  ); // Only recreate if post object changes
 
   return (
     <PostCard
       key={post.id}
       post={post}
-      imageSlot={<FeedCardImage post={post} />}
-      likeButtonSlot={<LikeButton post={post} />}
-      saveButtonSlot={<SaveButton post={post} />}
+      imageSlot={slots.image}
+      likeButtonSlot={slots.like}
+      saveButtonSlot={slots.save}
       commentButtonSlot={<CommentButton onClick={handleFocusComment} />}
       chatButtonSlot={<ChatButton />}
-      totalCommentsSlot={
-        <TotalComments
-          commentsCount={post.commentsCount}
-          onClick={() => handleOpenPostDetailsModal(post)}
-        />
-      }
-      commentFieldSlot={
-        <AddCommentField postId={post.id} inputRef={commentInputRef} />
-      }
+      totalCommentsSlot={slots.totalComments}
+      commentFieldSlot={slots.commentField}
     />
   );
-};
+});
+
+FeedCard.displayName = "FeedCard";

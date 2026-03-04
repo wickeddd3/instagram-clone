@@ -2,14 +2,17 @@ import { useQuery } from "@apollo/client/react";
 import { GET_SAVED_POSTS } from "../api/query";
 import type { SavedPosts } from "./types";
 import { NetworkStatus } from "@apollo/client";
+import { useCallback } from "react";
 
 export const useInfiniteSavedPosts = ({ profileId }: { profileId: string }) => {
-  const { data, loading, error, fetchMore, networkStatus } =
-    useQuery<SavedPosts>(GET_SAVED_POSTS, {
+  const { data, error, fetchMore, networkStatus } = useQuery<SavedPosts>(
+    GET_SAVED_POSTS,
+    {
       variables: { profileId, cursor: null, limit: 5 },
       skip: !profileId,
       notifyOnNetworkStatusChange: true,
-    });
+    },
+  );
 
   const {
     posts = [],
@@ -17,20 +20,20 @@ export const useInfiniteSavedPosts = ({ profileId }: { profileId: string }) => {
     nextCursor = null,
   } = data?.getSavedPosts || {};
 
-  const loadMore = () => {
-    if (!hasMore || loading) return;
+  const loadMore = useCallback(() => {
+    if (!hasMore || networkStatus === NetworkStatus.fetchMore) return;
+
     fetchMore({
       variables: { cursor: nextCursor },
     });
-  };
+  }, [hasMore, nextCursor, fetchMore, networkStatus]);
 
   return {
     posts,
     hasMore,
-    nextCursor,
-    loading,
-    error,
-    isLoadingMore: networkStatus === NetworkStatus.refetch, // Indicates loading state during fetchMore
+    loading: networkStatus === NetworkStatus.loading, // Only true for initial load
+    isLoadingMore: networkStatus === NetworkStatus.fetchMore,
     loadMore,
+    error,
   };
 };

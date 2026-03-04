@@ -1,15 +1,9 @@
-import { useEffect } from "react";
+import { memo, useCallback, useEffect } from "react";
 import { X } from "lucide-react";
 import { useRecentSearches } from "../model/useRecentSearches";
 import { ProfileLink } from "@/entities/profile";
 
-export const RecentSearches = ({
-  query,
-  onClose,
-}: {
-  query: string;
-  onClose?: () => void;
-}) => {
+export const RecentSearches = memo(({ onClose }: { onClose?: () => void }) => {
   const {
     recentSearches,
     loading,
@@ -19,17 +13,19 @@ export const RecentSearches = ({
   } = useRecentSearches();
 
   useEffect(() => {
-    refetchHistory();
-  }, [query]);
+    if (recentSearches.length === 0) {
+      refetchHistory();
+    }
+  }, [refetchHistory, recentSearches.length]);
 
-  const handleRemoveRecentSearch = (
-    event: React.MouseEvent,
-    targetId: string,
-  ) => {
-    event.preventDefault(); // Stop Link navigation
-    event.stopPropagation(); // Stop event from reaching the Link
-    removeRecentSearch({ variables: { targetId } });
-  };
+  const handleRemoveRecentSearch = useCallback(
+    (event: React.MouseEvent, targetId: string) => {
+      event.preventDefault(); // Stop Link navigation
+      event.stopPropagation(); // Stop event from reaching the Link
+      removeRecentSearch({ variables: { targetId } });
+    },
+    [removeRecentSearch],
+  );
 
   if (loading) {
     return (
@@ -75,4 +71,6 @@ export const RecentSearches = ({
       ))}
     </div>
   );
-};
+});
+
+RecentSearches.displayName = "RecentSearches";
