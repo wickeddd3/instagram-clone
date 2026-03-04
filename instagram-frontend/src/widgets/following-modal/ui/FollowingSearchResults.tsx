@@ -4,7 +4,7 @@ import { useSearchFollowing } from "../model/useSearchFollowing";
 import { Spinner } from "@/shared/ui/Spinner";
 import { ProfileLink } from "@/entities/profile";
 import { RemoveFollowingButton } from "@/features/profile/remove-following";
-import { useModal } from "@/app/providers/ModalContext";
+import { useModalActions } from "@/app/providers/ModalContext";
 
 export const FollowingSearchResults = ({
   query,
@@ -19,7 +19,7 @@ export const FollowingSearchResults = ({
   profileUsername: string;
   canModify?: boolean;
 }) => {
-  const { closeModal } = useModal();
+  const { closeModal } = useModalActions();
 
   const { following, hasMore, loading, loadMore, searchFollowing } =
     useSearchFollowing({

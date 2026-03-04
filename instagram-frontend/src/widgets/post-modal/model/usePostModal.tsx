@@ -1,16 +1,20 @@
-import { useModal } from "@/app/providers/ModalContext";
+import { useModalActions } from "@/app/providers/ModalContext";
 import { PostDetailsModal } from "../ui/PostDetailsModal";
 import type { Post } from "@/entities/post";
+import { useCallback } from "react";
 
 export const usePostModal = () => {
-  const { openModal } = useModal();
+  const { openModal } = useModalActions();
 
-  const openPostDetailsModal = (post: Post) => {
-    openModal({
-      content: <PostDetailsModal value={post} />,
-      hasCloseButton: true,
-    });
-  };
+  const openPostDetailsModal = useCallback(
+    (post: Post) => {
+      openModal({
+        content: <PostDetailsModal value={post} />,
+        hasCloseButton: true,
+      });
+    },
+    [openModal],
+  );
 
   return {
     openPostDetailsModal,

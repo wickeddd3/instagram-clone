@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { memo, useRef, useState } from "react";
 import {
   ChatButton,
   CommentButton,
@@ -14,7 +14,7 @@ import { AddCommentField } from "@/features/comment/add-comment";
 import { CommentList } from "./CommentList";
 import type { ReplyData } from "../model/types";
 
-export const PostDetailsModal = ({ value }: { value: Post }) => {
+export const PostDetailsModal = memo(({ value }: { value: Post }) => {
   const [post, setPost] = useState<Post>(value);
 
   const [replyData, setReplyData] = useState<ReplyData | null>(null);
@@ -146,4 +146,4 @@ export const PostDetailsModal = ({ value }: { value: Post }) => {
       </div>
     </ModalContent>
   );
-};
+});

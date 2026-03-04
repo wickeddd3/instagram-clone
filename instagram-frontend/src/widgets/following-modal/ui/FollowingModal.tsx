@@ -1,4 +1,4 @@
-import { useModal } from "@/app/providers/ModalContext";
+import { useModalActions } from "@/app/providers/ModalContext";
 import { ModalCloseButton, ModalContent } from "@/shared/ui/Modal";
 import { Following } from "./Following";
 
@@ -13,7 +13,7 @@ export const FollowingModal = ({
   profileId: string;
   profileUsername: string;
 }) => {
-  const { closeModal } = useModal();
+  const { closeModal } = useModalActions();
 
   return (
     <ModalContent className="w-full max-w-5/6 md:max-w-3/5 lg:max-w-1/3 h-[370px] flex flex-col md:flex-row">

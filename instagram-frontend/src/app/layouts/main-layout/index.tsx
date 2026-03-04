@@ -2,20 +2,16 @@ import { useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Toaster } from "sonner";
-import { useModal } from "@/app/providers/ModalContext";
 import { useDrawer } from "@/app/providers/DrawerContext";
 import { MobileHeader } from "@/widgets/mobile-header";
 import { MobileNav, Sidebar } from "@/widgets/navigation";
-import { Modal } from "@/shared/ui/Modal";
 import { Drawer } from "@/shared/ui/Drawer";
+import { LayoutModal } from "./LayoutModal";
 
 export const MainLayout = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   const location = useLocation();
-
-  const { isModalOpen, modalContent, hasModalCloseButton, closeModal } =
-    useModal();
 
   const { isDrawerOpen, drawerContent, hasDrawerCloseButton, closeDrawer } =
     useDrawer();
@@ -59,13 +55,7 @@ export const MainLayout = () => {
       </div>
 
       {/* Modal */}
-      {isModalOpen && (
-        <Modal
-          content={modalContent}
-          onClose={closeModal}
-          hasCloseButton={hasModalCloseButton}
-        />
-      )}
+      <LayoutModal />
 
       {/* Drawer */}
       {isDrawerOpen && (

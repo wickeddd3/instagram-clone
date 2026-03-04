@@ -1,5 +1,5 @@
 import { useAuth } from "@/app/providers/AuthContext";
-import { useModal } from "@/app/providers/ModalContext";
+import { useModalActions } from "@/app/providers/ModalContext";
 import { ModalContent } from "@/shared/ui/Modal";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { Avatar } from "./Avatar";
@@ -15,7 +15,7 @@ export const UploadAvatarModal = ({ avatarUrl }: { avatarUrl?: string }) => {
   if (!authUser) return;
 
   const CURRENT_USER_ID = authUser?.id;
-  const { closeModal } = useModal();
+  const { closeModal } = useModalActions();
   const { previewUrl, isUploading, handleUploadAvatar } = useUploadAvatar({
     userId: CURRENT_USER_ID,
     onCompleted: closeModal,
