@@ -25,28 +25,30 @@ export const PostDetailsModal = memo(({ value }: { value: Post }) => {
     commentInputRef.current?.focus();
   }, []);
 
-  const handleReplyButtonClick = (comment: Comment) => {
+  const handleReplyButtonClick = useCallback((comment: Comment) => {
     const {
       id,
       author: { username },
     } = comment;
     setReplyData({ username, id });
-  };
+    // Focus after state update
+    requestAnimationFrame(() => commentInputRef.current?.focus());
+  }, []);
 
-  const handleLikePostCallback = () => {
-    setPost({
-      ...post,
-      isLiked: !post.isLiked,
-      likesCount: post.isLiked ? post.likesCount - 1 : post.likesCount + 1,
-    });
-  };
+  const handleLikePostCallback = useCallback(() => {
+    setPost((prev) => ({
+      ...prev,
+      isLiked: !prev.isLiked,
+      likesCount: prev.isLiked ? prev.likesCount - 1 : prev.likesCount + 1,
+    }));
+  }, []);
 
-  const handleSavePostCallback = () => {
-    setPost({
-      ...post,
-      isSaved: !post.isSaved,
-    });
-  };
+  const handleSavePostCallback = useCallback(() => {
+    setPost((prev) => ({
+      ...prev,
+      isSaved: !prev.isSaved,
+    }));
+  }, []);
 
   return (
     <ModalContent className="w-[90%] h-[88%] md:h-[90vh] md:max-w-5/6 lg:max-w-5xl overflow-hidden">
