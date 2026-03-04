@@ -3,14 +3,14 @@ import { useSuggestedProfiles } from "../model/useSuggestedProfiles";
 import { FollowProfileSuggestionButton } from "@/features/profile/follow-profile";
 import { useAuth } from "@/app/providers/AuthContext";
 import { useMemo } from "react";
+import { SuggestedProfilesSkeleton } from "./SuggestedProfilesSkeleton";
 
 export const SuggestedProfiles = ({ limit }: { limit?: number }) => {
   const { suggestedProfiles, loading } = useSuggestedProfiles({ limit });
   const { authUser } = useAuth();
   const authId = useMemo(() => authUser?.id, [authUser]);
 
-  if (loading)
-    return <div className="animate-pulse w-full h-40 bg-gray-900 rounded-lg" />;
+  if (loading) return <SuggestedProfilesSkeleton count={10} />;
 
   return (
     <div className="flex flex-col gap-3">
