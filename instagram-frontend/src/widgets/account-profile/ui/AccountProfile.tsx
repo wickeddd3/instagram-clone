@@ -19,15 +19,23 @@ export const AccountProfile = ({ username }: { username: string }) => {
   if (!username) return;
 
   const { authUser } = useAuth();
-
   const authId = useMemo(() => authUser?.id, [authUser]);
-
   const { profile, loading } = useAccountProfile({ username: username || "" });
+  const isMyProfile = useMemo(() => !!profile?.isMe, [profile?.isMe]);
 
   const navigate = useNavigate();
   const { openSettingsModal } = useSettingsModal();
   const { openFollowersModal } = useFollowersModal();
   const { openFollowingModal } = useFollowingModal();
+
+  const profilePosts = useMemo(
+    () => <ProfilePosts profileId={profile?.id || ""} />,
+    [profile],
+  );
+  const savedPosts = useMemo(
+    () => <SavedPosts profileId={profile?.id || ""} />,
+    [profile],
+  );
 
   const handleEditProfile = () => {
     navigate("/accounts/edit");
@@ -99,10 +107,10 @@ export const AccountProfile = ({ username }: { username: string }) => {
       )}
 
       <ProfileContent
-        profilePostsSlot={<ProfilePosts profileId={profile?.id || ""} />}
-        savedPostsSlot={<SavedPosts profileId={profile?.id || ""} />}
+        profilePostsSlot={profilePosts}
+        savedPostsSlot={savedPosts}
         taggedPostsSlot={<TaggedPosts />}
-        isMyProfile={!!profile?.isMe}
+        isMyProfile={isMyProfile}
       />
     </div>
   );
