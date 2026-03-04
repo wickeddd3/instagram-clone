@@ -1,23 +1,31 @@
 import { PostImage, type Post } from "@/entities/post";
 import { useLikePost } from "@/features/post/like-post";
 import { Heart } from "lucide-react";
-import { useState } from "react";
+import { memo, useCallback, useRef, useState } from "react";
 
-export const FeedCardImage = ({ post }: { post: Post }) => {
+export const FeedCardImage = memo(({ post }: { post: Post }) => {
   const [showOverlayHeart, setShowOverlayHeart] = useState(false);
   const { togglePostLike } = useLikePost({ post });
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const handleDoubleTap = () => {
+  const handleDoubleTap = useCallback(() => {
     togglePostLike({ variables: { postId: post.id } });
+
     setShowOverlayHeart(true);
-    setTimeout(() => setShowOverlayHeart(false), 1000);
-  };
+
+    // Clear existing timer if user taps rapidly
+    if (timerRef.current) clearTimeout(timerRef.current);
+
+    timerRef.current = setTimeout(() => {
+      setShowOverlayHeart(false);
+    }, 1000);
+  }, [post.id, togglePostLike]);
 
   return (
-    <div className="relative rounded-sm overflow-hidden border border-gray-800">
+    <div className="relative rounded-sm overflow-hidden border border-gray-800 bg-black min-h-[300px]">
       <PostImage imageUrl={post.imageUrl} onDoubleClick={handleDoubleTap} />
       {showOverlayHeart && (
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
           <Heart
             size={100}
             fill="white"
@@ -27,4 +35,6 @@ export const FeedCardImage = ({ post }: { post: Post }) => {
       )}
     </div>
   );
-};
+});
+
+FeedCardImage.displayName = "FeedCardImage";

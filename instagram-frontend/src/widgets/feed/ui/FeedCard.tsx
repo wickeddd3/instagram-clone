@@ -19,7 +19,6 @@ export const FeedCard = memo(({ post }: { post: Post }) => {
     openPostDetailsModal(post);
   }, [post, openPostDetailsModal]);
 
-  // Ref for focusing the comment input when comment button is clicked
   const commentInputRef = useRef<HTMLInputElement>(null);
 
   const handleFocusComment = useCallback(() => {
@@ -37,9 +36,7 @@ export const FeedCard = memo(({ post }: { post: Post }) => {
           onClick={handleOpenPostDetailsModal}
         />
       ),
-      commentField: (
-        <AddCommentField postId={post.id} inputRef={commentInputRef} />
-      ),
+      commentField: <AddCommentField postId={post.id} ref={commentInputRef} />,
     }),
     [post, openPostDetailsModal],
   ); // Only recreate if post object changes

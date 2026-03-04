@@ -1,4 +1,4 @@
-import { memo, useRef, useState } from "react";
+import { memo, useCallback, useRef, useState } from "react";
 import {
   ChatButton,
   CommentButton,
@@ -21,9 +21,9 @@ export const PostDetailsModal = memo(({ value }: { value: Post }) => {
 
   const commentInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFocusComment = () => {
+  const handleFocusComment = useCallback(() => {
     commentInputRef.current?.focus();
-  };
+  }, []);
 
   const handleReplyButtonClick = (comment: Comment) => {
     const {
@@ -118,7 +118,7 @@ export const PostDetailsModal = memo(({ value }: { value: Post }) => {
           <div className="hidden md:block border-t border-neutral-800">
             <AddCommentField
               postId={post?.id}
-              inputRef={commentInputRef}
+              ref={commentInputRef}
               replyData={replyData}
               formClassName="px-3 py-4"
             />
@@ -138,7 +138,7 @@ export const PostDetailsModal = memo(({ value }: { value: Post }) => {
         <div className="md:hidden sticky bottom-0 border-t border-neutral-800 bg-neutral-900">
           <AddCommentField
             postId={post?.id}
-            inputRef={commentInputRef}
+            ref={commentInputRef}
             replyData={replyData}
             formClassName="px-3 py-4"
           />
