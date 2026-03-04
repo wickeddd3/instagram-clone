@@ -72,7 +72,9 @@ export const PostDetailsModal = memo(({ value }: { value: Post }) => {
         <section className="col-start-1 col-end-2 row-start-2 md:row-span-5 bg-black flex items-center justify-center border-r border-neutral-800 overflow-hidden">
           <img
             src={post?.imageUrl}
-            alt="Post"
+            alt={`Post ${post.id}`}
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-contain"
           />
         </section>
