@@ -1,8 +1,8 @@
-import { useDrawer } from "@/app/providers/DrawerContext";
+import { useDrawerActions } from "@/app/providers/DrawerContext";
 import { SearchProfilesDrawer } from "../ui/SearchProfilesDrawer";
 
 export const useSearchProfilesDrawer = () => {
-  const { openDrawer } = useDrawer();
+  const { openDrawer } = useDrawerActions();
 
   const openSearchProfilesDrawer = () => {
     openDrawer({

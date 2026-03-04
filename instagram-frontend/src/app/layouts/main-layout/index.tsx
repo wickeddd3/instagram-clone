@@ -2,19 +2,15 @@ import { useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Toaster } from "sonner";
-import { useDrawer } from "@/app/providers/DrawerContext";
 import { MobileHeader } from "@/widgets/mobile-header";
 import { MobileNav, Sidebar } from "@/widgets/navigation";
-import { Drawer } from "@/shared/ui/Drawer";
 import { LayoutModal } from "./LayoutModal";
+import { LayoutDrawer } from "./LayoutDrawer";
 
 export const MainLayout = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   const location = useLocation();
-
-  const { isDrawerOpen, drawerContent, hasDrawerCloseButton, closeDrawer } =
-    useDrawer();
 
   return (
     <div className="w-full flex flex-col md:flex-row h-screen overflow-y-auto custom-scrollbar bg-[#0d1015] text-white">
@@ -58,13 +54,7 @@ export const MainLayout = () => {
       <LayoutModal />
 
       {/* Drawer */}
-      {isDrawerOpen && (
-        <Drawer
-          content={drawerContent}
-          hasCloseButton={hasDrawerCloseButton}
-          onClose={closeDrawer}
-        />
-      )}
+      <LayoutDrawer />
 
       {/* Snackbar */}
       <Toaster />

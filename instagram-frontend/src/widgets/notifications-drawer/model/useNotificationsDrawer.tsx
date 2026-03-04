@@ -1,8 +1,8 @@
-import { useDrawer } from "@/app/providers/DrawerContext";
+import { useDrawerActions } from "@/app/providers/DrawerContext";
 import { NotificationsDrawer } from "../ui/NotificationsDrawer";
 
 export const useNotificationsDrawer = () => {
-  const { openDrawer } = useDrawer();
+  const { openDrawer } = useDrawerActions();
 
   const openNotificationsDrawer = () => {
     openDrawer({

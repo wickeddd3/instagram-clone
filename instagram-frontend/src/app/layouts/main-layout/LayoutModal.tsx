@@ -16,3 +16,5 @@ export const LayoutModal = memo(() => {
     )
   );
 });
+
+LayoutModal.displayName = "LayoutModal";

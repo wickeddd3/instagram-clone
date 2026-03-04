@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { SearchField } from "./SearchField";
-import { useDrawer } from "@/app/providers/DrawerContext";
+import { useDrawerActions } from "@/app/providers/DrawerContext";
 import {
   RecentSearches,
   SearchResults,
 } from "@/features/profile/search-profile";
 
 export const SearchProfilesDrawer = () => {
-  const { closeDrawer } = useDrawer();
+  const { closeDrawer } = useDrawerActions();
   const [query, setQuery] = useState("");
 
   return (
