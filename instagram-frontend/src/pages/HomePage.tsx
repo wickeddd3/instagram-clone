@@ -15,9 +15,9 @@ const SuggestionsSidebar = lazy(() =>
 
 const HomePage = () => {
   return (
-    <div className="flex w-full max-w-5xl">
+    <div className="flex h-full w-full max-w-5xl">
       {/* Central Feed Column */}
-      <div className="w-full lg:w-[630px] flex flex-col gap-4 pt-0 md:pt-4 pb-14 md:pb-0">
+      <div className="h-full w-full lg:w-[630px] flex flex-col gap-4 pt-0 md:pt-4 pb-14 md:pb-0">
         <Suspense fallback={<StoriesSkeleton />}>
           <Stories />
         </Suspense>

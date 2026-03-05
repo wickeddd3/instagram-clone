@@ -1,32 +1,21 @@
 import { useInfiniteFeed } from "../model/useInfiniteFeed";
 import { PostSkeleton } from "@/entities/post";
-import { List, useDynamicRowHeight } from "react-window";
-import { AutoSizer } from "react-virtualized-auto-sizer";
-import { FeedCardRow } from "./FeedCardRow";
-import { useMemo } from "react";
+import { Virtuoso } from "react-virtuoso";
+import { FeedCard } from "./FeedCard";
+import { Spinner } from "@/shared/ui/Spinner";
 
 export const Feed = () => {
   const { posts, hasMore, loading, isLoadingMore, loadMore } =
     useInfiniteFeed();
 
-  const rowHeight = useDynamicRowHeight({
-    defaultRowHeight: 700,
-  });
-
-  const rowCount = useMemo(() => {
-    if (posts.length === 0) return 0;
-    // If we have more to load, +1 for Spinner.
-    return posts.length + 1;
-  }, [posts.length]);
-
-  const handleRowsRendered = ({ stopIndex }: { stopIndex: number }) => {
-    if (hasMore && !isLoadingMore && stopIndex === posts.length - 1) {
+  const handleLoadMore = () => {
+    if (hasMore && !isLoadingMore) {
       loadMore();
     }
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex-1 flex flex-col">
       {/* Show skeleton loaders while the initial posts are loading */}
       {loading && !posts.length && (
         <div className="w-full flex flex-col gap-8 p-2">
@@ -37,32 +26,33 @@ export const Feed = () => {
       )}
 
       {/* Render posts once loaded */}
-      <div className="h-[calc(100vh-184px)] w-full max-w-[600px] mx-auto overflow-hidden bg-transparent">
-        <AutoSizer
-          renderProp={({ height, width }) => (
-            <List
-              style={{
-                height: height,
-                width: width,
-              }}
-              rowHeight={rowHeight}
-              rowCount={rowCount}
-              rowComponent={FeedCardRow}
-              rowProps={{ posts, hasMore }}
-              onRowsRendered={handleRowsRendered}
-              overscanCount={2}
-              className="no-scrollbar"
-            />
-          )}
+      <div className="h-full w-full max-w-[600px] mx-auto">
+        <Virtuoso
+          useWindowScroll
+          totalCount={posts.length}
+          data={posts}
+          overscan={400} // Increase overscan to make scrolling feel smoother on fast swipes
+          endReached={handleLoadMore} // Trigger loadMore when reaching the end
+          itemContent={(index, post) => (
+            <div key={index} className="pb-10 px-4 md:px-0">
+              <FeedCard post={post} />
+            </div>
+          )} // The individual post renderer
+          components={{
+            Footer: () => (
+              <div className="w-full flex flex-col items-center pb-10">
+                {hasMore ? (
+                  <Spinner />
+                ) : (
+                  <p className="text-gray-500 text-xs text-center">
+                    You've caught up with everything!
+                  </p>
+                )}
+              </div>
+            ),
+          }} // Header/Footer components stay pinned to the list
         />
       </div>
-
-      {/* No more posts message */}
-      {!hasMore && posts.length > 0 && (
-        <p className="text-gray-500 text-xs text-center py-4">
-          You've caught up with everything!
-        </p>
-      )}
     </div>
   );
 };
