@@ -1,4 +1,10 @@
-import { motion, useScroll, useMotionValue, useTransform } from "framer-motion";
+import {
+  motion,
+  useScroll,
+  useMotionValue,
+  useSpring,
+  useTransform,
+} from "framer-motion";
 import { useState, useEffect } from "react";
 import { Spinner } from "./Spinner";
 
@@ -8,58 +14,59 @@ interface Props {
 }
 
 export const PullToRefresh = ({ onRefresh, children }: Props) => {
-  const [isRefreshing, setIsRefreshing] = useState(false);
   const { scrollY } = useScroll();
   const y = useMotionValue(0);
+  const springY = useSpring(y, { stiffness: 400, damping: 40 });
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [atTop, setAtTop] = useState(true);
 
-  // Only allow pulling down if we are at the very top of the page
-  const [canPull, setCanPull] = useState(true);
   useEffect(() => {
-    return scrollY.onChange((latest) => setCanPull(latest <= 0));
+    return scrollY.onChange((latest) => setAtTop(latest <= 0));
   }, [scrollY]);
 
   const handleDragEnd = async () => {
-    // Check if we pulled far enough (80px)
-    if (y.get() > 20 && !isRefreshing) {
+    const currentY = y.get();
+    if (currentY > 40 && !isRefreshing) {
       setIsRefreshing(true);
       try {
-        await onRefresh(); // Now this will actually wait for 2 seconds
+        await onRefresh();
       } finally {
         setIsRefreshing(false);
-        // Pushes the UI back to the top
-        y.set(0); // Snap back
       }
-    } else {
-      // If we didn't pull far enough, just snap back immediately
-      y.set(0); // Snap back
     }
+    y.set(0);
   };
 
-  const opacity = useTransform(y, [0, 80], [0.5, 1]);
-  const scale = useTransform(y, [0, 80], [0.5, 1]);
-
   return (
-    <div className="relative overflow-hidden">
-      {/* Indicator */}
+    <div className="relative w-full">
+      {/* 1. THE SPINNER - Now animated properly */}
       <motion.div
-        style={{ y, opacity, scale }}
-        className="absolute top-4 left-0 right-0 flex justify-center z-50 pointer-events-none"
+        style={{
+          y: springY,
+          opacity: useTransform(y, [0, 50], [0, 1]),
+          scale: useTransform(y, [0, 10], [0.5, 1]),
+        }}
+        className="fixed top-24 left-0 right-0 flex justify-center z-100 pointer-events-none"
       >
-        <div className="bg-zinc-800 p-2 rounded-full shadow-lg border border-zinc-700">
-          {isRefreshing ? <Spinner /> : <span className="text-xs">↓</span>}
+        <div className="bg-zinc-800 p-2 rounded-full shadow-xl border border-zinc-700">
+          <Spinner className={isRefreshing ? "animate-spin" : ""} />
         </div>
       </motion.div>
 
-      <motion.div
-        drag={canPull ? "y" : false}
-        dragConstraints={{ top: 0, bottom: 20 }}
-        dragElastic={0.2}
-        onDragEnd={handleDragEnd}
-        style={{ y }}
-        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      >
-        {children}
-      </motion.div>
+      {/* 2. THE TRIGGER - An invisible bar at the top that only exists when at scroll 0 */}
+      {atTop && (
+        <motion.div
+          drag="y"
+          dragConstraints={{ top: 0, bottom: 100 }}
+          dragElastic={0.4}
+          onDrag={(_, info) => y.set(info.offset.y)}
+          onDragEnd={handleDragEnd}
+          className="absolute top-0 left-0 right-0 h-40 z-90 bg-transparent"
+        />
+      )}
+
+      {/* 3. THE CONTENT - No drag props here, so scrolling works perfectly */}
+      <div className="w-full">{children}</div>
     </div>
   );
 };
