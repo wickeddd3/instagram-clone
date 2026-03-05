@@ -1,9 +1,9 @@
 import { Heart } from "lucide-react";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { useLikeComment } from "../model/useLikeComment";
 import type { Comment } from "@/entities/comment";
 
-export const LikeButton = ({ comment }: { comment: Comment }) => {
+export const LikeButton = memo(({ comment }: { comment: Comment }) => {
   const [animate, setAnimate] = useState(false);
   const { toggleCommentLike } = useLikeComment({ comment });
 
@@ -29,4 +29,6 @@ export const LikeButton = ({ comment }: { comment: Comment }) => {
       />
     </button>
   );
-};
+});
+
+LikeButton.displayName = "LikeButton";

@@ -80,7 +80,7 @@ export const PostDetailsModal = memo(({ value }: { value: Post }) => {
         </section>
 
         {/* 3. COMMENTS LIST */}
-        <section className="col-start-1 md:col-start-2 row-start-5 md:row-start-2 overflow-y-auto no-scrollbar bg-neutral-900 max-h-[200px] md:max-h-full min-h-[200px] md:min-h-0">
+        <section className="col-start-1 md:col-start-2 row-start-5 md:row-start-2 bg-neutral-900 max-h-[200px] md:max-h-full min-h-[200px] md:min-h-0">
           <CommentList
             postId={post?.id || ""}
             onReplyClick={handleReplyButtonClick}
