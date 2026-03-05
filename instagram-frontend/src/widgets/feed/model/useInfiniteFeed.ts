@@ -5,11 +5,14 @@ import { NetworkStatus } from "@apollo/client";
 import { useCallback } from "react";
 
 export const useInfiniteFeed = () => {
-  const { data, error, fetchMore, networkStatus } = useQuery<Feed>(GET_FEED, {
-    variables: { cursor: null, limit: 5 },
-    // Allows the loading state to update when fetchMore is called
-    notifyOnNetworkStatusChange: true,
-  });
+  const { data, error, fetchMore, networkStatus, refetch } = useQuery<Feed>(
+    GET_FEED,
+    {
+      variables: { cursor: null, limit: 5 },
+      // Allows the loading state to update when fetchMore is called
+      notifyOnNetworkStatusChange: true,
+    },
+  );
 
   const {
     posts = [],
@@ -31,6 +34,7 @@ export const useInfiniteFeed = () => {
     loading: networkStatus === NetworkStatus.loading, // Only true for initial load
     isLoadingMore: networkStatus === NetworkStatus.fetchMore,
     loadMore,
+    refetch,
     error,
   };
 };
