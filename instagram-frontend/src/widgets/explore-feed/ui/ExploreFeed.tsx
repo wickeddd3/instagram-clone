@@ -1,19 +1,13 @@
-import { useInView } from "react-intersection-observer";
 import { useInfiniteExploreFeed } from "../model/useInfiniteExploreFeed";
 import { Spinner } from "@/shared/ui/Spinner";
 import { PostThumbnail, type Post } from "@/entities/post";
 import { usePostModal } from "@/widgets/post-modal";
 import { ProfilePostsSkeleton } from "@/entities/profile";
+import { VirtuosoGrid } from "react-virtuoso";
 
 export const ExploreFeed = () => {
   const { posts, hasMore, loading, isLoadingMore, loadMore } =
     useInfiniteExploreFeed();
-
-  const { ref } = useInView({
-    onChange: (inView) => {
-      if (inView && hasMore && !isLoadingMore) loadMore();
-    },
-  });
 
   const { openPostDetailsModal } = usePostModal();
 
@@ -21,40 +15,46 @@ export const ExploreFeed = () => {
     openPostDetailsModal(post);
   };
 
+  const handleLoadMore = () => {
+    if (hasMore && !isLoadingMore) {
+      loadMore();
+    }
+  };
+
+  if (loading && !posts.length) {
+    return <ProfilePostsSkeleton />;
+  }
+
   return (
-    <div className="w-full max-w-5xl flex flex-col pt-4 md:p-8">
-      {/* Show skeletons while loading initial posts */}
-      {loading && !posts.length && <ProfilePostsSkeleton />}
-
-      {/* Render posts once loaded */}
-      {!!posts.length && (
-        <div className="grid grid-cols-3 gap-0.5">
-          {posts.map((post) => (
-            <PostThumbnail
-              key={post.id}
-              post={post}
-              onClick={() => handleOpenPostDetailsModal(post)}
-            />
-          ))}
-        </div>
-      )}
-
-      {/* Sentinel for Infinite Scrolling */}
-      {hasMore && (
-        <div
-          ref={ref}
-          className="w-full flex justify-center items-center py-4 mb-14"
-        >
-          <Spinner />
-        </div>
-      )}
-
-      {/* No more posts message */}
-      {!hasMore && posts.length > 0 && (
-        <p className="text-gray-500 text-xs text-center py-4">
-          You've caught up with everything!
-        </p>
-      )}
+    <div className="h-full w-full max-w-5xl pt-4 md:p-8">
+      <VirtuosoGrid
+        useWindowScroll
+        totalCount={posts.length}
+        data={posts}
+        overscan={200}
+        endReached={handleLoadMore}
+        listClassName="grid grid-cols-3 gap-0.5"
+        itemContent={(index, post) => (
+          <PostThumbnail
+            key={index}
+            post={post}
+            onClick={() => handleOpenPostDetailsModal(post)}
+          />
+        )}
+        components={{
+          Footer: () => (
+            <div className="w-full flex flex-col items-center py-10">
+              {hasMore ? (
+                <Spinner />
+              ) : (
+                <p className="text-gray-500 text-xs text-center">
+                  You've caught up with everything!
+                </p>
+              )}
+            </div>
+          ),
+        }}
+      />
     </div>
   );
 };
