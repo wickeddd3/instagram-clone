@@ -4,7 +4,7 @@ import type { ExplorePosts } from "./types";
 import { NetworkStatus } from "@apollo/client";
 
 export const useInfiniteExploreFeed = () => {
-  const { data, loading, error, fetchMore, networkStatus } =
+  const { data, loading, error, fetchMore, networkStatus, refetch } =
     useQuery<ExplorePosts>(GET_EXPLORE_POSTS, {
       variables: { cursor: null, limit: 9 },
       notifyOnNetworkStatusChange: true, // Important for loading state during fetchMore
@@ -31,5 +31,6 @@ export const useInfiniteExploreFeed = () => {
     error,
     isLoadingMore: networkStatus === NetworkStatus.refetch, // Indicates loading state during fetchMore
     loadMore,
+    refetch,
   };
 };
