@@ -72,13 +72,15 @@ export const PostDetailsModal = memo(({ value }: { value: Post }) => {
         <section className="col-start-1 col-end-2 row-start-2 md:row-span-5 bg-black flex items-center justify-center border-r border-neutral-800 overflow-hidden">
           <img
             src={post?.imageUrl}
-            alt="Post"
+            alt={`Post ${post.id}`}
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-contain"
           />
         </section>
 
         {/* 3. COMMENTS LIST */}
-        <section className="col-start-1 md:col-start-2 row-start-5 md:row-start-2 overflow-y-auto no-scrollbar bg-neutral-900 max-h-[200px] md:max-h-full min-h-[200px] md:min-h-0">
+        <section className="col-start-1 md:col-start-2 row-start-5 md:row-start-2 bg-neutral-900 max-h-[200px] md:max-h-full min-h-[200px] md:min-h-0">
           <CommentList
             postId={post?.id || ""}
             onReplyClick={handleReplyButtonClick}

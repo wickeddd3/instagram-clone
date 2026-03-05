@@ -13,6 +13,9 @@ export const SuggestionProfileLink = ({
       <Link to={`/${profile.username}`} className="flex items-center gap-3">
         <img
           src={profile.avatarUrl || "/ig-default.jpg"}
+          alt="Suggestion Profile Avatar"
+          loading="lazy"
+          decoding="async"
           className="w-8 h-8 rounded-full object-cover"
         />
         <div className="flex flex-col leading-tight">

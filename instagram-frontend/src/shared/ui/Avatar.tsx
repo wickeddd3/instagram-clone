@@ -7,7 +7,10 @@ export const Avatar = ({
 }) => {
   return (
     <img
-      src={imageUrl || "/default-avatar.png"}
+      src={imageUrl || "/ig-default.jpg"}
+      alt="Comment Author Avatar"
+      loading="lazy"
+      decoding="async"
       className={`w-8 h-8 rounded-full object-cover ${className}`}
     />
   );

@@ -24,8 +24,9 @@ export const ProfileLink = memo(
               <img
                 src={profile.avatarUrl || "/ig-default.jpg"}
                 alt={`${profile.username}-avatar`}
-                className="rounded-full w-full h-full object-cover"
                 loading="lazy"
+                decoding="async"
+                className="rounded-full w-full h-full object-cover"
               />
             </div>
           </div>

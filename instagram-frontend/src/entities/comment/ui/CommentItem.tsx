@@ -24,7 +24,7 @@ export const CommentItem = ({
   repliesSlot,
 }: CommentItemProps) => {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 pb-5 pr-2">
       <div className="flex gap-3 items-start group">
         <Avatar imageUrl={avatarUrl} />
         <div className="flex-1 flex flex-col text-sm">
