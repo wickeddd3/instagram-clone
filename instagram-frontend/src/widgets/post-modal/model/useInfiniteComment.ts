@@ -6,7 +6,7 @@ import { useCallback } from "react";
 
 export const useInfiniteComment = ({ postId }: { postId: string }) => {
   const { data, fetchMore, networkStatus } = useQuery<Comments>(GET_COMMENTS, {
-    variables: { postId },
+    variables: { postId, parentId: null },
     skip: !postId,
     notifyOnNetworkStatusChange: true,
   });

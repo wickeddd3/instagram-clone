@@ -8,9 +8,10 @@ export const AddCommentField = memo(
       postId: string;
       replyData?: { username: string; id: string } | null;
       formClassName?: string;
+      onCompleted?: () => void;
     }
-  >(({ postId, replyData, formClassName }, ref) => {
-    const { addComment } = useAddComment({ postId });
+  >(({ postId, replyData, formClassName, onCompleted }, ref) => {
+    const { addComment } = useAddComment();
     const [text, setText] = useState("");
 
     const handleSend = useCallback(
@@ -30,6 +31,7 @@ export const AddCommentField = memo(
               ...(replyData?.id && { parentId: replyData?.id }),
             },
           });
+          onCompleted?.();
         } catch (err) {
           setText(trimmedText); // Put text back if it fails
         }

@@ -1,21 +1,35 @@
 import { useMutation } from "@apollo/client/react";
 import { ADD_COMMENT } from "../api/mutation";
 
-export const useAddComment = ({ postId }: { postId: string }) => {
+export const useAddComment = () => {
   const [addComment] = useMutation(ADD_COMMENT, {
-    update(cache, { data: { addComment } }: any) {
-      const newComment = addComment;
+    update(
+      cache,
+      { data: { addComment: newComment } }: any,
+      { variables }: any,
+    ) {
       if (!newComment) return;
+
+      const postId = variables?.postId;
+      const parentId = variables?.parentId || null;
 
       const commentRef = cache.identify({
         __typename: "Comment",
         id: newComment.id,
       });
 
+      // Update comment list (If exists)
       cache.modify({
         fields: {
           getComments(existing, { storeFieldName }) {
-            if (!storeFieldName.includes(postId)) return existing;
+            const matchesPost = storeFieldName.includes(`"postId":"${postId}"`);
+
+            // Strictly check for parentId in the serialized key
+            const matchesParent = parentId
+              ? storeFieldName.includes(`"parentId":"${parentId}"`)
+              : storeFieldName.includes('"parentId":null');
+
+            if (!matchesPost || !matchesParent) return existing;
 
             return {
               ...existing,
@@ -25,7 +39,17 @@ export const useAddComment = ({ postId }: { postId: string }) => {
         },
       });
 
-      // Update the total count on the Post object
+      // Update Parent Comment count (If has parent comment)
+      if (parentId) {
+        cache.modify({
+          id: cache.identify({ __typename: "Comment", id: parentId }),
+          fields: {
+            repliesCount: (prev) => prev + 1,
+          },
+        });
+      }
+
+      // Update Post comments count
       cache.modify({
         id: cache.identify({ __typename: "Post", id: postId }),
         fields: {
