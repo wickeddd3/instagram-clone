@@ -4,7 +4,7 @@ import {
   Footer,
   IgLabel,
   LoginLink,
-  LoginWithFbLink,
+  // LoginWithFbLink,
   SignupForm,
 } from "@/widgets/auth";
 import { useState } from "react";
@@ -21,7 +21,7 @@ const SignupPage = () => {
             <p className="text-md font-semibold text-gray-400 text-center">
               Sign up to see photos and videos from your friends.
             </p>
-            <LoginWithFbLink />
+            {/* <LoginWithFbLink /> */}
             <Divider />
             <div className="w-full flex flex-col justify-center items-center gap-4">
               <SignupForm onError={setError} />

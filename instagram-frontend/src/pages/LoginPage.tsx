@@ -5,7 +5,7 @@ import {
   ForgotPasswordLink,
   IgLabel,
   LoginForm,
-  LoginWithFbLink,
+  // LoginWithFbLink,
   SignupLink,
 } from "@/widgets/auth";
 import { useState } from "react";
@@ -22,7 +22,7 @@ const LoginPage = () => {
             <div className="w-full flex flex-col justify-center items-center gap-4">
               <LoginForm onError={setError} />
               <Divider />
-              <LoginWithFbLink />
+              {/* <LoginWithFbLink /> */}
               {error && <ErrorMessage message={error} />}
               <ForgotPasswordLink />
             </div>
