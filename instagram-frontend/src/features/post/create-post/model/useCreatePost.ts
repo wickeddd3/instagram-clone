@@ -8,12 +8,14 @@ export const useCreatePost = ({ onCompleted }: { onCompleted: () => void }) => {
       const newPost = data?.createPost;
       if (!newPost) return;
 
+      const postRef = cache.identify({ __typename: "Post", id: newPost.id });
+
       cache.modify({
         fields: {
           getFeedPosts(existingFeedData) {
             return {
               ...existingFeedData,
-              posts: [newPost, ...existingFeedData.posts],
+              posts: [{ __ref: postRef }, ...existingFeedData.posts],
             };
           },
         },
