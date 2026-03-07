@@ -7,15 +7,19 @@ export const useAddComment = ({ postId }: { postId: string }) => {
       const newComment = addComment;
       if (!newComment) return;
 
-      // Write the new comment into that specific bucket
+      const commentRef = cache.identify({
+        __typename: "Comment",
+        id: newComment.id,
+      });
+
       cache.modify({
         fields: {
-          getComments(existingCommentData, { storeFieldName }) {
-            if (!storeFieldName.includes(postId)) return existingCommentData;
+          getComments(existing, { storeFieldName }) {
+            if (!storeFieldName.includes(postId)) return existing;
 
             return {
-              ...existingCommentData,
-              comments: [...existingCommentData.comments, newComment],
+              ...existing,
+              comments: [...existing.comments, { __ref: commentRef }],
             };
           },
         },
