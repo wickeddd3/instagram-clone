@@ -117,6 +117,7 @@ export const PostDetailsModal = memo(({ value }: { value: Post }) => {
             ref={commentInputRef}
             postId={post?.id}
             replyData={replyData}
+            onCompleted={() => setReplyData(null)}
             formClassName="px-3 py-4"
           />
         </footer>

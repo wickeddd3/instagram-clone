@@ -2,7 +2,7 @@ import { useState } from "react";
 import { LoginForm } from "./LoginForm";
 import { IgLabel } from "./Iglabel";
 import { Divider } from "./Divider";
-import { LoginWithFbLink } from "./LoginWithFbLink";
+// import { LoginWithFbLink } from "./LoginWithFbLink";
 import { ErrorMessage } from "./ErrorMessage";
 import { ForgotPasswordLink } from "./ForgotPasswordLinkt";
 import { SignupLink } from "./SignupLink";
@@ -23,7 +23,7 @@ export const MainLogin = () => {
           <div className="w-full flex flex-col justify-center items-center gap-4">
             <LoginForm onError={setError} />
             <Divider />
-            <LoginWithFbLink />
+            {/* <LoginWithFbLink /> */}
             {error && <ErrorMessage message={error} />}
             <ForgotPasswordLink />
           </div>
