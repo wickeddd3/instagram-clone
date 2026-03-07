@@ -1,8 +1,12 @@
 import { useMutation } from "@apollo/client/react";
 import type { CreatedPost } from "./types";
 import { CREATE_POST } from "../api/mutation";
+import { useAuth } from "@/app/providers/AuthContext";
 
 export const useCreatePost = ({ onCompleted }: { onCompleted: () => void }) => {
+  const { authProfile } = useAuth();
+  const profileId = authProfile?.id || "";
+
   const [createPost] = useMutation<CreatedPost>(CREATE_POST, {
     update(cache, { data }) {
       const newPost = data?.createPost;
@@ -12,10 +16,23 @@ export const useCreatePost = ({ onCompleted }: { onCompleted: () => void }) => {
 
       cache.modify({
         fields: {
-          getFeedPosts(existingFeedData) {
+          getFeedPosts(existing) {
             return {
-              ...existingFeedData,
-              posts: [{ __ref: postRef }, ...existingFeedData.posts],
+              ...existing,
+              posts: [{ __ref: postRef }, ...existing.posts],
+            };
+          },
+        },
+      });
+
+      cache.modify({
+        fields: {
+          getProfilePosts(existing, { storeFieldName }) {
+            if (!storeFieldName.includes(profileId)) return existing;
+
+            return {
+              ...existing,
+              posts: [{ __ref: postRef }, ...existing.posts],
             };
           },
         },
