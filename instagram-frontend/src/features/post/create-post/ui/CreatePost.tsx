@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useAuth } from "@/app/providers/AuthContext";
 import { AuthUser } from "./AuthUser";
-import { BackButton } from "./BackButton";
 import { CaptionTextarea } from "./CaptionTextarea";
 import { LoadingSpinner } from "./LoadingSpinner";
-import { PreviewImage } from "./PreviewImage";
-import { ShareButton } from "./ShareButton";
+import { PreviewImage } from "@/shared/ui/PreviewImage";
+import { BackButton } from "@/shared/ui/BackButton";
+import { ShareButton } from "@/shared/ui/ShareButton";
 import { uploadImage } from "@/shared/lib/supabase-upload";
 import { createUploadPath } from "@/shared/utils/upload";
 import { useCreatePost } from "../model/useCreatePost";
