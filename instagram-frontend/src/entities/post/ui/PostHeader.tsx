@@ -41,8 +41,6 @@ export const AuthorAvatar = ({
   username?: string;
   className?: string;
 }) => {
-  if (!avatarUrl) return null;
-
   return (
     <div className={`w-8 h-8 rounded-full p-0.5 ${className}`}>
       <div className="bg-[#0d1015] p-0.5 rounded-full w-full h-full">

@@ -1,7 +1,7 @@
 import { PostThumbnail, type Post } from "@/entities/post";
 import { Spinner } from "@/shared/ui/Spinner";
 import { ProfilePostsSkeleton } from "@/entities/profile";
-import { usePostModal } from "@/widgets/post-modal";
+import { usePostNavigationModal } from "@/widgets/post-modal";
 import { memo, useCallback } from "react";
 import { VirtuosoGrid } from "react-virtuoso";
 
@@ -19,13 +19,13 @@ export const Posts = memo(
     isLoadingMore: boolean;
     loadMore: () => void;
   }) => {
-    const { openPostDetailsModal } = usePostModal();
+    const { openPostDetailsNavigationModal } = usePostNavigationModal();
 
     const handleOpenPostDetailsModal = useCallback(
-      (post: Post) => {
-        openPostDetailsModal(post);
+      (posts: Post[], index: number) => {
+        openPostDetailsNavigationModal(posts, index);
       },
-      [openPostDetailsModal],
+      [openPostDetailsNavigationModal],
     );
 
     const handleLoadMore = () => {
@@ -51,7 +51,7 @@ export const Posts = memo(
             <PostThumbnail
               key={index}
               post={post}
-              onClick={() => handleOpenPostDetailsModal(post)}
+              onClick={() => handleOpenPostDetailsModal(posts, index)}
             />
           )}
           components={{

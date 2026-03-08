@@ -1,4 +1,4 @@
-import { memo, useCallback, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 import {
   ChatButton,
   CommentButton,
@@ -49,6 +49,10 @@ export const PostDetailsModal = memo(({ value }: { value: Post }) => {
       isSaved: !prev.isSaved,
     }));
   }, []);
+
+  useEffect(() => {
+    setPost(value);
+  }, [value]);
 
   return (
     <ModalContent className="w-[90%] h-[88%] md:h-[90vh] md:max-w-5/6 lg:max-w-5xl overflow-hidden">
