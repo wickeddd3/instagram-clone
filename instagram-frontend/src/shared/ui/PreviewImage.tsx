@@ -3,7 +3,7 @@ export const PreviewImage = ({ previewUrl }: { previewUrl: string }) => {
     <img
       src={previewUrl}
       alt="Preview"
-      className="w-full h-full object-cover"
+      className="w-full h-full object-contain"
     />
   );
 };
