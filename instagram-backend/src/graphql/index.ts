@@ -25,6 +25,14 @@ import {
   RecentSearchService,
   RecentSearchTypes,
 } from "./modules/recent-search";
+import {
+  StoryMutation,
+  StoryQuery,
+  StoryResolvers,
+  StoryService,
+  StoryTypes,
+} from "./modules/story";
+
 import { prisma } from "../lib/prisma";
 
 const BaseType = `#graphql
@@ -45,6 +53,7 @@ export const typeDefs = [
   PostTypes,
   CommentTypes,
   RecentSearchTypes,
+  StoryTypes,
 ];
 
 export const resolvers = {
@@ -53,16 +62,19 @@ export const resolvers = {
     ...PostQuery,
     ...CommentQuery,
     ...RecentSearchQuery,
+    ...StoryQuery,
   },
   Mutation: {
     ...ProfileMutation,
     ...PostMutation,
     ...CommentMutation,
     ...RecentSearchMutation,
+    ...StoryMutation,
   },
   Profile: ProfileResolvers,
   Post: PostResolvers,
   Comment: CommentResolvers,
+  Story: StoryResolvers,
 };
 
 export const services = {
@@ -70,4 +82,5 @@ export const services = {
   post: new PostService(prisma),
   comment: new CommentService(prisma),
   recentSearch: new RecentSearchService(prisma),
+  story: new StoryService(prisma),
 };
