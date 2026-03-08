@@ -56,9 +56,10 @@ services:
         condition: service_healthy
     command: >
       sh -c "export DATABASE_URL=postgresql://root:root@db:5432/instagram_db && 
-             npx prisma generate && 
-             npx prisma db push &&
-             yarn dev"
+            npx prisma migrate deploy &&
+            npx prisma generate && 
+            npx prisma db push &&
+            yarn dev"
     volumes:
       - ./instagram-backend:/app
       - /app/node_modules
