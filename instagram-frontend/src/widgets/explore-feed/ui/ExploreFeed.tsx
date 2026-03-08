@@ -1,7 +1,7 @@
 import { useInfiniteExploreFeed } from "../model/useInfiniteExploreFeed";
 import { Spinner } from "@/shared/ui/Spinner";
 import { PostThumbnail, type Post } from "@/entities/post";
-import { usePostModal } from "@/widgets/post-modal";
+import { usePostNavigationModal } from "@/widgets/post-modal";
 import { ProfilePostsSkeleton } from "@/entities/profile";
 import { VirtuosoGrid } from "react-virtuoso";
 import { PullToRefresh } from "@/shared/ui/PullToRefresh";
@@ -10,10 +10,10 @@ export const ExploreFeed = () => {
   const { posts, hasMore, loading, isLoadingMore, loadMore, refetch } =
     useInfiniteExploreFeed();
 
-  const { openPostDetailsModal } = usePostModal();
+  const { openPostDetailsNavigationModal } = usePostNavigationModal();
 
-  const handleOpenPostDetailsModal = (post: Post) => {
-    openPostDetailsModal(post);
+  const handleOpenPostDetailsModal = (posts: Post[], index: number) => {
+    openPostDetailsNavigationModal(posts, index);
   };
 
   const handleLoadMore = () => {
@@ -44,7 +44,7 @@ export const ExploreFeed = () => {
             <PostThumbnail
               key={index}
               post={post}
-              onClick={() => handleOpenPostDetailsModal(post)}
+              onClick={() => handleOpenPostDetailsModal(posts, index)}
             />
           )}
           components={{
