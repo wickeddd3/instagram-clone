@@ -1,0 +1,39 @@
+import { useState } from "react";
+import { useModalActions } from "@/app/providers/ModalContext";
+import { ModalContent } from "@/shared/ui/Modal";
+import { ImportImage, usePreviewUpload } from "@/features/story/import-image";
+import { CreateStory } from "@/features/story/create-story";
+
+export const CreateStoryModal = () => {
+  const { closeModal } = useModalActions();
+
+  const {
+    previewUrl,
+    handleFileChange,
+    fileToUpload,
+    isUploading,
+    setIsUploading,
+  } = usePreviewUpload();
+
+  const [step, setStep] = useState<"upload" | "details">("upload");
+
+  return (
+    <ModalContent className="w-full max-w-[90%] md:max-w-3/5 lg:max-w-2/5 h-full max-h-3/4 flex flex-col md:flex-row">
+      {step === "upload" && (
+        <ImportImage
+          onChange={(e) => handleFileChange(e, () => setStep("details"))}
+        />
+      )}
+      {step === "details" && previewUrl && (
+        <CreateStory
+          previewUrl={previewUrl}
+          fileToUpload={fileToUpload}
+          isUploading={isUploading}
+          setIsUploading={setIsUploading}
+          setStep={setStep}
+          onClose={closeModal}
+        />
+      )}
+    </ModalContent>
+  );
+};
