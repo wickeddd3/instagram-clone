@@ -24,6 +24,7 @@ export const StoryView = memo(
       () => userStory?.stories[currentIndex],
       [userStory?.stories, currentIndex],
     );
+    const activeStoryId = useMemo(() => activeStory?.id, [activeStory]);
 
     const handleNextSegment = () => {
       if (currentIndex < userStory.stories.length - 1) {
@@ -33,14 +34,10 @@ export const StoryView = memo(
       }
     };
 
-    const { progress } = useStoryTimer(
-      5000,
-      handleNextSegment,
-      activeStory?.id,
-    );
+    const { progress } = useStoryTimer(5000, handleNextSegment, activeStoryId);
 
     return (
-      <div className="h-full w-full flex flex-col gap-2">
+      <div className="h-full w-full flex flex-col justify-center gap-2">
         <ProgressBar
           segments={userStory?.stories || []}
           activeIndex={currentIndex}
@@ -62,12 +59,14 @@ export const StoryView = memo(
             />
           </div>
         </header>
-        {activeStory?.id && (
-          <PreviewImage
-            key={activeStory?.id}
-            previewUrl={activeStory?.mediaUrl}
-          />
-        )}
+        <section className="w-full h-full">
+          {activeStory?.id && (
+            <PreviewImage
+              key={activeStory?.id}
+              previewUrl={activeStory?.mediaUrl}
+            />
+          )}
+        </section>
       </div>
     );
   },
