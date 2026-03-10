@@ -1,4 +1,4 @@
-import { memo, useMemo, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { StoryView } from "@/features/story/view-story";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { UserStory } from "@/entities/story";
@@ -20,13 +20,13 @@ export const StoryCarousel = memo(
       [userIndex, stories],
     );
 
-    const handleNextUser = () => {
+    const handleNextUser = useCallback(() => {
       if (userIndex < stories.length - 1) {
         setUserIndex((prev) => prev + 1);
       } else {
         closeModal(); // No more users left
       }
-    };
+    }, [userIndex, stories.length]);
 
     const handlePrevUser = () => {
       if (userIndex > 0) {
@@ -44,6 +44,7 @@ export const StoryCarousel = memo(
         </button>
         <div className="bg-neutral-800 h-full w-full md:w-[500px] rounded-lg">
           <StoryView
+            key={activeUserStory?.id} // Resets StoryView state for new user
             userStory={activeUserStory}
             onAllStoriesEnd={handleNextUser}
           />
