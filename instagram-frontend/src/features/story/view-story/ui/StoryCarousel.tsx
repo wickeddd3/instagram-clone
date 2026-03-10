@@ -47,6 +47,7 @@ export const StoryCarousel = memo(
             key={activeUserStory?.id} // Resets StoryView state for new user
             userStory={activeUserStory}
             onAllStoriesEnd={handleNextUser}
+            onPrevUser={handlePrevUser}
           />
         </div>
         <button

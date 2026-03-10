@@ -12,9 +12,11 @@ export const StoryView = memo(
   ({
     userStory,
     onAllStoriesEnd,
+    onPrevUser,
   }: {
     userStory: UserStory;
     onAllStoriesEnd: () => void;
+    onPrevUser: () => void;
   }) => {
     const { closeModal } = useModalActions();
 
@@ -31,6 +33,14 @@ export const StoryView = memo(
         setCurrentIndex((prev) => prev + 1);
       } else {
         onAllStoriesEnd(); // Jump to next user
+      }
+    };
+
+    const handlePrevSegment = () => {
+      if (currentIndex > 0) {
+        setCurrentIndex((prev) => prev - 1);
+      } else {
+        onPrevUser(); // Jump to previous user
       }
     };
 
@@ -59,7 +69,18 @@ export const StoryView = memo(
             />
           </div>
         </header>
-        <section className="w-full h-full">
+        <section className="flex-1 relative overflow-hidden flex items-center bg-black">
+          {/* Navigation Overlays (Tappable Areas) */}
+          <div className="absolute inset-0 flex z-10">
+            <div
+              className="w-1/3 h-full cursor-pointer"
+              onClick={handlePrevSegment}
+            />
+            <div
+              className="w-2/3 h-full cursor-pointer"
+              onClick={handleNextSegment}
+            />
+          </div>
           {activeStory?.id && (
             <PreviewImage
               key={activeStory?.id}
