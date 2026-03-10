@@ -1,6 +1,6 @@
 import { useInfiniteExploreFeed } from "../model/useInfiniteExploreFeed";
 import { Spinner } from "@/shared/ui/Spinner";
-import { PostThumbnail, type Post } from "@/entities/post";
+import { NoMorePosts, PostThumbnail, type Post } from "@/entities/post";
 import { usePostNavigationModal } from "@/widgets/post-modal";
 import { ProfilePostsSkeleton } from "@/entities/profile";
 import { VirtuosoGrid } from "react-virtuoso";
@@ -50,13 +50,7 @@ export const ExploreFeed = () => {
           components={{
             Footer: () => (
               <div className="w-full flex flex-col items-center py-10">
-                {hasMore ? (
-                  <Spinner />
-                ) : (
-                  <p className="text-gray-500 text-xs text-center">
-                    You've caught up with everything!
-                  </p>
-                )}
+                {hasMore ? <Spinner /> : posts.length > 20 && <NoMorePosts />}
               </div>
             ),
           }}

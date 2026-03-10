@@ -31,6 +31,10 @@ model Profile {
   searchesPerformed RecentSearch[] @relation("Searcher")
   searchesReceived  RecentSearch[] @relation("SearchedTarget")
 
+  // Stories
+  stories     Story[]
+  storyViews  StoryView[]
+
   // Notifications
   notificationsSent     Notification[] @relation("NotificationActor")
   notificationsReceived Notification[] @relation("NotificationRecipient")
@@ -148,6 +152,40 @@ model RecentSearch {
   // Ensure a user only shows up once in the recent list
   @@unique([userId, targetId])
   @@map("recent_searches")
+}
+
+model Story {
+  id        String   @id @default(uuid())
+  mediaUrl  String
+  mediaType String   // "IMAGE" or "VIDEO"
+  createdAt DateTime @default(now())
+  expiresAt DateTime // Usually createdAt + 24 hours
+
+  // Relations
+  authorId  String      @map("author_id") @db.Uuid
+  author    Profile     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  
+  views     StoryView[]
+
+  @@index([authorId])
+  @@index([expiresAt])
+  @@map("stories")
+}
+
+model StoryView {
+  id       String   @id @default(uuid())
+  viewedAt DateTime @default(now())
+
+  // Relations
+  storyId  String   @map("story_id")
+  story    Story    @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  
+  viewerId String   @map("viewer_id") @db.Uuid
+  viewer   Profile  @relation(fields: [viewerId], references: [id], onDelete: Cascade)
+
+  // Ensure a user only counts as one view per story
+  @@unique([storyId, viewerId])
+  @@map("story_views")
 }
 
 model Notification {
