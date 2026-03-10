@@ -8,6 +8,7 @@ import { useCreateStoryModal } from "@/widgets/create-story-modal";
 import { useStories } from "../model/useStories";
 import { PlusCircle } from "lucide-react";
 import { Avatar } from "@/shared/ui/Avatar";
+import { useStoryModal } from "@/widgets/story-modal";
 
 export const Stories = () => {
   const { authUser } = useAuth();
@@ -15,6 +16,8 @@ export const Stories = () => {
 
   const { openCreateStoryModal } = useCreateStoryModal();
   const { stories, loading } = useStories({ profileId: profileId || "" });
+
+  const { openStoryModal } = useStoryModal();
 
   if (loading) {
     return <StoriesSkeleton />;
@@ -42,9 +45,12 @@ export const Stories = () => {
           </button>
         </SwiperSlide>
         {/* Other Users' Stories */}
-        {stories.map((group) => (
-          <SwiperSlide key={group.id} className="w-auto!">
-            <button className="flex flex-col items-center gap-1 cursor-pointer">
+        {stories.map((group, index) => (
+          <SwiperSlide key={group.id} className="w-auto! pr-2">
+            <button
+              onClick={() => openStoryModal(stories, index)}
+              className="flex flex-col items-center gap-1 cursor-pointer"
+            >
               {/* Gradient Ring */}
               <div
                 className={`w-21 h-21 p-[3px] rounded-full bg-linear-to-tr ${group.hasUnseenStories ? "from-yellow-400 to-fuchsia-600" : "from-zinc-700 to-zinc-800"}`}
