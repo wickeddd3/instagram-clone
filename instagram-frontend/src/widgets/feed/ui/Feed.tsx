@@ -1,5 +1,5 @@
 import { useInfiniteFeed } from "../model/useInfiniteFeed";
-import { PostSkeleton } from "@/entities/post";
+import { NoMorePosts, PostSkeleton } from "@/entities/post";
 import { Virtuoso } from "react-virtuoso";
 import { FeedCard } from "./FeedCard";
 import { Spinner } from "@/shared/ui/Spinner";
@@ -47,13 +47,7 @@ export const Feed = () => {
             components={{
               Footer: () => (
                 <div className="w-full flex flex-col items-center pb-10">
-                  {hasMore ? (
-                    <Spinner />
-                  ) : (
-                    <p className="text-gray-500 text-xs text-center">
-                      You've caught up with everything!
-                    </p>
-                  )}
+                  {hasMore ? <Spinner /> : posts.length > 0 && <NoMorePosts />}
                 </div>
               ),
             }} // Header/Footer components stay pinned to the list

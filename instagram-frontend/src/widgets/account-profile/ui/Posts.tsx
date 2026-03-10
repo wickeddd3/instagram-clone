@@ -1,4 +1,4 @@
-import { PostThumbnail, type Post } from "@/entities/post";
+import { NoMorePosts, PostThumbnail, type Post } from "@/entities/post";
 import { Spinner } from "@/shared/ui/Spinner";
 import { ProfilePostsSkeleton } from "@/entities/profile";
 import { usePostNavigationModal } from "@/widgets/post-modal";
@@ -57,13 +57,7 @@ export const Posts = memo(
           components={{
             Footer: () => (
               <div className="w-full flex flex-col items-center py-10">
-                {hasMore ? (
-                  <Spinner />
-                ) : (
-                  <p className="text-gray-500 text-xs text-center">
-                    No more posts to show
-                  </p>
-                )}
+                {hasMore ? <Spinner /> : posts.length > 10 && <NoMorePosts />}
               </div>
             ),
           }}
