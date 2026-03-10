@@ -3,6 +3,8 @@ export const PreviewImage = ({ previewUrl }: { previewUrl: string }) => {
     <img
       src={previewUrl}
       alt="Preview"
+      loading="lazy"
+      decoding="async"
       className="w-full h-full object-contain"
     />
   );
