@@ -57,14 +57,25 @@ export class StoryService {
     // 2. Fetch other users with active stories
     const othersWithStories = await this.prisma.profile.findMany({
       where: {
-        id: { not: profileId },
-        stories: { some: { expiresAt: { gt: now } } },
+        AND: [
+          // 1. Auth user excluded
+          { id: { not: profileId } },
+          // 2. Must have active stories
+          { stories: { some: { expiresAt: { gt: now } } } },
+          // 3. Must be someone the user follows
+          {
+            followers: {
+              some: { followerId: profileId },
+            },
+          },
+        ],
       },
       select: {
         id: true,
         username: true,
         avatarUrl: true,
         stories: {
+          where: { expiresAt: { gt: now } },
           orderBy: { createdAt: "asc" },
           include: {
             views: {

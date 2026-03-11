@@ -10,6 +10,7 @@ import { PreviewImage } from "@/shared/ui/PreviewImage";
 import type { UserStory } from "@/entities/story";
 import { ViewersList } from "./ViewersList";
 import { useTriggerViewStory } from "../model/useTriggerViewStory";
+import { formatStoryTime } from "@/shared/utils/date";
 
 export const StoryView = memo(
   ({
@@ -36,6 +37,10 @@ export const StoryView = memo(
     const isOwner = useMemo(
       () => authUser?.id === userStory.id,
       [authUser, userStory],
+    );
+    const timeAgo = useMemo(
+      () => (activeStory ? formatStoryTime(activeStory.createdAt) : ""),
+      [activeStory?.id],
     );
 
     const handleNextSegment = () => {
@@ -81,6 +86,9 @@ export const StoryView = memo(
           <div className="flex gap-2">
             <Avatar imageUrl={userStory?.avatarUrl} />
             <h6 className="text-sm">{userStory?.username}</h6>
+            <span className="text-sm text-neutral-400 font-medium">
+              {timeAgo}
+            </span>
           </div>
           <div className="flex gap-2">
             <button className="px-2 cursor-pointer">
