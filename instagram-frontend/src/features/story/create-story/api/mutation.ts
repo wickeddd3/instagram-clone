@@ -4,7 +4,13 @@ import { gql } from "@apollo/client";
 export const CREATE_STORY = gql`
   mutation CreateStory($mediaUrl: String!, $mediaType: String!) {
     createStory(mediaUrl: $mediaUrl, mediaType: $mediaType) {
-      ...StoryFields
+      id
+      username
+      avatarUrl
+      hasUnseenStories
+      stories {
+        ...StoryFields
+      }
     }
   }
 
