@@ -22,7 +22,7 @@ A modern Instagram clone built with React, Node.js (Apollo GraphQL), Prisma, and
 - [x] **Dockerized Workflow**: One-command setup for DB, Backend, Frontend, and pgAdmin.
 - [x] **Cloud Storage**: Profile pictures and posts stored in Supabase S3 buckets.
 - [x] **Responsive UI**: Instagram-like experience built with Tailwind CSS.
-- [ ] **Stories**: (Planned) Instagram-like post stories.
+- [x] **Stories**: Instagram-like post stories.
 - [ ] **Real-time Notifications**: (Planned) Using GraphQL Subscriptions.
 - [ ] **Direct Messaging**: (Planned) Peer-to-peer chat functionality.
 

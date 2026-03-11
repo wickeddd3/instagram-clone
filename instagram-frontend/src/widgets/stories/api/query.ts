@@ -13,6 +13,7 @@ export const GET_STORIES_FEED = gql`
         mediaType
         createdAt
         expiresAt
+        viewsCount
       }
     }
   }

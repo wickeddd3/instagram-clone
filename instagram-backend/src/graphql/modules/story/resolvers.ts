@@ -1,1 +1,3 @@
-export const StoryResolvers = {};
+export const StoryResolvers = {
+  viewsCount: (parent: any) => parent._count?.views ?? 0,
+};

@@ -8,4 +8,8 @@ export const StoryMutation = {
 
     return services.story.createStory(userId, { mediaUrl, mediaType });
   },
+
+  viewStory: (_parent: any, { storyId }: any, { userId, services }: any) => {
+    return services.story.viewStory(storyId, userId);
+  },
 };

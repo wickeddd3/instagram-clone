@@ -9,6 +9,7 @@ export interface Story {
     username: string;
     avatarUrl?: string;
   };
+  viewsCount: number;
 }
 
 export interface UserStory {
@@ -17,4 +18,16 @@ export interface UserStory {
   avatarUrl: string;
   hasUnseenStories: boolean;
   stories: Story[];
+}
+
+export interface StoryViewer {
+  id: string;
+  viewedAt: string;
+  viewer: Viewer;
+}
+
+export interface Viewer {
+  id: string;
+  username: string;
+  avatarUrl: string;
 }
