@@ -6,6 +6,7 @@ export const StoryTypes = `#graphql
 
   extend type Mutation {
     createStory(mediaUrl: String!, mediaType: String!): Story!
+    viewStory(storyId: ID!): ViewStoryResponse!
   }
 
   type Story {
@@ -36,5 +37,11 @@ export const StoryTypes = `#graphql
     id: ID!
     username: String!
     avatarUrl: String
+  }
+
+  type ViewStoryResponse {
+    id: ID!
+    storyId: ID!
+    viewerId: ID!
   }
 `;

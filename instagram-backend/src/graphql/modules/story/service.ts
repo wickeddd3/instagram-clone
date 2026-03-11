@@ -58,4 +58,29 @@ export class StoryService {
       include: { author: true },
     });
   }
+
+  async viewStory(storyId: string, viewerId: string) {
+    const story = await this.prisma.story.findUnique({
+      where: { id: storyId },
+      select: { authorId: true },
+    });
+
+    // 1. Don't count views from the author themselves
+    if (!story || story.authorId === viewerId) return null;
+
+    // 2. Upsert the view record (prevents duplicates)
+    return await this.prisma.storyView.upsert({
+      where: {
+        storyId_viewerId: {
+          storyId,
+          viewerId,
+        },
+      },
+      update: {}, // Do nothing if already exists
+      create: {
+        storyId,
+        viewerId,
+      },
+    });
+  }
 }
