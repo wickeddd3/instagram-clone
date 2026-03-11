@@ -64,6 +64,7 @@ export const StoryView = memo(
     const { viewStory } = useViewStory();
 
     useEffect(() => {
+      if (!userStory?.hasUnseenStories) return;
       // Reset and start a fresh timer for the new story segment
       const timer = setTimeout(() => {
         viewStory({
@@ -74,7 +75,7 @@ export const StoryView = memo(
       }, 1000); // 1-second threshold
 
       return () => clearTimeout(timer);
-    }, [activeStoryId, viewStory]);
+    }, [userStory?.hasUnseenStories, activeStoryId, viewStory]);
 
     return (
       <div className="h-full w-full flex flex-col justify-center relative gap-2">
