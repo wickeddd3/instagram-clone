@@ -1,11 +1,11 @@
 export const StoryTypes = `#graphql
   extend type Query {
-    getStoriesFeed(profileId: ID!): [Stories!]!
+    getStoriesFeed(profileId: ID!): [UserStory!]!
     getStoryViewers(storyId: ID!): [StoryViewer!]!
   }
 
   extend type Mutation {
-    createStory(mediaUrl: String!, mediaType: String!): Story!
+    createStory(mediaUrl: String!, mediaType: String!): UserStory
     viewStory(storyId: ID!): Boolean
   }
 
@@ -15,13 +15,10 @@ export const StoryTypes = `#graphql
     mediaType: String!
     createdAt: DateTime!
     expiresAt: DateTime!
-    
-    author: Profile!
-
-    viewsCount: Int!
+    viewsCount: Int
   }
 
-  type Stories {
+  type UserStory {
     id: ID!
     username: String!
     avatarUrl: String
