@@ -65,8 +65,8 @@ export class StoryService {
       select: { authorId: true },
     });
 
-    // 1. Don't count views from the author themselves
-    if (!story || story.authorId === viewerId) return null;
+    // 1. Return null if story not exist
+    if (!story) return null;
 
     // 2. Upsert the view record (prevents duplicates)
     return await this.prisma.storyView.upsert({
