@@ -59,28 +59,38 @@ export class StoryService {
     });
   }
 
-  async viewStory(storyId: string, viewerId: string) {
+  async viewStory(storyId: string, viewerId: string): Promise<boolean | null> {
     const story = await this.prisma.story.findUnique({
       where: { id: storyId },
       select: { authorId: true },
     });
 
-    // 1. Return null if story not exist
+    // Return null if story not exist
     if (!story) return null;
 
-    // 2. Upsert the view record (prevents duplicates)
-    return await this.prisma.storyView.upsert({
+    // 1. Upsert the view record (prevents duplicates)
+    await this.prisma.storyView.upsert({
       where: {
-        storyId_viewerId: {
-          storyId,
-          viewerId,
-        },
+        storyId_viewerId: { storyId, viewerId },
       },
       update: {}, // Do nothing if already exists
-      create: {
-        storyId,
-        viewerId,
+      create: { storyId, viewerId },
+    });
+
+    // 2. Check: Does this author have ANY other active stories
+    // that this viewer has NOT seen yet?
+    const unseenStoriesCount = await this.prisma.story.count({
+      where: {
+        authorId: story.authorId,
+        expiresAt: { gt: new Date() },
+        views: {
+          none: { viewerId: viewerId },
+        },
       },
     });
+
+    // 3. If count is > 0, they still have unseen stories (True).
+    // If count is 0, all stories are seen (False).
+    return unseenStoriesCount > 0;
   }
 }
