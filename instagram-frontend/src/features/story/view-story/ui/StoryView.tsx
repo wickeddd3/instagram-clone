@@ -1,4 +1,4 @@
-import { memo, useEffect, useMemo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import { Ellipsis } from "lucide-react";
 import { ModalCloseButton } from "@/shared/ui/Modal";
 import { useStoryTimer } from "../model/useStoryTimer";
@@ -9,7 +9,7 @@ import { Avatar } from "@/shared/ui/Avatar";
 import { PreviewImage } from "@/shared/ui/PreviewImage";
 import type { UserStory } from "@/entities/story";
 import { ViewersList } from "./ViewersList";
-import { useViewStory } from "../model/useViewStory";
+import { useTriggerViewStory } from "../model/useTriggerViewStory";
 
 export const StoryView = memo(
   ({
@@ -61,21 +61,8 @@ export const StoryView = memo(
       isPaused || showViewers, // Pause if viewing the viewers list
     );
 
-    const { viewStory } = useViewStory();
-
-    useEffect(() => {
-      if (!userStory?.hasUnseenStories) return;
-      // Reset and start a fresh timer for the new story segment
-      const timer = setTimeout(() => {
-        viewStory({
-          variables: {
-            storyId: activeStoryId,
-          },
-        }).catch((err) => console.error("View tracking failed", err));
-      }, 1000); // 1-second threshold
-
-      return () => clearTimeout(timer);
-    }, [userStory?.hasUnseenStories, activeStoryId, viewStory]);
+    // Trigger view story after a second
+    useTriggerViewStory(userStory?.hasUnseenStories, activeStoryId);
 
     return (
       <div className="h-full w-full flex flex-col justify-center relative gap-2">
