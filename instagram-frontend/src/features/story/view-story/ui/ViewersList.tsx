@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useStoryViewers } from "../model/useStoryViewers";
 import { NoViewers, ViewerLink } from "@/entities/story";
 import { useModalActions } from "@/app/providers/ModalContext";
+import { useAuth } from "@/app/providers/AuthContext";
 import { Spinner } from "@/shared/ui/Spinner";
 
 export const ViewersList = ({
@@ -14,6 +15,7 @@ export const ViewersList = ({
 }) => {
   const { closeModal } = useModalActions();
   const { getStoryViewers, viewers, loading } = useStoryViewers();
+  const { authUser } = useAuth();
 
   useEffect(() => {
     getStoryViewers({ variables: { storyId } });
@@ -53,6 +55,7 @@ export const ViewersList = ({
                   onClose();
                   closeModal();
                 }}
+                isAuthor={view.viewer.id === authUser?.id}
               />
             ))}
         </div>
