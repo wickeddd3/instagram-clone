@@ -8,7 +8,7 @@ export const useViewStory = (userStoryId: string) => {
       const hasUnseen = data?.viewStory;
       if (hasUnseen === false) {
         cache.modify({
-          id: cache.identify({ __typename: "Stories", id: userStoryId }),
+          id: cache.identify({ __typename: "UserStory", id: userStoryId }),
           fields: {
             hasUnseenStories() {
               return false;
