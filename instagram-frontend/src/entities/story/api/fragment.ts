@@ -7,5 +7,6 @@ export const STORY_FRAGMENT = gql`
     mediaType
     createdAt
     expiresAt
+    viewsCount
   }
 `;
