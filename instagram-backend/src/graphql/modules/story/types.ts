@@ -17,6 +17,8 @@ export const StoryTypes = `#graphql
     expiresAt: DateTime!
     
     author: Profile!
+
+    viewsCount: Int!
   }
 
   type Stories {
