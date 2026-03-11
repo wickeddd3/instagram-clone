@@ -41,7 +41,7 @@ export const Stories = () => {
             >
               <PlusCircle size={24} className="text-zinc-400" />
             </div>
-            <span className="text-[11px] text-zinc-400">Your Story</span>
+            <span className="text-[11px] text-zinc-400">Add Story</span>
           </button>
         </SwiperSlide>
         {/* Other Users' Stories */}
