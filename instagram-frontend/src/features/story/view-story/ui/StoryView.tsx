@@ -1,12 +1,15 @@
+import { memo, useEffect, useMemo, useState } from "react";
+import { Ellipsis } from "lucide-react";
 import { ModalCloseButton } from "@/shared/ui/Modal";
 import { useStoryTimer } from "../model/useStoryTimer";
 import { ProgressBar } from "./ProgressBar";
 import { useModalActions } from "@/app/providers/ModalContext";
+import { useAuth } from "@/app/providers/AuthContext";
 import { Avatar } from "@/shared/ui/Avatar";
 import { PreviewImage } from "@/shared/ui/PreviewImage";
-import { Ellipsis } from "lucide-react";
 import type { UserStory } from "@/entities/story";
-import { memo, useMemo, useState } from "react";
+import { ViewersList } from "./ViewersList";
+import { useViewStory } from "../model/useViewStory";
 
 export const StoryView = memo(
   ({
@@ -19,14 +22,21 @@ export const StoryView = memo(
     onPrevUser: () => void;
   }) => {
     const { closeModal } = useModalActions();
+    const { authUser } = useAuth();
 
     const [currentIndex, setCurrentIndex] = useState<number>(0);
+    const [isPaused, setIsPaused] = useState(false);
+    const [showViewers, setShowViewers] = useState(false);
 
     const activeStory = useMemo(
       () => userStory?.stories[currentIndex],
-      [userStory?.stories, currentIndex],
+      [userStory, currentIndex],
     );
     const activeStoryId = useMemo(() => activeStory?.id, [activeStory]);
+    const isOwner = useMemo(
+      () => authUser?.id === userStory.id,
+      [authUser, userStory],
+    );
 
     const handleNextSegment = () => {
       if (currentIndex < userStory.stories.length - 1) {
@@ -44,15 +54,37 @@ export const StoryView = memo(
       }
     };
 
-    const { progress } = useStoryTimer(5000, handleNextSegment, activeStoryId);
+    const { progress } = useStoryTimer(
+      5000,
+      handleNextSegment,
+      activeStoryId,
+      isPaused || showViewers, // Pause if viewing the viewers list
+    );
+
+    const { viewStory } = useViewStory();
+
+    useEffect(() => {
+      // Reset and start a fresh timer for the new story segment
+      const timer = setTimeout(() => {
+        viewStory({
+          variables: {
+            storyId: activeStoryId,
+          },
+        }).catch((err) => console.error("View tracking failed", err));
+      }, 1000); // 1-second threshold
+
+      return () => clearTimeout(timer);
+    }, [activeStoryId, viewStory]);
 
     return (
-      <div className="h-full w-full flex flex-col justify-center gap-2">
+      <div className="h-full w-full flex flex-col justify-center relative gap-2">
+        {/* Progress Bar */}
         <ProgressBar
           segments={userStory?.stories || []}
           activeIndex={currentIndex}
           progress={progress}
         />
+        {/* Story Header */}
         <header className="flex justify-between items-center px-3">
           <div className="flex gap-2">
             <Avatar imageUrl={userStory?.avatarUrl} />
@@ -69,16 +101,29 @@ export const StoryView = memo(
             />
           </div>
         </header>
-        <section className="flex-1 relative overflow-hidden flex items-center bg-black">
+        {/* Story Content */}
+        <section
+          onMouseDown={() => setIsPaused(true)}
+          onMouseUp={() => setIsPaused(false)}
+          onTouchStart={() => setIsPaused(true)}
+          onTouchEnd={() => setIsPaused(false)}
+          className="flex-1 relative overflow-hidden flex items-center bg-black cursor-pointer"
+        >
           {/* Navigation Overlays (Tappable Areas) */}
           <div className="absolute inset-0 flex z-10">
             <div
               className="w-1/3 h-full cursor-pointer"
-              onClick={handlePrevSegment}
+              onClick={(e) => {
+                e.stopPropagation();
+                handlePrevSegment();
+              }}
             />
             <div
               className="w-2/3 h-full cursor-pointer"
-              onClick={handleNextSegment}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleNextSegment();
+              }}
             />
           </div>
           {activeStory?.id && (
@@ -87,7 +132,24 @@ export const StoryView = memo(
               previewUrl={activeStory?.mediaUrl}
             />
           )}
+          {isOwner && (
+            <div className="absolute bottom-4 left-4 z-20">
+              <button
+                onClick={() => setShowViewers(true)}
+                className="flex items-center gap-1 text-white text-xs font-bold bg-black/20 p-2 rounded-lg backdrop-blur-md cursor-pointer"
+              >
+                <span>{activeStory?.viewsCount || 0} views</span>
+              </button>
+            </div>
+          )}
         </section>
+        {/* Viewers List Drawer */}
+        {showViewers && (
+          <ViewersList
+            storyId={activeStory?.id}
+            onClose={() => setShowViewers(false)}
+          />
+        )}
       </div>
     );
   },
