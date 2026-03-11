@@ -30,6 +30,22 @@ export class StoryService {
     }));
   }
 
+  async getStoryViewers(storyId: string) {
+    return await this.prisma.storyView.findMany({
+      where: { storyId },
+      include: {
+        viewer: {
+          select: {
+            id: true,
+            username: true,
+            avatarUrl: true,
+          },
+        },
+      },
+      orderBy: { viewedAt: "desc" },
+    });
+  }
+
   async createStory(
     userId: string,
     data: { mediaUrl: string; mediaType: "IMAGE" | "VIDEO" },

@@ -1,6 +1,7 @@
 export const StoryTypes = `#graphql
   extend type Query {
     getStoriesFeed(profileId: ID!): [Stories!]!
+    getStoryViewers(storyId: ID!): [StoryViewer!]!
   }
 
   extend type Mutation {
@@ -23,5 +24,17 @@ export const StoryTypes = `#graphql
     avatarUrl: String
     hasUnseenStories: Boolean
     stories: [Story!]!
+  }
+
+  type StoryViewer {
+    id: ID!
+    viewedAt: DateTime!
+    viewer: Viewer
+  }
+
+  type Viewer {
+    id: ID!
+    username: String!
+    avatarUrl: String
   }
 `;
