@@ -2,10 +2,6 @@ import { gql } from "@apollo/client";
 
 export const VIEW_STORY = gql`
   mutation ViewStory($storyId: ID!) {
-    viewStory(storyId: $storyId) {
-      id
-      storyId
-      viewerId
-    }
+    viewStory(storyId: $storyId)
   }
 `;

@@ -4,8 +4,9 @@ import { useViewStory } from "./useViewStory";
 export const useTriggerViewStory = (
   hasUnseenStories: boolean,
   activeStoryId: string,
+  userStoryId: string,
 ) => {
-  const { viewStory } = useViewStory();
+  const { viewStory } = useViewStory(userStoryId);
 
   useEffect(() => {
     if (!hasUnseenStories) return;

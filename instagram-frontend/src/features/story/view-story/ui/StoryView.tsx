@@ -62,7 +62,11 @@ export const StoryView = memo(
     );
 
     // Trigger view story after a second
-    useTriggerViewStory(userStory?.hasUnseenStories, activeStoryId);
+    useTriggerViewStory(
+      userStory?.hasUnseenStories,
+      activeStoryId,
+      userStory?.id,
+    );
 
     return (
       <div className="h-full w-full flex flex-col justify-center relative gap-2">
