@@ -9,6 +9,7 @@ export interface Story {
     username: string;
     avatarUrl?: string;
   };
+  viewsCount: number;
 }
 
 export interface UserStory {
