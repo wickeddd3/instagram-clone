@@ -7,10 +7,5 @@ export const STORY_FRAGMENT = gql`
     mediaType
     createdAt
     expiresAt
-    author {
-      id
-      username
-      avatarUrl
-    }
   }
 `;
