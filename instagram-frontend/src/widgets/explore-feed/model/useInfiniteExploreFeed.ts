@@ -3,10 +3,10 @@ import { GET_EXPLORE_POSTS } from "../api/query";
 import type { ExplorePosts } from "./types";
 import { NetworkStatus } from "@apollo/client";
 
-export const useInfiniteExploreFeed = () => {
+export const useInfiniteExploreFeed = (profileId: string) => {
   const { data, loading, error, fetchMore, networkStatus, refetch } =
     useQuery<ExplorePosts>(GET_EXPLORE_POSTS, {
-      variables: { cursor: null, limit: 9 },
+      variables: { profileId, cursor: null, limit: 9 },
       notifyOnNetworkStatusChange: true, // Important for loading state during fetchMore
     });
 
@@ -19,7 +19,7 @@ export const useInfiniteExploreFeed = () => {
   const loadMore = () => {
     if (!hasMore || loading) return;
     fetchMore({
-      variables: { cursor: nextCursor },
+      variables: { profileId, cursor: nextCursor },
     });
   };
 

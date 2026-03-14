@@ -5,10 +5,13 @@ import { usePostNavigationModal } from "@/widgets/post-modal";
 import { ProfilePostsSkeleton } from "@/entities/profile";
 import { VirtuosoGrid } from "react-virtuoso";
 import { PullToRefresh } from "@/shared/ui/PullToRefresh";
+import { useAuth } from "@/app/providers/AuthContext";
 
 export const ExploreFeed = () => {
+  const { authUser } = useAuth();
+
   const { posts, hasMore, loading, isLoadingMore, loadMore, refetch } =
-    useInfiniteExploreFeed();
+    useInfiniteExploreFeed(authUser?.id || "");
 
   const { openPostDetailsNavigationModal } = usePostNavigationModal();
 

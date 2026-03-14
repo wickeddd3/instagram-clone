@@ -40,7 +40,7 @@ export const client = new ApolloClient({
             },
           },
           getExplorePosts: {
-            keyArgs: false,
+            keyArgs: ["profileId"],
             merge(existing, incoming) {
               const existingPosts = existing?.posts || [];
               const incomingPosts = incoming?.posts || [];
