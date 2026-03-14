@@ -29,7 +29,7 @@ export const client = new ApolloClient({
       Query: {
         fields: {
           getFeedPosts: {
-            keyArgs: false, // Maintain one list regardless of arguments
+            keyArgs: ["profileId"],
             merge(existing, incoming) {
               const existingPosts = existing?.posts || [];
               const incomingPosts = incoming?.posts || [];

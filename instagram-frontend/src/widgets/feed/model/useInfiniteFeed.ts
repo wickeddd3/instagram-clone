@@ -4,11 +4,11 @@ import type { Feed } from "./types";
 import { NetworkStatus } from "@apollo/client";
 import { useCallback } from "react";
 
-export const useInfiniteFeed = () => {
+export const useInfiniteFeed = (profileId: string) => {
   const { data, error, fetchMore, networkStatus, refetch } = useQuery<Feed>(
     GET_FEED,
     {
-      variables: { cursor: null, limit: 5 },
+      variables: { profileId, cursor: null, limit: 5 },
       // Allows the loading state to update when fetchMore is called
       notifyOnNetworkStatusChange: true,
     },
@@ -24,7 +24,7 @@ export const useInfiniteFeed = () => {
     if (!hasMore || networkStatus === NetworkStatus.fetchMore) return;
 
     fetchMore({
-      variables: { cursor: nextCursor },
+      variables: { profileId, cursor: nextCursor },
     });
   }, [hasMore, nextCursor, fetchMore, networkStatus]);
 
