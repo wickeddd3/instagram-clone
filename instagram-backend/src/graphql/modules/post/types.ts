@@ -1,8 +1,8 @@
 export const PostTypes = `#graphql
   extend type Query {
     # Feed and Discovery
-    getFeedPosts(cursor: String, limit: Int): FeedResponse
-    getExplorePosts(cursor: String, limit: Int): FeedResponse
+    getFeedPosts(profileId: ID!, cursor: String, limit: Int): FeedResponse
+    getExplorePosts(profileId: ID!, cursor: String, limit: Int): FeedResponse
     getProfilePosts(profileId: ID!, cursor: String, limit: Int): FeedResponse
     getSavedPosts(profileId: ID!, cursor: String, limit: Int): FeedResponse
   }
@@ -28,6 +28,7 @@ export const PostTypes = `#graphql
     commentsCount: Int!
     isLiked: Boolean!
     isSaved: Boolean!
+    isFollowing: Boolean
     
     likes: [Like!]!
     comments: [Comment!]!

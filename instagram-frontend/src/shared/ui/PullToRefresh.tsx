@@ -61,7 +61,7 @@ export const PullToRefresh = ({ onRefresh, children }: Props) => {
           dragElastic={0.4}
           onDrag={(_, info) => y.set(info.offset.y)}
           onDragEnd={handleDragEnd}
-          className="absolute top-0 left-0 right-0 h-40 z-90 bg-transparent"
+          className="absolute top-10 left-0 right-0 h-40 z-90 bg-transparent"
         />
       )}
 

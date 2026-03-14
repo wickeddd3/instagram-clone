@@ -4,10 +4,13 @@ import { Virtuoso } from "react-virtuoso";
 import { FeedCard } from "./FeedCard";
 import { Spinner } from "@/shared/ui/Spinner";
 import { PullToRefresh } from "@/shared/ui/PullToRefresh";
+import { useAuth } from "@/app/providers/AuthContext";
 
 export const Feed = () => {
+  const { authUser } = useAuth();
+
   const { posts, hasMore, loading, isLoadingMore, loadMore, refetch } =
-    useInfiniteFeed();
+    useInfiniteFeed(authUser?.id || "");
 
   const handleLoadMore = () => {
     if (hasMore && !isLoadingMore) {

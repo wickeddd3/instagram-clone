@@ -1,7 +1,11 @@
 export const PostQuery = {
   getFeedPosts: (
     _parent: any,
-    { cursor, limit = 5 }: { cursor: string; limit: number },
+    {
+      profileId,
+      cursor,
+      limit = 5,
+    }: { profileId: string; cursor: string; limit: number },
     { userId, services }: any,
   ) => {
     if (!userId) return { posts: [], hasMore: false, nextCursor: null };
@@ -11,9 +15,15 @@ export const PostQuery = {
 
   getExplorePosts: async (
     _parent: any,
-    { cursor, limit = 9 }: { cursor: string; limit: number },
+    {
+      profileId,
+      cursor,
+      limit = 9,
+    }: { profileId: string; cursor: string; limit: number },
     { userId, services }: any,
   ) => {
+    if (!userId) return { posts: [], hasMore: false, nextCursor: null };
+
     return services.post.getExplorePosts(userId, cursor, limit);
   },
 
