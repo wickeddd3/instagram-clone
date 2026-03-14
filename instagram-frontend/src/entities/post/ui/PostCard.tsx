@@ -12,6 +12,7 @@ interface PostCardProps {
   chatButtonSlot?: ReactNode;
   totalCommentsSlot?: ReactNode;
   commentFieldSlot?: ReactNode;
+  optionSlot?: ReactNode;
 }
 
 export const PostCard = ({
@@ -28,6 +29,7 @@ export const PostCard = ({
   chatButtonSlot,
   totalCommentsSlot,
   commentFieldSlot,
+  optionSlot,
 }: PostCardProps) => {
   return (
     <article className="w-full max-w-[470px] mx-auto flex flex-col gap-2">
@@ -41,7 +43,7 @@ export const PostCard = ({
           <PostHeader.AuthorUsername username={username} />
           <PostHeader.CreatedAt createdAt={createdAt} />
         </div>
-        <PostHeader.Options />
+        {optionSlot}
       </PostHeader>
 
       {imageSlot}

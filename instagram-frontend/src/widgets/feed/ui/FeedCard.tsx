@@ -11,8 +11,11 @@ import { LikeButton } from "@/features/post/like-post";
 import { SaveButton } from "@/features/post/save-post";
 import { AddCommentField } from "@/features/comment/add-comment";
 import { usePostModal } from "@/widgets/post-modal";
+import { useAuth } from "@/app/providers/AuthContext";
+import { FollowProfileSuggestionButton } from "@/features/profile/follow-profile";
 
 export const FeedCard = memo(({ post }: { post: Post }) => {
+  const { authUser } = useAuth();
   const { openPostDetailsModal } = usePostModal();
 
   const handleOpenPostDetailsModal = useCallback(() => {
@@ -37,8 +40,14 @@ export const FeedCard = memo(({ post }: { post: Post }) => {
         />
       ),
       commentField: <AddCommentField postId={post.id} ref={commentInputRef} />,
+      followButton: !post?.isFollowing && (
+        <FollowProfileSuggestionButton
+          authId={authUser?.id || ""}
+          targetProfile={post.author}
+        />
+      ),
     }),
-    [post, openPostDetailsModal],
+    [post, authUser, openPostDetailsModal],
   ); // Only recreate if post object changes
 
   return (
@@ -52,6 +61,7 @@ export const FeedCard = memo(({ post }: { post: Post }) => {
       chatButtonSlot={<ChatButton />}
       totalCommentsSlot={slots.totalComments}
       commentFieldSlot={slots.commentField}
+      optionSlot={slots.followButton}
     />
   );
 });

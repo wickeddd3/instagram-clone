@@ -6,6 +6,14 @@ export const GET_FEED = gql`
     getFeedPosts(profileId: $profileId, cursor: $cursor, limit: $limit) {
       posts {
         ...PostFields
+        author {
+          id
+          username
+          avatarUrl
+          isFollowing
+          followersCount
+        }
+        isFollowing
       }
       hasMore
       nextCursor

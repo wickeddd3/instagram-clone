@@ -1,4 +1,4 @@
-import { type Profile } from "@/entities/profile";
+import type { ProfileSuggestion } from "../model/types";
 import { useFollowProfile } from "../model/useFollowProfile";
 
 export const FollowProfileSuggestionButton = ({
@@ -6,7 +6,7 @@ export const FollowProfileSuggestionButton = ({
   targetProfile,
 }: {
   authId: string;
-  targetProfile: Profile;
+  targetProfile: ProfileSuggestion;
 }) => {
   const { toggleFollow } = useFollowProfile({
     authId: authId || "",

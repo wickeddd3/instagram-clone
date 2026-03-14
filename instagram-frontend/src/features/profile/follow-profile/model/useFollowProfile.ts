@@ -1,13 +1,13 @@
 import { useMutation } from "@apollo/client/react";
 import { TOGGLE_FOLLOW } from "../api/mutations";
-import type { Profile } from "@/entities/profile";
+import type { ProfileSuggestion } from "./types";
 
 export const useFollowProfile = ({
   authId,
   targetProfile,
 }: {
   authId: string;
-  targetProfile: Profile;
+  targetProfile: ProfileSuggestion;
 }) => {
   const { id, isFollowing, followersCount } = targetProfile;
 
