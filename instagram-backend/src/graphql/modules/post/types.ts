@@ -28,6 +28,7 @@ export const PostTypes = `#graphql
     commentsCount: Int!
     isLiked: Boolean!
     isSaved: Boolean!
+    isFollowing: Boolean
     
     likes: [Like!]!
     comments: [Comment!]!
