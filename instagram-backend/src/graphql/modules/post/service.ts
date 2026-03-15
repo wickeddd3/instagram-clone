@@ -13,6 +13,9 @@ export class PostService {
       take: limit,
       include: {
         author: true,
+        media: {
+          orderBy: { index: "asc" }, // Ensure images stay in the order they were uploaded
+        },
         _count: { select: { comments: true, likes: true } },
       },
     });
@@ -166,6 +169,9 @@ export class PostService {
         post: {
           include: {
             author: true,
+            media: {
+              orderBy: { index: "asc" }, // Ensure images stay in the order they were uploaded
+            },
             _count: { select: { comments: true, likes: true } },
           },
         },
