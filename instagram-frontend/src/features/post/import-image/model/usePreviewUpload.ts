@@ -2,9 +2,8 @@ import { useState } from "react";
 import { generatePreview } from "@/shared/utils/upload";
 
 export const usePreviewUpload = () => {
-  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const [files, setFiles] = useState<File[]>([]);
-  const [isUploading, setIsUploading] = useState(false);
+  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
 
   const processFiles = (files: File[], callback?: () => void) => {
     if (!files.length) return;
@@ -23,11 +22,8 @@ export const usePreviewUpload = () => {
   };
 
   return {
-    generatePreview,
-    previewUrls,
     files,
-    isUploading,
-    setIsUploading,
+    previewUrls,
     handleFileChange,
   };
 };
