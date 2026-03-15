@@ -7,13 +7,8 @@ import { CreatePost } from "@/features/post/create-post";
 export const CreatePostModal = () => {
   const { closeModal } = useModalActions();
 
-  const {
-    previewUrl,
-    handleFileChange,
-    fileToUpload,
-    isUploading,
-    setIsUploading,
-  } = usePreviewUpload();
+  const { previewUrls, handleFileChange, files, isUploading, setIsUploading } =
+    usePreviewUpload();
 
   const [step, setStep] = useState<"upload" | "details">("upload");
 
@@ -21,13 +16,15 @@ export const CreatePostModal = () => {
     <ModalContent className="w-full max-w-5/6 md:max-w-4/5 lg:max-w-2/3 h-full max-h-3/4 flex flex-col md:flex-row">
       {step === "upload" && (
         <ImportImage
-          onChange={(e) => handleFileChange(e, () => setStep("details"))}
+          onChange={(files) =>
+            handleFileChange(files, () => setStep("details"))
+          }
         />
       )}
-      {step === "details" && previewUrl && (
+      {step === "details" && previewUrls.length > 0 && (
         <CreatePost
-          previewUrl={previewUrl}
-          fileToUpload={fileToUpload}
+          previewUrls={previewUrls}
+          files={files}
           isUploading={isUploading}
           setIsUploading={setIsUploading}
           setStep={setStep}
