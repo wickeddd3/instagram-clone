@@ -8,5 +8,5 @@ export { ChatButton } from "./ui/ChatButton";
 export { TotalComments } from "./ui/TotalComments";
 export { PostThumbnail } from "./ui/PostThumbnail";
 export { NoMorePosts } from "./ui/NoMorePosts";
-export type { Post } from "./model/types";
+export type { Post, PostMedia } from "./model/types";
 export { POST_FRAGMENT } from "./api/fragments";
