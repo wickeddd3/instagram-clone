@@ -2,6 +2,8 @@
 
 A modern Instagram clone built with React, Node.js (Apollo GraphQL), Prisma, and Supabase. The entire environment is containerized with Docker for a seamless "one-command" setup.
 
+![Instagram Clone Thumbnail](./thumbnail.png)
+
 ---
 
 ## 🛠 Tech Stack
