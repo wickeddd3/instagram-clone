@@ -1,5 +1,4 @@
 import { memo, useCallback, useMemo, useRef } from "react";
-import { FeedCardImage } from "./FeedCardImage";
 import {
   ChatButton,
   CommentButton,
@@ -13,6 +12,7 @@ import { AddCommentField } from "@/features/comment/add-comment";
 import { usePostModal } from "@/widgets/post-modal";
 import { useAuth } from "@/app/providers/AuthContext";
 import { FollowProfileSuggestionButton } from "@/features/profile/follow-profile";
+import { FeedImageCarousel } from "./FeedImageCarousel";
 
 export const FeedCard = memo(({ post }: { post: Post }) => {
   const { authUser } = useAuth();
@@ -30,7 +30,7 @@ export const FeedCard = memo(({ post }: { post: Post }) => {
 
   const slots = useMemo(
     () => ({
-      image: <FeedCardImage post={post} />,
+      image: <FeedImageCarousel post={post} />,
       like: <LikeButton post={post} />,
       save: <SaveButton post={post} />,
       totalComments: (

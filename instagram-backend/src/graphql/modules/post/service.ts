@@ -13,6 +13,9 @@ export class PostService {
       take: limit,
       include: {
         author: true,
+        media: {
+          orderBy: { index: "asc" }, // Ensure images stay in the order they were uploaded
+        },
         _count: { select: { comments: true, likes: true } },
       },
     });
@@ -42,6 +45,9 @@ export class PostService {
             select: { followerId: true },
           },
         },
+      },
+      media: {
+        orderBy: { index: "asc" }, // Ensure images stay in the order they were uploaded
       },
       _count: { select: { comments: true, likes: true } },
     };
@@ -163,6 +169,9 @@ export class PostService {
         post: {
           include: {
             author: true,
+            media: {
+              orderBy: { index: "asc" }, // Ensure images stay in the order they were uploaded
+            },
             _count: { select: { comments: true, likes: true } },
           },
         },
@@ -184,11 +193,30 @@ export class PostService {
 
   async createPost(
     userId: string,
-    data: { imageUrl: string; caption?: string; location?: string },
+    data: {
+      media: { url: string; type: string }[];
+      caption?: string;
+      location?: string;
+    },
   ) {
     return await this.prisma.post.create({
-      data: { ...data, authorId: userId },
-      include: { author: true },
+      data: {
+        caption: data.caption,
+        location: data.location,
+        authorId: userId,
+        media: {
+          create: data.media.map((item, index) => ({
+            url: item.url,
+            type: item.type,
+            index: index, // Maintain the order of upload
+          })),
+        },
+      },
+      include: {
+        author: true,
+        media: { orderBy: { index: "asc" } }, // Always return in order
+        _count: { select: { comments: true, likes: true } },
+      },
     });
   }
 

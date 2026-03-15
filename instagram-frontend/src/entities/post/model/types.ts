@@ -10,9 +10,17 @@ export interface Post {
     isFollowing: boolean;
     followersCount: number;
   };
+  media: PostMedia[];
   likesCount: number;
   commentsCount: number;
   isLiked: boolean;
   isSaved: boolean;
   isFollowing?: boolean;
+}
+
+export interface PostMedia {
+  id: string;
+  index: number;
+  type: string;
+  url: string;
 }

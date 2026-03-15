@@ -1,12 +1,20 @@
 export const PostMutation = {
   createPost: (
     _parent: any,
-    { imageUrl, caption = "", location = "" }: any,
+    {
+      media,
+      caption = "",
+      location = "",
+    }: {
+      media: { url: string; type: string }[];
+      caption?: string;
+      location?: string;
+    },
     { userId, services }: any,
   ) => {
     if (!userId) throw new Error("Unauthorized");
 
-    return services.post.createPost(userId, { imageUrl, caption, location });
+    return services.post.createPost(userId, { media, caption, location });
   },
 
   togglePostSave: (

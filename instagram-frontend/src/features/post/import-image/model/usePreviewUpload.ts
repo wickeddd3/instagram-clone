@@ -1,30 +1,29 @@
 import { useState } from "react";
-import { generatePreview, getFileData } from "@/shared/utils/upload";
+import { generatePreview } from "@/shared/utils/upload";
 
 export const usePreviewUpload = () => {
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [fileToUpload, setFileToUpload] = useState<File | null>(null);
-  const [isUploading, setIsUploading] = useState(false);
+  const [files, setFiles] = useState<File[]>([]);
+  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
 
-  const handleFileChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    callback?: () => void,
-  ) => {
-    const file = getFileData(e);
-    if (!file) return;
+  const processFiles = (files: File[], callback?: () => void) => {
+    if (!files.length) return;
 
-    setFileToUpload(file);
-    const url = generatePreview(file);
-    setPreviewUrl(url);
+    setFiles(files);
+
+    // Generate previews for all selected files
+    const urls = files.map((file) => generatePreview(file));
+    setPreviewUrls(urls);
+
     callback?.();
   };
 
+  const handleFileChange = (files: File[], callback?: () => void) => {
+    if (files) processFiles(files, callback);
+  };
+
   return {
-    generatePreview,
-    previewUrl,
-    fileToUpload,
-    isUploading,
-    setIsUploading,
+    files,
+    previewUrls,
     handleFileChange,
   };
 };

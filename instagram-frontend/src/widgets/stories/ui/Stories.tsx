@@ -1,7 +1,5 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/navigation";
 import { StoriesSkeleton } from "./StoriesSkeleton";
 import { useAuth } from "@/app/providers/AuthContext";
 import { useCreateStoryModal } from "@/widgets/create-story-modal";

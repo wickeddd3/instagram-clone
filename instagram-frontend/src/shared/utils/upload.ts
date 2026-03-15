@@ -1,7 +1,7 @@
 export const createUploadPath = (userId: string, file: File): string => {
   // Generate a unique file path for the uploaded file
   const fileExt = file.name.split(".").pop();
-  const fileName = `${Math.random()}.${fileExt}`;
+  const fileName = `${Date.now()}${Math.random()}.${fileExt}`;
   const filePath = `${userId}/${fileName}`;
   return filePath;
 };
