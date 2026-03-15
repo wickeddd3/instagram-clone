@@ -9,7 +9,7 @@ export const PostTypes = `#graphql
 
   extend type Mutation {
     # Content Creation
-    createPost(imageUrl: String!, caption: String, location: String): Post!
+    createPost(media: [PostMediaInput!]!, caption: String, location: String): Post!
 
     # Interaction
     togglePostLike(postId: ID!): PostLikeResponse!
@@ -21,6 +21,7 @@ export const PostTypes = `#graphql
     imageUrl: String!
     caption: String
     location: String
+    media: [PostMedia!]!
     author: Profile!
     
     # Interactivity
@@ -37,6 +38,13 @@ export const PostTypes = `#graphql
     updatedAt: DateTime!
   }
 
+  type PostMedia {
+    id: ID!
+    url: String!
+    type: String!
+    index: Int!
+  }
+
   type Like {
     id: ID!
     user: Profile!
@@ -44,6 +52,11 @@ export const PostTypes = `#graphql
     postId: ID
     commentId: ID
     createdAt: DateTime!
+  }
+
+  input PostMediaInput {
+    url: String!
+    type: String!
   }
 
   type FeedResponse {
