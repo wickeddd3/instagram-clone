@@ -2,7 +2,6 @@
 
 export const PreviewFooter = ({
   previews,
-  onRemove,
   onThumbnailClick,
 }: {
   previews: string[];
