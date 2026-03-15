@@ -7,11 +7,8 @@ const carouselStyles = `
   .swiper-pagination-bullet { background: white !important; opacity: 0.5; }
   .swiper-pagination-bullet-active { opacity: 1; }
   .swiper-button-next, .swiper-button-prev {
-    color: white !important;
-    background: rgba(0, 0, 0, 0.3);
-    width: 28px !important; height: 28px !important; border-radius: 50%;
+    visibility: hidden;
   }
-  .swiper-button-next:after, .swiper-button-prev:after { font-size: 12px !important; }
 `;
 
 interface ImageCarouselProps {
