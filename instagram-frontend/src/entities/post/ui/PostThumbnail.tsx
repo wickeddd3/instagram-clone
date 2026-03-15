@@ -16,7 +16,7 @@ export const PostThumbnail = memo(
         )}
 
         <img
-          src={post.imageUrl}
+          src={post?.media[0]?.url}
           alt={`Post ${post.id}`}
           loading="lazy"
           decoding="async"
