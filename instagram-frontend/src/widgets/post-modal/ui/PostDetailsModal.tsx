@@ -13,12 +13,11 @@ import { SaveButton } from "@/features/post/save-post";
 import { AddCommentField } from "@/features/comment/add-comment";
 import { CommentList } from "./CommentList";
 import type { ReplyData } from "../model/types";
+import { ImageCarousel } from "@/shared/ui/ImageCarousel";
 
 export const PostDetailsModal = memo(({ value }: { value: Post }) => {
   const [post, setPost] = useState<Post>(value);
-
   const [replyData, setReplyData] = useState<ReplyData | null>(null);
-
   const commentInputRef = useRef<HTMLInputElement>(null);
 
   const handleFocusComment = useCallback(() => {
@@ -74,13 +73,7 @@ export const PostDetailsModal = memo(({ value }: { value: Post }) => {
 
         {/* 2. IMAGE SECTION */}
         <section className="col-start-1 col-end-2 row-start-2 md:row-span-5 bg-black flex items-center justify-center border-r border-neutral-800 overflow-hidden">
-          <img
-            src={post?.imageUrl}
-            alt={`Post ${post.id}`}
-            loading="lazy"
-            decoding="async"
-            className="w-full h-full object-contain"
-          />
+          <ImageCarousel media={value.media} />
         </section>
 
         {/* 3. COMMENTS LIST */}
