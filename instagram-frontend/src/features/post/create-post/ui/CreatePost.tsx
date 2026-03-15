@@ -51,7 +51,7 @@ export const CreatePost = ({
 
       <div className="flex-1 h-[400px] w-full flex flex-col md:flex-row">
         {/* Preview Image */}
-        <div className="w-full md:w-[60%] h-1/2 md:h-full bg-black flex items-center justify-center relative border-r border-gray-700">
+        <div className="w-full md:w-[60%] h-3/4 md:h-full bg-black flex items-center justify-center relative border-r border-gray-700">
           <div className="w-full h-full flex flex-col">
             <ImageCarousel
               media={mediaItems}
