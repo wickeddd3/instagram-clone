@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useModalActions } from "@/app/providers/ModalContext";
 import { ModalContent } from "@/shared/ui/Modal";
 import { ImportImage, usePreviewUpload } from "@/features/post/import-image";
@@ -6,28 +6,29 @@ import { CreatePost } from "@/features/post/create-post";
 
 export const CreatePostModal = () => {
   const { closeModal } = useModalActions();
+  const { files, previewUrls, handleFileChange } = usePreviewUpload();
+  const [step, setStep] = useState<"import" | "upload">("import");
 
-  const { previewUrls, handleFileChange, files, isUploading, setIsUploading } =
-    usePreviewUpload();
-
-  const [step, setStep] = useState<"upload" | "details">("upload");
+  useEffect(() => {
+    // Cleanup on unmount
+    return () => {
+      previewUrls.forEach((url) => URL.revokeObjectURL(url));
+    };
+  }, []);
 
   return (
     <ModalContent className="w-full max-w-5/6 md:max-w-4/5 lg:max-w-2/3 h-full max-h-3/4 flex flex-col md:flex-row">
-      {step === "upload" && (
+      {step === "import" && (
         <ImportImage
-          onChange={(files) =>
-            handleFileChange(files, () => setStep("details"))
-          }
+          onChange={(files) => handleFileChange(files, () => setStep("upload"))}
         />
       )}
-      {step === "details" && previewUrls.length > 0 && (
+      {step === "upload" && previewUrls.length > 0 && (
         <CreatePost
-          previewUrls={previewUrls}
           files={files}
-          isUploading={isUploading}
-          setIsUploading={setIsUploading}
-          setStep={setStep}
+          previewUrls={previewUrls}
+          onSuccess={() => setStep("import")}
+          onBack={() => setStep("import")}
           onClose={closeModal}
         />
       )}
