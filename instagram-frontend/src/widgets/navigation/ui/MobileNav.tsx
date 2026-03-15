@@ -1,4 +1,4 @@
-import { Compass, Home, Plus, Send, SquarePlay } from "lucide-react";
+import { Compass, Home, Plus, Send } from "lucide-react";
 import { useAuth } from "@/app/providers/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useCreatePostModal } from "@/widgets/create-post-modal";
@@ -17,6 +17,10 @@ export const MobileNav = () => {
 
   const handleRedirectExplore = () => {
     navigate("/explore");
+  };
+
+  const handleRedirectToInbox = () => {
+    navigate("/inbox");
   };
 
   const handleRedirectToProfile = () => {
@@ -42,13 +46,6 @@ export const MobileNav = () => {
         <Compass size={24} />
       </button>
       <button
-        aria-label="Reels"
-        title="Reels"
-        className="text-white cursor-pointer"
-      >
-        <SquarePlay size={24} />
-      </button>
-      <button
         onClick={openCreatePostModal}
         aria-label="New Post"
         title="New Post"
@@ -57,6 +54,7 @@ export const MobileNav = () => {
         <Plus size={24} />
       </button>
       <button
+        onClick={handleRedirectToInbox}
         aria-label="Messages"
         title="Messages"
         className="text-white cursor-pointer"
