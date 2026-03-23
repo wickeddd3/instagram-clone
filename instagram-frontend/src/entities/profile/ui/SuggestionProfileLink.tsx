@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import type { Profile } from "@/entities/profile";
+import { useMemo } from "react";
 
 export const SuggestionProfileLink = ({
   profile,
@@ -8,6 +9,16 @@ export const SuggestionProfileLink = ({
   profile: Profile;
   optionSlot?: React.ReactNode;
 }) => {
+  const suggestionLabel = useMemo(() => {
+    if (profile.mutualFriend) {
+      return `Followed by ${profile.mutualFriend}`;
+    }
+    if (profile.followersCount > 100) {
+      return "Popular";
+    }
+    return "Suggested for you";
+  }, [profile.mutualFriend, profile.followersCount]);
+
   return (
     <div className="flex items-center justify-between">
       <Link to={`/${profile.username}`} className="flex items-center gap-3">
@@ -22,11 +33,7 @@ export const SuggestionProfileLink = ({
           <span className="text-sm font-bold text-white">
             {profile.username}
           </span>
-          <span className="text-[12px] text-gray-500">
-            {profile.followersCount > 0
-              ? `Followed by ${profile.mutualFriend}`
-              : "New to Instagram"}
-          </span>
+          <span className="text-[12px] text-gray-500">{suggestionLabel}</span>
         </div>
       </Link>
       {optionSlot}

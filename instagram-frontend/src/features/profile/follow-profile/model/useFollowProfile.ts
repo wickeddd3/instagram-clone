@@ -45,6 +45,17 @@ export const useFollowProfile = ({
           },
         });
       }
+
+      // Remove the user from the Suggested profile list in the cache immediately
+      cache.modify({
+        fields: {
+          getSuggestedProfiles(existingRefs = [], { readField }) {
+            return existingRefs.filter(
+              (ref: any) => readField("id", ref) !== targetProfile.id,
+            );
+          },
+        },
+      });
     },
   });
 
