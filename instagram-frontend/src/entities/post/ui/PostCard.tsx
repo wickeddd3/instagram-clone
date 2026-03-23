@@ -35,11 +35,7 @@ export const PostCard = ({
     <article className="w-full max-w-[470px] mx-auto flex flex-col gap-2">
       <PostHeader className="pl-2">
         <div className="flex items-center gap-3">
-          <PostHeader.AuthorAvatar
-            avatarUrl={avatarUrl}
-            username={username}
-            className="bg-linear-to-tr from-yellow-400 to-purple-600"
-          />
+          <PostHeader.AuthorAvatar avatarUrl={avatarUrl} username={username} />
           <PostHeader.AuthorUsername username={username} />
           <PostHeader.CreatedAt createdAt={createdAt} />
         </div>
