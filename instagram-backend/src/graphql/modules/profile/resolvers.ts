@@ -1,26 +1,16 @@
 import { prisma } from "../../../lib/prisma";
 
 export const ProfileResolvers = {
-  postsCount: async (parent: any) => {
-    const count = await prisma.post.count({
-      where: { authorId: parent.id },
-    });
-    return count;
-  },
-  followersCount: async (parent: any) => {
-    const count = await prisma.follow.count({
-      where: { followingId: parent.id },
-    });
-    return count;
-  },
-  followingCount: async (parent: any) => {
-    const count = await prisma.follow.count({
-      where: { followerId: parent.id },
-    });
-    return count;
-  },
+  postsCount: (parent: any) => parent._count?.posts ?? 0,
+  followersCount: (parent: any) => parent._count?.followers ?? 0,
+  followingCount: (parent: any) => parent._count?.following ?? 0,
   isFollowing: async (parent: any, _args: any, context: any) => {
-    if (!context.userId) return false;
+    if (!context.userId || parent.id === context.userId) return false;
+
+    // Check if the parent already has the followers array from a 'where' include
+    if (parent.followers && Array.isArray(parent.followers)) {
+      return parent.followers.length > 0;
+    }
 
     const follow = await prisma.follow.findUnique({
       where: {
@@ -30,32 +20,10 @@ export const ProfileResolvers = {
         },
       },
     });
-
     return !!follow;
   },
   isMe: (parent: any, _args: any, context: any) => {
-    if (!context.userId) return false;
-
-    return parent.id === context.userId;
+    return context.userId ? parent.id === context.userId : false;
   },
-  mutualFriend: async (parent: any, _args: any, context: any) => {
-    if (!context.userId) return null;
-
-    // Find one user that I follow who also follows this suggested profile
-    const mutual = await prisma.follow.findFirst({
-      where: {
-        followerId: context.userId, // Someone I follow
-        following: {
-          following: {
-            some: {
-              followingId: parent.id, // ...who also follows the suggested user
-            },
-          },
-        },
-      },
-      include: { following: true },
-    });
-
-    return mutual?.following.username || null;
-  },
+  mutualFriend: (parent: any) => parent.mutualFriend || null,
 };
