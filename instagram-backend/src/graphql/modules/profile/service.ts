@@ -3,6 +3,16 @@ import { PrismaClient } from "@prisma/client/extension";
 export class ProfileService {
   constructor(private prisma: PrismaClient) {}
 
+  private async getFollowingIds(userId: string) {
+    const following = await this.prisma.follow.findMany({
+      where: { followerId: userId },
+      select: { followingId: true },
+    });
+    const followingIds = following.map((f: any) => f.followingId);
+
+    return followingIds;
+  }
+
   async checkAvailability(email: string, username: string) {
     const [emailExists, usernameExists] = await Promise.all([
       this.prisma.profile.findUnique({ where: { email } }),
@@ -103,21 +113,64 @@ export class ProfileService {
   }
 
   async getSuggestedProfiles(userId: string, limit: number) {
-    // Get the IDs of everyone the current user is already following
-    const following = await this.prisma.follow.findMany({
-      where: { followerId: userId },
-      select: { followingId: true },
-    });
+    // 1. Get IDs of people the user follows
+    const followingIds = await this.getFollowingIds(userId);
 
-    const followingIds = following.map((f: any) => f.followingId);
-
-    return await this.prisma.profile.findMany({
+    // 2. Find "Friends of Friends" (Mutuals)
+    // Look for profiles followed by your following,
+    // excluding authUser and people authUser already follow.
+    const suggestedWithMutuals = await this.prisma.profile.findMany({
       where: {
-        AND: [{ id: { not: userId } }, { id: { notIn: followingIds } }],
+        AND: [
+          { id: { not: userId } },
+          { id: { notIn: followingIds } },
+          {
+            followers: {
+              some: {
+                followerId: { in: followingIds },
+              },
+            },
+          },
+        ],
       },
       take: limit,
-      orderBy: { followers: { _count: "desc" } }, // Prioritize popular users
+      include: {
+        followers: {
+          where: { followerId: { in: followingIds } },
+          select: { follower: { select: { username: true } } },
+          take: 1, // Just get one name for the "Followed by X" label
+        },
+        _count: { select: { followers: true } },
+      },
     });
+
+    // 3. If we don't have enough mutuals, fill with popular accounts
+    let finalSuggestions = [...suggestedWithMutuals];
+
+    if (finalSuggestions.length < limit) {
+      const finalSuggestionIds = finalSuggestions.map((profile) => profile.id);
+      const popular = await this.prisma.profile.findMany({
+        where: {
+          AND: [
+            { id: { not: userId } },
+            {
+              id: {
+                notIn: [...followingIds, ...finalSuggestionIds],
+              },
+            },
+          ],
+        },
+        take: limit - finalSuggestions.length,
+        orderBy: { followers: { _count: "desc" } },
+      });
+      finalSuggestions = [...finalSuggestions, ...popular];
+    }
+
+    // 4. Map the data to include the mutualFriend string
+    return finalSuggestions.map((profile: any) => ({
+      ...profile,
+      mutualFriend: profile.followers?.[0]?.follower?.username || null,
+    }));
   }
 
   async searchProfiles({
