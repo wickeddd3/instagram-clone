@@ -11,7 +11,7 @@ export type LoginFormType = z.infer<typeof LoginFormSchema>;
 
 export const SignUpFormSchema = z
   .object({
-    email: z.email(),
+    email: z.string().min(1, "Email Required"),
     password: z.string().min(1, "Password Required"),
     username: z.string().min(1, "Username Required"),
     displayName: z.string().min(1, "Full Name Required"),
