@@ -8,6 +8,7 @@ import { ForgotPasswordLink } from "./ForgotPasswordLinkt";
 import { SignupLink } from "./SignupLink";
 import { Footer } from "./Footer";
 import { Toaster } from "sonner";
+import { HelpAlert } from "@/shared/ui/HelpAlert";
 
 export const MainLogin = () => {
   const [error, setError] = useState("");
@@ -30,6 +31,7 @@ export const MainLogin = () => {
           <SignupLink />
         </div>
       </div>
+      <HelpAlert />
       <Footer />
       {/* Snackbar */}
       <Toaster />

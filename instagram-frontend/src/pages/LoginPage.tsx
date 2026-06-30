@@ -1,3 +1,4 @@
+import { HelpAlert } from "@/shared/ui/HelpAlert";
 import {
   Divider,
   ErrorMessage,
@@ -30,6 +31,7 @@ const LoginPage = () => {
           <div className="w-full border-gray-800 border p-5">
             <SignupLink />
           </div>
+          <HelpAlert />
         </div>
       </div>
       <Footer />
