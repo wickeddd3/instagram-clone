@@ -9,6 +9,9 @@ on:
   pull_request:
     branches:
       - main
+    paths:
+      - "instagram-frontend/**"
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
