@@ -1,6 +1,9 @@
 generator client {
   provider = "prisma-client"
   output   = "./generated"
+  // Emit CommonJS so the compiled `node dist` build (a CJS project) can require
+  // the client without ESM-interop errors. tsx handles either format in dev.
+  moduleFormat = "cjs"
 }
 
 datasource db {
