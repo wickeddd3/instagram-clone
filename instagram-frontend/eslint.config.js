@@ -74,10 +74,11 @@ export default defineConfig([
         },
       },
       "boundaries/include": ["src/**/*.{ts,tsx}"],
+      // v7 element descriptors classify *folders*. Every file beneath a folder
+      // inherits its element type/captures.
       "boundaries/elements": [
-        { type: "app", pattern: "src/main.tsx", mode: "file" },
-        { type: "app", pattern: "src/app", mode: "folder" },
-        { type: "pages", pattern: "src/pages/*", mode: "file" },
+        { type: "app", pattern: "src/app" },
+        { type: "pages", pattern: "src/pages" },
         { type: "widgets", pattern: "src/widgets/*", capture: ["slice"] },
         // features/websocket has no domain grouping, unlike every other feature slice;
         // it must be matched before the generic two-level pattern below
@@ -94,6 +95,10 @@ export default defineConfig([
         { type: "entities", pattern: "src/entities/*", capture: ["slice"] },
         { type: "shared", pattern: "src/shared/*", capture: ["slice"] },
       ],
+      // The Vite entry (src/main.tsx) sits outside src/app, so it isn't covered by
+      // any folder element. Classify it as an app-layer *file* instead — element
+      // patterns match folders, not individual files, in v7.
+      "boundaries/files": [{ category: "app", pattern: "src/main.tsx" }],
     },
     rules: {
       // Layers may only depend on themselves and layers below them; sibling slices within
@@ -102,56 +107,70 @@ export default defineConfig([
         "error",
         {
           default: "disallow",
-          rules: [
+          // Policies use last-write-wins: the barrel-only disallow is placed last so it
+          // overrides the layer allows above it for deep (non-index) imports.
+          policies: [
             {
-              from: { type: "app" },
-              allow: [
-                { to: { type: "app" } },
-                { to: { type: "pages" } },
-                { to: { type: "widgets" } },
-                { to: { type: "features" } },
-                { to: { type: "entities" } },
-                { to: { type: "shared" } },
+              // The app layer and the app-layer entry file may import any layer.
+              from: [
+                { element: { types: "app" } },
+                { file: { categories: "app" } },
               ],
+              allow: {
+                to: {
+                  element: {
+                    types: [
+                      "app",
+                      "pages",
+                      "widgets",
+                      "features",
+                      "entities",
+                      "shared",
+                    ],
+                  },
+                },
+              },
             },
             {
-              from: { type: "pages" },
-              allow: [
-                { to: { type: "widgets" } },
-                { to: { type: "features" } },
-                { to: { type: "entities" } },
-                { to: { type: "shared" } },
-              ],
+              from: { element: { types: "pages" } },
+              allow: {
+                to: {
+                  element: {
+                    types: ["widgets", "features", "entities", "shared"],
+                  },
+                },
+              },
             },
             {
-              from: { type: "widgets" },
-              allow: [
-                { to: { type: "features" } },
-                { to: { type: "entities" } },
-                { to: { type: "shared" } },
-              ],
+              from: { element: { types: "widgets" } },
+              allow: {
+                to: { element: { types: ["features", "entities", "shared"] } },
+              },
             },
             {
-              from: { type: "features" },
-              allow: [{ to: { type: "entities" } }, { to: { type: "shared" } }],
+              from: { element: { types: "features" } },
+              allow: { to: { element: { types: ["entities", "shared"] } } },
             },
             {
-              from: { type: "entities" },
-              allow: [{ to: { type: "shared" } }],
+              from: { element: { types: "entities" } },
+              allow: { to: { element: { types: "shared" } } },
             },
             {
-              from: { type: "shared" },
-              allow: [{ to: { type: "shared" } }],
+              from: { element: { types: "shared" } },
+              allow: { to: { element: { types: "shared" } } },
             },
             // Slices are only reachable through their public index.ts barrel, never by deep
             // import. Same-slice internal imports are unaffected: boundaries/dependencies
             // ignores dependencies within the same element by default (checkInternals: false).
             {
-              to: {
-                type: ["widgets", "features", "entities"],
-                fileInternalPath: "!index.ts",
+              disallow: {
+                to: {
+                  element: {
+                    types: ["widgets", "features", "entities"],
+                    fileInternalPath: "!index.ts",
+                  },
+                },
               },
-              disallow: [{ from: { type: "*" } }],
             },
           ],
         },
