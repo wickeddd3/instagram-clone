@@ -4,7 +4,16 @@ import nodePlugin from "eslint-plugin-n";
 import eslintConfigPrettier from "eslint-config-prettier";
 
 export default tseslint.config(
-  { ignores: ["node_modules", "dist", "prisma/generated", "coverage"] },
+  {
+    ignores: [
+      "node_modules",
+      "dist",
+      "prisma/generated",
+      "coverage",
+      // Tooling config, not part of the tsconfig project (type-aware lint can't resolve it).
+      "vitest.config.ts",
+    ],
+  },
   {
     files: ["**/*.ts"], // Apply these rules only to TypeScript files
     extends: [

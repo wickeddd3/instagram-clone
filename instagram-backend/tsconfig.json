@@ -54,5 +54,7 @@
     "declaration": true
   },
   "include": ["src/**/*", "prisma/seed/**/*", "prisma.config.ts"],
-  "exclude": ["node_modules", "dist"]
+  // Tests are transpiled by Vitest (esbuild) and type-checked loosely by their
+  // own ESLint override, so keep them out of the build/type-check project.
+  "exclude": ["node_modules", "dist", "vitest.config.ts", "src/**/*.test.ts"]
 }
