@@ -68,7 +68,8 @@
     "declaration": true
   },
   "include": ["src/**/*", "prisma/seed/**/*", "prisma.config.ts"],
-  // Tests are transpiled by Vitest (esbuild) and type-checked loosely by their
-  // own ESLint override, so keep them out of the build/type-check project.
-  "exclude": ["node_modules", "dist", "vitest.config.ts", "src/**/*.test.ts"]
+  // Tests are part of the project so the editor and `tsc --noEmit` resolve the
+  // `@/` path aliases in them. They are kept out of the emitted build by
+  // tsconfig.build.json (used by `yarn build`).
+  "exclude": ["node_modules", "dist", "vitest.config.ts"]
 }
