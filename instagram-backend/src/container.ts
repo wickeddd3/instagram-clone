@@ -5,8 +5,7 @@ import { CommentService } from "./graphql/modules/comment/service";
 import { RecentSearchService } from "./graphql/modules/recent-search/service";
 import { StoryService } from "./graphql/modules/story/service";
 import { AccountService } from "./services/account.service";
-// Resolves to prisma/generated/client via the tsconfig rootDirs merge.
-import type { PrismaClient } from "./client";
+import type { PrismaClient } from "@/prisma/client";
 
 /**
  * The data-access services. Every transport (GraphQL today, REST next) depends

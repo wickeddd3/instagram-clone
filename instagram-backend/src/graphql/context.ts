@@ -1,4 +1,4 @@
-import type { Services } from "../container";
+import type { Services } from "@/container";
 
 /**
  * Per-request GraphQL context. `userId` is the Supabase user UUID when the

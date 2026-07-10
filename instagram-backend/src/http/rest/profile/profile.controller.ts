@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
-import type { Services } from "../../../container";
-import { BadRequestError, UnauthorizedError } from "../../../errors/app.error";
+import type { Services } from "@/container";
+import { BadRequestError, UnauthorizedError } from "@/errors/app.error";
 
 /**
  * Thin HTTP adapter for profile avatar uploads. multer has already parsed the

@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
-import { verifySupabaseToken } from "../../lib/supabase";
-import { UnauthorizedError } from "../../errors/app.error";
+import { verifySupabaseToken } from "@/lib/supabase";
+import { UnauthorizedError } from "@/errors/app.error";
 
 // Make the resolved user id available on the Express request for REST handlers.
 declare global {

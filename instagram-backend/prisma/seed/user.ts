@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import { createClient } from "@supabase/supabase-js";
 import { faker } from "@faker-js/faker";
-import { prisma } from "../../src/lib/prisma";
+import { prisma } from "@/lib/prisma";
 
 dotenv.config();
 

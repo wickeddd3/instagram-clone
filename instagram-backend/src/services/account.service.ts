@@ -1,6 +1,6 @@
-import type { PrismaClient } from "../client";
-import { BadRequestError, ConflictError } from "../errors/app.error";
-import { createAuthUser, deleteAuthUser, signInWithPassword, uploadPublicFile } from "../lib/supabase";
+import type { PrismaClient } from "@/prisma/client";
+import { BadRequestError, ConflictError } from "@/errors/app.error";
+import { createAuthUser, deleteAuthUser, signInWithPassword, uploadPublicFile } from "@/lib/supabase";
 
 const AVATAR_BUCKET = "avatars";
 

@@ -1,6 +1,6 @@
 import { Router, type Request, type Response } from "express";
-import { prisma } from "../lib/prisma";
-import { logger } from "../lib/logger";
+import { prisma } from "@/lib/prisma";
+import { logger } from "@/lib/logger";
 
 export const healthRouter = Router();
 

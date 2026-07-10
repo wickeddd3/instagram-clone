@@ -3,7 +3,7 @@ import { ApolloServer } from "@apollo/server";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 import { typeDefs, resolvers } from "./index";
 import type { GraphQLContext } from "./context";
-import { config } from "../config/env.config";
+import { config } from "@/config/env.config";
 
 /**
  * Builds the Apollo server. The drain plugin ties graceful shutdown to the HTTP

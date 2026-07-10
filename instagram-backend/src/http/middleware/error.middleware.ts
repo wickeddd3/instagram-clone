@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
-import { AppError } from "../../errors/app.error";
-import { logger } from "../../lib/logger";
-import { config } from "../../config/env.config";
+import { AppError } from "@/errors/app.error";
+import { logger } from "@/lib/logger";
+import { config } from "@/config/env.config";
 
 /** Catch-all 404 for unmatched routes. */
 export const notFoundHandler = (req: Request, res: Response): void => {

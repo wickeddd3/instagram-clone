@@ -1,5 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-import { config } from "../config/env.config";
+import { config } from "@/config/env.config";
 
 // Service-role client: verifies JWTs, performs admin auth operations, and writes
 // to Storage server-side (never exposed to the browser).

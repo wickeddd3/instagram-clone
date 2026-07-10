@@ -3,9 +3,9 @@ import http from "http";
 import request from "supertest";
 import type { Express } from "express";
 import type { ApolloServer } from "@apollo/server";
-import { createApolloServer } from "../../graphql/server";
-import { createApp } from "../app";
-import type { GraphQLContext } from "../../graphql/context";
+import { createApolloServer } from "@/graphql/server";
+import { createApp } from "@/http/app";
+import type { GraphQLContext } from "@/graphql/context";
 
 // Integration test: assembles the real Express app (helmet, error handling,
 // health) over a started Apollo server. Covers the dependency-free surface so it

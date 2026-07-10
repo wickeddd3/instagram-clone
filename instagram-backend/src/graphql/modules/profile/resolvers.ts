@@ -1,5 +1,5 @@
-import { prisma } from "../../../lib/prisma";
-import type { GraphQLContext } from "../../context";
+import { prisma } from "@/lib/prisma";
+import type { GraphQLContext } from "@/graphql/context";
 
 export interface ProfileParent {
   id: string;

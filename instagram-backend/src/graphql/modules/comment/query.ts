@@ -1,4 +1,4 @@
-import type { GraphQLContext } from "../../context";
+import type { GraphQLContext } from "@/graphql/context";
 
 export const CommentQuery = {
   getComments: async (

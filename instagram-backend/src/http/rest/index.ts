@@ -1,5 +1,5 @@
 import { Router } from "express";
-import type { Services } from "../../container";
+import type { Services } from "@/container";
 import { createAuthRouter } from "./auth";
 import { createProfileRouter } from "./profile";
 

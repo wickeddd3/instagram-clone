@@ -1,6 +1,6 @@
 import multer from "multer";
 import type { RequestHandler } from "express";
-import { BadRequestError } from "../../../errors/app.error";
+import { BadRequestError } from "@/errors/app.error";
 import { AVATAR_MAX_BYTES, isAllowedAvatarMime } from "./profile.schema";
 
 // In-memory single-file upload for avatars: the buffer is streamed straight to

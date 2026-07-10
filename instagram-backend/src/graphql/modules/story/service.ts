@@ -1,4 +1,4 @@
-import type { PrismaClient } from "../../../client";
+import type { PrismaClient } from "@/prisma/client";
 import type { StoryView, StoryWithViews, UserStoryResponse } from "./service.types";
 
 export class StoryService {

@@ -1,4 +1,4 @@
-import type { GraphQLContext } from "../../context";
+import type { GraphQLContext } from "@/graphql/context";
 
 export const StoryQuery = {
   getStoriesFeed: (_parent: unknown, { profileId }: { profileId: string }, { services }: GraphQLContext) => {

@@ -1,6 +1,14 @@
+import { fileURLToPath } from "node:url";
 import { defineConfig } from "vitest/config";
 
+// Mirror the tsconfig path aliases (prisma first so it wins over the `@/` catch-all).
+const alias = [
+  { find: /^@\/prisma\/(.*)$/, replacement: fileURLToPath(new URL("./prisma/generated/$1", import.meta.url)) },
+  { find: /^@\/(.*)$/, replacement: fileURLToPath(new URL("./src/$1", import.meta.url)) },
+];
+
 export default defineConfig({
+  resolve: { alias },
   test: {
     environment: "node",
     include: ["src/**/*.test.ts"],

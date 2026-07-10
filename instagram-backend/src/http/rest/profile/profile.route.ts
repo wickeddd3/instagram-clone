@@ -1,7 +1,7 @@
 import { Router } from "express";
-import type { Services } from "../../../container";
-import { attachUser, requireAuth } from "../../middleware/auth.middleware";
-import { asyncHandler } from "../../lib/async-handler";
+import type { Services } from "@/container";
+import { attachUser, requireAuth } from "@/http/middleware/auth.middleware";
+import { asyncHandler } from "@/http/lib/async-handler";
 import { uploadAvatarFile } from "./profile.upload";
 import { createProfileController } from "./profile.controller";
 

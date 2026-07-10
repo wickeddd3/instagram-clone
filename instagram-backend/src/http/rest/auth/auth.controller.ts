@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import type { Services } from "../../../container";
+import type { Services } from "@/container";
 import type { SignupBody } from "./auth.schema";
 
 /**

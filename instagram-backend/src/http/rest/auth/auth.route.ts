@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { json } from "body-parser";
-import type { Services } from "../../../container";
-import { asyncHandler } from "../../lib/async-handler";
-import { validate } from "../../middleware/request.middleware";
+import type { Services } from "@/container";
+import { asyncHandler } from "@/http/lib/async-handler";
+import { validate } from "@/http/middleware/request.middleware";
 import { createAuthController } from "./auth.controller";
 import { signupBody } from "./auth.schema";
 

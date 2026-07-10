@@ -2,9 +2,9 @@ import { describe, it, expect, beforeAll } from "vitest";
 import express from "express";
 import type { Express } from "express";
 import request from "supertest";
-import { createAuthRouter } from "../index";
-import { errorHandler, notFoundHandler } from "../../../middleware/error.middleware";
-import type { Services } from "../../../../container";
+import { createAuthRouter } from "@/http/rest/auth/index";
+import { errorHandler, notFoundHandler } from "@/http/middleware/error.middleware";
+import type { Services } from "@/container";
 
 // Mounts the real auth router over a stubbed account service, so the tests
 // exercise routing, body validation, and the response envelope without hitting
