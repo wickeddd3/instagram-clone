@@ -23,9 +23,13 @@ const env = cleanEnv(process.env, {
   PORT: port({ default: 4000 }),
 
   DATABASE_URL: nonEmptyStr(),
+  // Connection pool bounds (adapter-pg / node-postgres). Keep DATABASE_POOL_MAX
+  // at/under the managed database's connection limit, accounting for instances.
+  DATABASE_POOL_MAX: num({ default: 10 }),
+  DATABASE_CONNECTION_TIMEOUT_MS: num({ default: 10_000 }),
 
   SUPABASE_URL: nonEmptyStr(),
-  SUPABASE_SERVICE_KEY: nonEmptyStr(),
+  SUPABASE_SERVICE_ROLE_KEY: nonEmptyStr(),
 
   // Frontend origin(s), comma-separated. Used to build the CORS allowlist.
   APP_URL: str({ default: "http://localhost:5173" }),
@@ -46,10 +50,14 @@ export const config = {
   isProduction: env.isProduction,
   isTest: env.isTest,
   port: env.PORT,
-  databaseUrl: env.DATABASE_URL,
+  database: {
+    url: env.DATABASE_URL,
+    poolMax: env.DATABASE_POOL_MAX,
+    connectionTimeoutMs: env.DATABASE_CONNECTION_TIMEOUT_MS,
+  },
   supabase: {
     url: env.SUPABASE_URL,
-    serviceKey: env.SUPABASE_SERVICE_KEY,
+    serviceRoleKey: env.SUPABASE_SERVICE_ROLE_KEY,
   },
   logLevel: env.LOG_LEVEL,
   corsOrigins,

@@ -41,7 +41,9 @@ services:
       - instagram-network
 
   instagram-backend:
-    build: ./instagram-backend
+    build:
+      context: ./instagram-backend
+      target: development
     container_name: instagram-backend
     ports:
       - "4000:4000"

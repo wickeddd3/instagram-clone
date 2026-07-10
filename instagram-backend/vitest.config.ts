@@ -19,7 +19,7 @@ export default defineConfig({
       LOG_LEVEL: "silent",
       DATABASE_URL: "postgresql://test:test@localhost:5432/test",
       SUPABASE_URL: "http://localhost:54321",
-      SUPABASE_SERVICE_KEY: "test-service-key",
+      SUPABASE_SERVICE_ROLE_KEY: "test-service-role-key",
     },
   },
 });

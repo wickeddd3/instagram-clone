@@ -1,0 +1,142 @@
+[
+  {
+    "username": "ada.lovelace",
+    "displayName": "Ada Lovelace",
+    "email": "ada@example.com",
+    "bio": "Wrote the first algorithm. Countess of Computing.",
+    "avatarUrl": "https://api.dicebear.com/9.x/thumbs/svg?seed=ada"
+  },
+  {
+    "username": "grace.hopper",
+    "displayName": "Grace Hopper",
+    "email": "grace@example.com",
+    "bio": "Compiler pioneer. Found the first bug.",
+    "avatarUrl": "https://api.dicebear.com/9.x/thumbs/svg?seed=grace"
+  },
+  {
+    "username": "alan.turing",
+    "displayName": "Alan Turing",
+    "email": "alan@example.com",
+    "bio": "Can machines think?",
+    "avatarUrl": "https://api.dicebear.com/9.x/thumbs/svg?seed=alan"
+  },
+  {
+    "username": "margaret.hamilton",
+    "displayName": "Margaret Hamilton",
+    "email": "margaret@example.com",
+    "bio": "Software engineering, coined. Shipped to the Moon.",
+    "avatarUrl": "https://api.dicebear.com/9.x/thumbs/svg?seed=margaret"
+  },
+  {
+    "username": "katherine.johnson",
+    "displayName": "Katherine Johnson",
+    "email": "katherine@example.com",
+    "bio": "Orbital mechanics by hand.",
+    "avatarUrl": "https://api.dicebear.com/9.x/thumbs/svg?seed=katherine"
+  },
+  {
+    "username": "linus.torvalds",
+    "displayName": "Linus Torvalds",
+    "email": "linus@example.com",
+    "bio": "Just for fun.",
+    "avatarUrl": "https://api.dicebear.com/9.x/thumbs/svg?seed=linus"
+  },
+  {
+    "username": "dennis.ritchie",
+    "displayName": "Dennis Ritchie",
+    "email": "dennis@example.com",
+    "bio": "C and Unix. Keep it simple.",
+    "avatarUrl": "https://api.dicebear.com/9.x/thumbs/svg?seed=dennis"
+  },
+  {
+    "username": "ken.thompson",
+    "displayName": "Ken Thompson",
+    "email": "ken@example.com",
+    "bio": "Unix, B, and a famous regex.",
+    "avatarUrl": "https://api.dicebear.com/9.x/thumbs/svg?seed=ken"
+  },
+  {
+    "username": "barbara.liskov",
+    "displayName": "Barbara Liskov",
+    "email": "barbara@example.com",
+    "bio": "Substitutability. Abstract data types.",
+    "avatarUrl": "https://api.dicebear.com/9.x/thumbs/svg?seed=barbara"
+  },
+  {
+    "username": "donald.knuth",
+    "displayName": "Donald Knuth",
+    "email": "donald@example.com",
+    "bio": "The Art of Computer Programming. Premature optimization is the root of all evil.",
+    "avatarUrl": "https://api.dicebear.com/9.x/thumbs/svg?seed=donald"
+  },
+  {
+    "username": "tim.bernerslee",
+    "displayName": "Tim Berners-Lee",
+    "email": "tim@example.com",
+    "bio": "Invented the Web. This is for everyone.",
+    "avatarUrl": "https://api.dicebear.com/9.x/thumbs/svg?seed=tim"
+  },
+  {
+    "username": "vint.cerf",
+    "displayName": "Vint Cerf",
+    "email": "vint@example.com",
+    "bio": "TCP/IP co-author. Father of the Internet.",
+    "avatarUrl": "https://api.dicebear.com/9.x/thumbs/svg?seed=vint"
+  },
+  {
+    "username": "radia.perlman",
+    "displayName": "Radia Perlman",
+    "email": "radia@example.com",
+    "bio": "Spanning Tree Protocol. Mother of the Internet.",
+    "avatarUrl": "https://api.dicebear.com/9.x/thumbs/svg?seed=radia"
+  },
+  {
+    "username": "guido.vanrossum",
+    "displayName": "Guido van Rossum",
+    "email": "guido@example.com",
+    "bio": "Python's benevolent dictator, retired.",
+    "avatarUrl": "https://api.dicebear.com/9.x/thumbs/svg?seed=guido"
+  },
+  {
+    "username": "bjarne.stroustrup",
+    "displayName": "Bjarne Stroustrup",
+    "email": "bjarne@example.com",
+    "bio": "Created C++.",
+    "avatarUrl": "https://api.dicebear.com/9.x/thumbs/svg?seed=bjarne"
+  },
+  {
+    "username": "james.gosling",
+    "displayName": "James Gosling",
+    "email": "james@example.com",
+    "bio": "Write once, run anywhere. Father of Java.",
+    "avatarUrl": "https://api.dicebear.com/9.x/thumbs/svg?seed=james"
+  },
+  {
+    "username": "brendan.eich",
+    "displayName": "Brendan Eich",
+    "email": "brendan@example.com",
+    "bio": "JavaScript in ten days.",
+    "avatarUrl": "https://api.dicebear.com/9.x/thumbs/svg?seed=brendan"
+  },
+  {
+    "username": "john.carmack",
+    "displayName": "John Carmack",
+    "email": "john@example.com",
+    "bio": "Doom, Quake, and fast inverse square roots.",
+    "avatarUrl": "https://api.dicebear.com/9.x/thumbs/svg?seed=john"
+  },
+  {
+    "username": "anita.borg",
+    "displayName": "Anita Borg",
+    "email": "anita@example.com",
+    "bio": "Systems researcher. Founded the Grace Hopper Celebration.",
+    "avatarUrl": "https://api.dicebear.com/9.x/thumbs/svg?seed=anita"
+  },
+  {
+    "username": "hedy.lamarr",
+    "displayName": "Hedy Lamarr",
+    "email": "hedy@example.com",
+    "bio": "Frequency hopping. The mother of Wi-Fi.",
+    "avatarUrl": "https://api.dicebear.com/9.x/thumbs/svg?seed=hedy"
+  }
+]

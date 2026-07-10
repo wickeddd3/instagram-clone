@@ -3,7 +3,7 @@ import { config } from "@/config/env.config";
 
 // Service-role client: verifies JWTs, performs admin auth operations, and writes
 // to Storage server-side (never exposed to the browser).
-export const supabase = createClient(config.supabase.url, config.supabase.serviceKey);
+export const supabase = createClient(config.supabase.url, config.supabase.serviceRoleKey);
 
 /**
  * Creates a Supabase Auth user with a pre-confirmed email (the backend owns

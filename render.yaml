@@ -1,0 +1,41 @@
+# Render Blueprint (Infrastructure as Code) for the instagram-clone backend.
+#
+# Docker runtime — the multi-stage instagram-backend/Dockerfile is the single
+# build definition, shared with docker-compose (which builds the `development`
+# stage). Render builds the Dockerfile's final `production` stage by default:
+#   - the `build` stage runs a full `yarn install` (dev deps included), generates
+#     the Prisma client, and compiles TS, so NODE_ENV=production never breaks it.
+#   - the `production` stage installs runtime deps only and copies `dist/`.
+#
+# NOTE: a Blueprint does NOT retroactively take over a service created manually
+# in the dashboard. For a dashboard-created Docker service, set the same
+# Dockerfile Path / Docker Build Context in its Settings instead.
+services:
+  - type: web
+    name: instagram-backend
+    runtime: docker
+    dockerfilePath: ./instagram-backend/Dockerfile
+    dockerContext: ./instagram-backend
+    # /readyz verifies DB connectivity (SELECT 1); the Dockerfile HEALTHCHECK
+    # uses /healthz for plain liveness.
+    healthCheckPath: /readyz
+    # Apply pending migrations before traffic switches to the new deploy; a failed
+    # migration aborts the deploy instead of shipping code ahead of the schema.
+    preDeployCommand: yarn prisma migrate deploy
+    autoDeploy: false # Deploys are triggered by the GitHub Actions deploy hook.
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: LOG_LEVEL
+        value: info
+      # PORT is injected automatically by Render; the app reads it from env and
+      # the Dockerfile HEALTHCHECK honors it.
+      # Secrets — set these in the Render dashboard (never committed):
+      - key: DATABASE_URL
+        sync: false
+      - key: APP_URL # frontend origin(s) for the CORS allowlist
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
