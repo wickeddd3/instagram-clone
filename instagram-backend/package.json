@@ -14,7 +14,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "validate": "npm run format:check && npm run lint && tsc --noEmit",
-    "seed": "tsx prisma/seed/user.ts"
+    "seed": "tsx prisma/seed/index.ts",
+    "seed:clean": "tsx prisma/seed/clean.ts"
   },
   "keywords": [],
   "author": "",

@@ -25,6 +25,8 @@
     "moduleResolution": "nodenext",
     "target": "ES2022",
     "types": ["node"],
+    // Allow importing the seed data JSON (prisma/seed/data/*.json).
+    "resolveJsonModule": true,
     // For nodejs:
     // "lib": ["esnext"],
     // "types": ["node"],
