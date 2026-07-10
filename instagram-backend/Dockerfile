@@ -1,8 +1,11 @@
 # syntax=docker/dockerfile:1
 
+# Base image pinned by digest (node:22-alpine LTS) for reproducible builds.
+# Refresh with: docker buildx imagetools inspect node:22-alpine  (copy the digest).
+
 # ---------- Build stage ----------
 # Full toolchain: install all deps, generate the Prisma client, compile to dist.
-FROM node:22-alpine AS build
+FROM node:22-alpine@sha256:16e22a550f3863206a3f701448c45f7912c6896a62de43add43bb9c86130c3e2 AS build
 WORKDIR /app
 
 COPY package.json yarn.lock ./
@@ -22,7 +25,7 @@ RUN DATABASE_URL="postgresql://placeholder:placeholder@localhost:5432/placeholde
 # toolchain (tsx, prisma CLI) so compose's command override
 # (prisma migrate deploy && prisma generate && prisma db push && yarn dev) works.
 # Source is bind-mounted at runtime by compose; this image supplies node_modules.
-FROM node:22-alpine AS development
+FROM node:22-alpine@sha256:16e22a550f3863206a3f701448c45f7912c6896a62de43add43bb9c86130c3e2 AS development
 WORKDIR /app
 ENV NODE_ENV=development
 
@@ -36,7 +39,7 @@ CMD ["yarn", "dev"]
 # ---------- Production stage ----------
 # Slim runtime: production deps only + the compiled output. No source, no tsx,
 # no dev toolchain. Render builds this final stage by default.
-FROM node:22-alpine AS production
+FROM node:22-alpine@sha256:16e22a550f3863206a3f701448c45f7912c6896a62de43add43bb9c86130c3e2 AS production
 WORKDIR /app
 ENV NODE_ENV=production
 
