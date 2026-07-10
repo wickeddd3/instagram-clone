@@ -1,5 +1,5 @@
-import type { PrismaClient } from "../../../client";
-import { Prisma } from "../../../client";
+import type { PrismaClient } from "@/prisma/client";
+import { Prisma } from "@/prisma/client";
 
 // Prisma can't infer the payload when the include key is computed at runtime
 // (see searchFollowers), so we describe the shape we know we requested.

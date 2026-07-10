@@ -2,10 +2,22 @@
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
     // File Layout
-    // rootDirs virtually merges src with the generated Prisma client so that
-    // relative imports like `../../../client` resolve into prisma/generated.
+    // rootDirs virtually merges src with the generated Prisma client; retained
+    // as a safety net, though imports now use the `@/prisma/*` alias below.
     "rootDirs": ["./src", "./prisma/generated"],
+    // Explicit rootDir (the implicit common root already resolves here) so
+    // tsc-alias can map aliases without a deprecated baseUrl.
+    "rootDir": ".",
     "outDir": "./dist",
+
+    // Path aliases for cleaner imports. baseUrl is omitted (deprecated in TS 5.9+);
+    // paths resolve relative to this tsconfig's directory. tsc only rewrites these
+    // for type-checking, so the build runs `tsc-alias` to emit relative paths in
+    // dist; tsx (dev) and vitest resolve them via their own config.
+    "paths": {
+      "@/*": ["./src/*"],
+      "@/prisma/*": ["./prisma/generated/*"]
+    },
 
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
@@ -54,5 +66,7 @@
     "declaration": true
   },
   "include": ["src/**/*", "prisma/seed/**/*", "prisma.config.ts"],
-  "exclude": ["node_modules", "dist"]
+  // Tests are transpiled by Vitest (esbuild) and type-checked loosely by their
+  // own ESLint override, so keep them out of the build/type-check project.
+  "exclude": ["node_modules", "dist", "vitest.config.ts", "src/**/*.test.ts"]
 }

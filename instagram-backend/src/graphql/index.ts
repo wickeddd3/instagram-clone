@@ -1,15 +1,8 @@
-import { ProfileMutation, ProfileQuery, ProfileResolvers, ProfileService, ProfileTypes } from "./modules/profile";
-import { PostMutation, PostQuery, PostResolvers, PostService, PostTypes } from "./modules/post";
-import { CommentMutation, CommentQuery, CommentResolvers, CommentService, CommentTypes } from "./modules/comment";
-import {
-  RecentSearchMutation,
-  RecentSearchQuery,
-  RecentSearchService,
-  RecentSearchTypes,
-} from "./modules/recent-search";
-import { StoryMutation, StoryQuery, StoryResolvers, StoryService, StoryTypes } from "./modules/story";
-
-import { prisma } from "../lib/prisma";
+import { ProfileMutation, ProfileQuery, ProfileResolvers, ProfileTypes } from "@/graphql/modules/profile";
+import { PostMutation, PostQuery, PostResolvers, PostTypes } from "@/graphql/modules/post";
+import { CommentMutation, CommentQuery, CommentResolvers, CommentTypes } from "@/graphql/modules/comment";
+import { RecentSearchMutation, RecentSearchQuery, RecentSearchTypes } from "@/graphql/modules/recent-search";
+import { StoryMutation, StoryQuery, StoryResolvers, StoryTypes } from "@/graphql/modules/story";
 
 const BaseType = `#graphql
   scalar DateTime
@@ -44,12 +37,4 @@ export const resolvers = {
   Post: PostResolvers,
   Comment: CommentResolvers,
   Story: StoryResolvers,
-};
-
-export const services = {
-  profile: new ProfileService(prisma),
-  post: new PostService(prisma),
-  comment: new CommentService(prisma),
-  recentSearch: new RecentSearchService(prisma),
-  story: new StoryService(prisma),
 };

@@ -1,5 +1,5 @@
-import type { PrismaClient } from "../../../client";
-import { Prisma } from "../../../client";
+import type { PrismaClient } from "@/prisma/client";
+import { Prisma } from "@/prisma/client";
 
 // Per-viewer include used by the feed queries. Typing it with `satisfies` keeps
 // Prisma's payload inference working so downstream `.author.followers`/`_count`

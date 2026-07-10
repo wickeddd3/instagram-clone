@@ -1,4 +1,4 @@
-import type { PrismaClient } from "../../../client";
+import type { PrismaClient } from "@/prisma/client";
 
 export class RecentSearchService {
   constructor(private prisma: PrismaClient) {}
