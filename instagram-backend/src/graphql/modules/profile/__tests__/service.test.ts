@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { ProfileService } from "./service";
+import { ProfileService } from "../service";
 
 // Unit test: the service is pure business logic over an injected Prisma client,
 // so we can exercise it with a mock and no database.
