@@ -1,6 +1,13 @@
 node_modules
 dist
 build
+prisma/generated
+coverage
 .env
+.env.*
 .git
+.gitignore
 .vscode
+*.log
+Dockerfile
+.dockerignore
