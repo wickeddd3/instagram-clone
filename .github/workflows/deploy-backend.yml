@@ -52,6 +52,25 @@ jobs:
           cd instagram-backend
           yarn build
 
+      - name: Test
+        run: |
+          cd instagram-backend
+          yarn test
+
+      - name: Audit Dependencies
+        run: |
+          cd instagram-backend
+          # yarn v1 exits with a severity bitmask (8=high, 16=critical). Report
+          # high+ but only fail the build on high/critical so transitive low/
+          # moderate advisories don't block deploys.
+          yarn audit --level high || audit_code=$?
+          audit_code=${audit_code:-0}
+          if [ $(( audit_code & 24 )) -ne 0 ]; then
+            echo "::error::High or critical vulnerabilities found"
+            exit 1
+          fi
+          echo "No high or critical vulnerabilities."
+
       - name: Deploy to Render
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
