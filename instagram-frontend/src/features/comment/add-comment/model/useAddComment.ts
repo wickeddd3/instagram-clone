@@ -1,14 +1,23 @@
 import { useMutation } from "@apollo/client/react";
 import { ADD_COMMENT } from "../api/mutation";
 
+interface AddCommentData {
+  addComment: { id: string; __typename: "Comment" };
+}
+
+interface AddCommentVars {
+  postId: string;
+  text: string;
+  parentId?: string;
+}
+
 export const useAddComment = () => {
-  const [addComment] = useMutation(ADD_COMMENT, {
-    update(
-      cache,
-      { data: { addComment: newComment } }: any,
-      { variables }: any,
-    ) {
-      if (!newComment) return;
+  const [addComment] = useMutation<AddCommentData, AddCommentVars>(
+    ADD_COMMENT,
+    {
+      update(cache, { data }, { variables }) {
+        const newComment = data?.addComment;
+        if (!newComment) return;
 
       const postId = variables?.postId;
       const parentId = variables?.parentId || null;

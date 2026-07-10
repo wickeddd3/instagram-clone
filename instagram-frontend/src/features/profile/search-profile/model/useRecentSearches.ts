@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client/react";
+import type { Reference } from "@apollo/client";
 import { GET_RECENT_SEARCHES } from "../api/query";
 import {
   ADD_RECENT_SEARCH,
@@ -16,19 +17,22 @@ export const useRecentSearches = () => {
 
   const [addRecentSearch] = useMutation(ADD_RECENT_SEARCH);
 
-  const [removeRecentSearch] = useMutation(REMOVE_RECENT_SEARCH, {
+  const [removeRecentSearch] = useMutation<
+    { removeRecentSearch: string },
+    { targetId: string }
+  >(REMOVE_RECENT_SEARCH, {
     optimisticResponse: (vars) => ({
       removeRecentSearch: vars.targetId, // Matches GraphQL schema return type
-      __typename: "RemoveRecentSearchResponse", // Optional but can help with cache consistency
     }),
-    update(cache, { data: { removeRecentSearch: targetId } }: any) {
+    update(cache, { data }) {
+      const targetId = data?.removeRecentSearch;
       if (!targetId) return;
 
       cache.modify({
         fields: {
           getRecentSearches(existingRefs = [], { readField }) {
             const filtered = existingRefs.filter(
-              (ref: any) => readField("id", ref) !== targetId,
+              (ref: Reference) => readField("id", ref) !== targetId,
             );
             return filtered;
           },

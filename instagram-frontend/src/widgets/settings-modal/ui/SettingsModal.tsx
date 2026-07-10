@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useModalActions } from "@/app/providers/ModalContext";
+import { useModalActions } from "@/shared/lib/modal";
 import { ModalContent } from "@/shared/ui/Modal";
 import { signOut } from "@/shared/lib/supabase-auth";
 

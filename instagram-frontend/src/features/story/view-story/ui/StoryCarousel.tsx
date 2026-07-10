@@ -2,7 +2,7 @@ import { memo, useCallback, useMemo, useState } from "react";
 import { StoryView } from "@/features/story/view-story";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { UserStory } from "@/entities/story";
-import { useModalActions } from "@/app/providers/ModalContext";
+import { useModalActions } from "@/shared/lib/modal";
 
 export const StoryCarousel = memo(
   ({ stories, index }: { stories: UserStory[]; index: number }) => {
@@ -26,7 +26,7 @@ export const StoryCarousel = memo(
       } else {
         closeModal(); // No more users left
       }
-    }, [userIndex, stories.length]);
+    }, [userIndex, stories.length, closeModal]);
 
     const handlePrevUser = () => {
       if (userIndex > 0) {

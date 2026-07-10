@@ -149,7 +149,7 @@ export default defineConfig([
             {
               to: {
                 type: ["widgets", "features", "entities"],
-                internalPath: "!index.ts",
+                fileInternalPath: "!index.ts",
               },
               disallow: [{ from: { type: "*" } }],
             },

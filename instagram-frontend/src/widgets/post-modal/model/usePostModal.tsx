@@ -1,4 +1,4 @@
-import { useModalActions } from "@/app/providers/ModalContext";
+import { useModalActions } from "@/shared/lib/modal";
 import { PostDetailsModal } from "../ui/PostDetailsModal";
 import type { Post } from "@/entities/post";
 import { useCallback } from "react";

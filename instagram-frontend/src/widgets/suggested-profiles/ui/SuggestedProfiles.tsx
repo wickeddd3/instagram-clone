@@ -1,7 +1,7 @@
 import { SuggestionProfileLink } from "@/entities/profile";
 import { useSuggestedProfiles } from "../model/useSuggestedProfiles";
 import { FollowProfileSuggestionButton } from "@/features/profile/follow-profile";
-import { useAuth } from "@/app/providers/AuthContext";
+import { useAuth } from "@/entities/profile";
 import { useMemo } from "react";
 import { SuggestedProfilesSkeleton } from "./SuggestedProfilesSkeleton";
 

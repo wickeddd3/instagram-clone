@@ -6,8 +6,8 @@ export const PostsEmpty = ({
   subtitle,
 }: {
   icon: ReactNode;
-  title?: String;
-  subtitle?: String;
+  title?: string;
+  subtitle?: string;
 }) => {
   return (
     <div className="flex flex-col justify-center items-center gap-4 p-12">

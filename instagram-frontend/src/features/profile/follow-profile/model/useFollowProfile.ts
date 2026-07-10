@@ -1,6 +1,16 @@
 import { useMutation } from "@apollo/client/react";
+import type { Reference } from "@apollo/client";
 import { TOGGLE_FOLLOW } from "../api/mutations";
 import type { ProfileSuggestion } from "./types";
+
+interface ToggleFollowData {
+  toggleFollow: {
+    id: string;
+    isFollowing: boolean;
+    followersCount: number;
+    __typename: "Profile";
+  };
+}
 
 export const useFollowProfile = ({
   authId,
@@ -11,7 +21,7 @@ export const useFollowProfile = ({
 }) => {
   const { id, isFollowing, followersCount } = targetProfile;
 
-  const [toggleFollow] = useMutation(TOGGLE_FOLLOW, {
+  const [toggleFollow] = useMutation<ToggleFollowData>(TOGGLE_FOLLOW, {
     optimisticResponse: {
       toggleFollow: {
         __typename: "Profile",
@@ -23,7 +33,9 @@ export const useFollowProfile = ({
       },
     },
 
-    update(cache, { data: { toggleFollow } }: any) {
+    update(cache, { data }) {
+      const toggleFollow = data?.toggleFollow;
+      if (!toggleFollow) return;
       // The Target User (profile you are looking at)
       cache.modify({
         id: cache.identify({ __typename: "Profile", id: id }),
@@ -51,7 +63,7 @@ export const useFollowProfile = ({
         fields: {
           getSuggestedProfiles(existingRefs = [], { readField }) {
             return existingRefs.filter(
-              (ref: any) => readField("id", ref) !== targetProfile.id,
+              (ref: Reference) => readField("id", ref) !== targetProfile.id,
             );
           },
         },

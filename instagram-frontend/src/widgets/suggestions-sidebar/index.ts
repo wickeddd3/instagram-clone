@@ -1,2 +1,2 @@
-export { SuggestionsSidebar } from "./ui/SuggestionsSidebar";
+export { LazySuggestionsSidebar } from "./ui/LazySuggestionsSidebar";
 export { SuggestionsSidebarSkeleton } from "./ui/SuggestionsSidebarSkeleton";

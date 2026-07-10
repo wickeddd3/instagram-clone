@@ -3,8 +3,15 @@ import { useInfinitePosts } from "../model/useInfinitePosts";
 import { Posts } from "./Posts";
 import { PostsEmpty } from "./PostsEmpty";
 import { memo, useMemo } from "react";
+import type { Post } from "@/entities/post";
 
-export const ProfilePosts = memo(({ profileId }: { profileId: string }) => {
+export const ProfilePosts = memo(({
+    profileId,
+    onOpenPost,
+  }: {
+    profileId: string;
+    onOpenPost: (posts: Post[], index: number) => void;
+  }) => {
   const { posts, hasMore, loading, isLoadingMore, loadMore } = useInfinitePosts(
     { profileId },
   );
@@ -23,6 +30,7 @@ export const ProfilePosts = memo(({ profileId }: { profileId: string }) => {
       loading={loading}
       isLoadingMore={isLoadingMore}
       loadMore={loadMore}
+      onOpenPost={onOpenPost}
     />
   );
 });

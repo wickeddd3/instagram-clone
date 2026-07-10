@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { useStoryViewers } from "../model/useStoryViewers";
 import { NoViewers, ViewerLink } from "@/entities/story";
-import { useModalActions } from "@/app/providers/ModalContext";
-import { useAuth } from "@/app/providers/AuthContext";
+import { useModalActions } from "@/shared/lib/modal";
+import { useAuth } from "@/entities/profile";
 import { Spinner } from "@/shared/ui/Spinner";
 
 export const ViewersList = ({
@@ -19,7 +19,7 @@ export const ViewersList = ({
 
   useEffect(() => {
     getStoryViewers({ variables: { storyId } });
-  }, [storyId]);
+  }, [storyId, getStoryViewers]);
 
   return (
     <motion.div

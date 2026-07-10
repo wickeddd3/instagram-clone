@@ -16,8 +16,6 @@ export const ReplyList = memo(
     commentId: string;
     onReplyClick: (value: Comment) => void;
   }) => {
-    if (!repliesCount) return;
-
     const { getComments, loading, comments, loadMore } = useInfiniteReply();
 
     const [showReplies, setShowReplies] = useState(false);
@@ -46,7 +44,9 @@ export const ReplyList = memo(
       } else {
         setShowReplies((prev) => !prev);
       }
-    }, [loadedRepliesCount, hasMoreReplies, postId, commentId]);
+    }, [loadedRepliesCount, hasMoreReplies, postId, commentId, getComments, loadMore]);
+
+    if (!repliesCount) return null;
 
     return (
       <div className="flex flex-col gap-4 pl-11">

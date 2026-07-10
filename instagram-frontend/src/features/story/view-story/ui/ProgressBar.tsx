@@ -1,6 +1,14 @@
-export const ProgressBar = ({ segments, activeIndex, progress }: any) => (
+export const ProgressBar = ({
+  segments,
+  activeIndex,
+  progress,
+}: {
+  segments: unknown[];
+  activeIndex: number;
+  progress: number;
+}) => (
   <div className="flex gap-1 px-4 pt-3 pb-1 z-50">
-    {segments.map((_: any, i: number) => (
+    {segments.map((_, i) => (
       <div
         key={i}
         className="h-0.5 flex-1 bg-white/20 rounded-full overflow-hidden"

@@ -9,12 +9,17 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-    visualizer({
-      open: true, // Automatically opens the report in your browser
-      filename: "stats.html", // The name of the generated file
-      gzipSize: true, // Shows how big the file is after compression
-      brotliSize: true,
-    }),
+    // Bundle analysis: run `ANALYZE=1 yarn build` to generate and open the report
+    ...(process.env.ANALYZE
+      ? [
+          visualizer({
+            open: true, // Automatically opens the report in your browser
+            filename: "stats.html", // The name of the generated file
+            gzipSize: true, // Shows how big the file is after compression
+            brotliSize: true,
+          }),
+        ]
+      : []),
   ],
   resolve: {
     alias: {

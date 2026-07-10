@@ -1,2 +1,2 @@
-export { Stories } from "./ui/Stories";
+export { LazyStories } from "./ui/LazyStories";
 export { StoriesSkeleton } from "./ui/StoriesSkeleton";

@@ -18,7 +18,7 @@ export const useInfiniteReply = () => {
     fetchMore({
       variables: { cursor: nextCursor, limit: 5 },
     });
-  }, [hasMore, loading, nextCursor]);
+  }, [hasMore, loading, nextCursor, fetchMore]);
 
   return {
     comments,

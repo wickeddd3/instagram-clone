@@ -1,4 +1,4 @@
-import { STORY_FRAGMENT } from "@/entities/story/api/fragment";
+import { STORY_FRAGMENT } from "@/entities/story";
 import { gql } from "@apollo/client";
 
 export const CREATE_STORY = gql`

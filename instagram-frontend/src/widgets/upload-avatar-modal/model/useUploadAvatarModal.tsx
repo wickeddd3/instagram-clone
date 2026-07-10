@@ -1,4 +1,4 @@
-import { useModalActions } from "@/app/providers/ModalContext";
+import { useModalActions } from "@/shared/lib/modal";
 import { UploadAvatarModal } from "../ui/UploadAvatarModal";
 
 export const useUploadAvatarModal = () => {

@@ -1,30 +1,9 @@
+import { useCallback, useMemo, useState, type ReactNode } from "react";
 import {
-  createContext,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-  type ReactNode,
-} from "react";
-
-interface DrawerState {
-  isDrawerOpen: boolean;
-  drawerContent: ReactNode;
-  hasDrawerCloseButton: boolean;
-}
-
-interface DrawerActions {
-  openDrawer: (params: {
-    content: ReactNode;
-    hasCloseButton?: boolean;
-  }) => void;
-  closeDrawer: () => void;
-}
-
-const DrawerStateContext = createContext<DrawerState | undefined>(undefined);
-const DrawerActionsContext = createContext<DrawerActions | undefined>(
-  undefined,
-);
+  DrawerActionsContext,
+  DrawerStateContext,
+  type DrawerState,
+} from "./DrawerContext";
 
 export const DrawerProvider = ({ children }: { children: ReactNode }) => {
   const [state, setState] = useState<DrawerState>({
@@ -70,18 +49,4 @@ export const DrawerProvider = ({ children }: { children: ReactNode }) => {
       </DrawerActionsContext.Provider>
     </DrawerStateContext.Provider>
   );
-};
-
-export const useDrawerState = () => {
-  const context = useContext(DrawerStateContext);
-  if (!context)
-    throw new Error("useDrawerState must be used within DrawerProvider");
-  return context;
-};
-
-export const useDrawerActions = () => {
-  const context = useContext(DrawerActionsContext);
-  if (!context)
-    throw new Error("useDrawerActions must be used within DrawerProvider");
-  return context;
 };

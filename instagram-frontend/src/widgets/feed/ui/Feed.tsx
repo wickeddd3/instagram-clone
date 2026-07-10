@@ -1,12 +1,16 @@
 import { useInfiniteFeed } from "../model/useInfiniteFeed";
-import { NoMorePosts, PostSkeleton } from "@/entities/post";
+import { NoMorePosts, PostSkeleton, type Post } from "@/entities/post";
 import { Virtuoso } from "react-virtuoso";
 import { FeedCard } from "./FeedCard";
 import { Spinner } from "@/shared/ui/Spinner";
 import { PullToRefresh } from "@/shared/ui/PullToRefresh";
-import { useAuth } from "@/app/providers/AuthContext";
+import { useAuth } from "@/entities/profile";
 
-export const Feed = () => {
+export const Feed = ({
+  onOpenPost,
+}: {
+  onOpenPost: (post: Post) => void;
+}) => {
   const { authUser } = useAuth();
 
   const { posts, hasMore, loading, isLoadingMore, loadMore, refetch } =
@@ -44,7 +48,7 @@ export const Feed = () => {
             endReached={handleLoadMore} // Trigger loadMore when reaching the end
             itemContent={(index, post) => (
               <div key={index} className="pb-10 px-4 md:px-0">
-                <FeedCard post={post} />
+                <FeedCard post={post} onOpenPost={onOpenPost} />
               </div>
             )} // The individual post renderer
             components={{

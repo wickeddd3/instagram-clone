@@ -7,3 +7,7 @@ export { SuggestionProfileLink } from "./ui/SuggestionProfileLink";
 export { SuggestionProfileLinkSkeleton } from "./ui/SuggestionProfileLinkSkeleton";
 export type { Profile, ProfileById, ProfileByUsername } from "./model/types";
 export { PROFILE_FRAGMENT } from "./api/fragment";
+export { GET_PROFILE_BY_ID } from "./api/query";
+export { useProfileById } from "./model/useProfileById";
+export { AuthProvider } from "./model/AuthProvider";
+export { useAuth } from "./model/AuthContext";

@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useModalActions } from "@/app/providers/ModalContext";
+import { useEffect, useRef, useState } from "react";
+import { useModalActions } from "@/shared/lib/modal";
 import { ModalContent } from "@/shared/ui/Modal";
 import { ImportImage, usePreviewUpload } from "@/features/post/import-image";
 import { CreatePost } from "@/features/post/create-post";
@@ -9,10 +9,17 @@ export const CreatePostModal = () => {
   const { files, previewUrls, handleFileChange } = usePreviewUpload();
   const [step, setStep] = useState<"import" | "upload">("import");
 
+  // Track the latest preview URLs so the unmount cleanup below always revokes
+  // the current set without re-running on every change
+  const previewUrlsRef = useRef(previewUrls);
+  useEffect(() => {
+    previewUrlsRef.current = previewUrls;
+  }, [previewUrls]);
+
   useEffect(() => {
     // Cleanup on unmount
     return () => {
-      previewUrls.forEach((url) => URL.revokeObjectURL(url));
+      previewUrlsRef.current.forEach((url) => URL.revokeObjectURL(url));
     };
   }, []);
 

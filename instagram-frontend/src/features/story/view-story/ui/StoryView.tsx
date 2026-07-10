@@ -3,8 +3,8 @@ import { Ellipsis } from "lucide-react";
 import { ModalCloseButton } from "@/shared/ui/Modal";
 import { useStoryTimer } from "../model/useStoryTimer";
 import { ProgressBar } from "./ProgressBar";
-import { useModalActions } from "@/app/providers/ModalContext";
-import { useAuth } from "@/app/providers/AuthContext";
+import { useModalActions } from "@/shared/lib/modal";
+import { useAuth } from "@/entities/profile";
 import { Avatar } from "@/shared/ui/Avatar";
 import { PreviewImage } from "@/shared/ui/PreviewImage";
 import type { UserStory } from "@/entities/story";
@@ -40,7 +40,7 @@ export const StoryView = memo(
     );
     const timeAgo = useMemo(
       () => (activeStory ? formatStoryTime(activeStory.createdAt) : ""),
-      [activeStory?.id],
+      [activeStory],
     );
 
     const handleNextSegment = () => {

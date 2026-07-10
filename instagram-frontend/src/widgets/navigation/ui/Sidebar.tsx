@@ -10,25 +10,27 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { useAuth } from "@/app/providers/AuthContext";
-import { useCreatePostModal } from "@/widgets/create-post-modal";
-import { useSearchProfilesDrawer } from "@/widgets/search-profiles-drawer";
-import { useNotificationsDrawer } from "@/widgets/notifications-drawer";
+import { useAuth } from "@/entities/profile";
 
 interface SidebarProps {
   isSidebarOpen?: boolean;
   onSidebarHover?: (isOpen: boolean) => void;
+  onCreatePost: () => void;
+  onOpenSearch: () => void;
+  onOpenNotifications: () => void;
 }
 
-export const Sidebar = ({ isSidebarOpen, onSidebarHover }: SidebarProps) => {
+export const Sidebar = ({
+  isSidebarOpen,
+  onSidebarHover,
+  onCreatePost,
+  onOpenSearch,
+  onOpenNotifications,
+}: SidebarProps) => {
   const { authProfile } = useAuth();
-  const { openCreatePostModal } = useCreatePostModal();
-  const { openSearchProfilesDrawer } = useSearchProfilesDrawer();
-  const { openNotificationsDrawer } = useNotificationsDrawer();
+  const navigate = useNavigate();
 
   if (!authProfile) return null;
-
-  const navigate = useNavigate();
 
   const iconSize = 24;
 
@@ -46,7 +48,7 @@ export const Sidebar = ({ isSidebarOpen, onSidebarHover }: SidebarProps) => {
     {
       icon: <Search size={iconSize} />,
       label: "Search",
-      action: openSearchProfilesDrawer,
+      action: onOpenSearch,
     },
     {
       icon: <Compass size={iconSize} />,
@@ -56,12 +58,12 @@ export const Sidebar = ({ isSidebarOpen, onSidebarHover }: SidebarProps) => {
     {
       icon: <Heart size={iconSize} />,
       label: "Notifications",
-      action: openNotificationsDrawer,
+      action: onOpenNotifications,
     },
     {
       icon: <Plus size={iconSize} />,
       label: "Create",
-      action: openCreatePostModal,
+      action: onCreatePost,
     },
     {
       icon: (

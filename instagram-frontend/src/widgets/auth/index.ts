@@ -12,4 +12,3 @@ export { LoginForm } from "./ui/LoginForm";
 export { SignupForm } from "./ui/SignupForm";
 export { MainLogin } from "./ui/MainLogin";
 
-export { useProfileById } from "./model/useProfileById";

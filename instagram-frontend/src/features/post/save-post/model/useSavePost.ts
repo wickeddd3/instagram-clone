@@ -1,13 +1,24 @@
 import { useMutation } from "@apollo/client/react";
 import { TOGGLE_POST_SAVE } from "../api/mutation";
+
+interface TogglePostSaveData {
+  togglePostSave: {
+    id: string;
+    isSaved: boolean;
+    __typename: "PostSaveResponse";
+  };
+}
 import type { Post } from "@/entities/post";
-import { useAuth } from "@/app/providers/AuthContext";
+import { useAuth } from "@/entities/profile";
 
 export const useSavePost = ({ post }: { post: Post }) => {
   const { authProfile } = useAuth();
   const profileId = authProfile?.id || "";
 
-  const [togglePostSave] = useMutation(TOGGLE_POST_SAVE, {
+  const [togglePostSave] = useMutation<
+    TogglePostSaveData,
+    { postId: string }
+  >(TOGGLE_POST_SAVE, {
     optimisticResponse: (vars) => ({
       togglePostSave: {
         id: vars.postId,
@@ -15,8 +26,9 @@ export const useSavePost = ({ post }: { post: Post }) => {
         __typename: "PostSaveResponse",
       },
     }),
-    update(cache, { data: { togglePostSave } }: any) {
-      const isSaved = togglePostSave.isSaved;
+    update(cache, { data }) {
+      if (!data?.togglePostSave) return;
+      const isSaved = data.togglePostSave.isSaved;
 
       cache.modify({
         id: cache.identify({ __typename: "Post", id: post.id }),

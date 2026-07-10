@@ -1,7 +1,7 @@
 import {
   useDrawerActions,
   useDrawerState,
-} from "@/app/providers/DrawerContext";
+} from "@/shared/lib/drawer";
 import { Drawer } from "@/shared/ui/Drawer";
 import { memo } from "react";
 

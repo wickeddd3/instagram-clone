@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { SearchField } from "./SearchField";
-import { useDrawerActions } from "@/app/providers/DrawerContext";
+import { useDrawerActions } from "@/shared/lib/drawer";
 import {
   RecentSearches,
   SearchResults,

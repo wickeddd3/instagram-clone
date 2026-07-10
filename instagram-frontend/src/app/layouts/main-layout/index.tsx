@@ -1,12 +1,15 @@
 import { Toaster } from "sonner";
 import { MobileHeader } from "@/widgets/mobile-header";
 import { MobileNav } from "@/widgets/navigation";
+import { useCreatePostModal } from "@/widgets/create-post-modal";
 import { LayoutSidebar } from "./LayoutSidebar";
 import { LayoutContent } from "./LayoutContent";
 import { LayoutModal } from "./LayoutModal";
 import { LayoutDrawer } from "./LayoutDrawer";
 
 export const MainLayout = () => {
+  const { openCreatePostModal } = useCreatePostModal();
+
   return (
     <div className="w-full h-full flex flex-col md:flex-row bg-[#0d1015] text-white">
       {/* Top Header - Hidden on Desktop */}
@@ -22,7 +25,7 @@ export const MainLayout = () => {
 
       {/* Bottom Nav - Hidden on Desktop */}
       <div className="md:hidden fixed bottom-0 w-full z-50 bg-[#0d1015] border-t border-gray-800">
-        <MobileNav />
+        <MobileNav onCreatePost={openCreatePostModal} />
       </div>
 
       {/* Modal */}

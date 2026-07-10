@@ -1,4 +1,4 @@
-import { useAuth } from "./AuthContext";
+import { useAuth } from "@/entities/profile";
 import { MainLayout } from "./../layouts";
 import { LoadingScreen } from "@/shared/ui/LoadingScreen";
 import { MainLogin } from "@/widgets/auth";

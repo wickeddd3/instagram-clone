@@ -1,4 +1,5 @@
-import { useAuth } from "@/app/providers/AuthContext";
+import { toast } from "sonner";
+import { useAuth } from "@/entities/profile";
 import { BackButton } from "@/shared/ui/BackButton";
 import { ShareButton } from "@/shared/ui/ShareButton";
 import { PreviewImage } from "@/shared/ui/PreviewImage";
@@ -25,10 +26,6 @@ export const CreateStory = ({
 }: DetailsProps) => {
   const { authUser } = useAuth();
 
-  if (!authUser) return;
-
-  const CURRENT_USER_ID = authUser?.id;
-
   const handleResetState = () => {
     setStep("upload");
     setIsUploading(false);
@@ -36,6 +33,10 @@ export const CreateStory = ({
   };
 
   const { createStory } = useCreateStory({ onCompleted: handleResetState });
+
+  if (!authUser) return null;
+
+  const CURRENT_USER_ID = authUser.id;
 
   // Handle Sharing Post + Uploading Image
   const handleShare = async () => {
@@ -57,8 +58,8 @@ export const CreateStory = ({
           mediaType: "IMAGE",
         },
       });
-    } catch (error) {
-      console.error("Error creating story:", error);
+    } catch {
+      toast.error("Failed to create story. Please try again.");
       setIsUploading(false);
     }
   };
