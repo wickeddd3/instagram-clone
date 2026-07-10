@@ -1,13 +1,8 @@
 import { createClient } from "@supabase/supabase-js";
+import { config } from "../config/env.config";
 
-const supabaseUrl = process.env.SUPABASE_URL ?? "";
-const supabaseKey = process.env.SUPABASE_SERVICE_KEY ?? "";
-
-if (!supabaseUrl || !supabaseKey) {
-  throw new Error("SUPABASE_URL and SUPABASE_SERVICE_KEY are required.");
-}
-
-export const supabase = createClient(supabaseUrl, supabaseKey);
+// Service-role client used only to verify JWTs server-side (never exposed).
+export const supabase = createClient(config.supabase.url, config.supabase.serviceKey);
 
 export const verifySupabaseToken = async (token: string) => {
   if (!token) return null;
