@@ -1,8 +1,10 @@
+import type { GraphQLContext } from "../../context";
+
 export const RecentSearchMutation = {
   addRecentSearch: async (
-    _parent: any,
+    _parent: unknown,
     { targetId }: { targetId: string },
-    { userId, services }: any,
+    { userId, services }: GraphQLContext,
   ) => {
     if (!userId) return null;
 
@@ -10,20 +12,16 @@ export const RecentSearchMutation = {
   },
 
   removeRecentSearch: async (
-    _parent: any,
+    _parent: unknown,
     { targetId }: { targetId: string },
-    { userId, services }: any,
+    { userId, services }: GraphQLContext,
   ) => {
     if (!userId) throw new Error("Unauthorized");
 
     return services.recentSearch.removeRecentSearch(userId, targetId);
   },
 
-  clearRecentSearches: async (
-    _parent: any,
-    _args: any,
-    { userId, services }: any,
-  ) => {
+  clearRecentSearches: async (_parent: unknown, _args: unknown, { userId, services }: GraphQLContext) => {
     if (!userId) throw new Error("Unauthorized");
 
     return services.recentSearch.clearAll(userId);

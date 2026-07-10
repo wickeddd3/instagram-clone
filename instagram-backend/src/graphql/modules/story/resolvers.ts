@@ -1,3 +1,7 @@
+export interface StoryParent {
+  _count?: { views?: number };
+}
+
 export const StoryResolvers = {
-  viewsCount: (parent: any) => parent._count?.views ?? 0,
+  viewsCount: (parent: StoryParent) => parent._count?.views ?? 0,
 };

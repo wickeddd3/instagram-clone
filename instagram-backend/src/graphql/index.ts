@@ -1,37 +1,13 @@
-import {
-  ProfileMutation,
-  ProfileQuery,
-  ProfileResolvers,
-  ProfileService,
-  ProfileTypes,
-} from "./modules/profile";
-import {
-  PostMutation,
-  PostQuery,
-  PostResolvers,
-  PostService,
-  PostTypes,
-} from "./modules/post";
-import {
-  CommentMutation,
-  CommentQuery,
-  CommentResolvers,
-  CommentService,
-  CommentTypes,
-} from "./modules/comment";
+import { ProfileMutation, ProfileQuery, ProfileResolvers, ProfileService, ProfileTypes } from "./modules/profile";
+import { PostMutation, PostQuery, PostResolvers, PostService, PostTypes } from "./modules/post";
+import { CommentMutation, CommentQuery, CommentResolvers, CommentService, CommentTypes } from "./modules/comment";
 import {
   RecentSearchMutation,
   RecentSearchQuery,
   RecentSearchService,
   RecentSearchTypes,
 } from "./modules/recent-search";
-import {
-  StoryMutation,
-  StoryQuery,
-  StoryResolvers,
-  StoryService,
-  StoryTypes,
-} from "./modules/story";
+import { StoryMutation, StoryQuery, StoryResolvers, StoryService, StoryTypes } from "./modules/story";
 
 import { prisma } from "../lib/prisma";
 
@@ -47,14 +23,7 @@ const BaseType = `#graphql
   }
 `;
 
-export const typeDefs = [
-  BaseType,
-  ProfileTypes,
-  PostTypes,
-  CommentTypes,
-  RecentSearchTypes,
-  StoryTypes,
-];
+export const typeDefs = [BaseType, ProfileTypes, PostTypes, CommentTypes, RecentSearchTypes, StoryTypes];
 
 export const resolvers = {
   Query: {

@@ -2,17 +2,10 @@
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
     // File Layout
+    // rootDirs virtually merges src with the generated Prisma client so that
+    // relative imports like `../../../client` resolve into prisma/generated.
     "rootDirs": ["./src", "./prisma/generated"],
     "outDir": "./dist",
-    // baseUrl anchored at the project root so path aliases map cleanly onto the
-    // emitted output tree (dist/src, dist/prisma/generated) — this is what lets
-    // tsc-alias rewrite them to correct relative requires for `node dist`.
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"],
-      "@/prisma/*": ["prisma/generated/*"]
-    },
-    "ignoreDeprecations": "6.0",
 
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
@@ -30,7 +23,10 @@
 
     // Stricter Typechecking Options
     "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true,
+    // exactOptionalPropertyTypes is intentionally left off: it is incompatible
+    // with Prisma's generated create/where input types (passing `undefined` for
+    // an optional column) and with GraphQL resolver args, and only produced
+    // churn at those boundaries without catching real bugs.
 
     // Style Options
     // "noImplicitReturns": true,

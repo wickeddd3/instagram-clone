@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client/extension";
+import type { PrismaClient } from "../../../client";
 
 export class RecentSearchService {
   constructor(private prisma: PrismaClient) {}
@@ -12,7 +12,7 @@ export class RecentSearchService {
     });
 
     // Return the Profile objects directly
-    return records.map((r: any) => r.target);
+    return records.map((r) => r.target);
   }
 
   async addRecentSearch(userId: string, targetId: string) {

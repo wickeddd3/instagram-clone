@@ -1,20 +1,15 @@
-import { PrismaClient } from "@prisma/client/extension";
+import type { PrismaClient } from "../../../client";
 
 export class CommentService {
   constructor(private prisma: PrismaClient) {}
 
-  async getComments(params: {
-    postId: string;
-    parentId?: string;
-    cursor?: string;
-    limit: number;
-  }) {
+  async getComments(params: { postId: string; parentId?: string; cursor?: string; limit: number }) {
     const { postId, parentId, cursor, limit } = params;
 
     const comments = await this.prisma.comment.findMany({
       where: {
         postId,
-        parentId: parentId || null, // Fetch top-level or specific child thread
+        parentId: parentId ?? null, // Fetch top-level or specific child thread
       },
       take: limit,
       orderBy: { createdAt: "asc" }, // Comments usually scroll oldest to newest
@@ -31,16 +26,13 @@ export class CommentService {
     return { comments, hasMore, nextCursor };
   }
 
-  async addComment(
-    userId: string,
-    data: { postId: string; text: string; parentId?: string },
-  ) {
+  async addComment(userId: string, data: { postId: string; text: string; parentId?: string | null }) {
     return await this.prisma.comment.create({
       data: {
         text: data.text,
         postId: data.postId,
         authorId: userId,
-        parentId: data.parentId || null,
+        parentId: data.parentId ?? null,
       },
       include: { author: true },
     });
@@ -65,7 +57,7 @@ export class CommentService {
     return {
       id: commentId,
       isLiked: !existing,
-      likesCount: comment?._count.likes || 0,
+      likesCount: comment?._count.likes ?? 0,
     };
   }
 }

@@ -1,38 +1,32 @@
+import type { GraphQLContext } from "../../context";
+
 export const ProfileQuery = {
   checkAvailability: (
-    _parent: any,
+    _parent: unknown,
     { email, username }: { email: string; username: string },
-    { services }: any,
+    { services }: GraphQLContext,
   ) => {
     return services.profile.checkAvailability(email, username);
   },
 
-  getProfile: (
-    _parent: any,
-    { username }: { username: string },
-    { services }: any,
-  ) => {
+  getProfile: (_parent: unknown, { username }: { username: string }, { services }: GraphQLContext) => {
     return services.profile.getProfile({ username });
   },
 
-  getProfileById: (_parent: any, { id }: { id: string }, { services }: any) => {
+  getProfileById: (_parent: unknown, { id }: { id: string }, { services }: GraphQLContext) => {
     return services.profile.getProfile({ id });
   },
 
-  getSuggestedProfiles: (
-    _parent: any,
-    { limit = 5 },
-    { userId, services }: any,
-  ) => {
+  getSuggestedProfiles: (_parent: unknown, { limit = 5 }, { userId, services }: GraphQLContext) => {
     if (!userId) return [];
 
     return services.profile.getSuggestedProfiles(userId, limit);
   },
 
   searchProfiles: (
-    _parent: any,
+    _parent: unknown,
     { query, limit = 10 }: { query: string; limit?: number },
-    { services }: any,
+    { services }: GraphQLContext,
   ) => {
     if (!query) return [];
 
@@ -40,13 +34,9 @@ export const ProfileQuery = {
   },
 
   getFollowers: async (
-    _parent: any,
-    {
-      username,
-      cursor,
-      limit = 10,
-    }: { username: string; cursor?: string; limit: number },
-    { services }: any,
+    _parent: unknown,
+    { username, cursor, limit = 10 }: { username: string; cursor?: string; limit?: number },
+    { services }: GraphQLContext,
   ) => {
     const result = await services.profile.searchFollowers({
       ...{ username, cursor, limit },
@@ -61,13 +51,9 @@ export const ProfileQuery = {
   },
 
   getFollowing: async (
-    _parent: any,
-    {
-      username,
-      cursor,
-      limit = 10,
-    }: { username: string; cursor?: string; limit: number },
-    { services }: any,
+    _parent: unknown,
+    { username, cursor, limit = 10 }: { username: string; cursor?: string; limit?: number },
+    { services }: GraphQLContext,
   ) => {
     const result = await services.profile.searchFollowers({
       ...{ username, cursor, limit },
@@ -82,14 +68,9 @@ export const ProfileQuery = {
   },
 
   searchFollowers: async (
-    _parent: any,
-    {
-      username,
-      query = "",
-      cursor,
-      limit = 10,
-    }: { username: string; query: string; cursor?: string; limit: number },
-    { services }: any,
+    _parent: unknown,
+    { username, query = "", cursor, limit = 10 }: { username: string; query?: string; cursor?: string; limit?: number },
+    { services }: GraphQLContext,
   ) => {
     const result = await services.profile.searchFollowers({
       ...{ username, query, cursor, limit },
@@ -104,14 +85,9 @@ export const ProfileQuery = {
   },
 
   searchFollowing: async (
-    _parent: any,
-    {
-      username,
-      query = "",
-      cursor,
-      limit = 10,
-    }: { username: string; query: string; cursor?: string; limit: number },
-    { services }: any,
+    _parent: unknown,
+    { username, query = "", cursor, limit = 10 }: { username: string; query?: string; cursor?: string; limit?: number },
+    { services }: GraphQLContext,
   ) => {
     const result = await services.profile.searchFollowers({
       ...{ username, query, cursor, limit },

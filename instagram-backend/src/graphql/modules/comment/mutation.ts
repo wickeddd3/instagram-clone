@@ -1,8 +1,18 @@
+import type { GraphQLContext } from "../../context";
+
 export const CommentMutation = {
   addComment: async (
-    _parent: any,
-    { postId, text, parentId = null }: any,
-    { userId, services }: any,
+    _parent: unknown,
+    {
+      postId,
+      text,
+      parentId = null,
+    }: {
+      postId: string;
+      text: string;
+      parentId?: string | null;
+    },
+    { userId, services }: GraphQLContext,
   ) => {
     if (!userId) throw new Error("Unauthorized");
 
@@ -10,9 +20,9 @@ export const CommentMutation = {
   },
 
   toggleCommentLike: async (
-    _parent: any,
+    _parent: unknown,
     { commentId }: { commentId: string },
-    { userId, services }: any,
+    { userId, services }: GraphQLContext,
   ) => {
     if (!userId) throw new Error("Unauthorized");
 

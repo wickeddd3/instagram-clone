@@ -1,4 +1,22 @@
-import { PrismaClient } from "@prisma/client/extension";
+import type { PrismaClient } from "../../../client";
+import { Prisma } from "../../../client";
+
+// Prisma can't infer the payload when the include key is computed at runtime
+// (see searchFollowers), so we describe the shape we know we requested.
+type FollowWithProfiles = Prisma.FollowGetPayload<{
+  include: {
+    follower: {
+      include: {
+        _count: { select: { followers: true; following: true; posts: true } };
+      };
+    };
+    following: {
+      include: {
+        _count: { select: { followers: true; following: true; posts: true } };
+      };
+    };
+  };
+}>;
 
 export class ProfileService {
   constructor(private prisma: PrismaClient) {}
@@ -8,7 +26,7 @@ export class ProfileService {
       where: { followerId: userId },
       select: { followingId: true },
     });
-    const followingIds = following.map((f: any) => f.followingId);
+    const followingIds = following.map((f) => f.followingId);
 
     return followingIds;
   }
@@ -25,12 +43,7 @@ export class ProfileService {
     };
   }
 
-  async createProfile(data: {
-    id: string;
-    username: string;
-    email: string;
-    displayName: string;
-  }) {
+  async createProfile(data: { id: string; username: string; email: string; displayName: string }) {
     return await this.prisma.profile.create({ data });
   }
 
@@ -49,7 +62,9 @@ export class ProfileService {
     });
   }
 
-  async getProfile(where: { username?: string; id?: string }) {
+  // Callers look a profile up by exactly one unique field, so a union expresses
+  // the contract Prisma's WhereUniqueInput requires.
+  async getProfile(where: { username: string } | { id: string }) {
     return await this.prisma.profile.findUnique({
       where,
       include: {
@@ -67,8 +82,7 @@ export class ProfileService {
     });
 
     if (!targetProfile) throw new Error("Profile not found");
-    if (targetProfile.id === followerId)
-      throw new Error("You cannot follow yourself");
+    if (targetProfile.id === followerId) throw new Error("You cannot follow yourself");
 
     const existingFollow = await this.prisma.follow.findUnique({
       where: {
@@ -96,7 +110,7 @@ export class ProfileService {
     return {
       id: targetProfile.id,
       isFollowing: !existingFollow,
-      followersCount: updated?._count.followers || 0,
+      followersCount: updated?._count.followers ?? 0,
     };
   }
 
@@ -162,24 +176,28 @@ export class ProfileService {
         },
         take: limit - finalSuggestions.length,
         orderBy: { followers: { _count: "desc" } },
+        // Same include as the mutuals query so both arrays share one type
+        // (popular accounts simply have no matching mutual, so the list is empty).
+        include: {
+          followers: {
+            where: { followerId: { in: followingIds } },
+            select: { follower: { select: { username: true } } },
+            take: 1,
+          },
+          _count: { select: { followers: true } },
+        },
       });
       finalSuggestions = [...finalSuggestions, ...popular];
     }
 
     // 4. Map the data to include the mutualFriend string
-    return finalSuggestions.map((profile: any) => ({
+    return finalSuggestions.map((profile) => ({
       ...profile,
-      mutualFriend: profile.followers?.[0]?.follower?.username || null,
+      mutualFriend: profile.followers[0]?.follower.username ?? null,
     }));
   }
 
-  async searchProfiles({
-    query,
-    limit = 10,
-  }: {
-    query: string;
-    limit?: number;
-  }) {
+  async searchProfiles({ query, limit = 10 }: { query: string; limit?: number }) {
     return await this.prisma.profile.findMany({
       where: {
         OR: [
@@ -240,16 +258,14 @@ export class ProfileService {
       }),
     });
 
-    const profiles = data.map((item: any) =>
-      isSearchingFollowers ? item.follower : item.following,
-    );
+    // The include key is computed at runtime so Prisma widens the payload to the
+    // base Follow row; assert the shape we actually requested.
+    const rows = data as unknown as FollowWithProfiles[];
+    const profiles = rows.map((item) => (isSearchingFollowers ? item.follower : item.following));
 
+    const last = data[data.length - 1];
     const hasMore = data.length === limit;
-    const nextCursor = hasMore
-      ? isSearchingFollowers
-        ? data[data.length - 1].followerId
-        : data[data.length - 1].followingId
-      : null;
+    const nextCursor = hasMore && last ? (isSearchingFollowers ? last.followerId : last.followingId) : null;
 
     return { profiles, hasMore, nextCursor };
   }

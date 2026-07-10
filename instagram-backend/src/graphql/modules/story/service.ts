@@ -1,18 +1,10 @@
-import { PrismaClient } from "@prisma/client/extension";
-import {
-  MediaType,
-  StoryView,
-  StoryWithViews,
-  UserStoryResponse,
-} from "./service.types";
+import type { PrismaClient } from "../../../client";
+import type { StoryView, StoryWithViews, UserStoryResponse } from "./service.types";
 
 export class StoryService {
   constructor(private prisma: PrismaClient) {}
 
-  private async getProfileWithStories(
-    profileId: string,
-    targetProfileId: string,
-  ): Promise<UserStoryResponse | null> {
+  private async getProfileWithStories(profileId: string, targetProfileId: string): Promise<UserStoryResponse | null> {
     const now = new Date();
 
     const profile = await this.prisma.profile.findUnique({
@@ -35,13 +27,11 @@ export class StoryService {
       },
     });
 
-    if (!profile || profile?.stories?.length === 0) return null;
+    if (!profile || profile.stories.length === 0) return null;
 
     return {
       ...profile,
-      hasUnseenStories: profile.stories.some(
-        (story: StoryWithViews) => story.views.length === 0,
-      ),
+      hasUnseenStories: profile.stories.some((story: StoryWithViews) => story.views.length === 0),
     };
   }
 
@@ -49,10 +39,7 @@ export class StoryService {
     const now = new Date();
 
     // 1. Fetch the Auth User first
-    const authUserStories = await this.getProfileWithStories(
-      profileId,
-      profileId,
-    );
+    const authUserStories = await this.getProfileWithStories(profileId, profileId);
 
     // 2. Fetch other users with active stories
     const othersWithStories = await this.prisma.profile.findMany({
@@ -89,11 +76,9 @@ export class StoryService {
     });
 
     // Map the "others" to include the hasUnseenStories flag
-    const mappedOthers = othersWithStories.map((profile: any) => ({
+    const mappedOthers = othersWithStories.map((profile) => ({
       ...profile,
-      hasUnseenStories: profile.stories.some(
-        (story: StoryWithViews) => story.views.length === 0,
-      ),
+      hasUnseenStories: profile.stories.some((story: StoryWithViews) => story.views.length === 0),
     }));
 
     // 3. Combine: Auth user story with other stories
@@ -118,10 +103,7 @@ export class StoryService {
     });
   }
 
-  async createStory(
-    userId: string,
-    data: { mediaUrl: string; mediaType: MediaType },
-  ): Promise<UserStoryResponse | null> {
+  async createStory(userId: string, data: { mediaUrl: string; mediaType: string }): Promise<UserStoryResponse | null> {
     const expiresAt = new Date();
     expiresAt.setHours(expiresAt.getHours() + 24);
 

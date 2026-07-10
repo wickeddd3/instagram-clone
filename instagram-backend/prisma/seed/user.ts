@@ -7,8 +7,8 @@ dotenv.config();
 
 // Initialize the Admin Client
 const supabaseAdmin = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,
+  process.env.SUPABASE_URL ?? "",
+  process.env.SUPABASE_SERVICE_ROLE_KEY ?? "",
   {
     auth: {
       autoRefreshToken: false,
@@ -62,11 +62,6 @@ async function createProfile(
       },
     });
 
-    if (!profile) {
-      console.error(`❌ Failed to upsert profile for ${email}`);
-      return null;
-    }
-
     console.log(`📝 Profile upserted for ${username} (${email})`);
     return profile;
   } catch (err) {
@@ -103,4 +98,6 @@ async function seedUsers() {
   console.log("✅ Seeding finished successfully.");
 }
 
-seedUsers();
+seedUsers().catch((err: unknown) => {
+  console.error("❌ Seeding failed:", err);
+});

@@ -1,13 +1,11 @@
+import type { GraphQLContext } from "../../context";
+
 export const StoryQuery = {
-  getStoriesFeed: (_parent: any, { profileId }: any, { services }: any) => {
+  getStoriesFeed: (_parent: unknown, { profileId }: { profileId: string }, { services }: GraphQLContext) => {
     return services.story.getStoriesFeed(profileId);
   },
 
-  getStoryViewers: async (
-    _parent: any,
-    { storyId }: any,
-    { services }: any,
-  ) => {
+  getStoryViewers: async (_parent: unknown, { storyId }: { storyId: string }, { services }: GraphQLContext) => {
     return services.story.getStoryViewers(storyId);
   },
 };
