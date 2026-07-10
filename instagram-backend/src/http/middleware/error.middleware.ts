@@ -38,6 +38,7 @@ export const errorHandler = (
     error: {
       code,
       message,
+      ...(isAppError && err.details ? { details: err.details } : {}),
       ...(config.isProduction || !(err instanceof Error) ? {} : { stack: err.stack }),
     },
   });
