@@ -4,6 +4,7 @@ import { PostService } from "./graphql/modules/post/service";
 import { CommentService } from "./graphql/modules/comment/service";
 import { RecentSearchService } from "./graphql/modules/recent-search/service";
 import { StoryService } from "./graphql/modules/story/service";
+import { AccountService } from "./services/account.service";
 // Resolves to prisma/generated/client via the tsconfig rootDirs merge.
 import type { PrismaClient } from "./client";
 
@@ -18,6 +19,7 @@ export interface Services {
   comment: CommentService;
   recentSearch: RecentSearchService;
   story: StoryService;
+  account: AccountService;
 }
 
 // Factory form so tests can inject a mock/isolated Prisma client.
@@ -27,6 +29,7 @@ export const createServices = (client: PrismaClient = prisma): Services => ({
   comment: new CommentService(client),
   recentSearch: new RecentSearchService(client),
   story: new StoryService(client),
+  account: new AccountService(client),
 });
 
 // Shared singleton used by the running server.

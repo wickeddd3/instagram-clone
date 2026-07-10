@@ -13,6 +13,7 @@ import type { GraphQLContext } from "../graphql/context";
 import { getUserIdFromRequest } from "./middleware/auth.middleware";
 import { healthRouter } from "./health.route";
 import { errorHandler, notFoundHandler } from "./middleware/error.middleware";
+import { createApiRouter } from "./rest";
 
 /**
  * Assembles the Express application: security + observability middleware, the
@@ -53,8 +54,8 @@ export const createApp = (apollo: ApolloServer<GraphQLContext>): Express => {
     }),
   );
 
-  // REST transport mounts here alongside GraphQL, e.g.:
-  //   app.use("/api/v1", createApiRouter(services));
+  // REST transport, sharing the same services container as GraphQL.
+  app.use("/api/v1", createApiRouter(services));
 
   app.use(notFoundHandler);
   app.use(errorHandler);
