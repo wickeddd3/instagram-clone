@@ -1,12 +1,12 @@
+import type { GraphQLContext } from "../../context";
+
 export const PostQuery = {
   getFeedPosts: (
-    _parent: any,
-    {
-      profileId,
-      cursor,
-      limit = 5,
-    }: { profileId: string; cursor: string; limit: number },
-    { userId, services }: any,
+    _parent: unknown,
+    // profileId is part of the SDL args but the feed is derived from the
+    // authenticated viewer, so only cursor/limit are used here.
+    { cursor, limit = 5 }: { cursor?: string; limit?: number },
+    { userId, services }: GraphQLContext,
   ) => {
     if (!userId) return { posts: [], hasMore: false, nextCursor: null };
 
@@ -14,13 +14,9 @@ export const PostQuery = {
   },
 
   getExplorePosts: async (
-    _parent: any,
-    {
-      profileId,
-      cursor,
-      limit = 9,
-    }: { profileId: string; cursor: string; limit: number },
-    { userId, services }: any,
+    _parent: unknown,
+    { cursor, limit = 9 }: { cursor?: string; limit?: number },
+    { userId, services }: GraphQLContext,
   ) => {
     if (!userId) return { posts: [], hasMore: false, nextCursor: null };
 
@@ -28,9 +24,17 @@ export const PostQuery = {
   },
 
   getProfilePosts: async (
-    _parent: any,
-    { profileId, cursor, limit = 5 }: any,
-    { services }: any,
+    _parent: unknown,
+    {
+      profileId,
+      cursor,
+      limit = 5,
+    }: {
+      profileId: string;
+      cursor?: string;
+      limit?: number;
+    },
+    { services }: GraphQLContext,
   ) => {
     if (!profileId) return { posts: [], hasMore: false, nextCursor: null };
 
@@ -38,9 +42,17 @@ export const PostQuery = {
   },
 
   getSavedPosts: async (
-    _parent: any,
-    { profileId, cursor, limit = 10 }: any,
-    { services }: any,
+    _parent: unknown,
+    {
+      profileId,
+      cursor,
+      limit = 10,
+    }: {
+      profileId: string;
+      cursor?: string;
+      limit?: number;
+    },
+    { services }: GraphQLContext,
   ) => {
     return services.post.getSavedPosts(profileId, cursor, limit);
   },

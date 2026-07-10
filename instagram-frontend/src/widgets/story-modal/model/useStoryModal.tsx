@@ -1,4 +1,4 @@
-import { useModalActions } from "@/app/providers/ModalContext";
+import { useModalActions } from "@/shared/lib/modal";
 import { StoryModal } from "../ui/StoryModal";
 import { useCallback } from "react";
 import type { UserStory } from "@/entities/story";

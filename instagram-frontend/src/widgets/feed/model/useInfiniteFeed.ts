@@ -26,7 +26,7 @@ export const useInfiniteFeed = (profileId: string) => {
     fetchMore({
       variables: { profileId, cursor: nextCursor },
     });
-  }, [hasMore, nextCursor, fetchMore, networkStatus]);
+  }, [hasMore, nextCursor, fetchMore, networkStatus, profileId]);
 
   return {
     posts,

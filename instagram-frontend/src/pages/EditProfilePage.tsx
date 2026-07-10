@@ -1,4 +1,4 @@
-import { useAuth } from "../app/providers/AuthContext";
+import { useAuth } from "@/entities/profile";
 import { Loader2 } from "lucide-react";
 import { useUploadAvatarModal } from "@/widgets/upload-avatar-modal";
 import { ProfileAvatar, ProfileForm } from "@/widgets/account-profile-edit";

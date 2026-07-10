@@ -1,4 +1,4 @@
-import { useModalActions, useModalState } from "@/app/providers/ModalContext";
+import { useModalActions, useModalState } from "@/shared/lib/modal";
 import { Modal } from "@/shared/ui/Modal";
 import { memo } from "react";
 

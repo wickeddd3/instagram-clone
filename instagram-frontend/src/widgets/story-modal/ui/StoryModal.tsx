@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { ModalCloseButton, ModalContent } from "@/shared/ui/Modal";
-import { useModalActions } from "@/app/providers/ModalContext";
+import { useModalActions } from "@/shared/lib/modal";
 import type { UserStory } from "@/entities/story";
 import { StoryCarousel } from "@/features/story/view-story";
 

@@ -1,24 +1,8 @@
-import {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  type ReactNode,
-} from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/shared/lib/supabase";
-import type { Profile } from "@/entities/profile";
-import { useProfileById } from "@/widgets/auth";
-
-interface AuthContextType {
-  session: Session | null;
-  authUser: User | null;
-  authUserLoading: boolean;
-  authProfile: Profile | undefined;
-  authProfileLoading: boolean;
-}
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+import { AuthContext } from "./AuthContext";
+import { useProfileById } from "./useProfileById";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [authUser, setAuthUser] = useState<User | null>(null);
@@ -53,25 +37,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
   }, []);
 
-  return (
-    <AuthContext.Provider
-      value={{
-        session,
-        authUser,
-        authUserLoading,
-        authProfile: profile,
-        authProfileLoading: profileLoading,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+  const value = useMemo(
+    () => ({
+      session,
+      authUser,
+      authUserLoading,
+      authProfile: profile,
+      authProfileLoading: profileLoading,
+    }),
+    [session, authUser, authUserLoading, profile, profileLoading],
   );
-};
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

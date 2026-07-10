@@ -9,18 +9,17 @@ import {
 import { LikeButton } from "@/features/post/like-post";
 import { SaveButton } from "@/features/post/save-post";
 import { AddCommentField } from "@/features/comment/add-comment";
-import { usePostModal } from "@/widgets/post-modal";
-import { useAuth } from "@/app/providers/AuthContext";
+import { useAuth } from "@/entities/profile";
 import { FollowProfileSuggestionButton } from "@/features/profile/follow-profile";
 import { FeedImageCarousel } from "./FeedImageCarousel";
 
-export const FeedCard = memo(({ post }: { post: Post }) => {
-  const { authUser } = useAuth();
-  const { openPostDetailsModal } = usePostModal();
+export const FeedCard = memo(
+  ({ post, onOpenPost }: { post: Post; onOpenPost: (post: Post) => void }) => {
+    const { authUser } = useAuth();
 
-  const handleOpenPostDetailsModal = useCallback(() => {
-    openPostDetailsModal(post);
-  }, [post, openPostDetailsModal]);
+    const handleOpenPostDetailsModal = useCallback(() => {
+      onOpenPost(post);
+    }, [post, onOpenPost]);
 
   const commentInputRef = useRef<HTMLInputElement>(null);
 
@@ -47,7 +46,7 @@ export const FeedCard = memo(({ post }: { post: Post }) => {
         />
       ),
     }),
-    [post, authUser, openPostDetailsModal],
+    [post, authUser, handleOpenPostDetailsModal],
   ); // Only recreate if post object changes
 
   return (

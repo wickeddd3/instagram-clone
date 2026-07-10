@@ -16,7 +16,9 @@ export const useTriggerViewStory = (
         variables: {
           storyId: activeStoryId,
         },
-      }).catch((err) => console.error("View tracking failed", err));
+      }).catch(() => {
+        // View tracking is non-critical; ignore failures
+      });
     }, 1000); // 1-second threshold
 
     return () => clearTimeout(timer);

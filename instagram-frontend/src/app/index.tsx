@@ -2,9 +2,9 @@ import { RouterProvider } from "react-router-dom";
 import { router } from "./router/routes";
 import { client } from "./providers/apollo.ts";
 import { ApolloProvider } from "@apollo/client/react";
-import { AuthProvider } from "./providers/AuthContext.tsx";
-import { DrawerProvider } from "./providers/DrawerContext.tsx";
-import { ModalProvider } from "./providers/ModalContext.tsx";
+import { AuthProvider } from "@/entities/profile";
+import { DrawerProvider } from "@/shared/lib/drawer";
+import { ModalProvider } from "@/shared/lib/modal";
 
 export const App = () => {
   return (

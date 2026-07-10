@@ -5,12 +5,10 @@ import {
   ProfileHeader,
   ProfileHeaderSkeleton,
 } from "@/entities/profile";
-import { useAuth } from "@/app/providers/AuthContext";
+import { useAuth } from "@/entities/profile";
+import type { Post } from "@/entities/post";
 import { useAccountProfile } from "../model/useAccountProfile";
 import { FollowProfileButton } from "@/features/profile/follow-profile";
-import { useSettingsModal } from "@/widgets/settings-modal";
-import { useFollowersModal } from "@/widgets/followers-modal";
-import { useFollowingModal } from "@/widgets/following-modal";
 
 const LazyProfilePosts = lazy(() =>
   import("./ProfilePosts").then((m) => ({ default: m.ProfilePosts })),
@@ -22,27 +20,47 @@ const LazyTaggedPosts = lazy(() =>
   import("./TaggedPosts").then((m) => ({ default: m.TaggedPosts })),
 );
 
-export const AccountProfile = ({ username }: { username: string }) => {
-  if (!username) return;
+export interface OpenFollowListParams {
+  username: string;
+  authId: string;
+  profileId: string;
+  profileUsername: string;
+}
 
+export const AccountProfile = ({
+  username,
+  onOpenSettings,
+  onOpenFollowers,
+  onOpenFollowing,
+  onOpenPost,
+}: {
+  username: string;
+  onOpenSettings: () => void;
+  onOpenFollowers: (params: OpenFollowListParams) => void;
+  onOpenFollowing: (params: OpenFollowListParams) => void;
+  onOpenPost: (posts: Post[], index: number) => void;
+}) => {
   const { authUser } = useAuth();
   const authId = useMemo(() => authUser?.id, [authUser]);
   const { profile, loading } = useAccountProfile({ username: username || "" });
   const isMyProfile = useMemo(() => !!profile?.isMe, [profile?.isMe]);
 
   const navigate = useNavigate();
-  const { openSettingsModal } = useSettingsModal();
-  const { openFollowersModal } = useFollowersModal();
-  const { openFollowingModal } = useFollowingModal();
 
   const profilePosts = useMemo(
-    () => <LazyProfilePosts profileId={profile?.id || ""} />,
-    [profile],
+    () => (
+      <LazyProfilePosts profileId={profile?.id || ""} onOpenPost={onOpenPost} />
+    ),
+    [profile, onOpenPost],
   );
   const savedPosts = useMemo(
-    () => <LazySavedPosts profileId={profile?.id || ""} />,
-    [profile],
+    () => (
+      <LazySavedPosts profileId={profile?.id || ""} onOpenPost={onOpenPost} />
+    ),
+    [profile, onOpenPost],
   );
+
+  if (!username) return null;
 
   const handleEditProfile = () => {
     navigate("/accounts/edit");
@@ -62,7 +80,7 @@ export const AccountProfile = ({ username }: { username: string }) => {
               <div className="flex flex-wrap items-center gap-4">
                 <ProfileHeader.Username name={profile?.username || ""} />
                 {profile?.isMe && (
-                  <ProfileHeader.SettingsButton onClick={openSettingsModal} />
+                  <ProfileHeader.SettingsButton onClick={onOpenSettings} />
                 )}
               </div>
               <ProfileHeader.DisplayName name={profile?.displayName || ""} />
@@ -71,7 +89,7 @@ export const AccountProfile = ({ username }: { username: string }) => {
                 followersCount={profile?.followersCount || 0}
                 followingCount={profile?.followingCount || 0}
                 onClickFollowers={() =>
-                  openFollowersModal({
+                  onOpenFollowers({
                     username: profile?.username || "",
                     authId: authId || "",
                     profileId: profile?.id || "",
@@ -79,7 +97,7 @@ export const AccountProfile = ({ username }: { username: string }) => {
                   })
                 }
                 onClickFollowing={() =>
-                  openFollowingModal({
+                  onOpenFollowing({
                     username: profile?.username || "",
                     authId: authId || "",
                     profileId: profile?.id || "",

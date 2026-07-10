@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import { useMutation } from "@apollo/client/react";
 import { UPLOAD_PROFILE_AVATAR } from "../api/mutation";
 import { useState } from "react";
@@ -51,8 +52,8 @@ export const useUploadAvatar = ({
         },
       });
       setIsUploading(false);
-    } catch (error) {
-      console.error("Error uploading avatar:", error);
+    } catch {
+      toast.error("Failed to upload avatar. Please try again.");
       setIsUploading(false);
     }
   };

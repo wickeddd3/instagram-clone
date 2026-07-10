@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from "react";
-import { useAuth } from "@/app/providers/AuthContext";
+import { useAuth } from "@/entities/profile";
 import { AuthUser } from "./AuthUser";
 import { CaptionTextarea } from "./CaptionTextarea";
 import { LoadingSpinner } from "./LoadingSpinner";
@@ -59,7 +59,7 @@ export const CreatePost = ({
             />
             <PreviewFooter
               previews={previewUrls}
-              onThumbnailClick={(i: any) => swiperRef.current?.slideTo(i)}
+              onThumbnailClick={(i: number) => swiperRef.current?.slideTo(i)}
             />
           </div>
         </div>

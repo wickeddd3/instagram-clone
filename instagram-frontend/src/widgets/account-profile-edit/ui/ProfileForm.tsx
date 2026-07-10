@@ -33,7 +33,7 @@ export const ProfileForm = ({ profile }: { profile: Profile }) => {
         website,
       });
     }
-  }, [profile]);
+  }, [profile, resetForm]);
 
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-10">

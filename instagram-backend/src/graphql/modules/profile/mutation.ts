@@ -1,8 +1,20 @@
+import type { GraphQLContext } from "../../context";
+
 export const ProfileMutation = {
   createProfile: (
-    _parent: any,
-    { id, username, email, displayName }: any,
-    { services }: any,
+    _parent: unknown,
+    {
+      id,
+      username,
+      email,
+      displayName,
+    }: {
+      id: string;
+      username: string;
+      email: string;
+      displayName: string;
+    },
+    { services }: GraphQLContext,
   ) => {
     return services.profile.createProfile({
       id,
@@ -13,9 +25,17 @@ export const ProfileMutation = {
   },
 
   updateProfile: (
-    _parent: any,
-    { displayName, bio, website }: any,
-    { userId, services }: any,
+    _parent: unknown,
+    {
+      displayName,
+      bio,
+      website,
+    }: {
+      displayName?: string;
+      bio?: string;
+      website?: string;
+    },
+    { userId, services }: GraphQLContext,
   ) => {
     if (!userId) throw new Error("Unauthorized");
 
@@ -27,39 +47,31 @@ export const ProfileMutation = {
   },
 
   uploadProfileAvatar: (
-    _parent: any,
+    _parent: unknown,
     { avatarUrl }: { avatarUrl: string },
-    { userId, services }: any,
+    { userId, services }: GraphQLContext,
   ) => {
     if (!userId) throw new Error("Unauthorized");
 
     return services.profile.updateProfile(userId, { avatarUrl });
   },
 
-  removeProfileAvatar: async (
-    _parent: any,
-    _args: any,
-    { userId, services }: any,
-  ) => {
+  removeProfileAvatar: async (_parent: unknown, _args: unknown, { userId, services }: GraphQLContext) => {
     if (!userId) throw new Error("Unauthorized");
 
     return services.profile.updateProfile(userId, { avatarUrl: null });
   },
 
-  toggleFollow: async (
-    _parent: any,
-    { username }: { username: string },
-    { userId, services }: any,
-  ) => {
+  toggleFollow: async (_parent: unknown, { username }: { username: string }, { userId, services }: GraphQLContext) => {
     if (!userId) throw new Error("Unauthorized");
 
     return services.profile.toggleFollow(userId, username);
   },
 
   removeFollower: async (
-    _parent: any,
+    _parent: unknown,
     { username }: { username: string },
-    { userId, services }: any,
+    { userId, services }: GraphQLContext,
   ) => {
     if (!userId) throw new Error("Unauthorized");
 
@@ -77,9 +89,9 @@ export const ProfileMutation = {
   },
 
   removeFollowing: async (
-    _parent: any,
+    _parent: unknown,
     { username }: { username: string },
-    { userId, services }: any,
+    { userId, services }: GraphQLContext,
   ) => {
     if (!userId) throw new Error("Unauthorized");
 

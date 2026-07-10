@@ -1,9 +1,7 @@
+import type { GraphQLContext } from "../../context";
+
 export const RecentSearchQuery = {
-  getRecentSearches: async (
-    _parent: any,
-    _args: any,
-    { userId, services }: any,
-  ) => {
+  getRecentSearches: async (_parent: unknown, _args: unknown, { userId, services }: GraphQLContext) => {
     if (!userId) return [];
 
     return services.recentSearch.getRecentSearches(userId);

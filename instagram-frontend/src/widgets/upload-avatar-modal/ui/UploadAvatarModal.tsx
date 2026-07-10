@@ -1,5 +1,5 @@
-import { useAuth } from "@/app/providers/AuthContext";
-import { useModalActions } from "@/app/providers/ModalContext";
+import { useAuth } from "@/entities/profile";
+import { useModalActions } from "@/shared/lib/modal";
 import { ModalContent } from "@/shared/ui/Modal";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { Avatar } from "./Avatar";
@@ -11,15 +11,13 @@ import { RemoveAvatarButton } from "@/features/profile/remove-avatar";
 
 export const UploadAvatarModal = ({ avatarUrl }: { avatarUrl?: string }) => {
   const { authUser } = useAuth();
-
-  if (!authUser) return;
-
-  const CURRENT_USER_ID = authUser?.id;
   const { closeModal } = useModalActions();
   const { previewUrl, isUploading, handleUploadAvatar } = useUploadAvatar({
-    userId: CURRENT_USER_ID,
+    userId: authUser?.id ?? "",
     onCompleted: closeModal,
   });
+
+  if (!authUser) return null;
 
   return (
     <ModalContent className="w-[400px] m-2">

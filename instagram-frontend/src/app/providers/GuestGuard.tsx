@@ -1,4 +1,4 @@
-import { useAuth } from "./AuthContext";
+import { useAuth } from "@/entities/profile";
 import { Navigate, Outlet } from "react-router-dom";
 import { LoadingScreen } from "@/shared/ui/LoadingScreen";
 

@@ -3,7 +3,7 @@ import { useInfiniteFollowers } from "../model/useInfiniteFollowers";
 import { Spinner } from "@/shared/ui/Spinner";
 import { ProfileLink } from "@/entities/profile";
 import { RemoveFollowerButton } from "@/features/profile/remove-follower";
-import { useModalActions } from "@/app/providers/ModalContext";
+import { useModalActions } from "@/shared/lib/modal";
 
 export const FollowersList = ({
   username,

@@ -1,4 +1,4 @@
-import { useModalActions } from "@/app/providers/ModalContext";
+import { useModalActions } from "@/shared/lib/modal";
 import { ModalCloseButton, ModalContent } from "@/shared/ui/Modal";
 import { Following } from "./Following";
 

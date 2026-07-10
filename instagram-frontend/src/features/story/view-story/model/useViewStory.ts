@@ -4,7 +4,7 @@ import type { ViewStoryData, ViewStoryVars } from "./types";
 
 export const useViewStory = (userStoryId: string) => {
   const [viewStory] = useMutation<ViewStoryData, ViewStoryVars>(VIEW_STORY, {
-    update(cache, { data }: any) {
+    update(cache, { data }) {
       const hasUnseen = data?.viewStory;
       if (hasUnseen === false) {
         cache.modify({

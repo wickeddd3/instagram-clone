@@ -77,7 +77,7 @@ export const useRegister = ({
       }
       setLoading(false);
       onSuccess?.();
-    } catch (error) {
+    } catch {
       onError?.("An error occurred during signup.");
       setLoading(false);
     } finally {

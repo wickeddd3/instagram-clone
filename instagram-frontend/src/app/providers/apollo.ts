@@ -6,20 +6,18 @@ const baseLink = new HttpLink({
   uri: import.meta.env.VITE_API_URL,
 });
 
-const authLink = new SetContextLink((prevContext, _) => {
-  return new Promise(async (resolve) => {
-    // Get the current session from Supabase
-    const { data } = await supabase.auth.getSession();
-    const token = data.session?.access_token;
+const authLink = new SetContextLink(async (prevContext) => {
+  // Get the current session from Supabase
+  const { data } = await supabase.auth.getSession();
+  const token = data.session?.access_token;
 
-    // Set the authorization header
-    const headers = {
+  // Set the authorization header
+  return {
+    headers: {
       ...prevContext.headers,
       authorization: token ? `Bearer ${token}` : "",
-    };
-
-    resolve({ headers });
-  });
+    },
+  };
 });
 
 export const client = new ApolloClient({

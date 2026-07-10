@@ -42,6 +42,11 @@ jobs:
           cd instagram-backend
           npx prisma generate
 
+      - name: Lint
+        run: |
+          cd instagram-backend
+          yarn lint
+
       - name: Build Check
         run: |
           cd instagram-backend

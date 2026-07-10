@@ -1,4 +1,4 @@
-import { useModalActions } from "@/app/providers/ModalContext";
+import { useModalActions } from "@/shared/lib/modal";
 import { SettingsModal } from "../ui/SettingsModal";
 
 export const useSettingsModal = () => {

@@ -32,11 +32,11 @@ export const AddCommentField = memo(
             },
           });
           onCompleted?.();
-        } catch (err) {
+        } catch {
           setText(trimmedText); // Put text back if it fails
         }
       },
-      [text, postId, replyData, addComment],
+      [text, postId, replyData, addComment, onCompleted],
     );
 
     useEffect(() => {

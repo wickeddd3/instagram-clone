@@ -1,4 +1,4 @@
-import { useAuth } from "@/app/providers/AuthContext";
+import { useAuth } from "@/entities/profile";
 
 export const AuthAppbar = () => {
   const { authProfile } = useAuth();

@@ -1,10 +1,16 @@
 import { prisma } from "../../../lib/prisma";
+import type { GraphQLContext } from "../../context";
+
+export interface CommentParent {
+  id: string;
+  _count?: { likes?: number; replies?: number };
+}
 
 export const CommentResolvers = {
-  likesCount: (parent: any) => parent._count?.likes ?? 0,
-  repliesCount: (parent: any) => parent._count?.replies ?? 0,
+  likesCount: (parent: CommentParent) => parent._count?.likes ?? 0,
+  repliesCount: (parent: CommentParent) => parent._count?.replies ?? 0,
   // Check if the current user liked this specific comment
-  isLiked: async (parent: any, _args: any, context: any) => {
+  isLiked: async (parent: CommentParent, _args: unknown, context: GraphQLContext) => {
     // If no user is logged in, they can't have liked it
     if (!context.userId) return false;
     // Check the 'likes' table for a match

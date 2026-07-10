@@ -1,13 +1,33 @@
-import { PrismaClient } from "@prisma/client/extension";
+import type { PrismaClient } from "../../../client";
 import { Prisma } from "../../../client";
+
+// Per-viewer include used by the feed queries. Typing it with `satisfies` keeps
+// Prisma's payload inference working so downstream `.author.followers`/`_count`
+// access stays type-safe.
+const buildPostInclude = (userId: string) =>
+  ({
+    author: {
+      include: {
+        followers: {
+          where: { followerId: userId },
+          select: { followerId: true },
+        },
+      },
+    },
+    media: {
+      orderBy: { index: "asc" }, // Ensure images stay in the order they were uploaded
+    },
+    _count: { select: { comments: true, likes: true } },
+  }) satisfies Prisma.PostInclude;
+
+type PostWithRelations = Prisma.PostGetPayload<{
+  include: ReturnType<typeof buildPostInclude>;
+}>;
 
 export class PostService {
   constructor(private prisma: PrismaClient) {}
 
-  private async getPaginatedPosts(
-    args: Prisma.PostFindManyArgs,
-    limit: number,
-  ) {
+  private async getPaginatedPosts(args: Prisma.PostFindManyArgs, limit: number) {
     const posts = await this.prisma.post.findMany({
       ...args,
       take: limit,
@@ -31,26 +51,9 @@ export class PostService {
       where: { followerId: userId },
       select: { followingId: true },
     });
-    const followingIds = following.map((f: any) => f.followingId);
+    const followingIds = following.map((f) => f.followingId);
 
     return followingIds;
-  }
-
-  private getPostInclude(userId: string) {
-    return {
-      author: {
-        include: {
-          followers: {
-            where: { followerId: userId },
-            select: { followerId: true },
-          },
-        },
-      },
-      media: {
-        orderBy: { index: "asc" }, // Ensure images stay in the order they were uploaded
-      },
-      _count: { select: { comments: true, likes: true } },
-    };
   }
 
   async getFeedPosts(userId: string, cursor?: string, limit = 5) {
@@ -58,7 +61,7 @@ export class PostService {
     const followingIds = await this.getFollowingIds(userId);
     const includeIds = [...followingIds, userId];
 
-    let followedPosts: any[] = [];
+    let followedPosts: PostWithRelations[] = [];
     let isPaginatingSuggestions = false;
 
     // 2. Identify where the cursor is from
@@ -83,7 +86,7 @@ export class PostService {
         orderBy: { createdAt: "desc" },
         take: limit,
         ...(cursor && { cursor: { id: cursor }, skip: 1 }),
-        include: this.getPostInclude(userId),
+        include: buildPostInclude(userId),
       });
     }
 
@@ -107,17 +110,16 @@ export class PostService {
         ],
         take: remainingSpace,
         ...(suggestedCursor && { cursor: { id: suggestedCursor }, skip: 1 }),
-        include: this.getPostInclude(userId),
+        include: buildPostInclude(userId),
       });
 
       combinedPosts = [...combinedPosts, ...suggestedPosts];
     }
 
     // 5. Map the combined results to include isFollowing
-    const posts = combinedPosts.map((post: any) => ({
+    const posts = combinedPosts.map((post) => ({
       ...post,
-      isFollowing:
-        post.author.followers.length > 0 || post.author.id === userId,
+      isFollowing: post.author.followers.length > 0 || post.author.id === userId,
     }));
 
     // 6. Calculate pagination metadata based on the FINAL combined list
@@ -182,11 +184,9 @@ export class PostService {
       }),
     });
 
-    const posts = savedRecords.map((record: any) => record.post);
+    const posts = savedRecords.map((record) => record.post);
     const hasMore = savedRecords.length === limit;
-    const nextCursor = hasMore
-      ? savedRecords[savedRecords.length - 1]?.id
-      : null;
+    const nextCursor = hasMore ? savedRecords[savedRecords.length - 1]?.id : null;
 
     return { posts, hasMore, nextCursor };
   }
@@ -239,7 +239,7 @@ export class PostService {
     return {
       id: postId,
       isLiked: !existing,
-      likesCount: post?._count.likes || 0,
+      likesCount: post?._count.likes ?? 0,
     };
   }
 

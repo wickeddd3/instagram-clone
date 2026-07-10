@@ -1,22 +1,23 @@
 import { useInfiniteExploreFeed } from "../model/useInfiniteExploreFeed";
 import { Spinner } from "@/shared/ui/Spinner";
 import { NoMorePosts, PostThumbnail, type Post } from "@/entities/post";
-import { usePostNavigationModal } from "@/widgets/post-modal";
 import { ProfilePostsSkeleton } from "@/entities/profile";
 import { VirtuosoGrid } from "react-virtuoso";
 import { PullToRefresh } from "@/shared/ui/PullToRefresh";
-import { useAuth } from "@/app/providers/AuthContext";
+import { useAuth } from "@/entities/profile";
 
-export const ExploreFeed = () => {
+export const ExploreFeed = ({
+  onOpenPost,
+}: {
+  onOpenPost: (posts: Post[], index: number) => void;
+}) => {
   const { authUser } = useAuth();
 
   const { posts, hasMore, loading, isLoadingMore, loadMore, refetch } =
     useInfiniteExploreFeed(authUser?.id || "");
 
-  const { openPostDetailsNavigationModal } = usePostNavigationModal();
-
   const handleOpenPostDetailsModal = (posts: Post[], index: number) => {
-    openPostDetailsNavigationModal(posts, index);
+    onOpenPost(posts, index);
   };
 
   const handleLoadMore = () => {

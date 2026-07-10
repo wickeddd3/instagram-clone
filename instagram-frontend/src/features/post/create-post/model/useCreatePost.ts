@@ -1,7 +1,7 @@
 import { useMutation } from "@apollo/client/react";
 import type { CreatedPost } from "./types";
 import { CREATE_POST } from "../api/mutation";
-import { useAuth } from "@/app/providers/AuthContext";
+import { useAuth } from "@/entities/profile";
 
 export const useCreatePost = ({ onCompleted }: { onCompleted: () => void }) => {
   const { authProfile } = useAuth();

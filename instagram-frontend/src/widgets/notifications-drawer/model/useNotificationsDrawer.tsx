@@ -1,4 +1,4 @@
-import { useDrawerActions } from "@/app/providers/DrawerContext";
+import { useDrawerActions } from "@/shared/lib/drawer";
 import { NotificationsDrawer } from "../ui/NotificationsDrawer";
 
 export const useNotificationsDrawer = () => {

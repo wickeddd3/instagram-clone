@@ -1,21 +1,23 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { StoriesSkeleton } from "./StoriesSkeleton";
-import { useAuth } from "@/app/providers/AuthContext";
-import { useCreateStoryModal } from "@/widgets/create-story-modal";
+import { useAuth } from "@/entities/profile";
+import type { UserStory } from "@/entities/story";
 import { useStories } from "../model/useStories";
 import { PlusCircle } from "lucide-react";
 import { Avatar } from "@/shared/ui/Avatar";
-import { useStoryModal } from "@/widgets/story-modal";
 
-export const Stories = () => {
+export const Stories = ({
+  onCreateStory,
+  onOpenStory,
+}: {
+  onCreateStory: () => void;
+  onOpenStory: (stories: UserStory[], index: number) => void;
+}) => {
   const { authUser } = useAuth();
   const profileId = authUser?.id;
 
-  const { openCreateStoryModal } = useCreateStoryModal();
   const { stories, loading } = useStories({ profileId: profileId || "" });
-
-  const { openStoryModal } = useStoryModal();
 
   if (loading) {
     return <StoriesSkeleton />;
@@ -34,7 +36,7 @@ export const Stories = () => {
         <SwiperSlide key={"add-story"} className="w-auto! pr-2">
           <button className="flex flex-col items-center gap-1 min-w-[70px]">
             <div
-              onClick={openCreateStoryModal}
+              onClick={onCreateStory}
               className="relative w-21 h-21 rounded-full border-2 border-dashed border-zinc-700 flex items-center justify-center cursor-pointer"
             >
               <PlusCircle size={24} className="text-zinc-400" />
@@ -46,7 +48,7 @@ export const Stories = () => {
         {stories.map((group, index) => (
           <SwiperSlide key={group.id} className="w-auto! pr-2">
             <button
-              onClick={() => openStoryModal(stories, index)}
+              onClick={() => onOpenStory(stories, index)}
               className="flex flex-col items-center gap-1 cursor-pointer"
             >
               {/* Gradient Ring */}

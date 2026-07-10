@@ -1,4 +1,5 @@
 import { useMutation } from "@apollo/client/react";
+import type { Reference } from "@apollo/client";
 import { REMOVE_FOLLOWER } from "../api/mutation";
 
 export const useRemoveFollower = ({
@@ -28,7 +29,7 @@ export const useRemoveFollower = ({
             return {
               ...existingData,
               followers: existingData.followers.filter(
-                (u: any) =>
+                (u: Reference) =>
                   u.__ref !==
                   cache.identify({
                     __typename: "Profile",

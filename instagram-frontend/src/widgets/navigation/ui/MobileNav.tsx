@@ -1,15 +1,12 @@
 import { Compass, Home, Plus, Send } from "lucide-react";
-import { useAuth } from "@/app/providers/AuthContext";
+import { useAuth } from "@/entities/profile";
 import { useNavigate } from "react-router-dom";
-import { useCreatePostModal } from "@/widgets/create-post-modal";
 
-export const MobileNav = () => {
+export const MobileNav = ({ onCreatePost }: { onCreatePost: () => void }) => {
   const { authProfile } = useAuth();
-  const { openCreatePostModal } = useCreatePostModal();
+  const navigate = useNavigate();
 
   if (!authProfile) return null;
-
-  const navigate = useNavigate();
 
   const handleRedirectToHome = () => {
     navigate("/");
@@ -46,7 +43,7 @@ export const MobileNav = () => {
         <Compass size={24} />
       </button>
       <button
-        onClick={openCreatePostModal}
+        onClick={onCreatePost}
         aria-label="New Post"
         title="New Post"
         className="text-white cursor-pointer"

@@ -38,7 +38,7 @@ export const useLogin = ({
         return;
       }
       onSuccess?.();
-    } catch (error) {
+    } catch {
       onError?.("An error occurred during login.");
       setLoading(false);
     } finally {
