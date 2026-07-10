@@ -1,9 +1,9 @@
 import { prisma } from "./lib/prisma";
-import { ProfileService } from "./graphql/modules/profile/service";
-import { PostService } from "./graphql/modules/post/service";
-import { CommentService } from "./graphql/modules/comment/service";
-import { RecentSearchService } from "./graphql/modules/recent-search/service";
-import { StoryService } from "./graphql/modules/story/service";
+import { ProfileService } from "./services/profile.service";
+import { PostService } from "./services/post.service";
+import { CommentService } from "./services/comment.service";
+import { RecentSearchService } from "./services/recent-search.service";
+import { StoryService } from "./services/story.service";
 import { AccountService } from "./services/account.service";
 import type { PrismaClient } from "@/prisma/client";
 
