@@ -1,8 +1,8 @@
-import { ProfileMutation, ProfileQuery, ProfileResolvers, ProfileTypes } from "./modules/profile";
-import { PostMutation, PostQuery, PostResolvers, PostTypes } from "./modules/post";
-import { CommentMutation, CommentQuery, CommentResolvers, CommentTypes } from "./modules/comment";
-import { RecentSearchMutation, RecentSearchQuery, RecentSearchTypes } from "./modules/recent-search";
-import { StoryMutation, StoryQuery, StoryResolvers, StoryTypes } from "./modules/story";
+import { ProfileMutation, ProfileQuery, ProfileResolvers, ProfileTypes } from "@/graphql/modules/profile";
+import { PostMutation, PostQuery, PostResolvers, PostTypes } from "@/graphql/modules/post";
+import { CommentMutation, CommentQuery, CommentResolvers, CommentTypes } from "@/graphql/modules/comment";
+import { RecentSearchMutation, RecentSearchQuery, RecentSearchTypes } from "@/graphql/modules/recent-search";
+import { StoryMutation, StoryQuery, StoryResolvers, StoryTypes } from "@/graphql/modules/story";
 
 const BaseType = `#graphql
   scalar DateTime

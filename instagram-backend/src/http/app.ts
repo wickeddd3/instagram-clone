@@ -10,10 +10,10 @@ import { config } from "@/config/env.config";
 import { logger } from "@/lib/logger";
 import { services } from "@/container";
 import type { GraphQLContext } from "@/graphql/context";
-import { getUserIdFromRequest } from "./middleware/auth.middleware";
+import { getUserIdFromRequest } from "@/http/middleware/auth.middleware";
 import { healthRouter } from "./health.route";
-import { errorHandler, notFoundHandler } from "./middleware/error.middleware";
-import { createApiRouter } from "./rest";
+import { errorHandler, notFoundHandler } from "@/http/middleware/error.middleware";
+import { createApiRouter } from "@/http/rest";
 
 /**
  * Assembles the Express application: security + observability middleware, the

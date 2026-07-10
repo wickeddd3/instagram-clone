@@ -1,5 +1,5 @@
 import { start } from "./server";
-import { logger } from "./lib/logger";
+import { logger } from "@/lib/logger";
 
 start().catch((err: unknown) => {
   logger.error({ err }, "Failed to start server");

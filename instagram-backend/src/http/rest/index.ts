@@ -1,7 +1,7 @@
 import { Router } from "express";
 import type { Services } from "@/container";
-import { createAuthRouter } from "./auth";
-import { createProfileRouter } from "./profile";
+import { createAuthRouter } from "@/http/rest/auth";
+import { createProfileRouter } from "@/http/rest/profile";
 
 /**
  * The versioned REST API, mounted at /api/v1 alongside GraphQL; both transports
