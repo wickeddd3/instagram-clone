@@ -5,9 +5,10 @@ import { CombinedGraphQLErrors, ServerError } from "@apollo/client/errors";
 import { toast } from "sonner";
 import { supabase } from "../../shared/lib/supabase";
 import { signOut } from "../../shared/lib/supabase-auth";
+import { env } from "@/shared/config/env";
 
 const baseLink = new HttpLink({
-  uri: import.meta.env.VITE_API_URL,
+  uri: env.VITE_API_URL,
 });
 
 const authLink = new SetContextLink(async (prevContext) => {
