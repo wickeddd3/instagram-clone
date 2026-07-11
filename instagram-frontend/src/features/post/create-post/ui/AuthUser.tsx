@@ -9,6 +9,7 @@ export const AuthUser = ({
     <div className="p-4 flex gap-3">
       <img
         src={avatarUrl || "/ig-default.jpg"}
+        alt=""
         className="w-8 h-8 rounded-full object-cover"
       />
       <span className="text-white font-semibold text-sm">{username}</span>

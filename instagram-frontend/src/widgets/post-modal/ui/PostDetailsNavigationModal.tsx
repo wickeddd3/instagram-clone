@@ -26,16 +26,22 @@ export const PostDetailsNavigationModal = memo(
       <div className="w-full h-full flex justify-center items-center gap-2">
         <button
           onClick={() => navigateTo(currentIndex - 1)}
+          disabled={!hasPrevious}
+          aria-label="Previous post"
+          title="Previous post"
           className={`bg-gray-100 rounded-full p-1 cursor-pointer ${!hasPrevious && "opacity-0"}`}
         >
-          <ChevronLeft size={22} className="text-gray-950" />
+          <ChevronLeft size={22} className="text-gray-950" aria-hidden="true" />
         </button>
         <PostDetailsModal value={activePost} />
         <button
           onClick={() => navigateTo(currentIndex + 1)}
+          disabled={!hasNext}
+          aria-label="Next post"
+          title="Next post"
           className={`bg-gray-100 rounded-full p-1 cursor-pointer ${!hasNext && "opacity-0"}`}
         >
-          <ChevronRight size={22} className="text-gray-950" />
+          <ChevronRight size={22} className="text-gray-950" aria-hidden="true" />
         </button>
       </div>
     );

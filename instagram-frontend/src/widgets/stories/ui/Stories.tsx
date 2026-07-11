@@ -39,7 +39,7 @@ export const Stories = ({
               onClick={onCreateStory}
               className="relative w-21 h-21 rounded-full border-2 border-dashed border-zinc-700 flex items-center justify-center cursor-pointer"
             >
-              <PlusCircle size={24} className="text-zinc-400" />
+              <PlusCircle size={24} className="text-zinc-400" aria-hidden="true" />
             </div>
             <span className="text-[11px] text-zinc-400">Add Story</span>
           </button>
@@ -58,6 +58,7 @@ export const Stories = ({
                 <div className="bg-[#0d1015] p-1 rounded-full w-full h-full">
                   <Avatar
                     imageUrl={group.avatarUrl}
+                    username={group.username}
                     className="w-full h-full"
                   />
                 </div>

@@ -19,7 +19,7 @@ export const SavedPosts = memo(({
 
   return !loading && hadEmptyPosts ? (
     <PostsEmpty
-      icon={<Bookmark size={44} strokeWidth={1} />}
+      icon={<Bookmark size={44} strokeWidth={1} aria-hidden="true" />}
       title="No saved posts"
     />
   ) : (

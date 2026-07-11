@@ -8,12 +8,18 @@ export const ProfileHeader = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export const Avatar = ({ avatarUrl }: { avatarUrl: string }) => {
+export const Avatar = ({
+  avatarUrl,
+  username,
+}: {
+  avatarUrl: string;
+  username?: string;
+}) => {
   return (
     <div className="w-20 h-20 md:w-30 md:h-30 lg:w-40 lg:h-40 rounded-full bg-gray-800 overflow-hidden">
       <img
         src={avatarUrl}
-        alt="Avatar"
+        alt={username ? `${username}'s profile photo` : "Profile photo"}
         loading="lazy"
         decoding="async"
         className="w-full h-full object-cover"
@@ -38,9 +44,11 @@ export const SettingsButton = ({ onClick }: { onClick: () => void }) => {
   return (
     <button
       onClick={onClick}
+      aria-label="Settings"
+      title="Settings"
       className="p-1 hover:text-gray-400 transition cursor-pointer"
     >
-      <Cog size={24} />
+      <Cog size={24} aria-hidden="true" />
     </button>
   );
 };

@@ -5,7 +5,10 @@ export const LayoutContent = () => {
   const location = useLocation();
 
   return (
-    <main className="flex-1 flex justify-center w-full md:mt-0 mt-14">
+    <main
+      id="main-content"
+      className="flex-1 flex justify-center w-full md:mt-0 mt-14"
+    >
       <motion.div
         key={location.pathname}
         initial={{ opacity: 0, y: 10 }}

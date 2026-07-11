@@ -1,16 +1,29 @@
 import { motion } from "framer-motion";
 import { X } from "lucide-react";
-import type { ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
+import { useFocusTrap } from "@/shared/lib/a11y";
 
 export const ModalWrapper = ({
   children,
   className,
+  label = "Dialog",
+  onClose,
 }: {
   children: ReactNode;
   className?: string;
+  label?: string;
+  onClose?: () => void;
 }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  useFocusTrap(ref, onClose ?? (() => {}));
+
   return (
     <motion.div
+      ref={ref}
+      role="dialog"
+      aria-modal="true"
+      aria-label={label}
+      tabIndex={-1}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       className={`fixed inset-0 bg-black/60 flex flex-col items-center justify-center w-full z-100 ${className}`}
@@ -51,9 +64,11 @@ export const ModalCloseButton = ({
   return (
     <button
       onClick={onClose}
+      aria-label="Close"
+      title="Close"
       className={`text-white hover:text-gray-300 cursor-pointer ${className}`}
     >
-      <X size={iconSize} />
+      <X size={iconSize} aria-hidden="true" />
     </button>
   );
 };
@@ -62,13 +77,15 @@ export const Modal = ({
   content,
   onClose,
   hasCloseButton = false,
+  label,
 }: {
   content: ReactNode;
   hasCloseButton?: boolean;
   onClose: () => void;
+  label?: string;
 }) => {
   return (
-    <ModalWrapper>
+    <ModalWrapper label={label} onClose={onClose}>
       {hasCloseButton && (
         <ModalCloseButton
           onClose={onClose}

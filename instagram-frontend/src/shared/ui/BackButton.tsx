@@ -4,9 +4,11 @@ export const BackButton = ({ onClick }: { onClick: () => void }) => {
   return (
     <button
       onClick={onClick}
+      aria-label="Go back"
+      title="Go back"
       className="rounded-full text-white cursor-pointer pl-4"
     >
-      <ArrowLeft size={24} />
+      <ArrowLeft size={24} aria-hidden="true" />
     </button>
   );
 };

@@ -12,6 +12,11 @@ export const MainLayout = () => {
 
   return (
     <div className="w-full h-full flex flex-col md:flex-row bg-[#0d1015] text-white">
+      {/* Skip link — first focusable element, jumps to the main content */}
+      <a href="#main-content" className="skip-link">
+        Skip to content
+      </a>
+
       {/* Top Header - Hidden on Desktop */}
       <div className="md:hidden fixed top-0 w-full z-50 bg-[#0d1015]">
         <MobileHeader />

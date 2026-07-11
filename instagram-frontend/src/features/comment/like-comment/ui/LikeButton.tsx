@@ -18,9 +18,15 @@ export const LikeButton = memo(({ comment }: { comment: Comment }) => {
   };
 
   return (
-    <button onClick={handleLikeClick} className="group relative">
+    <button
+      onClick={handleLikeClick}
+      aria-label={comment.isLiked ? "Unlike comment" : "Like comment"}
+      aria-pressed={comment.isLiked}
+      className="group relative"
+    >
       <Heart
         size={14}
+        aria-hidden="true"
         className={`transition-all duration-200 cursor-pointer ${
           comment.isLiked
             ? "fill-red-500 text-red-500"

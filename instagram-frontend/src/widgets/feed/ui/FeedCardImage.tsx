@@ -24,7 +24,15 @@ export const FeedCardImage = memo(
 
     return (
       <div className="w-full h-full flex items-center justify-center relative rounded-sm overflow-hidden border border-gray-800 bg-black min-h-[300px]">
-        <PostImage imageUrl={imageUrl} onDoubleClick={handleDoubleTap} />
+        <PostImage
+          imageUrl={imageUrl}
+          alt={
+            post.caption
+              ? `${post.author.username}: ${post.caption}`
+              : `Post by ${post.author.username}`
+          }
+          onDoubleClick={handleDoubleTap}
+        />
         {showOverlayHeart && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
             <Heart

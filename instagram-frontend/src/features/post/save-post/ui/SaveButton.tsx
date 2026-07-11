@@ -13,9 +13,15 @@ export const SaveButton = memo(
     }, [post.id, togglePostSave, callback]);
 
     return (
-      <button onClick={handleSaveClick} className="group relative">
+      <button
+        onClick={handleSaveClick}
+        aria-label={post.isSaved ? "Remove from saved" : "Save"}
+        aria-pressed={post.isSaved}
+        className="group relative"
+      >
         <Bookmark
           size={28}
+          aria-hidden="true"
           className={`transition-all duration-200 cursor-pointer ${
             post.isSaved
               ? "fill-white text-white"

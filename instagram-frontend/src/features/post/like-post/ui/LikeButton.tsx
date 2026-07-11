@@ -17,9 +17,15 @@ export const LikeButton = memo(
     }, [post.id, togglePostLike, callback]);
 
     return (
-      <button onClick={handleLikeClick} className="group relative">
+      <button
+        onClick={handleLikeClick}
+        aria-label={post.isLiked ? "Unlike" : "Like"}
+        aria-pressed={post.isLiked}
+        className="group relative"
+      >
         <Heart
           size={28}
+          aria-hidden="true"
           className={`transition-all duration-200 cursor-pointer ${
             post.isLiked
               ? "fill-red-500 text-red-500"

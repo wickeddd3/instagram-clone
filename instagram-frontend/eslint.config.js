@@ -187,4 +187,28 @@ export default defineConfig([
       "react-refresh/only-export-components": "off",
     },
   },
+  {
+    // Vitest specs and the shared test setup. Add the test globals (globals:true
+    // in vitest.config), and relax rules that don't apply to test-only code:
+    // FSD boundaries (tests may import their subject freely) and fast-refresh.
+    // Placed last so it wins over the shared config above.
+    files: ["src/**/*.{test,spec}.{ts,tsx}", "src/test/**/*.{ts,tsx}"],
+    languageOptions: {
+      globals: {
+        describe: "readonly",
+        it: "readonly",
+        test: "readonly",
+        expect: "readonly",
+        vi: "readonly",
+        beforeAll: "readonly",
+        afterAll: "readonly",
+        beforeEach: "readonly",
+        afterEach: "readonly",
+      },
+    },
+    rules: {
+      "boundaries/dependencies": "off",
+      "react-refresh/only-export-components": "off",
+    },
+  },
 ]);

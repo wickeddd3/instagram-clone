@@ -3,17 +3,19 @@ import { memo } from "react";
 export const PostImage = memo(
   ({
     imageUrl,
+    alt,
     onClick,
     onDoubleClick,
   }: {
     imageUrl: string;
+    alt?: string;
     onClick?: () => void;
     onDoubleClick?: () => void;
   }) => {
     return (
       <img
         src={imageUrl}
-        alt={imageUrl}
+        alt={alt || "Post image"}
         className="w-full h-auto min-h-[200px] object-cover cursor-pointer transition-opacity duration-300"
         loading="lazy"
         decoding="async" // Offloads image decoding from the main thread

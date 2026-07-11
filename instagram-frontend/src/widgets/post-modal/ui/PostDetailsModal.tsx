@@ -102,7 +102,7 @@ export const PostDetailsModal = memo(({ value }: { value: Post }) => {
             <p className="font-medium text-sm">
               {post?.likesCount.toLocaleString()} likes
             </p>
-            <p className="text-gray-500 text-[10px] uppercase">
+            <p className="text-gray-400 text-[10px] uppercase">
               {formatDateToNow(post?.createdAt || "")}
             </p>
           </div>

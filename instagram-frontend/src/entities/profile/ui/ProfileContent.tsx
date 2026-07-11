@@ -26,21 +26,24 @@ export const ProfileContent = memo(
           <TabButton
             active={activeTab === "POSTS"}
             onClick={() => setActiveTab("POSTS")}
-            icon={<Grid size={24} />}
+            label="Posts"
+            icon={<Grid size={24} aria-hidden="true" />}
           />
 
           {isMyProfile && (
             <TabButton
               active={activeTab === "SAVED"}
               onClick={() => setActiveTab("SAVED")}
-              icon={<Bookmark size={24} />}
+              label="Saved"
+              icon={<Bookmark size={24} aria-hidden="true" />}
             />
           )}
 
           <TabButton
             active={activeTab === "TAGGED"}
             onClick={() => setActiveTab("TAGGED")}
-            icon={<SquareUser size={24} />}
+            label="Tagged"
+            icon={<SquareUser size={24} aria-hidden="true" />}
           />
         </div>
         <div className={activeTab === "POSTS" ? "block" : "hidden"}>
@@ -71,13 +74,18 @@ const TabButton = ({
   active,
   onClick,
   icon,
+  label,
 }: {
   active: boolean;
   onClick: () => void;
   icon: ReactNode;
+  label: string;
 }) => (
   <button
     onClick={onClick}
+    aria-label={label}
+    title={label}
+    aria-pressed={active}
     className={`px-6 py-2 cursor-pointer transition-all duration-200 ${
       active
         ? "text-white border-white border-b-2"

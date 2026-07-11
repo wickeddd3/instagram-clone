@@ -39,14 +39,17 @@ export const ProfileForm = ({ profile }: { profile: Profile }) => {
     <form onSubmit={onSubmit} className="flex flex-col gap-10">
       {/* Display Name Input */}
       <div className="flex flex-col gap-2 md:gap-6">
-        <label className="font-semibold text-md">Display Name</label>
+        <label htmlFor="profile-display-name" className="font-semibold text-md">
+          Display Name
+        </label>
         <div className="flex-1">
           <input
             {...registerField("displayName")}
+            id="profile-display-name"
             type="text"
             className="w-full bg-[#0d1015] border border-gray-700 rounded-xl p-4 text-sm focus:border-white outline-none"
           />
-          <p className="text-xs text-gray-500 mt-2">
+          <p className="text-xs text-gray-400 mt-2">
             In most cases, you'll be able to change your username back to{" "}
             {profile?.username} for another 14 days.
           </p>
@@ -55,10 +58,13 @@ export const ProfileForm = ({ profile }: { profile: Profile }) => {
 
       {/* Website Input */}
       <div className="flex flex-col gap-2 md:gap-4">
-        <label className="font-bold text-md">Website</label>
+        <label htmlFor="profile-website" className="font-bold text-md">
+          Website
+        </label>
         <div className="flex-1">
           <input
             {...registerField("website")}
+            id="profile-website"
             type="text"
             className="w-full bg-[#0d1015] border border-gray-700 rounded-xl p-4 text-sm focus:border-white outline-none"
           />
@@ -67,14 +73,17 @@ export const ProfileForm = ({ profile }: { profile: Profile }) => {
 
       {/* Bio Input */}
       <div className="flex flex-col gap-2 md:gap-4">
-        <label className="font-bold text-md">Bio</label>
+        <label htmlFor="profile-bio" className="font-bold text-md">
+          Bio
+        </label>
         <div className="flex-1">
           <textarea
             {...registerField("bio")}
+            id="profile-bio"
             maxLength={150}
             className="w-full bg-[#0d1015] border border-gray-700 rounded-xl p-4 text-sm focus:border-white outline-none h-20 resize-none"
           />
-          <div className="text-xs text-gray-500 text-right">
+          <div className="text-xs text-gray-400 text-right">
             {/* {bio.length} / 150 */}
           </div>
         </div>

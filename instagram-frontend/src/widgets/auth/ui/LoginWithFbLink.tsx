@@ -4,7 +4,7 @@ export const LoginWithFbLink = () => {
   return (
     <div className="flex items-center gap-2 cursor-pointer">
       <div className="bg-blue-600 rounded-full p-0.5">
-        <Facebook size={18} />
+        <Facebook size={18} aria-hidden="true" />
       </div>
       <span className="text-blue-600 text-sm font-semibold">
         {" "}

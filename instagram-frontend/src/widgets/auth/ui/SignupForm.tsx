@@ -48,18 +48,22 @@ export const SignupForm = ({
           error={errors.username?.message}
         />
       </div>
-      <p className="text-xs text-gray-500 text-center">
+      <p className="text-xs text-gray-400 text-center">
         People who use our service may have uploaded your contact information to
         Instagram. <span className="text-indigo-400">Learn More</span>
       </p>
-      <p className="text-xs text-gray-500 text-center">
+      <p className="text-xs text-gray-400 text-center">
         By signing up, you agree to our{" "}
         <span className="text-indigo-400">Terms</span>,{" "}
         <span className="text-indigo-400">Privacy Policy</span> and{" "}
         <span className="text-indigo-400">Cookies Policy</span>
       </p>
       <SubmitButton disabled={loading}>
-        {loading ? <Loader className="animate-spin" size={20} /> : "Sign up"}
+        {loading ? (
+          <Loader className="animate-spin" size={20} aria-label="Signing up" />
+        ) : (
+          "Sign up"
+        )}
       </SubmitButton>
     </form>
   );

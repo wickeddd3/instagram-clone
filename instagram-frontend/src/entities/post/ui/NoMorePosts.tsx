@@ -8,7 +8,7 @@ export const NoMorePosts = () => {
       transition={{ duration: 0.5 }}
       className="w-full h-full flex justify-center items-center"
     >
-      <p className="text-gray-500 text-xs text-center">No more posts to show</p>
+      <p className="text-gray-400 text-xs text-center">No more posts to show</p>
     </motion.div>
   );
 };

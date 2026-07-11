@@ -19,6 +19,7 @@ export const PreviewFooter = ({
           >
             <img
               src={url}
+              alt={`Selected image ${index + 1}`}
               className="w-full h-full object-cover rounded-sm border border-neutral-700"
             />
             {/* <button

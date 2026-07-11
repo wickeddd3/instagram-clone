@@ -26,7 +26,7 @@ export const CommentItem = ({
   return (
     <div className="flex flex-col gap-3 pb-5 pr-2">
       <div className="flex gap-3 items-start group">
-        <Avatar imageUrl={avatarUrl} />
+        <Avatar imageUrl={avatarUrl} username={username} />
         <div className="flex-1 flex flex-col text-sm">
           <CommentMessage text={text} username={username} />
           <div className="flex gap-4 mt-2 text-xs text-gray-400">

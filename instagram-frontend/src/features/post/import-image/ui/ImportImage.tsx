@@ -54,6 +54,7 @@ export const ImportImage = ({
         <Image
           size={64}
           strokeWidth={1}
+          aria-hidden="true"
           className={isDragging ? "text-indigo-500" : "text-white"}
         />
         <p className="text-xl font-light">Drag photos and videos here</p>
