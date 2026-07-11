@@ -85,3 +85,17 @@ body {
 .skip-link:focus {
   left: 0;
 }
+
+/* Fallback for CSS animations/transitions not driven by framer-motion
+   (heart pop, spinners, image fade-ins) so the whole app respects
+   prefers-reduced-motion (WCAG 2.3.3). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
