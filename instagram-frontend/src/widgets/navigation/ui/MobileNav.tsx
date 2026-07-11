@@ -67,7 +67,7 @@ export const MobileNav = ({ onCreatePost }: { onCreatePost: () => void }) => {
         <div className="w-6 h-6 rounded-full bg-gray-500 overflow-hidden">
           <img
             src={authProfile?.avatarUrl || "/ig-default.jpg"}
-            alt="Profile"
+            alt={`${authProfile?.username}'s profile`}
           />
         </div>
       </button>

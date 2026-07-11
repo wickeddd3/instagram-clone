@@ -14,6 +14,7 @@ export const ProfileAvatar = ({
         <div className="w-9 h-9 md:w-15 md:h-15 shrink-0">
           <img
             src={profile?.avatarUrl || "/ig-default.jpg"}
+            alt=""
             className="rounded-full w-full h-full object-cover"
           />
         </div>
