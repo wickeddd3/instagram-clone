@@ -30,7 +30,7 @@ export const RecentSearches = memo(({ onClose }: { onClose?: () => void }) => {
   if (loading) {
     return (
       <div className="h-full flex justify-center items-center p-4">
-        <span className="text-gray-500 text-sm">Fetching...</span>
+        <span className="text-gray-400 text-sm">Fetching...</span>
       </div>
     );
   }
@@ -38,7 +38,7 @@ export const RecentSearches = memo(({ onClose }: { onClose?: () => void }) => {
   if (!loading && !recentSearches.length) {
     return (
       <div className="h-full flex justify-center items-center p-4">
-        <span className="text-gray-500 text-sm">No recent searches.</span>
+        <span className="text-gray-400 text-sm">No recent searches.</span>
       </div>
     );
   }
@@ -62,9 +62,11 @@ export const RecentSearches = memo(({ onClose }: { onClose?: () => void }) => {
           optionSlot={
             <button
               onClick={(event) => handleRemoveRecentSearch(event, profile.id)}
+              aria-label={`Remove ${profile.username} from recent searches`}
+              title="Remove"
               className="cursor-pointer"
             >
-              <X size={24} className="text-gray-400" />
+              <X size={24} className="text-gray-400" aria-hidden="true" />
             </button>
           }
         />

@@ -8,6 +8,11 @@ export const Spinner = ({
   className?: string;
 }) => {
   return (
-    <Loader className={`animate-spin text-gray-500 ${className}`} size={size} />
+    <Loader
+      className={`animate-spin text-gray-400 ${className}`}
+      size={size}
+      role="status"
+      aria-label="Loading"
+    />
   );
 };

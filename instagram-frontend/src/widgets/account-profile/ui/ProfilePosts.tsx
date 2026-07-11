@@ -20,7 +20,7 @@ export const ProfilePosts = memo(({
 
   return !loading && hadEmptyPosts ? (
     <PostsEmpty
-      icon={<Camera size={44} strokeWidth={1} />}
+      icon={<Camera size={44} strokeWidth={1} aria-hidden="true" />}
       title="No posts yet"
     />
   ) : (

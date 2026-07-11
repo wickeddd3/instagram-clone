@@ -41,14 +41,16 @@ export const MobileSearch = () => {
     >
       <div className="relative group">
         <Search
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
           size={16}
+          aria-hidden="true"
         />
         <input
           onFocus={() => setIsFocused(true)}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search"
+          aria-label="Search"
           className="w-full bg-neutral-800 border-none rounded-full py-3 pl-10 pr-4 text-sm placeholder:text-sm placeholder:font-light focus:outline-none"
         />
       </div>

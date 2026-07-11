@@ -91,8 +91,12 @@ export const StoryView = memo(
             </span>
           </div>
           <div className="flex gap-2">
-            <button className="px-2 cursor-pointer">
-              <Ellipsis />
+            <button
+              aria-label="Story options"
+              title="Story options"
+              className="px-2 cursor-pointer"
+            >
+              <Ellipsis aria-hidden="true" />
             </button>
             <ModalCloseButton
               onClose={closeModal}

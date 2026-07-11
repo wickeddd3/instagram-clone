@@ -33,7 +33,11 @@ export const LoginForm = ({
         />
       </div>
       <SubmitButton disabled={loading}>
-        {loading ? <Loader className="animate-spin" size={20} /> : "Log in"}
+        {loading ? (
+          <Loader className="animate-spin" size={20} aria-label="Logging in" />
+        ) : (
+          "Log in"
+        )}
       </SubmitButton>
     </form>
   );

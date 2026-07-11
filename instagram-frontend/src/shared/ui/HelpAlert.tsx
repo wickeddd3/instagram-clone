@@ -7,7 +7,7 @@ export function HelpAlert() {
       role="alert"
     >
       <div className="flex">
-        <InfoIcon size={26} className="text-teal-500 mr-4" />
+        <InfoIcon size={26} className="text-teal-500 mr-4" aria-hidden="true" />
         <div className="text-xs">
           <p className="font-bold text-pretty">
             If you're hesitant to signup you can use these credentials for demo

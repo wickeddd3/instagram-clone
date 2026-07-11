@@ -38,9 +38,12 @@ export const StoryCarousel = memo(
       <div className="h-full w-full flex justify-center items-center gap-2">
         <button
           onClick={handlePrevUser}
+          disabled={!hasPrevious}
+          aria-label="Previous story"
+          title="Previous story"
           className={`bg-gray-100 rounded-full p-1 cursor-pointer ${!hasPrevious && "opacity-0"}`}
         >
-          <ChevronLeft size={22} className="text-gray-950" />
+          <ChevronLeft size={22} className="text-gray-950" aria-hidden="true" />
         </button>
         <div className="bg-neutral-800 h-full w-full md:w-[500px] rounded-lg">
           <StoryView
@@ -52,9 +55,12 @@ export const StoryCarousel = memo(
         </div>
         <button
           onClick={handleNextUser}
+          disabled={!hasNext}
+          aria-label="Next story"
+          title="Next story"
           className={`bg-gray-100 rounded-full p-1 cursor-pointer ${!hasNext && "opacity-0"}`}
         >
-          <ChevronRight size={22} className="text-gray-950" />
+          <ChevronRight size={22} className="text-gray-950" aria-hidden="true" />
         </button>
       </div>
     );

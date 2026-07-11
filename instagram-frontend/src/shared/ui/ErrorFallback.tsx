@@ -16,7 +16,12 @@ export const ErrorFallback = ({
 }: ErrorFallbackProps) => {
   return (
     <div className="flex min-h-screen w-full flex-col items-center justify-center gap-4 bg-[#0d1015] px-6 text-center text-white">
-      <AlertTriangle className="text-gray-400" size={48} strokeWidth={1.5} />
+      <AlertTriangle
+        className="text-gray-400"
+        size={48}
+        strokeWidth={1.5}
+        aria-hidden="true"
+      />
       <div className="space-y-1">
         <h1 className="text-lg font-semibold">{title}</h1>
         <p className="max-w-sm text-sm text-gray-400">{message}</p>

@@ -9,8 +9,8 @@ const EditProfilePage = () => {
 
   if (authProfileLoading) {
     return (
-      <div className="flex justify-center pt-20">
-        <Loader2 className="animate-spin" />
+      <div className="flex justify-center pt-20" role="status" aria-label="Loading">
+        <Loader2 className="animate-spin" aria-hidden="true" />
       </div>
     );
   }

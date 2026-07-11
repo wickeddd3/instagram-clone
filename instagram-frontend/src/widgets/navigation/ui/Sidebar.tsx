@@ -70,7 +70,7 @@ export const Sidebar = ({
         <div className="w-6 h-6 rounded-full bg-gray-500 overflow-hidden">
           <img
             src={authProfile?.avatarUrl || "/ig-default.jpg"}
-            alt="Profile"
+            alt={`${authProfile?.username}'s profile`}
           />
         </div>
       ),
@@ -86,15 +86,22 @@ export const Sidebar = ({
       onMouseLeave={() => onSidebarHover && onSidebarHover(false)}
     >
       {/* Logo */}
-      <button className="flex items-center py-2 px-2.5 w-full cursor-pointer">
-        <Instagram className="block w-6 h-6" />
+      <button
+        onClick={() => navigate("/")}
+        aria-label="Instagram home"
+        title="Instagram home"
+        className="flex items-center py-2 px-2.5 w-full cursor-pointer"
+      >
+        <Instagram className="block w-6 h-6" aria-hidden="true" />
       </button>
 
       {/* Nav Items */}
-      <nav>
+      <nav aria-label="Primary">
         {navItems.map((item, index) => (
           <button
             key={index}
+            aria-label={item.label}
+            title={item.label}
             className="flex items-center gap-4 py-3 px-2.5 hover:bg-white/10 rounded-lg w-full transition-colors duration-200 group cursor-pointer"
             onClick={item.action}
           >
@@ -119,9 +126,13 @@ export const Sidebar = ({
       </nav>
 
       {/* More Options */}
-      <button className="flex items-center gap-4 py-2 px-2.5 hover:bg-white/10 rounded-lg w-full transition-colors duration-200 group cursor-pointer">
+      <button
+        aria-label="More"
+        title="More"
+        className="flex items-center gap-4 py-2 px-2.5 hover:bg-white/10 rounded-lg w-full transition-colors duration-200 group cursor-pointer"
+      >
         <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-          <Menu size={iconSize} />
+          <Menu size={iconSize} aria-hidden="true" />
         </motion.div>
         <AnimatePresence>
           {isSidebarOpen && (
