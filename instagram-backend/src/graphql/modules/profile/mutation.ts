@@ -1,4 +1,5 @@
 import type { GraphQLContext } from "@/graphql/context";
+import { unauthenticatedError } from "@/graphql/errors";
 
 export const ProfileMutation = {
   createProfile: (
@@ -37,7 +38,7 @@ export const ProfileMutation = {
     },
     { userId, services }: GraphQLContext,
   ) => {
-    if (!userId) throw new Error("Unauthorized");
+    if (!userId) throw unauthenticatedError();
 
     return services.profile.updateProfile(userId, {
       displayName,
@@ -51,19 +52,19 @@ export const ProfileMutation = {
     { avatarUrl }: { avatarUrl: string },
     { userId, services }: GraphQLContext,
   ) => {
-    if (!userId) throw new Error("Unauthorized");
+    if (!userId) throw unauthenticatedError();
 
     return services.profile.updateProfile(userId, { avatarUrl });
   },
 
   removeProfileAvatar: async (_parent: unknown, _args: unknown, { userId, services }: GraphQLContext) => {
-    if (!userId) throw new Error("Unauthorized");
+    if (!userId) throw unauthenticatedError();
 
     return services.profile.updateProfile(userId, { avatarUrl: null });
   },
 
   toggleFollow: async (_parent: unknown, { username }: { username: string }, { userId, services }: GraphQLContext) => {
-    if (!userId) throw new Error("Unauthorized");
+    if (!userId) throw unauthenticatedError();
 
     return services.profile.toggleFollow(userId, username);
   },
@@ -73,7 +74,7 @@ export const ProfileMutation = {
     { username }: { username: string },
     { userId, services }: GraphQLContext,
   ) => {
-    if (!userId) throw new Error("Unauthorized");
+    if (!userId) throw unauthenticatedError();
 
     // Find the user who is following me
     const follower = await services.profile.getProfile({ username });
@@ -93,7 +94,7 @@ export const ProfileMutation = {
     { username }: { username: string },
     { userId, services }: GraphQLContext,
   ) => {
-    if (!userId) throw new Error("Unauthorized");
+    if (!userId) throw unauthenticatedError();
 
     // Find the user who I follow
     const following = await services.profile.getProfile({ username });

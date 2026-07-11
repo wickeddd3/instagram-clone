@@ -1,4 +1,5 @@
 import type { GraphQLContext } from "@/graphql/context";
+import { unauthenticatedError } from "@/graphql/errors";
 
 export const RecentSearchMutation = {
   addRecentSearch: async (
@@ -16,13 +17,13 @@ export const RecentSearchMutation = {
     { targetId }: { targetId: string },
     { userId, services }: GraphQLContext,
   ) => {
-    if (!userId) throw new Error("Unauthorized");
+    if (!userId) throw unauthenticatedError();
 
     return services.recentSearch.removeRecentSearch(userId, targetId);
   },
 
   clearRecentSearches: async (_parent: unknown, _args: unknown, { userId, services }: GraphQLContext) => {
-    if (!userId) throw new Error("Unauthorized");
+    if (!userId) throw unauthenticatedError();
 
     return services.recentSearch.clearAll(userId);
   },

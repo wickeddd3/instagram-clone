@@ -26,6 +26,7 @@
   "dependencies": {
     "@apollo/server": "^5.2.0",
     "@as-integrations/express5": "^1.1.2",
+    "@escape.tech/graphql-armor": "^3.2.0",
     "@prisma/adapter-pg": "^7.2.0",
     "@prisma/client": "^7.2.0",
     "@supabase/supabase-js": "^2.81.1",
@@ -37,6 +38,7 @@
     "express-rate-limit": "^8.5.2",
     "graphql": "^16.12.0",
     "helmet": "^8.2.0",
+    "jose": "^6.2.3",
     "multer": "^2.2.0",
     "pg": "^8.16.3",
     "pino": "^10.3.1",
@@ -65,5 +67,8 @@
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.63.0",
     "vitest": "^4.1.10"
+  },
+  "resolutions": {
+    "graphql": "^16.12.0"
   }
 }

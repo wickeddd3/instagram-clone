@@ -1,4 +1,5 @@
 import type { GraphQLContext } from "@/graphql/context";
+import { unauthenticatedError } from "@/graphql/errors";
 
 export const StoryMutation = {
   createStory: (
@@ -6,7 +7,7 @@ export const StoryMutation = {
     { mediaUrl, mediaType }: { mediaUrl: string; mediaType: string },
     { userId, services }: GraphQLContext,
   ) => {
-    if (!userId) throw new Error("Unauthorized");
+    if (!userId) throw unauthenticatedError();
 
     return services.story.createStory(userId, { mediaUrl, mediaType });
   },

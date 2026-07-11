@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { jwtVerify, createRemoteJWKSet } from "jose";
 import { config } from "@/config/env.config";
 
 // Service-role client: verifies JWTs, performs admin auth operations, and writes
@@ -54,23 +55,26 @@ export const uploadPublicFile = async (
   return publicUrl;
 };
 
-export const verifySupabaseToken = async (token: string) => {
+// Local access-token verification against the project's JWKS (asymmetric ES256),
+// which removes a per-request network call to supabase.auth.getUser. jose fetches
+// the keys lazily on first verify, caches them, and rotates by `kid`.
+const jwks = createRemoteJWKSet(new URL(`${config.supabase.url}/auth/v1/.well-known/jwks.json`));
+
+/**
+ * Resolves the Supabase user id from an access token, or null if it's invalid/
+ * expired (an expected condition for anonymous requests, so no logging noise).
+ * The signature, expiry, and audience are verified locally via JWKS.
+ */
+export const verifySupabaseToken = async (token: string): Promise<string | null> => {
   if (!token) return null;
 
   // Remove "Bearer " prefix if it exists
   const jwt = token.replace("Bearer ", "");
 
-  // This calls Supabase to verify the token is valid and active
-  const {
-    data: { user },
-    error,
-  } = await supabase.auth.getUser(jwt);
-
-  // Invalid/expired tokens are an expected condition for unauthenticated
-  // requests, so we simply return null rather than logging noise.
-  if (error || !user) {
-    return null;
+  try {
+    const { payload } = await jwtVerify(jwt, jwks, { audience: "authenticated" });
+    return typeof payload.sub === "string" ? payload.sub : null;
+  } catch {
+    return null; // invalid signature / expired / malformed
   }
-
-  return user.id; // Returns the UUID of the user
 };

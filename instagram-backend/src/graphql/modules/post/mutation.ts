@@ -1,4 +1,5 @@
 import type { GraphQLContext } from "@/graphql/context";
+import { unauthenticatedError } from "@/graphql/errors";
 
 export const PostMutation = {
   createPost: (
@@ -14,19 +15,19 @@ export const PostMutation = {
     },
     { userId, services }: GraphQLContext,
   ) => {
-    if (!userId) throw new Error("Unauthorized");
+    if (!userId) throw unauthenticatedError();
 
     return services.post.createPost(userId, { media, caption, location });
   },
 
   togglePostSave: (_parent: unknown, { postId }: { postId: string }, { userId, services }: GraphQLContext) => {
-    if (!userId) throw new Error("Unauthorized");
+    if (!userId) throw unauthenticatedError();
 
     return services.post.toggleSave(userId, postId);
   },
 
   togglePostLike: (_parent: unknown, { postId }: { postId: string }, { userId, services }: GraphQLContext) => {
-    if (!userId) throw new Error("Unauthorized");
+    if (!userId) throw unauthenticatedError();
 
     return services.post.toggleLike(userId, postId);
   },
