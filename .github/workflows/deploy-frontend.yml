@@ -50,13 +50,30 @@ jobs:
           mkdir -p .vercel/output/static
           cp -r dist/* .vercel/output/static
 
-          # 3. Create a dummy config so Vercel knows it's a static site
-          # Create the config.json with strict formatting
-          # We use cat to ensure a clean multi-line JSON write
-          cat <<EOF > .vercel/output/config.json
+          # 3. Build Output API config: security + cache headers, then the SPA
+          # fallback. --prebuilt reads this and ignores vercel.json, so this is
+          # the source of truth for production headers (mirrored in vercel.json).
+          cat <<'EOF' > .vercel/output/config.json
           {
             "version": 3,
             "routes": [
+              {
+                "src": "/(.*)",
+                "headers": {
+                  "X-Content-Type-Options": "nosniff",
+                  "X-Frame-Options": "DENY",
+                  "Referrer-Policy": "strict-origin-when-cross-origin",
+                  "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+                  "Strict-Transport-Security": "max-age=63072000; includeSubDomains; preload",
+                  "Content-Security-Policy": "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; img-src 'self' data: blob: https:; font-src 'self' https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self'; connect-src 'self' https: wss:"
+                },
+                "continue": true
+              },
+              {
+                "src": "/assets/(.*)",
+                "headers": { "Cache-Control": "public, max-age=31536000, immutable" },
+                "continue": true
+              },
               { "handle": "filesystem" },
               { "src": "/(.*)", "dest": "/index.html" }
             ]
