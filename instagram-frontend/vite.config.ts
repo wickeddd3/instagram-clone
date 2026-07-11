@@ -35,14 +35,34 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id) {
-          // Creates a separate chunk for everything in node_modules
-          if (id.includes("node_modules")) {
-            return id
-              .toString()
-              .split("node_modules/")[1]
-              .split("/")[0]
-              .toString();
+          if (!id.includes("node_modules")) return undefined;
+
+          // First path segment after node_modules — the package (or @scope).
+          const pkg = id.split("node_modules/")[1].split("/")[0];
+
+          // Heavy libs used only by lazy routes/widgets. Left ungrouped so
+          // Rollup keeps them in the page chunk that imports them instead of an
+          // eager vendor bundle.
+          const LAZY_PACKAGES = ["react-virtuoso", "swiper", "date-fns"];
+          if (LAZY_PACKAGES.includes(pkg)) return undefined;
+
+          // Group the tightly-coupled, eagerly-loaded families into a few stable
+          // chunks. Grouping coupled deps together (e.g. apollo + graphql) avoids
+          // cross-chunk init cycles, and these change far less often than app
+          // code, so they stay cached across deploys.
+          const VENDOR_GROUPS: Record<string, string[]> = {
+            "react-vendor": ["react", "react-dom", "react-router", "react-router-dom", "scheduler"],
+            "apollo-vendor": ["@apollo", "graphql", "graphql-tag", "@wry", "optimism", "rxjs"],
+            "supabase-vendor": ["@supabase"],
+            "motion-vendor": ["framer-motion", "motion-dom", "motion-utils"],
+            "form-vendor": ["react-hook-form", "@hookform", "zod"],
+          };
+          for (const [group, packages] of Object.entries(VENDOR_GROUPS)) {
+            if (packages.includes(pkg)) return group;
           }
+
+          // Remaining shared helpers (tslib, sonner, lucide-react, clsx, …).
+          return "vendor";
         },
       },
     },

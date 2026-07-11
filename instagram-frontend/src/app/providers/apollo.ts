@@ -1,9 +1,14 @@
-import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
+import { ApolloClient, ApolloLink, HttpLink, InMemoryCache } from "@apollo/client";
 import { SetContextLink } from "@apollo/client/link/context";
+import { ErrorLink } from "@apollo/client/link/error";
+import { CombinedGraphQLErrors, ServerError } from "@apollo/client/errors";
+import { toast } from "sonner";
 import { supabase } from "../../shared/lib/supabase";
+import { signOut } from "../../shared/lib/supabase-auth";
+import { env } from "@/shared/config/env";
 
 const baseLink = new HttpLink({
-  uri: import.meta.env.VITE_API_URL,
+  uri: env.VITE_API_URL,
 });
 
 const authLink = new SetContextLink(async (prevContext) => {
@@ -20,8 +25,46 @@ const authLink = new SetContextLink(async (prevContext) => {
   };
 });
 
+// Single place to react to auth-expiry and surface transport failures, so no
+// query/mutation has to re-implement it. UNAUTHENTICATED (the backend's typed
+// GraphQL code) or a 401 means the Supabase access token is no longer valid:
+// signing out lets AuthProvider's onAuthStateChange clear the session and the
+// route guards redirect to login. The flag prevents a burst of failed requests
+// from triggering repeated sign-outs.
+let handlingAuthExpiry = false;
+
+const handleAuthExpiry = async () => {
+  if (handlingAuthExpiry) return;
+  handlingAuthExpiry = true;
+  toast.error("Your session has expired. Please sign in again.", {
+    id: "auth-expiry",
+  });
+  await signOut();
+  handlingAuthExpiry = false;
+};
+
+const errorLink = new ErrorLink(({ error }) => {
+  if (CombinedGraphQLErrors.is(error)) {
+    if (error.errors.some((e) => e.extensions?.code === "UNAUTHENTICATED")) {
+      void handleAuthExpiry();
+    }
+    return;
+  }
+
+  if (ServerError.is(error) && error.statusCode === 401) {
+    void handleAuthExpiry();
+    return;
+  }
+
+  // Network / transport failure (offline, CORS, server unreachable, 5xx). The
+  // stable toast id collapses concurrent failures into a single notification.
+  toast.error("Network error. Please check your connection and try again.", {
+    id: "network-error",
+  });
+});
+
 export const client = new ApolloClient({
-  link: authLink.concat(baseLink),
+  link: ApolloLink.from([errorLink, authLink, baseLink]),
   cache: new InMemoryCache({
     typePolicies: {
       Query: {

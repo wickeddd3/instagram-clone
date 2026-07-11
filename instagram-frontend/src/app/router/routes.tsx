@@ -1,12 +1,14 @@
 import { createBrowserRouter } from "react-router-dom";
 import { AuthGuard } from "./../providers/AuthGuard";
 import { GuestGuard } from "./../providers/GuestGuard";
+import { RouteErrorBoundary } from "./RouteErrorBoundary";
 
 export const router = createBrowserRouter([
   // --- PROTECTED ROUTES ---
   {
     path: "/",
     element: <AuthGuard />,
+    errorElement: <RouteErrorBoundary />,
     children: [
       {
         index: true,
@@ -57,6 +59,7 @@ export const router = createBrowserRouter([
   {
     path: "/accounts",
     element: <GuestGuard />,
+    errorElement: <RouteErrorBoundary />,
     children: [
       {
         path: "login",
