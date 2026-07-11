@@ -37,6 +37,11 @@ jobs:
           cd instagram-frontend
           yarn lint
 
+      - name: Test
+        run: |
+          cd instagram-frontend
+          yarn test
+
       - name: Install Vercel CLI
         run: npm install --global vercel
 
