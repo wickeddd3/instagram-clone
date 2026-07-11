@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { X } from "lucide-react";
-import type { ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
+import { useFocusTrap } from "@/shared/lib/a11y";
 
 export const DrawerCloseButton = ({
   onClose,
@@ -14,9 +15,11 @@ export const DrawerCloseButton = ({
   return (
     <button
       onClick={onClose}
+      aria-label="Close"
+      title="Close"
       className={`absolute top-4 right-4 text-white hover:text-gray-300 cursor-pointer ${className}`}
     >
-      <X size={iconSize} />
+      <X size={iconSize} aria-hidden="true" />
     </button>
   );
 };
@@ -26,14 +29,24 @@ export const Drawer = ({
   width = 460,
   onClose,
   hasCloseButton = false,
+  label = "Dialog",
 }: {
   content: ReactNode;
   width?: number;
   onClose: () => void;
   hasCloseButton?: boolean;
+  label?: string;
 }) => {
+  const ref = useRef<HTMLElement>(null);
+  useFocusTrap(ref, onClose);
+
   return (
     <motion.aside
+      ref={ref}
+      role="dialog"
+      aria-modal="true"
+      aria-label={label}
+      tabIndex={-1}
       initial={false}
       animate={{ width: width }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
