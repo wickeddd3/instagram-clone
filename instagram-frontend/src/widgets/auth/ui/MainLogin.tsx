@@ -15,9 +15,9 @@ export const MainLogin = () => {
 
   return (
     <div className="w-full h-full min-h-screen flex flex-col justify-between md:justify-center items-center gap-12 p-4 bg-[#0d1015] text-white">
-      <div className="flex-1 w-full h-full flex justify-center items-center gap-16 p-4">
+      <main className="flex-1 w-full h-full flex justify-center items-center gap-16 p-4">
         <div className="hidden md:block">
-          <img src="/ig-login-landing.png" alt="Login Image" />
+          <img src="/ig-login-landing.png" alt="" />
         </div>
         <div className="w-xs flex flex-col justify-center items-center gap-12">
           <IgLabel />
@@ -30,7 +30,7 @@ export const MainLogin = () => {
           </div>
           <SignupLink />
         </div>
-      </div>
+      </main>
       <HelpAlert />
       <Footer />
       {/* Snackbar */}
