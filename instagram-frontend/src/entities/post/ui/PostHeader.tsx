@@ -20,7 +20,7 @@ export const CreatedAt = ({ createdAt }: { createdAt?: string }) => {
   if (!createdAt) return null;
 
   return (
-    <span className="text-gray-500 text-sm">
+    <span className="text-gray-400 text-sm">
       • {formatDateToNow(createdAt)}
     </span>
   );

@@ -33,7 +33,7 @@ export const SuggestionProfileLink = ({
           <span className="text-sm font-bold text-white">
             {profile.username}
           </span>
-          <span className="text-[12px] text-gray-500">{suggestionLabel}</span>
+          <span className="text-[12px] text-gray-400">{suggestionLabel}</span>
         </div>
       </Link>
       {optionSlot}
