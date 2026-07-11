@@ -1,4 +1,5 @@
 import type { GraphQLContext } from "@/graphql/context";
+import { unauthenticatedError } from "@/graphql/errors";
 
 export const CommentMutation = {
   addComment: async (
@@ -14,7 +15,7 @@ export const CommentMutation = {
     },
     { userId, services }: GraphQLContext,
   ) => {
-    if (!userId) throw new Error("Unauthorized");
+    if (!userId) throw unauthenticatedError();
 
     return services.comment.addComment(userId, { postId, text, parentId });
   },
@@ -24,7 +25,7 @@ export const CommentMutation = {
     { commentId }: { commentId: string },
     { userId, services }: GraphQLContext,
   ) => {
-    if (!userId) throw new Error("Unauthorized");
+    if (!userId) throw unauthenticatedError();
 
     return services.comment.toggleLike(userId, commentId);
   },
