@@ -61,7 +61,7 @@ export const AddCommentField = memo(
         <button
           type="submit"
           disabled={!text.trim()}
-          className="text-foreground font-bold text-sm disabled:opacity-80 cursor-pointer"
+          className="text-primary font-bold text-sm cursor-pointer"
         >
           Post
         </button>

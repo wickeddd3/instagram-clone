@@ -73,6 +73,18 @@ body {
   color: var(--fg);
 }
 
+/* Make disabled controls unmistakably inert everywhere. Placed in the base
+   layer so any explicit Tailwind utility (e.g. opacity-0 on the carousel
+   arrows, or a disabled:* utility) still wins. */
+@layer base {
+  button:disabled,
+  a[aria-disabled="true"],
+  [aria-disabled="true"] {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+}
+
 @layer utilities {
   /* Hide scrollbar for Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {

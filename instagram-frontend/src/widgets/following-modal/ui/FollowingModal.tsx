@@ -16,7 +16,7 @@ export const FollowingModal = ({
   const { closeModal } = useModalActions();
 
   return (
-    <ModalContent className="w-full max-w-5/6 md:max-w-3/5 lg:max-w-1/3 h-[370px] flex flex-col md:flex-row">
+    <ModalContent className="w-full max-w-5/6 md:max-w-3/5 lg:max-w-[400px] h-[370px] flex flex-col md:flex-row">
       <div className="flex flex-col h-full w-full overflow-hidden">
         <div className="p-3 border-b border-border flex items-center justify-between">
           <h1 className="text-center flex-1 font-semibold">Following</h1>

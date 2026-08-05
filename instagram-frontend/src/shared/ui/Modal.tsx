@@ -54,19 +54,28 @@ export const ModalContent = ({
 
 export const ModalCloseButton = ({
   onClose,
-  className,
+  className = "",
   iconSize = 28,
+  tone = "surface",
 }: {
   onClose: () => void;
   className?: string;
   iconSize?: number;
+  /** "surface" adapts to the theme (use on a modal panel); "overlay" stays
+   *  white for buttons sitting over the dark scrim or media. */
+  tone?: "surface" | "overlay";
 }) => {
+  const toneClasses =
+    tone === "overlay"
+      ? "text-white hover:text-white/70"
+      : "text-foreground hover:text-muted";
+
   return (
     <button
       onClick={onClose}
       aria-label="Close"
       title="Close"
-      className={`text-foreground hover:text-muted cursor-pointer ${className}`}
+      className={`${toneClasses} transition-colors cursor-pointer ${className}`}
     >
       <X size={iconSize} aria-hidden="true" />
     </button>
@@ -89,6 +98,7 @@ export const Modal = ({
       {hasCloseButton && (
         <ModalCloseButton
           onClose={onClose}
+          tone="overlay"
           className="absolute top-4 right-2.5 z-70"
         />
       )}

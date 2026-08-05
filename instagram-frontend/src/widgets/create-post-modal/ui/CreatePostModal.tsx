@@ -17,7 +17,7 @@ export const CreatePostModal = () => {
   const removeAt = useCallback((index: number) => removeFile(items[index].id), [items, removeFile]);
 
   return (
-    <ModalContent className="w-full max-w-5/6 md:max-w-4/5 lg:max-w-2/3 h-full max-h-3/4 flex flex-col md:flex-row">
+    <ModalContent className="w-full max-w-5/6 md:max-w-4/5 lg:max-w-[855px] h-full max-h-3/4 flex flex-col md:flex-row">
       {hasMedia ? (
         <CreatePost
           files={files}
