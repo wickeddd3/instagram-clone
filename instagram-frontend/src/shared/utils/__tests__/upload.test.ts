@@ -1,5 +1,12 @@
 import type { ChangeEvent } from "react";
-import { createUploadPath, getFileData, generatePreview } from "../upload";
+import { createUploadPath, getFileData, generatePreview, validateImageFile } from "../upload";
+import { MAX_FILE_SIZE_BYTES } from "@/shared/config";
+
+const fileOfSize = (bytes: number, type = "image/png") => {
+  const file = new File(["x"], "a.png", { type });
+  Object.defineProperty(file, "size", { value: bytes });
+  return file;
+};
 
 describe("createUploadPath", () => {
   it("prefixes the path with the user id and preserves the extension", () => {
@@ -29,6 +36,26 @@ describe("getFileData", () => {
       target: { files: null },
     } as unknown as ChangeEvent<HTMLInputElement>;
     expect(getFileData(e)).toBeNull();
+  });
+});
+
+describe("validateImageFile", () => {
+  it("accepts a supported image within the size limit", () => {
+    expect(validateImageFile(fileOfSize(1024, "image/jpeg"))).toBeNull();
+  });
+
+  it("rejects an unsupported type", () => {
+    const error = validateImageFile(fileOfSize(1024, "application/pdf"));
+    expect(error).toMatch(/not a supported image/i);
+  });
+
+  it("rejects a file over the size limit", () => {
+    const error = validateImageFile(fileOfSize(MAX_FILE_SIZE_BYTES + 1, "image/png"));
+    expect(error).toMatch(/larger than/i);
+  });
+
+  it("accepts a file exactly at the size limit", () => {
+    expect(validateImageFile(fileOfSize(MAX_FILE_SIZE_BYTES, "image/webp"))).toBeNull();
   });
 });
 
