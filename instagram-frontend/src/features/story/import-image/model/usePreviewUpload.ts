@@ -1,30 +1,59 @@
-import { useState } from "react";
-import { generatePreview, getFileData } from "@/shared/utils";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
+import { generatePreview, validateImageFile } from "@/shared/utils";
 
+export interface StoryMedia {
+  file: File;
+  previewUrl: string;
+}
+
+/**
+ * Owns the single image for the create-story flow. A story has one media item,
+ * so selecting again replaces the current one. The file is validated (type +
+ * size) before any preview URL is created, and every created URL is revoked when
+ * it is replaced, reset, or the flow unmounts.
+ *
+ * A ref mirrors the current media so validation, URL creation, and revocation
+ * run as plain side effects outside the state setter — safe under StrictMode.
+ */
 export const usePreviewUpload = () => {
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [fileToUpload, setFileToUpload] = useState<File | null>(null);
-  const [isUploading, setIsUploading] = useState(false);
+  const [media, setMedia] = useState<StoryMedia | null>(null);
+  const mediaRef = useRef<StoryMedia | null>(null);
 
-  const handleFileChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    callback?: () => void,
-  ) => {
-    const file = getFileData(e);
-    if (!file) return;
+  const commit = useCallback((next: StoryMedia | null) => {
+    mediaRef.current = next;
+    setMedia(next);
+  }, []);
 
-    setFileToUpload(file);
-    const url = generatePreview(file);
-    setPreviewUrl(url);
-    callback?.();
-  };
+  const selectFile = useCallback(
+    (file: File) => {
+      const error = validateImageFile(file);
+      if (error) {
+        toast.error(error);
+        return;
+      }
+      // Replace: revoke the previously selected preview before swapping it in.
+      if (mediaRef.current) URL.revokeObjectURL(mediaRef.current.previewUrl);
+      commit({ file, previewUrl: generatePreview(file) });
+    },
+    [commit],
+  );
+
+  const reset = useCallback(() => {
+    if (mediaRef.current) URL.revokeObjectURL(mediaRef.current.previewUrl);
+    commit(null);
+  }, [commit]);
+
+  useEffect(() => {
+    return () => {
+      if (mediaRef.current) URL.revokeObjectURL(mediaRef.current.previewUrl);
+    };
+  }, []);
 
   return {
-    generatePreview,
-    previewUrl,
-    fileToUpload,
-    isUploading,
-    setIsUploading,
-    handleFileChange,
+    file: media?.file ?? null,
+    previewUrl: media?.previewUrl ?? null,
+    selectFile,
+    reset,
   };
 };
