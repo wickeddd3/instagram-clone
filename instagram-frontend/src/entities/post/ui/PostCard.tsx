@@ -44,7 +44,7 @@ export const PostCard = ({
 
       {imageSlot}
 
-      <div className="flex justify-between items-center text-white pl-2">
+      <div className="flex justify-between items-center text-foreground pl-2">
         <div className="flex items-center gap-4">
           {likeButtonSlot}
           {commentButtonSlot}

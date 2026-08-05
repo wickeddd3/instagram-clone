@@ -11,14 +11,14 @@ export const MainLayout = () => {
   const { openCreatePostModal } = useCreatePostModal();
 
   return (
-    <div className="w-full h-full flex flex-col md:flex-row bg-[#0d1015] text-white">
+    <div className="w-full h-full flex flex-col md:flex-row bg-background text-foreground">
       {/* Skip link — first focusable element, jumps to the main content */}
       <a href="#main-content" className="skip-link">
         Skip to content
       </a>
 
       {/* Top Header - Hidden on Desktop */}
-      <div className="md:hidden fixed top-0 w-full z-50 bg-[#0d1015]">
+      <div className="md:hidden fixed top-0 w-full z-50 bg-background">
         <MobileHeader />
       </div>
 
@@ -29,7 +29,7 @@ export const MainLayout = () => {
       <LayoutContent />
 
       {/* Bottom Nav - Hidden on Desktop */}
-      <div className="md:hidden fixed bottom-0 w-full z-50 bg-[#0d1015] border-t border-gray-800">
+      <div className="md:hidden fixed bottom-0 w-full z-50 bg-background border-t border-border">
         <MobileNav onCreatePost={openCreatePostModal} />
       </div>
 

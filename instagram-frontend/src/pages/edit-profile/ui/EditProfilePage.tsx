@@ -26,7 +26,7 @@ const EditProfilePage = () => {
     <div className="max-w-2xl w-full mx-auto px-4 py-8">
       <header className="mb-8">
         <h2 className="text-2xl font-semibold">Edit profile</h2>
-        <p className="text-sm text-gray-400 mt-1">
+        <p className="text-sm text-muted mt-1">
           Manage your photo, profile information, and account security.
         </p>
       </header>
@@ -42,7 +42,7 @@ const EditProfilePage = () => {
               optionSlot={
                 <button
                   type="button"
-                  className="bg-indigo-800 px-4 py-2 text-sm font-bold rounded-lg cursor-pointer hover:bg-indigo-700 hover:text-white transition"
+                  className="bg-primary text-white px-4 py-2 text-sm font-bold rounded-lg cursor-pointer hover:bg-primary-hover transition"
                   onClick={() =>
                     openUploadAvatarModal({
                       avatarUrl: authProfile?.avatarUrl,

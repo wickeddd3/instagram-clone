@@ -30,7 +30,7 @@ export const MobileNav = ({ onCreatePost }: { onCreatePost: () => void }) => {
         onClick={handleRedirectToHome}
         aria-label="Home"
         title="Home"
-        className="text-white cursor-pointer"
+        className="text-foreground cursor-pointer"
       >
         <Home size={24} />
       </button>
@@ -38,7 +38,7 @@ export const MobileNav = ({ onCreatePost }: { onCreatePost: () => void }) => {
         onClick={handleRedirectExplore}
         aria-label="Explore"
         title="Explore"
-        className="text-white cursor-pointer"
+        className="text-foreground cursor-pointer"
       >
         <Compass size={24} />
       </button>
@@ -46,7 +46,7 @@ export const MobileNav = ({ onCreatePost }: { onCreatePost: () => void }) => {
         onClick={onCreatePost}
         aria-label="New Post"
         title="New Post"
-        className="text-white cursor-pointer"
+        className="text-foreground cursor-pointer"
       >
         <Plus size={24} />
       </button>
@@ -54,7 +54,7 @@ export const MobileNav = ({ onCreatePost }: { onCreatePost: () => void }) => {
         onClick={handleRedirectToInbox}
         aria-label="Messages"
         title="Messages"
-        className="text-white cursor-pointer"
+        className="text-foreground cursor-pointer"
       >
         <Send size={24} />
       </button>
@@ -62,12 +62,13 @@ export const MobileNav = ({ onCreatePost }: { onCreatePost: () => void }) => {
         onClick={handleRedirectToProfile}
         aria-label="Profile"
         title="Profile"
-        className="text-white cursor-pointer"
+        className="text-foreground cursor-pointer"
       >
-        <div className="w-6 h-6 rounded-full bg-gray-500 overflow-hidden">
+        <div className="w-6 h-6 rounded-full bg-surface-hover overflow-hidden">
           <img
             src={authProfile?.avatarUrl || "/ig-default.jpg"}
             alt={`${authProfile?.username}'s profile`}
+            className="w-full h-full object-cover"
           />
         </div>
       </button>

@@ -47,8 +47,8 @@ export const CreatePost = ({
   const safeActiveIndex = Math.min(activeIndex, count - 1);
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center text-white">
-      <div className="bg-neutral-950 border-b border-neutral-800 w-full flex items-center justify-between">
+    <div className="w-full h-full flex flex-col items-center justify-center text-foreground">
+      <div className="bg-surface border-b border-border w-full flex items-center justify-between">
         <BackButton onClick={onBack} />
         <h1 className="text-center py-3 font-semibold">Create new post</h1>
         <ShareButton loading={isUploading} onClick={handleShare} />
@@ -56,7 +56,7 @@ export const CreatePost = ({
 
       <div className="flex-1 h-[400px] w-full flex flex-col md:flex-row">
         {/* Preview Image */}
-        <div className="w-full md:w-[60%] h-3/4 md:h-full bg-black flex flex-col relative border-r border-gray-700">
+        <div className="w-full md:w-[60%] h-3/4 md:h-full bg-black flex flex-col relative border-r border-border">
           <div className="relative flex-1 min-h-0">
             <ImageCarousel
               media={mediaItems}
@@ -77,7 +77,7 @@ export const CreatePost = ({
           />
         </div>
         {/* Details */}
-        <div className="w-full h-full md:w-[40%] flex flex-col bg-neutral-900">
+        <div className="w-full h-full md:w-[40%] flex flex-col bg-surface">
           {isUploading && <LoadingSpinner />}
           <AuthUser avatarUrl={authProfile?.avatarUrl} username={authProfile?.username || ""} />
           <CaptionTextarea value={caption} onChange={setCaption} disabled={isUploading} />

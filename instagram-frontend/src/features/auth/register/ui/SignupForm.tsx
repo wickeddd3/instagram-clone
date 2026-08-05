@@ -42,15 +42,15 @@ export const SignupForm = ({
           error={errors.username?.message}
         />
       </div>
-      <p className="text-xs text-gray-400 text-center">
+      <p className="text-xs text-muted text-center">
         People who use our service may have uploaded your contact information to
-        Instagram. <span className="text-indigo-400">Learn More</span>
+        Instagram. <span className="text-primary">Learn More</span>
       </p>
-      <p className="text-xs text-gray-400 text-center">
+      <p className="text-xs text-muted text-center">
         By signing up, you agree to our{" "}
-        <span className="text-indigo-400">Terms</span>,{" "}
-        <span className="text-indigo-400">Privacy Policy</span> and{" "}
-        <span className="text-indigo-400">Cookies Policy</span>
+        <span className="text-primary">Terms</span>,{" "}
+        <span className="text-primary">Privacy Policy</span> and{" "}
+        <span className="text-primary">Cookies Policy</span>
       </p>
       <SubmitButton disabled={loading}>
         {loading ? (

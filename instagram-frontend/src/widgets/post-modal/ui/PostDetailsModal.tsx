@@ -55,9 +55,9 @@ export const PostDetailsModal = memo(({ value }: { value: Post }) => {
 
   return (
     <ModalContent className="w-[90%] h-[88%] md:h-[90vh] md:max-w-5/6 lg:max-w-5xl overflow-hidden">
-      <div className="grid grid-cols-1 md:grid-cols-[1fr_400px] grid-rows-[auto_1fr_auto] md:grid-rows-[auto_1fr_auto] h-full bg-neutral-900">
+      <div className="grid grid-cols-1 md:grid-cols-[1fr_400px] grid-rows-[auto_1fr_auto] md:grid-rows-[auto_1fr_auto] h-full bg-surface">
         {/* 1. HEADER (Mobile & Desktop) */}
-        <header className="col-start-1 col-end-2 md:col-start-2 md:col-end-3 row-start-1 border-b border-neutral-800 bg-neutral-900 z-10">
+        <header className="col-start-1 col-end-2 md:col-start-2 md:col-end-3 row-start-1 border-b border-border bg-surface z-10">
           <PostHeader className="p-3">
             <div className="flex items-center gap-3">
               <PostHeader.AuthorAvatar
@@ -72,12 +72,12 @@ export const PostDetailsModal = memo(({ value }: { value: Post }) => {
         </header>
 
         {/* 2. IMAGE SECTION */}
-        <section className="col-start-1 col-end-2 row-start-2 md:row-span-5 bg-black flex items-center justify-center border-r border-neutral-800 overflow-hidden">
+        <section className="col-start-1 col-end-2 row-start-2 md:row-span-5 bg-black flex items-center justify-center border-r border-border overflow-hidden">
           <ImageCarousel media={value.media} />
         </section>
 
         {/* 3. COMMENTS LIST */}
-        <section className="col-start-1 md:col-start-2 row-start-5 md:row-start-2 bg-neutral-900 max-h-[200px] md:max-h-full min-h-[200px] md:min-h-0">
+        <section className="col-start-1 md:col-start-2 row-start-5 md:row-start-2 bg-surface max-h-[200px] md:max-h-full min-h-[200px] md:min-h-0">
           <CommentList
             postId={post?.id || ""}
             onReplyClick={handleReplyButtonClick}
@@ -85,7 +85,7 @@ export const PostDetailsModal = memo(({ value }: { value: Post }) => {
         </section>
 
         {/* 4. INTERACTION BUTTONS */}
-        <section className="col-start-1 md:col-start-2 row-start-3 md:row-start-3 bg-neutral-900 md:static">
+        <section className="col-start-1 md:col-start-2 row-start-3 md:row-start-3 bg-surface md:static">
           <div className="flex justify-between items-center px-3 py-2">
             <div className="flex items-center gap-4">
               <LikeButton post={post} callback={handleLikePostCallback} />
@@ -97,19 +97,19 @@ export const PostDetailsModal = memo(({ value }: { value: Post }) => {
         </section>
 
         {/* 5. POST DETAILS */}
-        <section className="col-start-1 md:col-start-2 row-start-4 md:row-start-4 bg-neutral-900 md:static">
+        <section className="col-start-1 md:col-start-2 row-start-4 md:row-start-4 bg-surface md:static">
           <div className="flex flex-col gap-1 px-4 py-2">
             <p className="font-medium text-sm">
               {post?.likesCount.toLocaleString()} likes
             </p>
-            <p className="text-gray-400 text-[10px] uppercase">
+            <p className="text-muted text-[10px] uppercase">
               {formatDateToNow(post?.createdAt || "")}
             </p>
           </div>
         </section>
 
         {/* 6. INPUT (The Footer) */}
-        <footer className="col-start-1 md:col-start-2 row-start-6 md:row-start-5 border-t border-neutral-800 bg-neutral-900 sticky bottom-0 md:static">
+        <footer className="col-start-1 md:col-start-2 row-start-6 md:row-start-5 border-t border-border bg-surface sticky bottom-0 md:static">
           <AddCommentField
             ref={commentInputRef}
             postId={post?.id}

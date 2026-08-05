@@ -20,7 +20,7 @@ export const ProfileLink = memo(
       >
         <div className="flex items-center gap-2">
           <div className="w-12 h-12 rounded-full p-0.5">
-            <div className="bg-[#0d1015] p-0.5 rounded-full w-full h-full">
+            <div className="bg-background p-0.5 rounded-full w-full h-full">
               <img
                 src={profile.avatarUrl || "/ig-default.jpg"}
                 alt={`${profile.username}-avatar`}
@@ -32,7 +32,7 @@ export const ProfileLink = memo(
           </div>
           <div className="flex flex-col">
             <span className="font-semibold text-sm">{profile.username}</span>
-            <h1 className="text-sm font-normal text-neutral-400">
+            <h1 className="text-sm font-normal text-muted">
               {profile.displayName}
             </h1>
           </div>

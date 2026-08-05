@@ -73,9 +73,9 @@ export const ReplyList = memo(
         </div>
         <button
           onClick={handleFetchReplies}
-          className="flex items-center gap-4 text-xs text-gray-400 font-semibold hover:text-white mb-2 cursor-pointer"
+          className="flex items-center gap-4 text-xs text-muted font-semibold hover:text-foreground mb-2 cursor-pointer"
         >
-          <div className="w-6 border-t border-gray-600" />
+          <div className="w-6 border-t border-border" />
           {!showReplies
             ? `View replies (${repliesCount})`
             : hasMoreReplies

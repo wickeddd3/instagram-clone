@@ -14,7 +14,7 @@ export const MainLogin = () => {
   const [error, setError] = useState("");
 
   return (
-    <div className="w-full h-full min-h-screen flex flex-col justify-between md:justify-center items-center gap-12 p-4 bg-[#0d1015] text-white">
+    <div className="w-full h-full min-h-screen flex flex-col justify-between md:justify-center items-center gap-12 p-4 bg-background text-foreground">
       <main className="flex-1 w-full h-full flex justify-center items-center gap-16 p-4">
         <div className="hidden md:block">
           <img src="/ig-login-landing.png" alt="" />

@@ -30,7 +30,7 @@ export const RecentSearches = memo(({ onClose }: { onClose?: () => void }) => {
   if (loading) {
     return (
       <div className="h-full flex justify-center items-center p-4">
-        <span className="text-gray-400 text-sm">Fetching...</span>
+        <span className="text-muted text-sm">Fetching...</span>
       </div>
     );
   }
@@ -38,7 +38,7 @@ export const RecentSearches = memo(({ onClose }: { onClose?: () => void }) => {
   if (!loading && !recentSearches.length) {
     return (
       <div className="h-full flex justify-center items-center p-4">
-        <span className="text-gray-400 text-sm">No recent searches.</span>
+        <span className="text-muted text-sm">No recent searches.</span>
       </div>
     );
   }
@@ -49,7 +49,7 @@ export const RecentSearches = memo(({ onClose }: { onClose?: () => void }) => {
         <span className="text-sm font-bold">Recent</span>
         <button
           onClick={() => clearRecentSearches()}
-          className="text-sm text-indigo-400 cursor-pointer hover:underline"
+          className="text-sm text-primary cursor-pointer hover:underline"
         >
           Clear All
         </button>
@@ -66,7 +66,7 @@ export const RecentSearches = memo(({ onClose }: { onClose?: () => void }) => {
               title="Remove"
               className="cursor-pointer"
             >
-              <X size={24} className="text-gray-400" aria-hidden="true" />
+              <X size={24} className="text-muted" aria-hidden="true" />
             </button>
           }
         />

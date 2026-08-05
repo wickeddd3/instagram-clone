@@ -6,7 +6,7 @@ export const BackButton = ({ onClick }: { onClick: () => void }) => {
       onClick={onClick}
       aria-label="Go back"
       title="Go back"
-      className="rounded-full text-white cursor-pointer pl-4"
+      className="rounded-full text-foreground cursor-pointer pl-4"
     >
       <ArrowLeft size={24} aria-hidden="true" />
     </button>

@@ -24,8 +24,8 @@ export const SaveButton = memo(
           aria-hidden="true"
           className={`transition-all duration-200 cursor-pointer ${
             post.isSaved
-              ? "fill-white text-white"
-              : "text-white group-hover:text-gray-400"
+              ? "fill-foreground text-foreground"
+              : "text-foreground group-hover:text-muted"
           }`}
         />
       </button>

@@ -24,14 +24,14 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
           type={type}
           aria-invalid={!!error}
           aria-describedby={error ? errorId : undefined}
-          className={`peer w-full bg-gray-800 border ${
-            error ? "border-red-500" : "border-gray-700"
-          } rounded-sm px-2 pt-4 pb-1 text-xs text-white focus:outline-none focus:border-gray-500 placeholder-transparent transition-all`}
+          className={`peer w-full bg-surface-hover border ${
+            error ? "border-red-500" : "border-border"
+          } rounded-sm px-2 pt-4 pb-1 text-xs text-foreground focus:outline-none focus:border-foreground placeholder-transparent transition-all`}
           placeholder={label}
         />
         <label
           htmlFor={inputId}
-          className="absolute left-2 text-gray-400 text-xs transition-all pointer-events-none
+          className="absolute left-2 text-muted text-xs transition-all pointer-events-none
         top-3
         peer-placeholder-shown:top-2.5
         peer-placeholder-shown:text-sm

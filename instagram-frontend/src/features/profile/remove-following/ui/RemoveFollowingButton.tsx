@@ -26,7 +26,7 @@ export const RemoveFollowingButton = ({
   return (
     <button
       onClick={handleRemoveFollowing}
-      className="bg-neutral-800 px-4 py-1 rounded-lg text-sm cursor-pointer"
+      className="bg-surface-hover px-4 py-1 rounded-lg text-sm cursor-pointer"
     >
       Following
     </button>

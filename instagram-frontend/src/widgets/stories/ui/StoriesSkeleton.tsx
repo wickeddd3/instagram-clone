@@ -20,8 +20,11 @@ export const StoriesSkeleton = () => {
         className="mySwiper px-2!"
       >
         {stories.map((story) => (
-          <SwiperSlide key={story.id} className="w-auto!">
-            <div className="w-22 h-22 rounded-full bg-neutral-800 animate-pulse shrink-0" />
+          <SwiperSlide key={story.id} className="w-auto! pr-2">
+            <div className="flex flex-col items-center gap-1 min-w-[70px]">
+              <div className="w-21 h-21 rounded-full bg-surface-hover animate-pulse shrink-0" />
+              <div className="w-12 h-2.5 rounded bg-surface-hover animate-pulse" />
+            </div>
           </SwiperSlide>
         ))}
       </Swiper>

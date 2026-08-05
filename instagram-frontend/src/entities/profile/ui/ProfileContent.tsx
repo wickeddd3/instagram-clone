@@ -21,7 +21,7 @@ export const ProfileContent = memo(
     return (
       <div className="flex-1 flex flex-col pt-12 pb-6">
         <div
-          className={`grid grid-flow-col place-items-center border-b border-gray-800`}
+          className={`grid grid-flow-col place-items-center border-b border-border`}
         >
           <TabButton
             active={activeTab === "POSTS"}
@@ -88,8 +88,8 @@ const TabButton = ({
     aria-pressed={active}
     className={`px-6 py-2 cursor-pointer transition-all duration-200 ${
       active
-        ? "text-white border-white border-b-2"
-        : "text-gray-400 hover:text-gray-200"
+        ? "text-foreground border-foreground border-b-2"
+        : "text-muted hover:text-muted"
     }`}
   >
     {icon}

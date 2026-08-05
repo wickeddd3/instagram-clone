@@ -49,8 +49,8 @@ export const CreateStory = ({ previewUrl, file, onReplace, onSuccess, onBack, on
   };
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center text-white">
-      <div className="bg-neutral-950 border-b border-neutral-800 w-full flex items-center justify-between">
+    <div className="w-full h-full flex flex-col items-center justify-center text-foreground">
+      <div className="bg-surface border-b border-border w-full flex items-center justify-between">
         <BackButton onClick={onBack} />
         <h1 className="text-center py-3 font-semibold">Create story</h1>
         <ShareButton loading={isUploading} onClick={handleShare} />

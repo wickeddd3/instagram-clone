@@ -20,7 +20,7 @@ export const SubmitButton = ({
       type="submit"
       onClick={onClick}
       disabled={disabled}
-      className={`bg-indigo-700 hover:bg-indigo-600 text-white text-sm font-semibold flex justify-center items-center rounded-md p-1.5 w-full cursor-pointer ${className}`}
+      className={`bg-primary hover:bg-primary-hover text-white text-sm font-semibold flex justify-center items-center rounded-md p-1.5 w-full cursor-pointer ${className}`}
     >
       {children}
       {label}

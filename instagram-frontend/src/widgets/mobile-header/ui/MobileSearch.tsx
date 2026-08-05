@@ -41,7 +41,7 @@ export const MobileSearch = () => {
     >
       <div className="relative group">
         <Search
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-muted"
           size={16}
           aria-hidden="true"
         />
@@ -51,11 +51,11 @@ export const MobileSearch = () => {
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search"
           aria-label="Search"
-          className="w-full bg-neutral-800 border-none rounded-full py-3 pl-10 pr-4 text-sm placeholder:text-sm placeholder:font-light focus:outline-none"
+          className="w-full bg-surface-hover border-none rounded-full py-3 pl-10 pr-4 text-sm placeholder:text-sm placeholder:font-light focus:outline-none"
         />
       </div>
       {isFocused && (
-        <div className="absolute top-12 -left-17 w-xs bg-gray-900 border-b border-gray-800 z-50 max-h-[70vh] overflow-y-auto rounded-lg shadow-2xl">
+        <div className="absolute top-12 -left-17 w-xs bg-surface border-b border-border z-50 max-h-[70vh] overflow-y-auto rounded-lg shadow-2xl">
           <div className="flex flex-col gap-2 p-2">{content}</div>
         </div>
       )}

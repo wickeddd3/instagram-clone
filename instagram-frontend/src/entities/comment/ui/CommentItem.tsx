@@ -29,7 +29,7 @@ export const CommentItem = ({
         <Avatar imageUrl={avatarUrl} username={username} />
         <div className="flex-1 flex flex-col text-sm">
           <CommentMessage text={text} username={username} />
-          <div className="flex gap-4 mt-2 text-xs text-gray-400">
+          <div className="flex gap-4 mt-2 text-xs text-muted">
             <CommentDate date={createdAt} />
             {likesCount > 0 && <CommentLikes likesCount={likesCount} />}
             {replyButtonSlot}

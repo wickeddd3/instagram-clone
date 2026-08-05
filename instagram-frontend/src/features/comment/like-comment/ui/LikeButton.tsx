@@ -30,7 +30,7 @@ export const LikeButton = memo(({ comment }: { comment: Comment }) => {
         className={`transition-all duration-200 cursor-pointer ${
           comment.isLiked
             ? "fill-red-500 text-red-500"
-            : "text-white group-hover:text-gray-400"
+            : "text-foreground group-hover:text-muted"
         } ${animate ? "animate-like-heart" : ""}`}
       />
     </button>

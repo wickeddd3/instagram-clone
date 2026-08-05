@@ -12,7 +12,7 @@ export const AuthUser = ({
         alt=""
         className="w-8 h-8 rounded-full object-cover"
       />
-      <span className="text-white font-semibold text-sm">{username}</span>
+      <span className="text-foreground font-semibold text-sm">{username}</span>
     </div>
   );
 };

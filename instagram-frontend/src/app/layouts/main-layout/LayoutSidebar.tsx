@@ -16,7 +16,7 @@ export const LayoutSidebar = () => {
       initial={false}
       animate={{ width: isSidebarOpen ? 245 : 60 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      className="hidden md:flex flex-col h-screen fixed top-0 z-50 bg-[#0d1015]"
+      className="hidden md:flex flex-col h-screen fixed top-0 z-50 bg-background"
     >
       <Sidebar
         isSidebarOpen={isSidebarOpen}

@@ -21,9 +21,7 @@ export const FollowProfileButton = ({
     <ProfileHeader.ActionButton
       label={targetProfile?.isFollowing ? "Following" : "Follow"}
       onClick={() => handleToggleFollow(targetProfile.username)}
-      className={
-        !targetProfile?.isFollowing ? "bg-indigo-800 hover:bg-indigo-700" : ""
-      }
+      variant={targetProfile?.isFollowing ? "secondary" : "primary"}
     />
   );
 };

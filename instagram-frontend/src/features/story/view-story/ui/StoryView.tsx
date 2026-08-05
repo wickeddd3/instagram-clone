@@ -86,7 +86,7 @@ export const StoryView = memo(
           <div className="flex gap-2">
             <Avatar imageUrl={userStory?.avatarUrl} />
             <h6 className="text-sm">{userStory?.username}</h6>
-            <span className="text-sm text-neutral-400 font-medium">
+            <span className="text-sm text-muted font-medium">
               {timeAgo}
             </span>
           </div>

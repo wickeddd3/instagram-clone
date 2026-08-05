@@ -34,24 +34,24 @@ export const ImportImage = ({ onChange }: { onChange: (files: File[]) => void })
 
   return (
     <div
-      className="w-full h-full flex flex-col text-white"
+      className="w-full h-full flex flex-col text-foreground"
       onDragOver={handleDrag}
       onDragEnter={handleDrag}
       onDragLeave={handleDrag}
       onDrop={handleDrop}
     >
-      <div className="bg-neutral-950 border-b border-neutral-800 w-full text-center py-3 font-semibold">
+      <div className="bg-surface border-b border-border w-full text-center py-3 font-semibold">
         Create new post
       </div>
 
       <div
         className={`flex flex-1 flex-col items-center justify-center gap-5 px-6 text-center transition-colors ${
-          isDragging ? "bg-neutral-900" : "bg-transparent"
+          isDragging ? "bg-surface" : "bg-transparent"
         }`}
       >
         <div
           className={`flex h-24 w-24 items-center justify-center rounded-full transition-colors ${
-            isDragging ? "bg-indigo-950 text-indigo-400" : "bg-neutral-900 text-white"
+            isDragging ? "bg-primary/15 text-primary" : "bg-surface text-foreground"
           }`}
         >
           <ImagePlus size={44} strokeWidth={1.25} aria-hidden="true" />
@@ -59,7 +59,7 @@ export const ImportImage = ({ onChange }: { onChange: (files: File[]) => void })
 
         <p className="text-xl font-light">{isDragging ? "Drop your photos here" : "Drag photos here"}</p>
 
-        <label className="cursor-pointer rounded-md bg-indigo-800 px-4 py-1.5 text-sm font-semibold text-white transition hover:bg-indigo-700">
+        <label className="cursor-pointer rounded-md bg-primary px-4 py-1.5 text-sm font-semibold text-white transition hover:bg-primary-hover">
           Select from computer
           <input
             type="file"
@@ -70,7 +70,7 @@ export const ImportImage = ({ onChange }: { onChange: (files: File[]) => void })
           />
         </label>
 
-        <p className="max-w-xs text-xs font-light text-neutral-400">
+        <p className="max-w-xs text-xs font-light text-muted">
           {ACCEPTED_IMAGE_LABEL} · up to {MAX_FILE_SIZE_MB}MB each · {MAX_UPLOAD_FILES} photos max
         </p>
       </div>

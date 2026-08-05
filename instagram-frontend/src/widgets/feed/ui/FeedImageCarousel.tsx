@@ -14,7 +14,7 @@ const carouselStyles = `
 
 export const FeedImageCarousel = memo(({ post }: { post: Post }) => {
   return (
-    <div className="relative w-full h-full overflow-hidden aspect-square">
+    <div className="relative w-full h-full overflow-hidden aspect-square rounded-lg">
       <Swiper
         modules={[Navigation, Pagination]}
         spaceBetween={0}

@@ -20,7 +20,7 @@ export const FollowProfileSuggestionButton = ({
   return (
     <button
       onClick={() => handleToggleFollow(targetProfile.username)}
-      className="text-xs font-bold text-indigo-400 hover:text-indigo-300 cursor-pointer"
+      className="text-xs font-bold text-primary hover:text-primary-hover cursor-pointer"
     >
       {targetProfile?.isFollowing ? "Unfollow" : "Follow"}
     </button>

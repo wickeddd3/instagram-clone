@@ -17,12 +17,12 @@ const SignupPage = () => {
   );
 
   return (
-    <div className="w-full h-full min-h-screen flex flex-col justify-between md:justify-center items-center gap-12 p-4 bg-[#0d1015] text-white">
+    <div className="w-full h-full min-h-screen flex flex-col justify-between md:justify-center items-center gap-12 p-4 bg-background text-foreground">
       <div className="flex-1 w-full h-full flex flex-col justify-center items-center">
         <div className="w-sm flex flex-col justify-center items-center gap-3">
-          <div className="w-full flex flex-col justify-center items-center gap-5 border-gray-800 border px-10 pb-6 pt-12">
+          <div className="w-full flex flex-col justify-center items-center gap-5 border-border border px-10 pb-6 pt-12">
             <IgLabel />
-            <p className="text-md font-semibold text-gray-400 text-center">
+            <p className="text-base font-semibold text-muted text-center">
               Sign up to see photos and videos from your friends.
             </p>
             {/* <LoginWithFbLink /> */}
@@ -49,7 +49,7 @@ const SignupPage = () => {
               {error && <ErrorMessage message={error} />}
             </div>
           </div>
-          <div className="w-full border-gray-800 border p-5">
+          <div className="w-full border-border border p-5">
             <LoginLink />
           </div>
         </div>

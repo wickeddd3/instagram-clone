@@ -45,7 +45,7 @@ export const StoryCarousel = memo(
         >
           <ChevronLeft size={22} className="text-gray-950" aria-hidden="true" />
         </button>
-        <div className="bg-neutral-800 h-full w-full md:w-[500px] rounded-lg">
+        <div className="bg-surface-hover h-full w-full md:w-[500px] rounded-lg">
           <StoryView
             key={activeUserStory?.id} // Resets StoryView state for new user
             userStory={activeUserStory}

@@ -9,18 +9,20 @@ const VARIANTS: Record<
 > = {
   info: {
     Icon: InfoIcon,
-    container: "border-sky-500/40 bg-sky-500/10 text-sky-100",
-    icon: "text-sky-400",
+    container: "border-sky-500/40 bg-sky-500/10 text-sky-700 dark:text-sky-100",
+    icon: "text-sky-600 dark:text-sky-400",
   },
   success: {
     Icon: CheckCircle2,
-    container: "border-emerald-500/40 bg-emerald-500/10 text-emerald-100",
-    icon: "text-emerald-400",
+    container:
+      "border-emerald-500/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-100",
+    icon: "text-emerald-600 dark:text-emerald-400",
   },
   error: {
     Icon: AlertCircle,
-    container: "border-rose-500/40 bg-rose-500/10 text-rose-100",
-    icon: "text-rose-400",
+    container:
+      "border-rose-500/40 bg-rose-500/10 text-rose-700 dark:text-rose-100",
+    icon: "text-rose-600 dark:text-rose-400",
   },
 };
 

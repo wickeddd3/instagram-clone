@@ -8,11 +8,11 @@ export const PostThumbnail = memo(
 
     return (
       <article
-        className="relative group w-full bg-neutral-800 overflow-hidden aspect-square cursor-pointer"
+        className="relative group w-full bg-surface-hover overflow-hidden aspect-square cursor-pointer"
         onClick={onClick}
       >
         {!isLoaded && (
-          <div className="absolute inset-0 animate-pulse bg-neutral-700" />
+          <div className="absolute inset-0 animate-pulse bg-surface-hover" />
         )}
 
         <img

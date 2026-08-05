@@ -8,7 +8,7 @@ export const ReplyButton = ({
   return (
     <button
       onClick={onClick}
-      className={`font-medium hover:text-white cursor-pointer ${className}`}
+      className={`font-medium hover:text-foreground cursor-pointer ${className}`}
     >
       Reply
     </button>

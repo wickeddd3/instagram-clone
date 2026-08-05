@@ -17,7 +17,7 @@ export const DrawerCloseButton = ({
       onClick={onClose}
       aria-label="Close"
       title="Close"
-      className={`absolute top-4 right-4 text-white hover:text-gray-300 cursor-pointer ${className}`}
+      className={`absolute top-4 right-4 text-foreground hover:text-muted cursor-pointer ${className}`}
     >
       <X size={iconSize} aria-hidden="true" />
     </button>
@@ -50,7 +50,7 @@ export const Drawer = ({
       initial={false}
       animate={{ width: width }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      className="hidden md:flex flex-col h-screen fixed top-0 z-60 bg-[#0d1015] border-r border-gray-800"
+      className="hidden md:flex flex-col h-screen fixed top-0 z-60 bg-background border-r border-border"
     >
       <div className="p-6 flex flex-col h-full relative">
         {hasCloseButton && <DrawerCloseButton onClose={onClose} />}

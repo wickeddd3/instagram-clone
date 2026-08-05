@@ -26,7 +26,7 @@ export const RemoveFollowerButton = ({
   return (
     <button
       onClick={handleRemoveFollower}
-      className="bg-neutral-800 px-4 py-1 rounded-lg text-sm cursor-pointer"
+      className="bg-surface-hover px-4 py-1 rounded-lg text-sm cursor-pointer"
     >
       Remove
     </button>

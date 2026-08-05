@@ -8,7 +8,7 @@ export const CommentMessage = ({
   return (
     <div className="flex flex-wrap">
       <span className="font-semibold mr-2">{username}</span>
-      <span className="text-white/90">{text}</span>
+      <span className="text-foreground/90">{text}</span>
     </div>
   );
 };

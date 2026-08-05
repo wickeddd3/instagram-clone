@@ -11,7 +11,7 @@ export const CaptionTextarea = ({
 }) => {
   return (
     <textarea
-      className={`bg-transparent text-white w-full h-full p-4 resize-none focus:outline-none placeholder-gray-500 ${className}`}
+      className={`bg-transparent text-foreground w-full h-full p-4 resize-none focus:outline-none placeholder-muted ${className}`}
       placeholder="Write a caption..."
       value={value}
       onChange={(e) => onChange(e.target.value)}
