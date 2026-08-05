@@ -14,6 +14,14 @@ export default defineConfig({
     environment: "jsdom",
     setupFiles: ["./src/test/setup.ts"],
     css: false,
+    // Dummy build-time env so importing `@/shared/config` (which validates
+    // VITE_* at import) works in CI, where no .env or secrets are present.
+    env: {
+      VITE_API_URL: "http://localhost:4000/graphql",
+      VITE_REST_API_URL: "http://localhost:4000/api/v1",
+      VITE_SUPABASE_URL: "http://localhost:54321",
+      VITE_SUPABASE_ANON_KEY: "test-anon-key",
+    },
     include: ["src/**/*.{test,spec}.{ts,tsx}"],
     coverage: {
       provider: "v8",
