@@ -21,7 +21,7 @@ export const StoriesSkeleton = () => {
       >
         {stories.map((story) => (
           <SwiperSlide key={story.id} className="w-auto!">
-            <div className="w-22 h-22 rounded-full bg-neutral-800 animate-pulse shrink-0" />
+            <div className="w-22 h-22 rounded-full bg-surface-hover animate-pulse shrink-0" />
           </SwiperSlide>
         ))}
       </Swiper>

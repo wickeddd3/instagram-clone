@@ -40,7 +40,7 @@ export const FollowingList = ({
 
       {/* Show empty placeholder for empty search results */}
       {!loading && following.length === 0 && (
-        <div className="flex flex-col items-center justify-center py-10 text-neutral-500">
+        <div className="flex flex-col items-center justify-center py-10 text-subtle">
           <p>No following yet</p>
         </div>
       )}

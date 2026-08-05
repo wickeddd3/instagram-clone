@@ -9,10 +9,10 @@ export const SuggestionsSidebarSkeleton = ({
     <div className="w-full">
       {/* Header */}
       <div className="flex justify-between items-center mb-4">
-        <span className="text-sm font-bold text-gray-100">
+        <span className="text-sm font-bold text-foreground">
           Suggested for you
         </span>
-        <div className="w-10 h-4 bg-neutral-800 rounded animate-pulse" />
+        <div className="w-10 h-4 bg-surface-hover rounded animate-pulse" />
       </div>
 
       {/* Suggested Users List */}

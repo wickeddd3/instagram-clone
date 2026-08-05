@@ -15,7 +15,7 @@ export const SearchField = ({
       type="text"
       placeholder="Search"
       aria-label="Search"
-      className={`w-full px-3 py-2 bg-neutral-700 rounded-xl outline-none text-sm ${className}`}
+      className={`w-full px-3 py-2 bg-surface-hover rounded-xl outline-none text-sm ${className}`}
     />
   );
 };

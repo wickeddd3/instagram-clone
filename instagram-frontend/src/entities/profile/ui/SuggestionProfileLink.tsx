@@ -30,10 +30,10 @@ export const SuggestionProfileLink = ({
           className="w-8 h-8 rounded-full object-cover"
         />
         <div className="flex flex-col leading-tight">
-          <span className="text-sm font-bold text-white">
+          <span className="text-sm font-bold text-foreground">
             {profile.username}
           </span>
-          <span className="text-[12px] text-gray-400">{suggestionLabel}</span>
+          <span className="text-[12px] text-muted">{suggestionLabel}</span>
         </div>
       </Link>
       {optionSlot}

@@ -15,10 +15,10 @@ const LoginPage = () => {
   const [error, setError] = useState("");
 
   return (
-    <div className="w-full h-full min-h-screen flex flex-col justify-between md:justify-center items-center gap-12 p-4 bg-[#0d1015] text-white">
+    <div className="w-full h-full min-h-screen flex flex-col justify-between md:justify-center items-center gap-12 p-4 bg-background text-foreground">
       <div className="flex-1 w-full h-full flex flex-col justify-center items-center">
         <div className="w-sm flex flex-col justify-center items-center gap-3">
-          <div className="w-full flex flex-col justify-center items-center gap-12 border-gray-800 border px-10 pb-6 pt-12">
+          <div className="w-full flex flex-col justify-center items-center gap-12 border-border border px-10 pb-6 pt-12">
             <IgLabel />
             <div className="w-full flex flex-col justify-center items-center gap-4">
               <LoginForm onError={setError} />
@@ -28,7 +28,7 @@ const LoginPage = () => {
               <ForgotPasswordLink />
             </div>
           </div>
-          <div className="w-full border-gray-800 border p-5">
+          <div className="w-full border-border border p-5">
             <SignupLink />
           </div>
           <HelpAlert />

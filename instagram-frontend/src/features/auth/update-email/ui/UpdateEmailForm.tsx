@@ -21,7 +21,7 @@ export const UpdateEmailForm = () => {
         helper={
           currentEmail ? (
             <>
-              Current: <span className="text-white">{currentEmail}</span>
+              Current: <span className="text-foreground">{currentEmail}</span>
             </>
           ) : undefined
         }

@@ -23,7 +23,7 @@ export const SearchResults = memo(
     if (loading) {
       return (
         <div className="h-full flex justify-center items-center p-4">
-          <span className="text-gray-400 text-sm">Searching...</span>
+          <span className="text-muted text-sm">Searching...</span>
         </div>
       );
     }
@@ -31,7 +31,7 @@ export const SearchResults = memo(
     if (!loading && !results.length) {
       return (
         <div className="h-full flex justify-center items-center p-4">
-          <span className="text-gray-400 text-sm">No results found.</span>
+          <span className="text-muted text-sm">No results found.</span>
         </div>
       );
     }

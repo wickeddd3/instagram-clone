@@ -9,7 +9,7 @@ export const ProfileAvatar = ({
   optionSlot?: ReactNode;
 }) => {
   return (
-    <div className="flex items-center justify-between gap-8 bg-[#262626] rounded-lg p-4">
+    <div className="flex items-center justify-between gap-8 bg-surface-hover rounded-lg p-4">
       <div className="flex items-center gap-4">
         <div className="w-9 h-9 md:w-15 md:h-15 shrink-0">
           <img
@@ -20,7 +20,7 @@ export const ProfileAvatar = ({
         </div>
         <div className="flex flex-col">
           <span className="font-bold text-md">{profile?.username}</span>
-          <span className="font-normal text-sm text-gray-400">
+          <span className="font-normal text-sm text-muted">
             {profile?.displayName}
           </span>
         </div>

@@ -45,7 +45,7 @@ export const ModalContent = ({
       initial={{ scale: 1.1, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ type: "spring", duration: 0.4 }}
-      className={`bg-neutral-900 rounded-xl overflow-hidden z-100 ${className}`}
+      className={`bg-surface rounded-xl overflow-hidden z-100 ${className}`}
     >
       {children}
     </motion.div>
@@ -66,7 +66,7 @@ export const ModalCloseButton = ({
       onClick={onClose}
       aria-label="Close"
       title="Close"
-      className={`text-white hover:text-gray-300 cursor-pointer ${className}`}
+      className={`text-foreground hover:text-muted cursor-pointer ${className}`}
     >
       <X size={iconSize} aria-hidden="true" />
     </button>

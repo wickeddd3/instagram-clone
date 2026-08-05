@@ -48,7 +48,7 @@ export const PullToRefresh = ({ onRefresh, children }: Props) => {
         }}
         className="fixed top-24 left-0 right-0 flex justify-center z-100 pointer-events-none"
       >
-        <div className="bg-zinc-800 p-2 rounded-full shadow-xl border border-zinc-700">
+        <div className="bg-surface-hover p-2 rounded-full shadow-xl border border-border">
           <Spinner className={isRefreshing ? "animate-spin" : ""} />
         </div>
       </motion.div>

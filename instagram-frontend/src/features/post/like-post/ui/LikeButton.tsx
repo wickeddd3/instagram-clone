@@ -29,7 +29,7 @@ export const LikeButton = memo(
           className={`transition-all duration-200 cursor-pointer ${
             post.isLiked
               ? "fill-red-500 text-red-500"
-              : "text-white group-hover:text-gray-400"
+              : "text-foreground group-hover:text-muted"
           } ${animate ? "animate-like-heart" : ""}`}
         />
       </button>

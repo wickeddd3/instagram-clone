@@ -6,8 +6,8 @@ export const SignupLink = () => {
       to="/accounts/signup"
       className="flex justify-center items-center gap-2 text-sm"
     >
-      <span className="text-gray-200">Don't have an account?</span>
-      <span className="text-indigo-400 font-semibold cursor-pointer">
+      <span className="text-muted">Don't have an account?</span>
+      <span className="text-primary font-semibold cursor-pointer">
         Sign up
       </span>
     </Link>

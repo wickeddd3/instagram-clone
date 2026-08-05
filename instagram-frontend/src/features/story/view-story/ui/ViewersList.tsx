@@ -30,12 +30,12 @@ export const ViewersList = ({
       className="absolute inset-0 z-100 h-full flex flex-col justify-end"
     >
       <div className="h-3/5 w-full opacity-0"></div>
-      <div className="h-2/5 flex flex-col bg-neutral-900 rounded-t-2xl">
-        <div className="flex justify-between items-center px-6 py-4 border-b border-neutral-700">
+      <div className="h-2/5 flex flex-col bg-surface rounded-t-2xl">
+        <div className="flex justify-between items-center px-6 py-4 border-b border-border">
           <h3 className="font-bold">Viewers</h3>
           <button
             onClick={onClose}
-            className="text-indigo-500 font-bold cursor-pointer"
+            className="text-primary font-bold cursor-pointer"
           >
             Done
           </button>

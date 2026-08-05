@@ -9,7 +9,7 @@ export const ShareButton = ({
     <button
       onClick={onClick}
       disabled={loading}
-      className="text-indigo-400 font-semibold text-sm hover:text-indigo-300 hover:underline transition disabled:opacity-50 pr-4 cursor-pointer"
+      className="text-primary font-semibold text-sm hover:text-primary-hover hover:underline transition disabled:opacity-50 pr-4 cursor-pointer"
     >
       {loading ? "Sharing..." : "Share"}
     </button>

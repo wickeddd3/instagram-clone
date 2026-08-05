@@ -23,7 +23,7 @@ export const FeedCardImage = memo(
     }, [post.id, togglePostLike]);
 
     return (
-      <div className="w-full h-full flex items-center justify-center relative rounded-sm overflow-hidden border border-gray-800 bg-black min-h-[300px]">
+      <div className="w-full h-full flex items-center justify-center relative rounded-sm overflow-hidden border border-border bg-black min-h-[300px]">
         <PostImage
           imageUrl={imageUrl}
           alt={

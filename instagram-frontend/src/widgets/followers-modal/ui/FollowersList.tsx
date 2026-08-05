@@ -42,7 +42,7 @@ export const FollowersList = ({
 
       {/* Show empty placeholder for empty search results */}
       {!loading && followers.length === 0 && (
-        <div className="flex flex-col items-center justify-center py-10 text-neutral-500">
+        <div className="flex flex-col items-center justify-center py-10 text-subtle">
           <p>No followers yet</p>
         </div>
       )}

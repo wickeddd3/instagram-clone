@@ -40,7 +40,7 @@ export const ProgressRing = ({
             r={radius}
             fill="none"
             strokeWidth={stroke}
-            className="stroke-neutral-700"
+            className="stroke-border"
           />
           <circle
             cx={center}
@@ -51,7 +51,7 @@ export const ProgressRing = ({
             strokeLinecap="round"
             strokeDasharray={circumference}
             strokeDashoffset={offset}
-            className="stroke-indigo-500 transition-[stroke-dashoffset] duration-200 ease-out"
+            className="stroke-primary transition-[stroke-dashoffset] duration-200 ease-out"
           />
         </svg>
       )}

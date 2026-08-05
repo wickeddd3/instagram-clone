@@ -9,7 +9,7 @@ export const Spinner = ({
 }) => {
   return (
     <Loader
-      className={`animate-spin text-gray-400 ${className}`}
+      className={`animate-spin text-muted ${className}`}
       size={size}
       role="status"
       aria-label="Loading"

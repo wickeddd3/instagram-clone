@@ -6,12 +6,12 @@ export const SuggestionsSidebar = ({ children }: { children: ReactNode }) => {
     <div className="w-full">
       {/* Header */}
       <div className="flex justify-between items-center mb-4">
-        <span className="text-sm font-bold text-gray-100">
+        <span className="text-sm font-bold text-foreground">
           Suggested for you
         </span>
         <Link
           to="/explore/people"
-          className="text-xs font-bold text-gray-100 hover:text-gray-400"
+          className="text-xs font-bold text-foreground hover:text-muted"
         >
           See All
         </Link>

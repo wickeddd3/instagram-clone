@@ -29,11 +29,11 @@ export const FormTextArea = forwardRef<HTMLTextAreaElement, FormTextAreaProps>(
           rows={rows}
           aria-invalid={!!error}
           aria-describedby={error ? errorId : undefined}
-          className={`w-full resize-none bg-[#0d1015] border ${
-            error ? "border-red-500" : "border-gray-700"
-          } rounded-xl p-4 text-sm focus:border-white outline-none transition-colors`}
+          className={`w-full resize-none bg-background border ${
+            error ? "border-red-500" : "border-border"
+          } rounded-xl p-4 text-sm focus:border-foreground outline-none transition-colors`}
         />
-        {helper && <p className="text-xs text-gray-400">{helper}</p>}
+        {helper && <p className="text-xs text-muted">{helper}</p>}
         {error && (
           <p id={errorId} role="alert" className="text-xs text-red-500">
             {error}

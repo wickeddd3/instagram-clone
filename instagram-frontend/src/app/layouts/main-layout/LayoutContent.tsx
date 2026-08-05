@@ -16,9 +16,9 @@ export const LayoutContent = () => {
         <div
           role="status"
           aria-label="Loading page"
-          className="fixed top-0 left-0 right-0 z-100 h-0.5 overflow-hidden bg-white/10"
+          className="fixed top-0 left-0 right-0 z-100 h-0.5 overflow-hidden bg-foreground/10"
         >
-          <div className="loading-bar h-full w-1/3 bg-white/80" />
+          <div className="loading-bar h-full w-1/3 bg-foreground/80" />
         </div>
       )}
 
