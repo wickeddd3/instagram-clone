@@ -2,15 +2,14 @@ import express, { type Express } from "express";
 import helmet from "helmet";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
-import { pinoHttp } from "pino-http";
 import { json } from "body-parser";
 import { expressMiddleware } from "@as-integrations/express5";
 import type { ApolloServer } from "@apollo/server";
 import { config } from "@/config/env.config";
-import { logger } from "@/lib/logger";
 import { services } from "@/container";
 import type { GraphQLContext } from "@/graphql/context";
 import { getUserIdFromRequest } from "@/http/middleware/auth.middleware";
+import { httpLogger } from "@/http/middleware/logging.middleware";
 import { healthRouter } from "./health.route";
 import { errorHandler, notFoundHandler } from "@/http/middleware/error.middleware";
 import { createApiRouter } from "@/http/rest";
@@ -28,7 +27,7 @@ export const createApp = (apollo: ApolloServer<GraphQLContext>): Express => {
   app.set("trust proxy", 1);
 
   app.use(helmet());
-  app.use(pinoHttp({ logger }));
+  app.use(httpLogger);
 
   // Health checks are mounted before rate limiting so probes are never throttled.
   app.use(healthRouter);
