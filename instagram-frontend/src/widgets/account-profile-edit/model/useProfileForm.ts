@@ -3,7 +3,12 @@ import { useForm } from "react-hook-form";
 import { ProfileFormSchema, type ProfileFormType } from "./validation";
 
 export const useProfileForm = () => {
-  const { register, reset, handleSubmit } = useForm<ProfileFormType>({
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ProfileFormType>({
     resolver: zodResolver(ProfileFormSchema),
     defaultValues: {
       displayName: "",
@@ -16,5 +21,6 @@ export const useProfileForm = () => {
     registerField: register,
     resetForm: reset,
     handleSubmit,
+    errors,
   };
 };

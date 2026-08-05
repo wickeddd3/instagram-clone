@@ -4,6 +4,8 @@ export * from "./BackButton";
 export * from "./Drawer";
 export * from "./ErrorBoundary";
 export * from "./ErrorFallback";
+export * from "./FormField";
+export * from "./FormTextArea";
 export * from "./HelpAlert";
 export * from "./ImageCarousel";
 export * from "./LoadingScreen";
