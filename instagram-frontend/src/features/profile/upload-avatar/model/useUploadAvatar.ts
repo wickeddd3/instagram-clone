@@ -7,7 +7,7 @@ import {
   generatePreview,
   getFileData,
 } from "@/shared/utils";
-import { uploadImage } from "@/shared/lib";
+import { uploadImageWithProgress } from "@/shared/lib";
 
 export const useUploadAvatar = ({
   userId,
@@ -18,6 +18,7 @@ export const useUploadAvatar = ({
 }) => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   const [uploadAvatar, { loading, error }] = useMutation(
     UPLOAD_PROFILE_AVATAR,
@@ -36,14 +37,20 @@ export const useUploadAvatar = ({
     const url = generatePreview(file);
     setPreviewUrl(url);
 
+    setProgress(0);
     setIsUploading(true);
 
     try {
       // Create unique file path
       const filePath = createUploadPath(userId, file);
 
-      // Get Public URL after upload
-      const publicUrl = await uploadImage(file, filePath, "avatars");
+      // Upload to storage, reporting progress, then get the public URL
+      const publicUrl = await uploadImageWithProgress(
+        file,
+        filePath,
+        "avatars",
+        setProgress,
+      );
 
       // Upload avatar URL to profile
       await uploadAvatar({
@@ -61,6 +68,7 @@ export const useUploadAvatar = ({
   return {
     previewUrl,
     isUploading,
+    progress,
     uploadAvatar,
     loading,
     error,
