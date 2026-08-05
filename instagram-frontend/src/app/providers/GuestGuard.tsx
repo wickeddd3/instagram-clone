@@ -1,11 +1,13 @@
 import { useAuth } from "@/entities/profile";
 import { Navigate, Outlet } from "react-router-dom";
 import { LoadingScreen } from "@/shared/ui";
+import { useMinimumLoading } from "@/shared/lib";
 
 export const GuestGuard = () => {
   const { session, authUserLoading, authProfile } = useAuth();
+  const loading = useMinimumLoading(authUserLoading);
 
-  if (authUserLoading) {
+  if (loading) {
     return <LoadingScreen />;
   }
 
