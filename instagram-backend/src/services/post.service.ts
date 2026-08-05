@@ -1,15 +1,17 @@
 import type { PrismaClient } from "@/prisma/client";
 import { Prisma } from "@/prisma/client";
 
-// Per-viewer include used by the feed queries. Typing it with `satisfies` keeps
-// Prisma's payload inference working so downstream `.author.followers`/`_count`
-// access stays type-safe.
-const buildPostInclude = (userId: string) =>
+// Per-viewer include shared by every list query. Folding the viewer's own
+// like/save rows into the same query is what keeps `Post.isLiked`/`Post.isSaved`
+// from firing a `findUnique` per post (an N+1 across the whole page). Typing it
+// with `satisfies` keeps Prisma's payload inference working so downstream
+// `.author.followers`/`.likes`/`.savedBy`/`._count` access stays type-safe.
+const buildPostInclude = (viewerId: string) =>
   ({
     author: {
       include: {
         followers: {
-          where: { followerId: userId },
+          where: { followerId: viewerId },
           select: { followerId: true },
         },
       },
@@ -17,6 +19,9 @@ const buildPostInclude = (userId: string) =>
     media: {
       orderBy: { index: "asc" }, // Ensure images stay in the order they were uploaded
     },
+    // Only the viewer's own like/save (if any) — presence means isLiked/isSaved.
+    likes: { where: { userId: viewerId }, select: { id: true } },
+    savedBy: { where: { userId: viewerId }, select: { id: true } },
     _count: { select: { comments: true, likes: true } },
   }) satisfies Prisma.PostInclude;
 
@@ -27,19 +32,24 @@ type PostWithRelations = Prisma.PostGetPayload<{
 export class PostService {
   constructor(private prisma: PrismaClient) {}
 
-  private async getPaginatedPosts(args: Prisma.PostFindManyArgs, limit: number) {
-    const posts = await this.prisma.post.findMany({
+  // Derive the per-viewer `isFollowing` flag from the scoped `followers` rows.
+  // `isLiked`/`isSaved` are read off `likes`/`savedBy` by the Post field
+  // resolvers, so they don't need to be mapped here.
+  private attachViewerState(post: PostWithRelations, viewerId: string) {
+    return {
+      ...post,
+      isFollowing: post.author.followers.length > 0 || post.author.id === viewerId,
+    };
+  }
+
+  private async getPaginatedPosts(args: Prisma.PostFindManyArgs, limit: number, viewerId: string) {
+    const rawPosts = await this.prisma.post.findMany({
       ...args,
       take: limit,
-      include: {
-        author: true,
-        media: {
-          orderBy: { index: "asc" }, // Ensure images stay in the order they were uploaded
-        },
-        _count: { select: { comments: true, likes: true } },
-      },
+      include: buildPostInclude(viewerId),
     });
 
+    const posts = rawPosts.map((post) => this.attachViewerState(post, viewerId));
     const hasMore = posts.length === limit;
     const nextCursor = hasMore ? posts[posts.length - 1]?.id : null;
 
@@ -117,10 +127,7 @@ export class PostService {
     }
 
     // 5. Map the combined results to include isFollowing
-    const posts = combinedPosts.map((post) => ({
-      ...post,
-      isFollowing: post.author.followers.length > 0 || post.author.id === userId,
-    }));
+    const posts = combinedPosts.map((post) => this.attachViewerState(post, userId));
 
     // 6. Calculate pagination metadata based on the FINAL combined list
     const hasMore = posts.length === limit;
@@ -129,16 +136,11 @@ export class PostService {
     return { posts, hasMore, nextCursor };
   }
 
-  async getExplorePosts(userId?: string, cursor?: string, limit = 9) {
-    let excludeIds: string[] = [];
+  async getExplorePosts(viewerId: string, cursor?: string, limit = 9) {
+    // Exclude people the viewer already follows (and themselves) from discovery.
+    const followingIds = await this.getFollowingIds(viewerId);
+    const excludeIds = [...followingIds, viewerId];
 
-    if (userId) {
-      // 1. Get IDs of people the user already follows + their own ID
-      const followingIds = await this.getFollowingIds(userId);
-      excludeIds = [...followingIds, userId];
-    }
-
-    // 2. Return posts from people NOT in the exclude list
     return this.getPaginatedPosts(
       {
         where: {
@@ -148,10 +150,11 @@ export class PostService {
         ...(cursor && { cursor: { id: cursor }, skip: 1 }),
       },
       limit,
+      viewerId,
     );
   }
 
-  getProfilePosts(profileId: string, cursor?: string, limit = 5) {
+  getProfilePosts(viewerId: string, profileId: string, cursor?: string, limit = 5) {
     return this.getPaginatedPosts(
       {
         where: { authorId: profileId },
@@ -159,24 +162,19 @@ export class PostService {
         ...(cursor && { cursor: { id: cursor }, skip: 1 }),
       },
       limit,
+      viewerId,
     );
   }
 
-  async getSavedPosts(profileId: string, cursor?: string, limit = 10) {
+  // Saved posts are private, so `viewerId` is always the owner — the caller
+  // (resolver) enforces that the requested profile matches the authenticated user.
+  async getSavedPosts(viewerId: string, cursor?: string, limit = 10) {
     const savedRecords = await this.prisma.savedPost.findMany({
-      where: { userId: profileId },
+      where: { userId: viewerId },
       take: limit,
       orderBy: { createdAt: "desc" },
       include: {
-        post: {
-          include: {
-            author: true,
-            media: {
-              orderBy: { index: "asc" }, // Ensure images stay in the order they were uploaded
-            },
-            _count: { select: { comments: true, likes: true } },
-          },
-        },
+        post: { include: buildPostInclude(viewerId) },
       },
       ...(cursor && {
         cursor: { id: cursor },
@@ -184,7 +182,7 @@ export class PostService {
       }),
     });
 
-    const posts = savedRecords.map((record) => record.post);
+    const posts = savedRecords.map((record) => this.attachViewerState(record.post, viewerId));
     const hasMore = savedRecords.length === limit;
     const nextCursor = hasMore ? savedRecords[savedRecords.length - 1]?.id : null;
 

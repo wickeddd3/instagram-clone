@@ -63,6 +63,8 @@ model Post {
   notifications Notification[]
   savedBy     SavedPost[]
 
+  // Feed/profile/explore all filter by author and order by recency.
+  @@index([authorId, createdAt])
   @@map("posts")
 }
 
@@ -97,6 +99,8 @@ model Comment {
   likes       Like[]
   notifications Notification[]
 
+  // getComments filters by post + thread (parentId) and orders by recency.
+  @@index([postId, parentId, createdAt])
   @@map("comments")
 }
 
@@ -118,6 +122,10 @@ model Like {
   // Unique constraint: User can only like a specific post/comment once
   @@unique([userId, postId])
   @@unique([userId, commentId])
+  // Standalone FK indexes for like counts and cascade deletes (the composite
+  // uniques above can't serve lookups by postId/commentId alone).
+  @@index([postId])
+  @@index([commentId])
   @@map("likes")
 }
 
