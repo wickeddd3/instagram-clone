@@ -1,14 +1,12 @@
 import type { GraphQLContext } from "@/graphql/context";
 import { unauthenticatedError } from "@/graphql/errors";
+import { validateInput } from "@/graphql/validation";
+import { createPostSchema } from "./schema";
 
 export const PostMutation = {
   createPost: (
     _parent: unknown,
-    {
-      media,
-      caption = "",
-      location = "",
-    }: {
+    args: {
       media: { url: string; type: string }[];
       caption?: string;
       location?: string;
@@ -16,6 +14,8 @@ export const PostMutation = {
     { userId, services }: GraphQLContext,
   ) => {
     if (!userId) throw unauthenticatedError();
+
+    const { media, caption, location } = validateInput(createPostSchema, args);
 
     return services.post.createPost(userId, { media, caption, location });
   },

@@ -1,14 +1,12 @@
 import type { GraphQLContext } from "@/graphql/context";
 import { unauthenticatedError } from "@/graphql/errors";
+import { validateInput } from "@/graphql/validation";
+import { addCommentSchema } from "./schema";
 
 export const CommentMutation = {
   addComment: async (
     _parent: unknown,
-    {
-      postId,
-      text,
-      parentId = null,
-    }: {
+    args: {
       postId: string;
       text: string;
       parentId?: string | null;
@@ -16,6 +14,8 @@ export const CommentMutation = {
     { userId, services }: GraphQLContext,
   ) => {
     if (!userId) throw unauthenticatedError();
+
+    const { postId, text, parentId = null } = validateInput(addCommentSchema, args);
 
     return services.comment.addComment(userId, { postId, text, parentId });
   },
