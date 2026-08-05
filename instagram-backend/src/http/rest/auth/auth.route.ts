@@ -6,7 +6,7 @@ import { validate } from "@/http/middleware/request.middleware";
 import { createAuthController } from "./auth.controller";
 import { signupBody } from "./auth.schema";
 
-/** /auth routes. Public: signup creates the account and returns a session. */
+/** /auth routes. Public: signup creates the account and triggers email verification. */
 export const createAuthRouter = (services: Services): Router => {
   const router = Router();
   const controller = createAuthController(services);

@@ -11,7 +11,7 @@ import type { Services } from "@/container";
 // Supabase or the database.
 const fakeResult = {
   profile: { id: "u1", username: "ada", email: "ada@example.com", displayName: "Ada" },
-  session: { access_token: "a", refresh_token: "r", expires_at: 1, expires_in: 3600, token_type: "bearer" },
+  requiresEmailVerification: true,
 };
 
 const services = {
@@ -36,12 +36,12 @@ describe("REST POST /auth/signup", () => {
     expect(res.body.error.code).toBe("BAD_REQUEST");
   });
 
-  it("creates the account and returns profile + session", async () => {
+  it("creates the account and signals email verification", async () => {
     const res = await request(app)
       .post("/auth/signup")
       .send({ email: "ada@example.com", password: "secret6", username: "ada", displayName: "Ada" });
     expect(res.status).toBe(201);
     expect(res.body.data.profile.username).toBe("ada");
-    expect(res.body.data.session.access_token).toBe("a");
+    expect(res.body.data.requiresEmailVerification).toBe(true);
   });
 });

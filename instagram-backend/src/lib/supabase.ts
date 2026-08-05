@@ -6,18 +6,32 @@ import { config } from "@/config/env.config";
 // to Storage server-side (never exposed to the browser).
 export const supabase = createClient(config.supabase.url, config.supabase.serviceRoleKey);
 
+// Anon (public) client used only for the signup flow. Unlike admin.createUser,
+// the public signUp leaves the email unconfirmed and makes Supabase send its
+// built-in verification email. Sessions are never persisted server-side.
+const supabaseAnon = createClient(config.supabase.url, config.supabase.anonKey, {
+  auth: { persistSession: false, autoRefreshToken: false },
+});
+
 /**
- * Creates a Supabase Auth user with a pre-confirmed email (the backend owns
- * signup, so there is no email-verification round-trip). Returns the new user id.
+ * Registers a new Supabase Auth user via the public signup flow: the account is
+ * created unconfirmed and Supabase emails a verification link. Returns the new
+ * user id, or an error message. An already-registered email is reported as an
+ * error (Supabase signals this with an empty `identities` array rather than an
+ * error, to avoid leaking which emails exist).
  */
-export const createAuthUser = async (email: string, password: string): Promise<{ id: string } | { error: string }> => {
-  const { data, error } = await supabase.auth.admin.createUser({
+export const signUpUser = async (email: string, password: string): Promise<{ id: string } | { error: string }> => {
+  const { data, error } = await supabaseAnon.auth.signUp({
     email,
     password,
-    email_confirm: true,
+    // Where Supabase redirects after the user clicks the verification link.
+    options: { emailRedirectTo: `${config.appUrl}/accounts/login` },
   });
   if (error) {
     return { error: error.message };
+  }
+  if (!data.user || data.user.identities?.length === 0) {
+    return { error: "Email is already registered" };
   }
   return { id: data.user.id };
 };
@@ -25,15 +39,6 @@ export const createAuthUser = async (email: string, password: string): Promise<{
 /** Deletes an auth user. Used to roll back a half-finished signup. */
 export const deleteAuthUser = async (userId: string): Promise<void> => {
   await supabase.auth.admin.deleteUser(userId);
-};
-
-/** Signs a user in with their password and returns the resulting session. */
-export const signInWithPassword = async (email: string, password: string) => {
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-  if (error) {
-    return { error: error.message };
-  }
-  return { session: data.session };
 };
 
 /**

@@ -4,8 +4,9 @@ import type { SignupBody } from "./auth.schema";
 
 /**
  * Thin HTTP adapter for signup. The body has already been validated and cleaned
- * by the validate middleware; this delegates the auth-user + profile + session
- * creation to the account service and holds no business logic.
+ * by the validate middleware; this delegates the auth-user + profile creation
+ * (and the email-verification round-trip) to the account service and holds no
+ * business logic.
  */
 export const createAuthController = (services: Services) => ({
   signup: async (req: Request<unknown, unknown, SignupBody>, res: Response): Promise<void> => {
