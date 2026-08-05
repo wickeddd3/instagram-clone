@@ -150,3 +150,116 @@ describe("PostService.getFeedPosts", () => {
     expect(byId).toEqual({ f0: true, own: true, s0: false });
   });
 });
+
+describe("PostService.getExplorePosts", () => {
+  it("excludes followed authors and the viewer, and reports pagination", async () => {
+    const page = Array.from({ length: 9 }, (_, i) => makePost(`e${i}`, "stranger"));
+    const prisma = {
+      follow: { findMany: vi.fn().mockResolvedValue([{ followingId: "friend" }]) },
+      post: { findMany: vi.fn().mockResolvedValue(page) },
+    };
+    const service = new PostService(prisma as never);
+
+    const result = await service.getExplorePosts(VIEWER, undefined, 9);
+
+    expect(result.hasMore).toBe(true); // full page
+    expect(result.nextCursor).toBe("e8");
+    expect(prisma.post.findMany.mock.calls[0]?.[0].where.authorId.notIn).toEqual(
+      expect.arrayContaining(["friend", VIEWER]),
+    );
+  });
+
+  it("reports no more pages when a partial page comes back", async () => {
+    const prisma = {
+      follow: { findMany: vi.fn().mockResolvedValue([]) },
+      post: { findMany: vi.fn().mockResolvedValue([makePost("e0", "stranger")]) },
+    };
+    const service = new PostService(prisma as never);
+
+    const result = await service.getExplorePosts(VIEWER, undefined, 9);
+
+    expect(result.hasMore).toBe(false);
+    expect(result.nextCursor).toBe(null);
+  });
+});
+
+describe("PostService.getSavedPosts", () => {
+  it("returns the unwrapped posts with viewer state and pagination", async () => {
+    const records = [
+      { id: "sp1", post: makePost("p1", "author-a", { followers: [{ followerId: VIEWER }] }) },
+      { id: "sp2", post: makePost("p2", "author-b") },
+    ];
+    const prisma = { savedPost: { findMany: vi.fn().mockResolvedValue(records) } };
+    const service = new PostService(prisma as never);
+
+    const result = await service.getSavedPosts(VIEWER, undefined, 2);
+
+    expect(result.posts.map((p) => p.id)).toEqual(["p1", "p2"]);
+    expect(result.posts[0]?.isFollowing).toBe(true);
+    expect(result.posts[1]?.isFollowing).toBe(false);
+    expect(result.hasMore).toBe(true); // 2 === limit
+    expect(result.nextCursor).toBe("sp2"); // cursor is the SavedPost id, not the post id
+    // Scoped to the viewer's own saved rows.
+    expect(prisma.savedPost.findMany.mock.calls[0]?.[0].where).toEqual({ userId: VIEWER });
+  });
+});
+
+describe("PostService.toggleLike", () => {
+  it("creates a like when none exists and returns the fresh count", async () => {
+    const prisma = {
+      like: {
+        findUnique: vi.fn().mockResolvedValue(null),
+        create: vi.fn().mockResolvedValue({ id: "l1" }),
+        delete: vi.fn(),
+      },
+      post: { findUnique: vi.fn().mockResolvedValue({ _count: { likes: 3 } }) },
+    };
+    const service = new PostService(prisma as never);
+
+    const result = await service.toggleLike(VIEWER, "post-1");
+
+    expect(prisma.like.create).toHaveBeenCalledWith({ data: { userId: VIEWER, postId: "post-1" } });
+    expect(prisma.like.delete).not.toHaveBeenCalled();
+    expect(result).toEqual({ id: "post-1", isLiked: true, likesCount: 3 });
+  });
+
+  it("removes an existing like", async () => {
+    const prisma = {
+      like: {
+        findUnique: vi.fn().mockResolvedValue({ id: "l1" }),
+        create: vi.fn(),
+        delete: vi.fn().mockResolvedValue({ id: "l1" }),
+      },
+      post: { findUnique: vi.fn().mockResolvedValue({ _count: { likes: 2 } }) },
+    };
+    const service = new PostService(prisma as never);
+
+    const result = await service.toggleLike(VIEWER, "post-1");
+
+    expect(prisma.like.delete).toHaveBeenCalledWith({ where: { id: "l1" } });
+    expect(prisma.like.create).not.toHaveBeenCalled();
+    expect(result).toEqual({ id: "post-1", isLiked: false, likesCount: 2 });
+  });
+});
+
+describe("PostService.toggleSave", () => {
+  it("saves when not yet saved and unsaves otherwise", async () => {
+    const makePrisma = (existing: { id: string } | null) => ({
+      savedPost: {
+        findUnique: vi.fn().mockResolvedValue(existing),
+        create: vi.fn(),
+        delete: vi.fn(),
+      },
+    });
+
+    const savingPrisma = makePrisma(null);
+    const saved = await new PostService(savingPrisma as never).toggleSave(VIEWER, "post-1");
+    expect(savingPrisma.savedPost.create).toHaveBeenCalledWith({ data: { userId: VIEWER, postId: "post-1" } });
+    expect(saved).toEqual({ id: "post-1", isSaved: true });
+
+    const unsavingPrisma = makePrisma({ id: "s1" });
+    const unsaved = await new PostService(unsavingPrisma as never).toggleSave(VIEWER, "post-1");
+    expect(unsavingPrisma.savedPost.delete).toHaveBeenCalledWith({ where: { id: "s1" } });
+    expect(unsaved).toEqual({ id: "post-1", isSaved: false });
+  });
+});
