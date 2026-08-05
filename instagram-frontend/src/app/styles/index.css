@@ -31,8 +31,10 @@
   --surface: #ffffff;
   --surface-hover: #efefef;
   --fg: #0d1015;
-  --muted: #737373;
-  --subtle: #8e8e8e;
+  /* Darkened from Instagram's #737373 so secondary text clears WCAG AA (4.5:1)
+     on the light surfaces, including the #efefef filled inputs. */
+  --muted: #626262;
+  --subtle: #6b6b6b;
   --border: #dbdbdb;
   --primary: #4f46e5;
   --primary-hover: #4338ca;
