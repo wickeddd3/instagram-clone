@@ -30,6 +30,10 @@ const env = cleanEnv(process.env, {
 
   SUPABASE_URL: nonEmptyStr(),
   SUPABASE_SERVICE_ROLE_KEY: nonEmptyStr(),
+  // Anon (public) key — used server-side to run the public signup flow so
+  // Supabase sends its built-in email-verification link. The service-role key
+  // would bypass confirmation, so signup uses the anon key on purpose.
+  SUPABASE_ANON_KEY: nonEmptyStr(),
 
   // Frontend origin(s), comma-separated. Used to build the CORS allowlist.
   APP_URL: str({ default: "http://localhost:5173" }),
@@ -45,6 +49,10 @@ const corsOrigins = env.APP_URL.split(",")
   .map((o) => o.trim())
   .filter(Boolean);
 
+// Primary frontend origin (first of APP_URL). Used for links back into the app,
+// e.g. the email-verification redirect target.
+const appUrl = corsOrigins[0] ?? "http://localhost:5173";
+
 export const config = {
   nodeEnv: env.NODE_ENV,
   isProduction: env.isProduction,
@@ -58,9 +66,11 @@ export const config = {
   supabase: {
     url: env.SUPABASE_URL,
     serviceRoleKey: env.SUPABASE_SERVICE_ROLE_KEY,
+    anonKey: env.SUPABASE_ANON_KEY,
   },
   logLevel: env.LOG_LEVEL,
   corsOrigins,
+  appUrl,
   rateLimit: {
     windowMs: env.RATE_LIMIT_WINDOW_MS,
     max: env.RATE_LIMIT_MAX,

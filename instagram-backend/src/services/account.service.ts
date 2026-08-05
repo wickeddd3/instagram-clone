@@ -1,6 +1,6 @@
 import type { PrismaClient } from "@/prisma/client";
-import { BadRequestError, ConflictError } from "@/errors/app.error";
-import { createAuthUser, deleteAuthUser, signInWithPassword, uploadPublicFile } from "@/lib/supabase";
+import { ConflictError } from "@/errors/app.error";
+import { signUpUser, deleteAuthUser, uploadPublicFile } from "@/lib/supabase";
 
 const AVATAR_BUCKET = "avatars";
 
@@ -26,9 +26,10 @@ export class AccountService {
   constructor(private prisma: PrismaClient) {}
 
   /**
-   * Creates the Supabase auth user, the profile row, and a session in one call.
-   * If profile creation fails after the auth user exists, the auth user is
-   * deleted so a retry isn't blocked by an orphaned account.
+   * Creates the Supabase auth user (unconfirmed) and the profile row in one call.
+   * The user is NOT signed in: Supabase emails a verification link and the user
+   * must confirm before they can log in. If profile creation fails after the auth
+   * user exists, the auth user is deleted so a retry isn't blocked by an orphan.
    */
   async signup({ email, password, username, displayName }: SignupInput) {
     const existing = await this.prisma.profile.findFirst({
@@ -40,7 +41,7 @@ export class AccountService {
       throw new ConflictError(`${field} is already taken`);
     }
 
-    const created = await createAuthUser(email, password);
+    const created = await signUpUser(email, password);
     if ("error" in created) {
       throw new ConflictError(created.error);
     }
@@ -55,16 +56,7 @@ export class AccountService {
       throw err;
     }
 
-    const signedIn = await signInWithPassword(email, password);
-    if ("error" in signedIn) {
-      throw new BadRequestError(signedIn.error);
-    }
-
-    const { access_token, refresh_token, expires_at, expires_in, token_type } = signedIn.session;
-    return {
-      profile,
-      session: { access_token, refresh_token, expires_at, expires_in, token_type },
-    };
+    return { profile, requiresEmailVerification: true };
   }
 
   /**

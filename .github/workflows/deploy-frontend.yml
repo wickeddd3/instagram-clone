@@ -55,6 +55,7 @@ jobs:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
+          VITE_REST_API_URL: ${{ secrets.VITE_REST_API_URL }}
 
       - name: Upload Playwright Report
         if: ${{ !cancelled() }}
@@ -112,6 +113,7 @@ jobs:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
+          VITE_REST_API_URL: ${{ secrets.VITE_REST_API_URL }}
 
       - name: Deploy to Vercel
         # This condition ensures deployment ONLY happens on a push/merge to main
