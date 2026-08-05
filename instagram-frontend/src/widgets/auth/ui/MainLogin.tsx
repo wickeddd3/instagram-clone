@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { LoginForm } from "./LoginForm";
+import { LoginForm } from "@/features/auth/login";
 import { IgLabel } from "./Iglabel";
 import { Divider } from "./Divider";
 // import { LoginWithFbLink } from "./LoginWithFbLink";

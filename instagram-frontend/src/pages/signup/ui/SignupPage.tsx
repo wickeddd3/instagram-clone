@@ -1,3 +1,4 @@
+import { SignupForm } from "@/features/auth/register";
 import {
   Divider,
   ErrorMessage,
@@ -5,7 +6,6 @@ import {
   IgLabel,
   LoginLink,
   // LoginWithFbLink,
-  SignupForm,
 } from "@/widgets/auth";
 import { useState } from "react";
 
