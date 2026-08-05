@@ -13,42 +13,42 @@ export const router = createBrowserRouter([
       {
         index: true,
         lazy: async () => {
-          const module = await import("@/pages/HomePage");
+          const module = await import("@/pages/home");
           return { Component: module.default };
         },
       },
       {
         path: ":username",
         lazy: async () => {
-          const module = await import("@/pages/ProfilePage");
+          const module = await import("@/pages/profile");
           return { Component: module.default };
         },
       },
       {
         path: "accounts/edit",
         lazy: async () => {
-          const module = await import("@/pages/EditProfilePage");
+          const module = await import("@/pages/edit-profile");
           return { Component: module.default };
         },
       },
       {
         path: "explore",
         lazy: async () => {
-          const module = await import("@/pages/ExplorePage");
+          const module = await import("@/pages/explore");
           return { Component: module.default };
         },
       },
       {
         path: "explore/people",
         lazy: async () => {
-          const module = await import("@/pages/ExplorePeoplePage");
+          const module = await import("@/pages/explore-people");
           return { Component: module.default };
         },
       },
       {
         path: "inbox",
         lazy: async () => {
-          const module = await import("@/pages/InboxPage");
+          const module = await import("@/pages/inbox");
           return { Component: module.default };
         },
       },
@@ -64,14 +64,14 @@ export const router = createBrowserRouter([
       {
         path: "login",
         lazy: async () => {
-          const module = await import("@/pages/LoginPage");
+          const module = await import("@/pages/login");
           return { Component: module.default };
         },
       },
       {
         path: "signup",
         lazy: async () => {
-          const module = await import("@/pages/SignupPage");
+          const module = await import("@/pages/signup");
           return { Component: module.default };
         },
       },

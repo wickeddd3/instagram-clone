@@ -85,7 +85,7 @@ export default defineConfig([
       // inherits its element type/captures.
       "boundaries/elements": [
         { type: "app", pattern: "src/app" },
-        { type: "pages", pattern: "src/pages" },
+        { type: "pages", pattern: "src/pages/*", capture: ["slice"] },
         { type: "widgets", pattern: "src/widgets/*", capture: ["slice"] },
         // features/websocket has no domain grouping, unlike every other feature slice;
         // it must be matched before the generic two-level pattern below
@@ -190,7 +190,7 @@ export default defineConfig([
               disallow: {
                 to: {
                   element: {
-                    types: ["widgets", "features", "entities", "shared"],
+                    types: ["pages", "widgets", "features", "entities", "shared"],
                     fileInternalPath: "!index.ts",
                   },
                 },
