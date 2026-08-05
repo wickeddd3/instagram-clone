@@ -7,7 +7,9 @@ export const ProfileFormSchema = z
       .max(30, "Display name must be at most 30 characters")
       .nullable(),
     bio: z.string().max(150, "Bio must be at most 150 characters").nullable(),
-    website: z.url("Website must be a valid URL").nullable(),
+    website: z
+      .union([z.literal(""), z.url("Website must be a valid URL")])
+      .nullable(),
   })
   .partial();
 
