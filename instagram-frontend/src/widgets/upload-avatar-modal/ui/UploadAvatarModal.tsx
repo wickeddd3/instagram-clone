@@ -1,6 +1,6 @@
 import { useAuth } from "@/entities/profile";
-import { useModalActions } from "@/shared/lib/modal";
-import { ModalContent } from "@/shared/ui/Modal";
+import { useModalActions } from "@/shared/lib";
+import { ModalContent } from "@/shared/ui";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { Avatar } from "./Avatar";
 import {

@@ -3,11 +3,11 @@ import { useAuth } from "@/entities/profile";
 import { AuthUser } from "./AuthUser";
 import { CaptionTextarea } from "./CaptionTextarea";
 import { LoadingSpinner } from "./LoadingSpinner";
-import { BackButton } from "@/shared/ui/BackButton";
-import { ShareButton } from "@/shared/ui/ShareButton";
+import { BackButton } from "@/shared/ui";
+import { ShareButton } from "@/shared/ui";
 import { usePostSubmission } from "../model/usePostSubmission";
 import { PreviewFooter } from "./PreviewFooter";
-import { ImageCarousel } from "@/shared/ui/ImageCarousel";
+import { ImageCarousel } from "@/shared/ui";
 import type { Swiper as SwiperType } from "swiper";
 
 interface DetailsProps {

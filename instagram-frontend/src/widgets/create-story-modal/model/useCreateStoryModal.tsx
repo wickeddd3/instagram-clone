@@ -1,4 +1,4 @@
-import { useModalActions } from "@/shared/lib/modal";
+import { useModalActions } from "@/shared/lib";
 import { CreateStoryModal } from "../ui/CreateStoryModal";
 
 export const useCreateStoryModal = () => {

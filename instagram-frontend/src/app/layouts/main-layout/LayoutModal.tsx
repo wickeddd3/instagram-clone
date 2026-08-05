@@ -1,5 +1,5 @@
-import { useModalActions, useModalState } from "@/shared/lib/modal";
-import { Modal } from "@/shared/ui/Modal";
+import { useModalActions, useModalState } from "@/shared/lib";
+import { Modal } from "@/shared/ui";
 import { memo } from "react";
 
 export const LayoutModal = memo(() => {

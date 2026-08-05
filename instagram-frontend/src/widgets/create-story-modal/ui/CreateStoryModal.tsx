@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useModalActions } from "@/shared/lib/modal";
-import { ModalContent } from "@/shared/ui/Modal";
+import { useModalActions } from "@/shared/lib";
+import { ModalContent } from "@/shared/ui";
 import { ImportImage, usePreviewUpload } from "@/features/story/import-image";
 import { CreateStory } from "@/features/story/create-story";
 

@@ -8,7 +8,7 @@ import { ForgotPasswordLink } from "./ForgotPasswordLinkt";
 import { SignupLink } from "./SignupLink";
 import { Footer } from "./Footer";
 import { Toaster } from "sonner";
-import { HelpAlert } from "@/shared/ui/HelpAlert";
+import { HelpAlert } from "@/shared/ui";
 
 export const MainLogin = () => {
   const [error, setError] = useState("");

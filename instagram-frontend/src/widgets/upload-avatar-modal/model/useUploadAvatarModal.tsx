@@ -1,4 +1,4 @@
-import { useModalActions } from "@/shared/lib/modal";
+import { useModalActions } from "@/shared/lib";
 import { UploadAvatarModal } from "../ui/UploadAvatarModal";
 
 export const useUploadAvatarModal = () => {

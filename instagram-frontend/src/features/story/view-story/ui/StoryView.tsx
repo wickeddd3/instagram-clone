@@ -1,16 +1,16 @@
 import { memo, useMemo, useState } from "react";
 import { Ellipsis } from "lucide-react";
-import { ModalCloseButton } from "@/shared/ui/Modal";
+import { ModalCloseButton } from "@/shared/ui";
 import { useStoryTimer } from "../model/useStoryTimer";
 import { ProgressBar } from "./ProgressBar";
-import { useModalActions } from "@/shared/lib/modal";
+import { useModalActions } from "@/shared/lib";
 import { useAuth } from "@/entities/profile";
-import { Avatar } from "@/shared/ui/Avatar";
-import { PreviewImage } from "@/shared/ui/PreviewImage";
+import { Avatar } from "@/shared/ui";
+import { PreviewImage } from "@/shared/ui";
 import type { UserStory } from "@/entities/story";
 import { ViewersList } from "./ViewersList";
 import { useTriggerViewStory } from "../model/useTriggerViewStory";
-import { formatStoryTime } from "@/shared/utils/date";
+import { formatStoryTime } from "@/shared/utils";
 
 export const StoryView = memo(
   ({

@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useProfileAvailabilityCheck } from "./useProfileAvailabilityCheck";
 import { useCreateProfile } from "./useCreateProfile";
 import { SignUpFormSchema, type SignUpFormType } from "./validation";
-import { signUp } from "@/shared/lib/supabase-auth";
+import { signUp } from "@/shared/lib";
 
 export const useRegister = ({
   onError,

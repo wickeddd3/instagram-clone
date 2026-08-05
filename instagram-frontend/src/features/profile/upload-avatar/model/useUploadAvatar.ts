@@ -6,8 +6,8 @@ import {
   createUploadPath,
   generatePreview,
   getFileData,
-} from "@/shared/utils/upload";
-import { uploadImage } from "@/shared/lib/supabase-upload";
+} from "@/shared/utils";
+import { uploadImage } from "@/shared/lib";
 
 export const useUploadAvatar = ({
   userId,

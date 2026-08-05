@@ -1,4 +1,4 @@
-import { HelpAlert } from "@/shared/ui/HelpAlert";
+import { HelpAlert } from "@/shared/ui";
 import {
   Divider,
   ErrorMessage,

@@ -1,5 +1,5 @@
-import { uploadImage } from "@/shared/lib/supabase-upload";
-import { createUploadPath } from "@/shared/utils/upload";
+import { uploadImage } from "@/shared/lib";
+import { createUploadPath } from "@/shared/utils";
 
 export const useUploadPostMedia = () => {
   const uploadMedia = async (files: File[], userId: string) => {

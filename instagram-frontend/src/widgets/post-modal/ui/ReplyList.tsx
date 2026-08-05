@@ -1,6 +1,6 @@
 import { memo, useCallback, useMemo, useState } from "react";
 import { useInfiniteReply } from "../model/useInfiniteReply";
-import { Spinner } from "@/shared/ui/Spinner";
+import { Spinner } from "@/shared/ui";
 import { CommentItem, ReplyButton, type Comment } from "@/entities/comment";
 import { LikeButton } from "@/features/comment/like-comment";
 

@@ -1,5 +1,5 @@
 import { NoMorePosts, PostThumbnail, type Post } from "@/entities/post";
-import { Spinner } from "@/shared/ui/Spinner";
+import { Spinner } from "@/shared/ui";
 import { ProfilePostsSkeleton } from "@/entities/profile";
 import { memo, useCallback } from "react";
 import { VirtuosoGrid } from "react-virtuoso";

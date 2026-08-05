@@ -1,5 +1,5 @@
-import { useModalActions } from "@/shared/lib/modal";
-import { ModalCloseButton, ModalContent } from "@/shared/ui/Modal";
+import { useModalActions } from "@/shared/lib";
+import { ModalCloseButton, ModalContent } from "@/shared/ui";
 import { Following } from "./Following";
 
 export const FollowingModal = ({

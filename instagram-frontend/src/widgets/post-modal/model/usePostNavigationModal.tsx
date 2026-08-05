@@ -1,4 +1,4 @@
-import { useModalActions } from "@/shared/lib/modal";
+import { useModalActions } from "@/shared/lib";
 import { PostDetailsNavigationModal } from "../ui/PostDetailsNavigationModal";
 import type { Post } from "@/entities/post";
 import { useCallback } from "react";

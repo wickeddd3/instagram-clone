@@ -2,9 +2,9 @@ import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { useStoryViewers } from "../model/useStoryViewers";
 import { NoViewers, ViewerLink } from "@/entities/story";
-import { useModalActions } from "@/shared/lib/modal";
+import { useModalActions } from "@/shared/lib";
 import { useAuth } from "@/entities/profile";
-import { Spinner } from "@/shared/ui/Spinner";
+import { Spinner } from "@/shared/ui";
 
 export const ViewersList = ({
   storyId,

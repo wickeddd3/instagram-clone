@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { generatePreview, getFileData } from "@/shared/utils/upload";
+import { generatePreview, getFileData } from "@/shared/utils";
 
 export const usePreviewUpload = () => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);

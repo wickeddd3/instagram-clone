@@ -6,14 +6,14 @@ import {
   type Post,
 } from "@/entities/post";
 import type { Comment } from "@/entities/comment";
-import { ModalContent } from "@/shared/ui/Modal";
-import { formatDateToNow } from "@/shared/utils/date";
+import { ModalContent } from "@/shared/ui";
+import { formatDateToNow } from "@/shared/utils";
 import { LikeButton } from "@/features/post/like-post";
 import { SaveButton } from "@/features/post/save-post";
 import { AddCommentField } from "@/features/comment/add-comment";
 import { CommentList } from "./CommentList";
 import type { ReplyData } from "../model/types";
-import { ImageCarousel } from "@/shared/ui/ImageCarousel";
+import { ImageCarousel } from "@/shared/ui";
 
 export const PostDetailsModal = memo(({ value }: { value: Post }) => {
   const [post, setPost] = useState<Post>(value);

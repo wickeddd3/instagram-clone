@@ -5,7 +5,7 @@ import { useAuth } from "@/entities/profile";
 import type { UserStory } from "@/entities/story";
 import { useStories } from "../model/useStories";
 import { PlusCircle } from "lucide-react";
-import { Avatar } from "@/shared/ui/Avatar";
+import { Avatar } from "@/shared/ui";
 
 export const Stories = ({
   onCreateStory,

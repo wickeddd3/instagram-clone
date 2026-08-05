@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import type { Session, User } from "@supabase/supabase-js";
-import { supabase } from "@/shared/lib/supabase";
+import { supabase } from "@/shared/lib";
 import { AuthContext } from "./AuthContext";
 import { useProfileById } from "./useProfileById";
 

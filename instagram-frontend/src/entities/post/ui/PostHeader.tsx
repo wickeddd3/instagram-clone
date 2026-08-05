@@ -1,5 +1,5 @@
 import { MoreHorizontal } from "lucide-react";
-import { formatDateToNow } from "@/shared/utils/date";
+import { formatDateToNow } from "@/shared/utils";
 import { Link } from "react-router-dom";
 
 export const PostHeader = ({

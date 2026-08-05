@@ -1,4 +1,4 @@
-import { useModalActions } from "@/shared/lib/modal";
+import { useModalActions } from "@/shared/lib";
 import { FollowersModal } from "../ui/FollowersModal";
 
 export const useFollowersModal = () => {

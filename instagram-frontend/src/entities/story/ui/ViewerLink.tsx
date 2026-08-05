@@ -1,4 +1,4 @@
-import { Avatar } from "@/shared/ui/Avatar";
+import { Avatar } from "@/shared/ui";
 import type { Viewer } from "../model/types";
 import { Link } from "react-router-dom";
 

@@ -1,11 +1,11 @@
 import { useMemo, useState } from "react";
 import { SearchField } from "./SearchField";
-import { useDrawerActions } from "@/shared/lib/drawer";
+import { useDrawerActions } from "@/shared/lib";
 import {
   RecentSearches,
   SearchResults,
 } from "@/features/profile/search-profile";
-import { useDebounce } from "@/shared/lib/useDebounce";
+import { useDebounce } from "@/shared/lib";
 
 export const SearchProfilesDrawer = () => {
   const { closeDrawer } = useDrawerActions();

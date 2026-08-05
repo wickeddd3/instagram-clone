@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginFormSchema, type LoginFormType } from "./validation";
-import { signIn } from "@/shared/lib/supabase-auth";
+import { signIn } from "@/shared/lib";
 
 export const useLogin = ({
   onError,

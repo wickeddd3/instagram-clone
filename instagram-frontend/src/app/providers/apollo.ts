@@ -3,9 +3,8 @@ import { SetContextLink } from "@apollo/client/link/context";
 import { ErrorLink } from "@apollo/client/link/error";
 import { CombinedGraphQLErrors, ServerError } from "@apollo/client/errors";
 import { toast } from "sonner";
-import { supabase } from "../../shared/lib/supabase";
-import { signOut } from "../../shared/lib/supabase-auth";
-import { env } from "@/shared/config/env";
+import { supabase, signOut } from "@/shared/lib";
+import { env } from "@/shared/config";
 
 const baseLink = new HttpLink({
   uri: env.VITE_API_URL,

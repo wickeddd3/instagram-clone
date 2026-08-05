@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import { useModalActions } from "@/shared/lib/modal";
-import { ModalContent } from "@/shared/ui/Modal";
-import { signOut } from "@/shared/lib/supabase-auth";
+import { useModalActions } from "@/shared/lib";
+import { ModalContent } from "@/shared/ui";
+import { signOut } from "@/shared/lib";
 
 export const SettingsModal = () => {
   const navigate = useNavigate();
