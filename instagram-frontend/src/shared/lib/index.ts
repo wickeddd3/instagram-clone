@@ -3,6 +3,7 @@ export * from "./api";
 export * from "./drawer";
 export * from "./modal";
 export * from "./supabase";
+export * from "./theme";
 export * from "./supabase-auth";
 export * from "./supabase-upload";
 export * from "./useDebounce";

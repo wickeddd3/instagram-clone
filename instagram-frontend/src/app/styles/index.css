@@ -4,6 +4,58 @@
 @import "swiper/css/navigation";
 @import "swiper/css/pagination";
 
+/* dark: variant, driven by the `data-theme` attribute the ThemeProvider sets on
+   <html>. Used for the rare explicit override; most theming flows through the
+   semantic tokens below, which flip automatically. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* Semantic color tokens. `@theme inline` emits utilities (bg-background,
+   text-foreground, border-border, …) that reference the raw CSS variables at
+   runtime, so changing the variables under [data-theme] re-skins the whole app
+   without touching components. */
+@theme inline {
+  --color-background: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-foreground: var(--fg);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+}
+
+:root,
+[data-theme="light"] {
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --surface-hover: #efefef;
+  --fg: #0d1015;
+  --muted: #737373;
+  --subtle: #8e8e8e;
+  --border: #dbdbdb;
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --scrollbar-track: #dbdbdb;
+  --scrollbar-thumb: #b3b3b3;
+  --scrollbar-thumb-hover: #999999;
+}
+
+[data-theme="dark"] {
+  --bg: #0d1015;
+  --surface: #0d1015;
+  --surface-hover: #262626;
+  --fg: #ffffff;
+  --muted: #9ca3af;
+  --subtle: #737373;
+  --border: #262626;
+  --primary: #6366f1;
+  --primary-hover: #4338ca;
+  --scrollbar-track: #363636;
+  --scrollbar-thumb: #585858;
+  --scrollbar-thumb-hover: #4a4a4a;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -13,7 +65,8 @@ body {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  background-color: #0d1015;
+  background-color: var(--bg);
+  color: var(--fg);
 }
 
 @layer utilities {
@@ -33,18 +86,18 @@ body {
   }
 
   .custom-scrollbar::-webkit-scrollbar-track {
-    background: #363636;
+    background: var(--scrollbar-track);
     border-radius: 10px;
     padding: 2px;
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #585858;
+    background: var(--scrollbar-thumb);
     border-radius: 10px;
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #4a4a4a;
+    background: var(--scrollbar-thumb-hover);
   }
 }
 
@@ -91,8 +144,8 @@ body {
   top: 0;
   z-index: 200;
   padding: 0.5rem 1rem;
-  background: #ffffff;
-  color: #0d1015;
+  background: var(--fg);
+  color: var(--bg);
   font-weight: 600;
   border-radius: 0 0 0.375rem 0;
 }

@@ -5,6 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0d1015" />
 
+    <!-- Resolve and apply the theme before first paint so there is no flash of
+         the wrong theme. Keep the token values in sync with src/app/styles/index.css
+         and src/shared/lib/theme. -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem("ig-theme");
+          var theme =
+            stored === "light" || stored === "dark" || stored === "system"
+              ? stored
+              : "system";
+          var resolved =
+            theme === "system"
+              ? window.matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light"
+              : theme;
+          document.documentElement.dataset.theme = resolved;
+          var meta = document.querySelector('meta[name="theme-color"]');
+          if (meta)
+            meta.setAttribute(
+              "content",
+              resolved === "dark" ? "#0d1015" : "#ffffff",
+            );
+        } catch (e) {
+          document.documentElement.dataset.theme = "dark";
+        }
+      })();
+    </script>
+
     <title>Instagram</title>
     <meta
       name="description"
