@@ -4,7 +4,7 @@ export const ProfilePostsSkeleton = () => {
       {[...Array(6)].map((_, i) => (
         <div
           key={i}
-          className="aspect-square bg-surface-hover animate-pulse rounded-sm"
+          className="aspect-square bg-surface-hover animate-pulse"
         />
       ))}
     </div>

@@ -151,7 +151,7 @@ export const Sidebar = ({
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -10 }}
                   transition={{ duration: 0.2 }}
-                  className="text-md whitespace-nowrap"
+                  className="text-base whitespace-nowrap"
                 >
                   {item.label}
                 </motion.span>
@@ -224,7 +224,7 @@ export const Sidebar = ({
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -10 }}
                 transition={{ duration: 0.2 }}
-                className="text-md whitespace-nowrap"
+                className="text-base whitespace-nowrap"
               >
                 More
               </motion.span>

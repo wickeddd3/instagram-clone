@@ -22,7 +22,7 @@ const SignupPage = () => {
         <div className="w-sm flex flex-col justify-center items-center gap-3">
           <div className="w-full flex flex-col justify-center items-center gap-5 border-border border px-10 pb-6 pt-12">
             <IgLabel />
-            <p className="text-md font-semibold text-muted text-center">
+            <p className="text-base font-semibold text-muted text-center">
               Sign up to see photos and videos from your friends.
             </p>
             {/* <LoginWithFbLink /> */}

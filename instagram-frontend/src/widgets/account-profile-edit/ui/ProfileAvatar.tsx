@@ -19,7 +19,7 @@ export const ProfileAvatar = ({
           />
         </div>
         <div className="flex flex-col">
-          <span className="font-bold text-md">{profile?.username}</span>
+          <span className="font-bold text-base">{profile?.username}</span>
           <span className="font-normal text-sm text-muted">
             {profile?.displayName}
           </span>
