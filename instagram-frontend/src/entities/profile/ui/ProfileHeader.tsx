@@ -16,7 +16,7 @@ export const Avatar = ({
   username?: string;
 }) => {
   return (
-    <div className="w-20 h-20 md:w-30 md:h-30 lg:w-40 lg:h-40 rounded-full bg-gray-800 overflow-hidden">
+    <div className="w-20 h-20 md:w-30 md:h-30 lg:w-40 lg:h-40 rounded-full bg-surface-hover overflow-hidden">
       <img
         src={avatarUrl}
         alt={username ? `${username}'s profile photo` : "Profile photo"}
@@ -46,7 +46,7 @@ export const SettingsButton = ({ onClick }: { onClick: () => void }) => {
       onClick={onClick}
       aria-label="Settings"
       title="Settings"
-      className="p-1 hover:text-gray-400 transition cursor-pointer"
+      className="p-1 hover:text-muted transition cursor-pointer"
     >
       <Cog size={24} aria-hidden="true" />
     </button>
@@ -56,15 +56,22 @@ export const SettingsButton = ({ onClick }: { onClick: () => void }) => {
 export const ActionButton = ({
   label,
   onClick,
-  className,
+  className = "",
+  variant = "secondary",
 }: {
   label: string;
   onClick: () => void;
   className?: string;
+  variant?: "primary" | "secondary";
 }) => {
+  const variantClasses =
+    variant === "primary"
+      ? "bg-primary text-white hover:bg-primary-hover"
+      : "bg-surface-hover text-foreground hover:opacity-80";
+
   return (
     <button
-      className={`w-full bg-gray-800 hover:bg-gray-700 text-white p-1.5 md:p-3 rounded-lg md:rounded-xl text-sm font-semibold transition cursor-pointer ${className}`}
+      className={`w-full ${variantClasses} p-1.5 md:p-3 rounded-lg md:rounded-xl text-sm font-semibold transition cursor-pointer ${className}`}
       onClick={onClick}
     >
       {label}

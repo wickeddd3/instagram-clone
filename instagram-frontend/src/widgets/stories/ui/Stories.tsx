@@ -37,11 +37,11 @@ export const Stories = ({
           <button className="flex flex-col items-center gap-1 min-w-[70px]">
             <div
               onClick={onCreateStory}
-              className="relative w-21 h-21 rounded-full border-2 border-dashed border-zinc-700 flex items-center justify-center cursor-pointer"
+              className="relative w-21 h-21 rounded-full border-2 border-dashed border-border flex items-center justify-center cursor-pointer"
             >
-              <PlusCircle size={24} className="text-zinc-400" aria-hidden="true" />
+              <PlusCircle size={24} className="text-muted" aria-hidden="true" />
             </div>
-            <span className="text-[11px] text-zinc-400">Add Story</span>
+            <span className="text-[11px] text-muted">Add Story</span>
           </button>
         </SwiperSlide>
         {/* Other Users' Stories */}
@@ -53,9 +53,9 @@ export const Stories = ({
             >
               {/* Gradient Ring */}
               <div
-                className={`w-21 h-21 p-[3px] rounded-full bg-linear-to-tr ${group.hasUnseenStories ? "from-yellow-400 to-fuchsia-600" : "from-zinc-700 to-zinc-800"}`}
+                className={`w-21 h-21 p-[3px] rounded-full bg-linear-to-tr ${group.hasUnseenStories ? "from-yellow-400 to-fuchsia-600" : "from-zinc-300 to-zinc-400 dark:from-zinc-700 dark:to-zinc-800"}`}
               >
-                <div className="bg-[#0d1015] p-1 rounded-full w-full h-full">
+                <div className="bg-background p-1 rounded-full w-full h-full">
                   <Avatar
                     imageUrl={group.avatarUrl}
                     username={group.username}
@@ -63,7 +63,7 @@ export const Stories = ({
                   />
                 </div>
               </div>
-              <span className="text-xs text-gray-200 truncate w-[74px] text-center">
+              <span className="text-xs text-muted truncate w-[74px] text-center">
                 {group.username}
               </span>
             </button>
