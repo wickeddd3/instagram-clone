@@ -1,4 +1,7 @@
 import type { GraphQLContext } from "@/graphql/context";
+import { forbiddenError } from "@/graphql/errors";
+
+const EMPTY_FEED = { posts: [], hasMore: false, nextCursor: null };
 
 export const PostQuery = {
   getFeedPosts: (
@@ -8,22 +11,22 @@ export const PostQuery = {
     { cursor, limit = 5 }: { cursor?: string; limit?: number },
     { userId, services }: GraphQLContext,
   ) => {
-    if (!userId) return { posts: [], hasMore: false, nextCursor: null };
+    if (!userId) return EMPTY_FEED;
 
     return services.post.getFeedPosts(userId, cursor, limit);
   },
 
-  getExplorePosts: async (
+  getExplorePosts: (
     _parent: unknown,
     { cursor, limit = 9 }: { cursor?: string; limit?: number },
     { userId, services }: GraphQLContext,
   ) => {
-    if (!userId) return { posts: [], hasMore: false, nextCursor: null };
+    if (!userId) return EMPTY_FEED;
 
     return services.post.getExplorePosts(userId, cursor, limit);
   },
 
-  getProfilePosts: async (
+  getProfilePosts: (
     _parent: unknown,
     {
       profileId,
@@ -34,14 +37,16 @@ export const PostQuery = {
       cursor?: string;
       limit?: number;
     },
-    { services }: GraphQLContext,
+    { userId, services }: GraphQLContext,
   ) => {
-    if (!profileId) return { posts: [], hasMore: false, nextCursor: null };
+    // The viewer must be authenticated so isLiked/isSaved/isFollowing are scoped
+    // to them; the posts themselves belong to `profileId`.
+    if (!userId || !profileId) return EMPTY_FEED;
 
-    return services.post.getProfilePosts(profileId, cursor, limit);
+    return services.post.getProfilePosts(userId, profileId, cursor, limit);
   },
 
-  getSavedPosts: async (
+  getSavedPosts: (
     _parent: unknown,
     {
       profileId,
@@ -52,8 +57,12 @@ export const PostQuery = {
       cursor?: string;
       limit?: number;
     },
-    { services }: GraphQLContext,
+    { userId, services }: GraphQLContext,
   ) => {
-    return services.post.getSavedPosts(profileId, cursor, limit);
+    if (!userId) return EMPTY_FEED;
+    // Saved posts are private: a viewer may only read their own.
+    if (profileId !== userId) throw forbiddenError("You cannot view another user's saved posts");
+
+    return services.post.getSavedPosts(userId, cursor, limit);
   },
 };
