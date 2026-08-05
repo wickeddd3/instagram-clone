@@ -7,10 +7,16 @@ import {
   Menu,
   Instagram,
   Send,
+  Sun,
+  Moon,
+  Monitor,
+  Check,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import { useAuth } from "@/entities/profile";
+import { useTheme, type Theme } from "@/shared/lib";
 
 interface SidebarProps {
   isSidebarOpen?: boolean;
@@ -20,6 +26,12 @@ interface SidebarProps {
   onOpenNotifications: () => void;
 }
 
+const THEME_OPTIONS: { value: Theme; label: string; Icon: typeof Sun }[] = [
+  { value: "light", label: "Light", Icon: Sun },
+  { value: "dark", label: "Dark", Icon: Moon },
+  { value: "system", label: "System", Icon: Monitor },
+];
+
 export const Sidebar = ({
   isSidebarOpen,
   onSidebarHover,
@@ -28,7 +40,30 @@ export const Sidebar = ({
   onOpenNotifications,
 }: SidebarProps) => {
   const { authProfile } = useAuth();
+  const { theme, setTheme } = useTheme();
   const navigate = useNavigate();
+
+  const [isMoreOpen, setMoreOpen] = useState(false);
+  const moreRef = useRef<HTMLDivElement>(null);
+
+  // Close the "More" menu on outside click or Escape.
+  useEffect(() => {
+    if (!isMoreOpen) return;
+    const handlePointer = (event: MouseEvent) => {
+      if (moreRef.current && !moreRef.current.contains(event.target as Node)) {
+        setMoreOpen(false);
+      }
+    };
+    const handleKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMoreOpen(false);
+    };
+    document.addEventListener("mousedown", handlePointer);
+    document.addEventListener("keydown", handleKey);
+    return () => {
+      document.removeEventListener("mousedown", handlePointer);
+      document.removeEventListener("keydown", handleKey);
+    };
+  }, [isMoreOpen]);
 
   if (!authProfile) return null;
 
@@ -67,7 +102,7 @@ export const Sidebar = ({
     },
     {
       icon: (
-        <div className="w-6 h-6 rounded-full bg-gray-500 overflow-hidden">
+        <div className="w-6 h-6 rounded-full bg-surface-hover overflow-hidden">
           <img
             src={authProfile?.avatarUrl || "/ig-default.jpg"}
             alt={`${authProfile?.username}'s profile`}
@@ -102,7 +137,7 @@ export const Sidebar = ({
             key={index}
             aria-label={item.label}
             title={item.label}
-            className="flex items-center gap-4 py-3 px-2.5 hover:bg-white/10 rounded-lg w-full transition-colors duration-200 group cursor-pointer"
+            className="flex items-center gap-4 py-3 px-2.5 hover:bg-foreground/10 rounded-lg w-full transition-colors duration-200 group cursor-pointer"
             onClick={item.action}
           >
             <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
@@ -125,29 +160,77 @@ export const Sidebar = ({
         ))}
       </nav>
 
-      {/* More Options */}
-      <button
-        aria-label="More"
-        title="More"
-        className="flex items-center gap-4 py-2 px-2.5 hover:bg-white/10 rounded-lg w-full transition-colors duration-200 group cursor-pointer"
-      >
-        <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-          <Menu size={iconSize} aria-hidden="true" />
-        </motion.div>
+      {/* More Options — opens the "Switch appearance" menu */}
+      <div className="relative" ref={moreRef}>
         <AnimatePresence>
-          {isSidebarOpen && (
-            <motion.span
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -10 }}
-              transition={{ duration: 0.2 }}
-              className="text-md whitespace-nowrap"
+          {isMoreOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 8 }}
+              transition={{ duration: 0.15 }}
+              role="menu"
+              aria-label="Switch appearance"
+              className="absolute bottom-full left-0 mb-2 w-60 overflow-hidden rounded-xl border border-border bg-surface shadow-xl"
             >
-              More
-            </motion.span>
+              <p className="px-4 pt-3 pb-2 text-sm font-semibold">
+                Switch appearance
+              </p>
+              {THEME_OPTIONS.map(({ value, label, Icon }) => {
+                const active = theme === value;
+                return (
+                  <button
+                    key={value}
+                    type="button"
+                    role="menuitemradio"
+                    aria-checked={active}
+                    onClick={() => setTheme(value)}
+                    className="flex w-full items-center justify-between gap-3 px-4 py-2.5 text-sm hover:bg-foreground/10 transition-colors cursor-pointer"
+                  >
+                    <span className="flex items-center gap-3">
+                      <Icon size={18} aria-hidden="true" />
+                      {label}
+                    </span>
+                    {active && (
+                      <Check
+                        size={16}
+                        className="text-primary"
+                        aria-hidden="true"
+                      />
+                    )}
+                  </button>
+                );
+              })}
+            </motion.div>
           )}
         </AnimatePresence>
-      </button>
+
+        <button
+          aria-label="More"
+          aria-haspopup="menu"
+          aria-expanded={isMoreOpen}
+          title="More"
+          onClick={() => setMoreOpen((open) => !open)}
+          className="flex items-center gap-4 py-2 px-2.5 hover:bg-foreground/10 rounded-lg w-full transition-colors duration-200 group cursor-pointer"
+        >
+          <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+            <Menu size={iconSize} aria-hidden="true" />
+          </motion.div>
+          <AnimatePresence>
+            {isSidebarOpen && (
+              <motion.span
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -10 }}
+                transition={{ duration: 0.2 }}
+                className="text-md whitespace-nowrap"
+              >
+                More
+              </motion.span>
+            )}
+          </AnimatePresence>
+        </button>
+      </div>
     </div>
   );
 };
