@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import type { Profile } from "@/entities/profile";
+import type { Profile } from "../model/types";
 import { useMemo } from "react";
 
 export const SuggestionProfileLink = ({
