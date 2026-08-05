@@ -1,15 +1,12 @@
 import type { GraphQLContext } from "@/graphql/context";
 import { unauthenticatedError } from "@/graphql/errors";
+import { validateInput } from "@/graphql/validation";
+import { avatarSchema, createProfileSchema, updateProfileSchema } from "./schema";
 
 export const ProfileMutation = {
   createProfile: (
     _parent: unknown,
-    {
-      id,
-      username,
-      email,
-      displayName,
-    }: {
+    args: {
       id: string;
       username: string;
       email: string;
@@ -17,21 +14,14 @@ export const ProfileMutation = {
     },
     { services }: GraphQLContext,
   ) => {
-    return services.profile.createProfile({
-      id,
-      username,
-      email,
-      displayName,
-    });
+    const data = validateInput(createProfileSchema, args);
+
+    return services.profile.createProfile(data);
   },
 
   updateProfile: (
     _parent: unknown,
-    {
-      displayName,
-      bio,
-      website,
-    }: {
+    args: {
       displayName?: string;
       bio?: string;
       website?: string;
@@ -40,19 +30,15 @@ export const ProfileMutation = {
   ) => {
     if (!userId) throw unauthenticatedError();
 
-    return services.profile.updateProfile(userId, {
-      displayName,
-      bio,
-      website,
-    });
+    const data = validateInput(updateProfileSchema, args);
+
+    return services.profile.updateProfile(userId, data);
   },
 
-  uploadProfileAvatar: (
-    _parent: unknown,
-    { avatarUrl }: { avatarUrl: string },
-    { userId, services }: GraphQLContext,
-  ) => {
+  uploadProfileAvatar: (_parent: unknown, args: { avatarUrl: string }, { userId, services }: GraphQLContext) => {
     if (!userId) throw unauthenticatedError();
+
+    const { avatarUrl } = validateInput(avatarSchema, args);
 
     return services.profile.updateProfile(userId, { avatarUrl });
   },

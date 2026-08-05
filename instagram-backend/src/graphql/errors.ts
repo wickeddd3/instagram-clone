@@ -10,3 +10,13 @@ export const unauthenticatedError = (message = "Unauthorized"): GraphQLError =>
 
 export const forbiddenError = (message = "Forbidden"): GraphQLError =>
   new GraphQLError(message, { extensions: { code: "FORBIDDEN" } });
+
+export interface FieldIssue {
+  field: string;
+  message: string;
+}
+
+export const badUserInputError = (message: string, details?: FieldIssue[]): GraphQLError =>
+  new GraphQLError(message, {
+    extensions: { code: "BAD_USER_INPUT", ...(details?.length ? { details } : {}) },
+  });
