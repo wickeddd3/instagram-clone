@@ -1,22 +1,17 @@
-import { useNavigate } from "react-router-dom";
 import { Loader } from "lucide-react";
 import { TextField, SubmitButton } from "@/shared/ui";
 import { useRegister } from "../model/useRegister";
-import { toast } from "sonner";
 
 export const SignupForm = ({
   onError,
+  onSuccess,
 }: {
   onError?: (value: string) => void;
+  onSuccess?: (email: string) => void;
 }) => {
-  const navigate = useNavigate();
-
   const { registerField, registerUser, loading, errors } = useRegister({
     onError,
-    onSuccess: () => {
-      navigate("/");
-      toast.success("Account created successfully.");
-    },
+    onSuccess,
   });
 
   return (

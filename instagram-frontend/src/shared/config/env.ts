@@ -6,6 +6,9 @@ import { z } from "zod";
 // fast at startup with a readable message, mirroring the backend's envalid config.
 const envSchema = z.object({
   VITE_API_URL: z.url(),
+  // Base URL of the REST API (e.g. http://localhost:4000/api/v1). Used for
+  // signup, which the backend owns; GraphQL requests still use VITE_API_URL.
+  VITE_REST_API_URL: z.url(),
   VITE_SUPABASE_URL: z.url(),
   VITE_SUPABASE_ANON_KEY: z.string().min(1, "VITE_SUPABASE_ANON_KEY is required"),
 });

@@ -7,10 +7,14 @@ import {
   LoginLink,
   // LoginWithFbLink,
 } from "@/widgets/auth";
+import { Alert } from "@/shared/ui";
 import { useState } from "react";
 
 const SignupPage = () => {
   const [error, setError] = useState("");
+  const [verificationEmail, setVerificationEmail] = useState<string | null>(
+    null,
+  );
 
   return (
     <div className="w-full h-full min-h-screen flex flex-col justify-between md:justify-center items-center gap-12 p-4 bg-[#0d1015] text-white">
@@ -23,8 +27,25 @@ const SignupPage = () => {
             </p>
             {/* <LoginWithFbLink /> */}
             <Divider />
+            {verificationEmail && (
+              <Alert
+                variant="success"
+                title="Confirm your email"
+                onClose={() => setVerificationEmail(null)}
+              >
+                We sent a verification link to{" "}
+                <span className="font-medium">{verificationEmail}</span>. Please
+                verify your email before logging in.
+              </Alert>
+            )}
             <div className="w-full flex flex-col justify-center items-center gap-4">
-              <SignupForm onError={setError} />
+              <SignupForm
+                onError={setError}
+                onSuccess={(email) => {
+                  setError("");
+                  setVerificationEmail(email);
+                }}
+              />
               {error && <ErrorMessage message={error} />}
             </div>
           </div>
