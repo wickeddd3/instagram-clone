@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { useModalActions } from "@/shared/lib/modal";
-import { ModalContent } from "@/shared/ui/Modal";
+import { useModalActions } from "@/shared/lib";
+import { ModalContent } from "@/shared/ui";
 import { ImportImage, usePreviewUpload } from "@/features/post/import-image";
 import { CreatePost } from "@/features/post/create-post";
 

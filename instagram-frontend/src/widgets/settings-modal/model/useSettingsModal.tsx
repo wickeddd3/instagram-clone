@@ -1,4 +1,4 @@
-import { useModalActions } from "@/shared/lib/modal";
+import { useModalActions } from "@/shared/lib";
 import { SettingsModal } from "../ui/SettingsModal";
 
 export const useSettingsModal = () => {

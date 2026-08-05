@@ -1,10 +1,10 @@
 import { toast } from "sonner";
 import { useAuth } from "@/entities/profile";
-import { BackButton } from "@/shared/ui/BackButton";
-import { ShareButton } from "@/shared/ui/ShareButton";
-import { PreviewImage } from "@/shared/ui/PreviewImage";
-import { uploadImage } from "@/shared/lib/supabase-upload";
-import { createUploadPath } from "@/shared/utils/upload";
+import { BackButton } from "@/shared/ui";
+import { ShareButton } from "@/shared/ui";
+import { PreviewImage } from "@/shared/ui";
+import { uploadImage } from "@/shared/lib";
+import { createUploadPath } from "@/shared/utils";
 import { useCreateStory } from "../model/useCreateStory";
 
 interface DetailsProps {

@@ -1,9 +1,9 @@
 import { useInfiniteExploreFeed } from "../model/useInfiniteExploreFeed";
-import { Spinner } from "@/shared/ui/Spinner";
+import { Spinner } from "@/shared/ui";
 import { NoMorePosts, PostThumbnail, type Post } from "@/entities/post";
 import { ProfilePostsSkeleton } from "@/entities/profile";
 import { VirtuosoGrid } from "react-virtuoso";
-import { PullToRefresh } from "@/shared/ui/PullToRefresh";
+import { PullToRefresh } from "@/shared/ui";
 import { useAuth } from "@/entities/profile";
 
 export const ExploreFeed = ({

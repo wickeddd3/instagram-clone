@@ -4,9 +4,9 @@ import { router } from "./router/routes";
 import { client } from "./providers/apollo.ts";
 import { ApolloProvider } from "@apollo/client/react";
 import { AuthProvider } from "@/entities/profile";
-import { DrawerProvider } from "@/shared/lib/drawer";
-import { ModalProvider } from "@/shared/lib/modal";
-import { ErrorBoundary } from "@/shared/ui/ErrorBoundary";
+import { DrawerProvider } from "@/shared/lib";
+import { ModalProvider } from "@/shared/lib";
+import { ErrorBoundary } from "@/shared/ui";
 
 export const App = () => {
   return (

@@ -1,8 +1,8 @@
 import {
   useDrawerActions,
   useDrawerState,
-} from "@/shared/lib/drawer";
-import { Drawer } from "@/shared/ui/Drawer";
+} from "@/shared/lib";
+import { Drawer } from "@/shared/ui";
 import { memo } from "react";
 
 export const LayoutDrawer = memo(() => {

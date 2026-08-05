@@ -1,5 +1,5 @@
 import { useRouteError, isRouteErrorResponse } from "react-router-dom";
-import { ErrorFallback } from "@/shared/ui/ErrorFallback";
+import { ErrorFallback } from "@/shared/ui";
 
 // errorElement for the data router. Catches loader/render errors and, most
 // importantly, a failed dynamic import — after a redeploy the old chunk URLs

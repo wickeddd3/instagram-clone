@@ -6,7 +6,7 @@ import {
   ReplyButton,
   type Comment,
 } from "@/entities/comment";
-import { Spinner } from "@/shared/ui/Spinner";
+import { Spinner } from "@/shared/ui";
 import { LikeButton } from "@/features/comment/like-comment";
 import { ReplyList } from "./ReplyList";
 import { memo } from "react";

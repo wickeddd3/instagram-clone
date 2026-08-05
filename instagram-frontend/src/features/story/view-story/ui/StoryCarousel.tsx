@@ -1,8 +1,8 @@
 import { memo, useCallback, useMemo, useState } from "react";
-import { StoryView } from "@/features/story/view-story";
+import { StoryView } from "./StoryView";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { UserStory } from "@/entities/story";
-import { useModalActions } from "@/shared/lib/modal";
+import { useModalActions } from "@/shared/lib";
 
 export const StoryCarousel = memo(
   ({ stories, index }: { stories: UserStory[]; index: number }) => {

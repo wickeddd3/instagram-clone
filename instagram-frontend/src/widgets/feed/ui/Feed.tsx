@@ -2,8 +2,8 @@ import { useInfiniteFeed } from "../model/useInfiniteFeed";
 import { NoMorePosts, PostSkeleton, type Post } from "@/entities/post";
 import { Virtuoso } from "react-virtuoso";
 import { FeedCard } from "./FeedCard";
-import { Spinner } from "@/shared/ui/Spinner";
-import { PullToRefresh } from "@/shared/ui/PullToRefresh";
+import { Spinner } from "@/shared/ui";
+import { PullToRefresh } from "@/shared/ui";
 import { useAuth } from "@/entities/profile";
 
 export const Feed = ({

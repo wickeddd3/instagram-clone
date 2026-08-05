@@ -4,7 +4,7 @@ import {
   RecentSearches,
   SearchResults,
 } from "@/features/profile/search-profile";
-import { useDebounce } from "@/shared/lib/useDebounce";
+import { useDebounce } from "@/shared/lib";
 
 export const MobileSearch = () => {
   const [query, setQuery] = useState("");

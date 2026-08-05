@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { X } from "lucide-react";
 import { useRef, type ReactNode } from "react";
-import { useFocusTrap } from "@/shared/lib/a11y";
+import { useFocusTrap } from "@/shared/lib";
 
 export const DrawerCloseButton = ({
   onClose,

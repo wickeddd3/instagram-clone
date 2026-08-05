@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client/react";
 import { REMOVE_PROFILE_AVATAR } from "../api/mutation";
-import { removeImage } from "@/shared/lib/supabase-upload";
+import { removeImage } from "@/shared/lib";
 
 export const useRemoveAvatar = ({
   onCompleted = () => {},

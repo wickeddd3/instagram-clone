@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { useSearchFollowing } from "../model/useSearchFollowing";
-import { Spinner } from "@/shared/ui/Spinner";
+import { Spinner } from "@/shared/ui";
 import { ProfileLink } from "@/entities/profile";
 import { RemoveFollowingButton } from "@/features/profile/remove-following";
-import { useModalActions } from "@/shared/lib/modal";
+import { useModalActions } from "@/shared/lib";
 
 export const FollowingSearchResults = ({
   query,

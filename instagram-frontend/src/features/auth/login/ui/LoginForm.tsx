@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Loader } from "lucide-react";
-import { TextField } from "./TextField";
-import { SubmitButton } from "./SubmitButton";
+import { TextField, SubmitButton } from "@/shared/ui";
 import { useLogin } from "../model/useLogin";
 
 export const LoginForm = ({

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { LoginForm } from "./LoginForm";
+import { LoginForm } from "@/features/auth/login";
 import { IgLabel } from "./Iglabel";
 import { Divider } from "./Divider";
 // import { LoginWithFbLink } from "./LoginWithFbLink";
@@ -8,7 +8,7 @@ import { ForgotPasswordLink } from "./ForgotPasswordLinkt";
 import { SignupLink } from "./SignupLink";
 import { Footer } from "./Footer";
 import { Toaster } from "sonner";
-import { HelpAlert } from "@/shared/ui/HelpAlert";
+import { HelpAlert } from "@/shared/ui";
 
 export const MainLogin = () => {
   const [error, setError] = useState("");

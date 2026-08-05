@@ -1,6 +1,6 @@
 import { useAuth } from "@/entities/profile";
 import { MainLayout } from "./../layouts";
-import { LoadingScreen } from "@/shared/ui/LoadingScreen";
+import { LoadingScreen } from "@/shared/ui";
 import { MainLogin } from "@/widgets/auth";
 
 export const AuthGuard = () => {

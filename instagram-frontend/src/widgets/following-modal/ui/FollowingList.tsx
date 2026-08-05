@@ -1,9 +1,9 @@
 import { useInView } from "react-intersection-observer";
 import { useInfiniteFollowing } from "../model/useInfiniteFollowing";
-import { Spinner } from "@/shared/ui/Spinner";
+import { Spinner } from "@/shared/ui";
 import { ProfileLink } from "@/entities/profile";
 import { RemoveFollowingButton } from "@/features/profile/remove-following";
-import { useModalActions } from "@/shared/lib/modal";
+import { useModalActions } from "@/shared/lib";
 
 export const FollowingList = ({
   username,

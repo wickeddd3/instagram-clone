@@ -1,7 +1,7 @@
 import { type ReactNode } from "react";
 import type { Comment } from "../model/types";
 import { CommentMessage } from "./CommentMessage";
-import { Avatar } from "@/shared/ui/Avatar";
+import { Avatar } from "@/shared/ui";
 import { CommentLikes } from "./CommentLikes";
 import { CommentDate } from "./CommentDate";
 

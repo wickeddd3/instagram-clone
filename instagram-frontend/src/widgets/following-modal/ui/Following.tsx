@@ -1,8 +1,8 @@
-import { SearchField } from "@/shared/ui/SearchField";
+import { SearchField } from "@/shared/ui";
 import { useMemo, useState } from "react";
 import { FollowingSearchResults } from "./FollowingSearchResults";
 import { FollowingList } from "./FollowingList";
-import { useDebounce } from "@/shared/lib/useDebounce";
+import { useDebounce } from "@/shared/lib";
 
 export const Following = ({
   username,

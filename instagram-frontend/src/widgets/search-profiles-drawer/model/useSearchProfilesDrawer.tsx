@@ -1,4 +1,4 @@
-import { useDrawerActions } from "@/shared/lib/drawer";
+import { useDrawerActions } from "@/shared/lib";
 import { SearchProfilesDrawer } from "../ui/SearchProfilesDrawer";
 
 export const useSearchProfilesDrawer = () => {

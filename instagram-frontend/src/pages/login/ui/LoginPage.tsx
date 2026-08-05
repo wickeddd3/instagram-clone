@@ -1,11 +1,11 @@
-import { HelpAlert } from "@/shared/ui/HelpAlert";
+import { HelpAlert } from "@/shared/ui";
+import { LoginForm } from "@/features/auth/login";
 import {
   Divider,
   ErrorMessage,
   Footer,
   ForgotPasswordLink,
   IgLabel,
-  LoginForm,
   // LoginWithFbLink,
   SignupLink,
 } from "@/widgets/auth";
