@@ -22,9 +22,9 @@ export const UploadAvatarModal = ({ avatarUrl }: { avatarUrl?: string }) => {
   const displayUrl = previewUrl || avatarUrl || "/ig-default.jpg";
 
   return (
-    <ModalContent className="w-[400px] m-2">
+    <ModalContent className="w-full max-w-[400px] m-2">
       <div className="flex flex-col">
-        <div className="flex flex-col items-center gap-3 p-6 border-b border-neutral-800">
+        <div className="flex flex-col items-center gap-3 p-6 border-b border-border">
           <ProgressRing progress={progress} active={isUploading} size={112}>
             <div className="w-24 h-24 rounded-full overflow-hidden">
               <img
@@ -37,14 +37,14 @@ export const UploadAvatarModal = ({ avatarUrl }: { avatarUrl?: string }) => {
           <span className="font-semibold text-lg">Change profile photo</span>
           {isUploading ? (
             <span
-              className="text-xs text-indigo-300"
+              className="text-xs text-primary"
               role="status"
               aria-live="polite"
             >
               Uploading… {progress}%
             </span>
           ) : (
-            <span className="text-xs text-neutral-400">
+            <span className="text-xs text-muted">
               JPG, PNG or GIF. Max 5MB.
             </span>
           )}
@@ -53,7 +53,7 @@ export const UploadAvatarModal = ({ avatarUrl }: { avatarUrl?: string }) => {
         <RemoveAvatarButton avatarUrl={avatarUrl || ""} onClick={closeModal} />
         <button
           onClick={closeModal}
-          className="py-3.5 text-sm text-white font-normal active:bg-white/5 transition-colors cursor-pointer"
+          className="py-3.5 text-sm text-foreground font-normal active:bg-foreground/5 transition-colors cursor-pointer"
         >
           Cancel
         </button>
