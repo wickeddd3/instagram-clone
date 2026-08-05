@@ -14,15 +14,17 @@ const carouselStyles = `
 interface ImageCarouselProps {
   media: { url: string; id?: string }[];
   onSwiper?: (swiper: SwiperType) => void;
+  onActiveIndexChange?: (index: number) => void;
   aspectRatio?: string;
 }
 
 export const ImageCarousel = memo(
-  ({ media, onSwiper, aspectRatio = "aspect-square" }: ImageCarouselProps) => {
+  ({ media, onSwiper, onActiveIndexChange, aspectRatio = "aspect-square" }: ImageCarouselProps) => {
     return (
       <div className={`relative w-full h-full overflow-hidden ${aspectRatio}`}>
         <Swiper
           onSwiper={onSwiper}
+          onActiveIndexChange={(swiper) => onActiveIndexChange?.(swiper.activeIndex)}
           modules={[Navigation, Pagination]}
           spaceBetween={0}
           slidesPerView={1}
